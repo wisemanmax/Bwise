@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Deep Dive · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html" aria-current="page">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="react.html">React</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        <section aria-labelledby="js-overview-title">
+            <div class="section-header">
+                <h1 id="js-overview-title" class="section-title">JavaScript Engineering</h1>
+                <p class="section-subtitle">
+                    Interaction patterns, state handling, and data-driven UI logic without overcomplicating the stack.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h2 class="card-title">Stateful dashboard interactions</h2>
+                    <pre class="code-block"><code>const dashboardState = {
+    mode: "monthly",
+    data: {
+        monthly: { reports: 2847, timeSaved: 1240 },
+        quarterly: { reports: 8310, timeSaved: 3720 }
+    }
+};
+
+function setDashboardMode(mode) {
+    if (!dashboardState.data[mode]) return;
+    dashboardState.mode = mode;
+    renderDashboard();
+}
+
+function renderDashboard() {
+    const { reports, timeSaved } = dashboardState.data[dashboardState.mode];
+    document.querySelector("[data-kpi='reports']").textContent =
+        reports.toLocaleString();
+    document.querySelector("[data-kpi='time-saved']").textContent =
+        timeSaved.toLocaleString();
+}
+
+document.querySelectorAll("[data-mode-toggle]").forEach(button =&gt; {
+    button.addEventListener("click", () =&gt; {
+        setDashboardMode(button.dataset.modeToggle);
+    });
+});
+
+renderDashboard();</code></pre>
+                </article>
+
+                <article class="card">
+                    <h2 class="card-title">Accessible modal controller</h2>
+                    <pre class="code-block"><code>function createModalController(root) {
+    const openButtons = document.querySelectorAll("[data-open-modal]");
+    const closeButtons = root.querySelectorAll("[data-close-modal]");
+    const dialog = root.querySelector("[role='dialog']");
+
+    function openModal() {
+        root.hidden = false;
+        dialog.focus();
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+        root.hidden = true;
+        document.body.style.overflow = "";
+    }
+
+    openButtons.forEach(btn =&gt; btn.addEventListener("click", openModal));
+    closeButtons.forEach(btn =&gt; btn.addEventListener("click", closeModal));
+
+    root.addEventListener("click", event =&gt; {
+        if (event.target === root) closeModal();
+    });
+
+    document.addEventListener("keydown", event =&gt; {
+        if (event.key === "Escape" &amp;&amp; !root.hidden) closeModal();
+    });
+}</code></pre>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="js-patterns-title" class="stacked-section">
+            <h2 id="js-patterns-title" class="section-title">Patterns for real systems</h2>
+            <p class="section-subtitle">
+                Practical vanilla JS patterns used in fraud, collections, and QA tooling.
+            </p>
+
+            <div class="grid three-cols">
+                <article class="card">
+                    <h3 class="card-title">Debounced search</h3>
+                    <pre class="code-block"><code>function debounce(fn, delay = 250) {
+    let handle;
+    return function (...args) {
+        clearTimeout(handle);
+        handle = setTimeout(() =&gt; fn.apply(this, args), delay);
+    };
+}
+
+const searchInput = document.querySelector("[data-search]");
+
+searchInput.addEventListener(
+    "input",
+    debounce(event =&gt; {
+        const value = event.target.value.trim();
+        fetch("/api/accounts?query=" + encodeURIComponent(value));
+    }, 300)
+);</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Client-side feature flags</h3>
+                    <pre class="code-block"><code>const flags = new Map([["newCollectionsView", true]]);
+
+export function isFeatureEnabled(name) {
+    return flags.get(name) === true;
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Form validation</h3>
+                    <pre class="code-block"><code>const form = document.querySelector("[data-form='qa-score']");
+
+form.addEventListener("submit", event =&gt; {
+    const score = Number(form.elements["score"].value);
+    if (Number.isNaN(score) || score &lt; 0 || score &gt; 100) {
+        event.preventDefault();
+        alert("Score must be between 0 and 100.");
+    }
+});</code></pre>
+                </article>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>Additional technical deep dives for hiring managers and engineering leaders.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

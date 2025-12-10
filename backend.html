@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend and APIs · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html" aria-current="page">Backend</a></li>
+                <li><a href="react.html">React</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        <section aria-labelledby="backend-overview-title">
+            <div class="section-header">
+                <h1 id="backend-overview-title" class="section-title">Backend and APIs</h1>
+                <p class="section-subtitle">
+                    C sharp, .NET, and SQL powering collections, fraud, and servicing workflows.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h2 class="card-title">C sharp API for collections QA</h2>
+                    <pre class="code-block"><code>public sealed record QaScoreRequest(
+    string AccountNumber,
+    string AgentId,
+    int    Score,
+    string Category,
+    DateTimeOffset CallDateUtc);
+
+[ApiController]
+[Route("api/qa-scores")]
+public class QaScoresController : ControllerBase
+{
+    private readonly QaScoreService _service;
+    private readonly ILogger&lt;QaScoresController&gt; _logger;
+
+    public QaScoresController(
+        QaScoreService service,
+        ILogger&lt;QaScoresController&gt; logger)
+    {
+        _service = service;
+        _logger = logger;
+    }
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; Create(QaScoreRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        await _service.StoreAsync(request);
+        return CreatedAtAction(nameof(GetByAccount),
+            new { accountNumber = request.AccountNumber }, null);
+    }
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h2 class="card-title">Repository pattern with Dapper</h2>
+                    <pre class="code-block"><code>public sealed class QaScoreRepository
+{
+    private readonly IDbConnection _connection;
+
+    public QaScoreRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public Task&lt;int&gt; InsertAsync(QaScoreEntity entity)
+    {
+        const string sql = @"
+INSERT INTO QaScores (
+    AccountNumber,
+    AgentId,
+    Score,
+    Category,
+    CallDateUtc,
+    CreatedUtc)
+VALUES (
+    @AccountNumber,
+    @AgentId,
+    @Score,
+    @Category,
+    @CallDateUtc,
+    SYSUTCDATETIME());";
+
+        return _connection.ExecuteAsync(sql, entity);
+    }
+}</code></pre>
+                </article>
+            </div>
+
+            <section aria-labelledby="backend-sql-title" class="stacked-section">
+                <h2 id="backend-sql-title" class="section-title">SQL and data modeling</h2>
+                <p class="section-subtitle">
+                    Clean, indexed tables designed for reporting and downstream analytics.
+                </p>
+
+                <div class="grid two-cols">
+                    <article class="card">
+                        <h3 class="card-title">Table design</h3>
+                        <pre class="code-block"><code>CREATE TABLE Collections.QaScores (
+    QaScoreId       INT IDENTITY(1,1) PRIMARY KEY,
+    AccountNumber   VARCHAR(20)  NOT NULL,
+    AgentId         VARCHAR(16)  NOT NULL,
+    Score           TINYINT      NOT NULL CHECK (Score BETWEEN 0 AND 100),
+    Category        VARCHAR(32)  NOT NULL,
+    CallDateUtc     DATETIME2(0) NOT NULL,
+    CreatedUtc      DATETIME2(0) NOT NULL DEFAULT SYSUTCDATETIME(),
+    CreatedBy       VARCHAR(32)  NOT NULL DEFAULT SYSTEM_USER
+);
+
+CREATE INDEX IX_QaScores_AccountDate
+    ON Collections.QaScores (AccountNumber, CallDateUtc DESC);</code></pre>
+                    </article>
+
+                    <article class="card">
+                        <h3 class="card-title">Reporting view</h3>
+                        <pre class="code-block"><code>CREATE VIEW Reporting.QaScoresDaily AS
+SELECT
+    CAST(CallDateUtc AS DATE)  AS CallDate,
+    AgentId,
+    COUNT(*)                   AS TotalCalls,
+    AVG(CAST(Score AS DECIMAL(5,2))) AS AvgScore
+FROM Collections.QaScores
+GROUP BY CAST(CallDateUtc AS DATE), AgentId;</code></pre>
+                    </article>
+                </div>
+            </section>
+        </section>
+
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>Additional technical deep dives for hiring managers and engineering leaders.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

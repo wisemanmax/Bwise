@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Deep Dive · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html" aria-current="page">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="react.html">React</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+
+        <section aria-labelledby="html-overview-title">
+            <div class="section-header">
+                <h1 id="html-overview-title" class="section-title">HTML Systems Design</h1>
+                <p class="section-subtitle">
+                    Semantic, accessible markup structured for large applications, design systems, and dashboards.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h2 class="card-title">Semantic layout and landmarks</h2>
+                    <p>
+                        I treat HTML as the foundation for performance, accessibility, and maintainability,
+                        using landmarks and meaningful structure so teams can build safely on top.
+                    </p>
+                    <pre class="code-block"><code>&lt;header class="app-header" aria-label="Primary site header"&gt;
+    &lt;nav class="top-nav" aria-label="Main navigation"&gt;
+        &lt;a class="logo" href="/"&gt;Byheir Wise&lt;/a&gt;
+        &lt;button class="nav-toggle"
+                aria-label="Toggle navigation"
+                aria-expanded="false"&gt;☰&lt;/button&gt;
+        &lt;ul class="nav-menu"&gt;
+            &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#experience"&gt;Experience&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="react.html"&gt;React&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main id="content" tabindex="-1"&gt;
+    &lt;section aria-labelledby="kpi-title"&gt;
+        &lt;h2 id="kpi-title"&gt;Key delivery metrics&lt;/h2&gt;
+        &lt;div class="kpi-grid" role="list"&gt;
+            &lt;article class="kpi-card" role="listitem"&gt;...&lt;/article&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/main&gt;</code></pre>
+                </article>
+
+                <article class="card">
+                    <h2 class="card-title">Accessible data tables</h2>
+                    <p>
+                        Collections, fraud, and compliance work lives in data. I build tables with proper
+                        headers, captions, sorting controls, and responsive behavior.
+                    </p>
+                    <pre class="code-block"><code>&lt;table class="metrics-table"&gt;
+    &lt;caption&gt;Monthly collections performance by portfolio&lt;/caption&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th scope="col"&gt;Portfolio&lt;/th&gt;
+            &lt;th scope="col"&gt;Delinquency rate&lt;/th&gt;
+            &lt;th scope="col"&gt;Roll rate&lt;/th&gt;
+            &lt;th scope="col"&gt;Agent coverage&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;Private Student Loans&lt;/th&gt;
+            &lt;td data-label="Delinquency rate"&gt;1.8%&lt;/td&gt;
+            &lt;td data-label="Roll rate"&gt;0.3%&lt;/td&gt;
+            &lt;td data-label="Agent coverage"&gt;97%&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;Refi&lt;/th&gt;
+            &lt;td&gt;1.2%&lt;/td&gt;
+            &lt;td&gt;0.1%&lt;/td&gt;
+            &lt;td&gt;99%&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="html-patterns-title" class="stacked-section">
+            <h2 id="html-patterns-title" class="section-title">Reusable HTML patterns</h2>
+            <p class="section-subtitle">
+                Small, composable patterns that scale in large applications.
+            </p>
+
+            <div class="grid three-cols">
+                <article class="card">
+                    <h3 class="card-title">Form layouts</h3>
+                    <pre class="code-block"><code>&lt;form class="form form--two-col" novalidate&gt;
+    &lt;div class="form-row"&gt;
+        &lt;label for="acct"&gt;Account number&lt;/label&gt;
+        &lt;input id="acct" name="acct" inputmode="numeric"
+               autocomplete="off" required /&gt;
+    &lt;/div&gt;
+    &lt;div class="form-row"&gt;
+        &lt;label for="segment"&gt;Risk segment&lt;/label&gt;
+        &lt;select id="segment" name="segment"&gt;
+            &lt;option&gt;Prime&lt;/option&gt;
+            &lt;option&gt;Near-prime&lt;/option&gt;
+            &lt;option&gt;Sub-prime&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;button type="submit" class="btn btn-primary"&gt;Run decision&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Accessible modals</h3>
+                    <pre class="code-block"><code>&lt;div class="modal" role="dialog"
+     aria-modal="true"
+     aria-labelledby="modal-title"
+     aria-describedby="modal-body"&gt;
+    &lt;div class="modal__content"&gt;
+        &lt;header class="modal__header"&gt;
+            &lt;h2 id="modal-title"&gt;Confirm batch publish&lt;/h2&gt;
+            &lt;button class="icon-button" aria-label="Close dialog"&gt;×&lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div id="modal-body" class="modal__body"&gt;
+            You are about to update 1,000+ accounts. This action is logged.
+        &lt;/div&gt;
+        &lt;footer class="modal__footer"&gt;
+            &lt;button class="btn btn-secondary"&gt;Cancel&lt;/button&gt;
+            &lt;button class="btn btn-danger"&gt;Confirm&lt;/button&gt;
+        &lt;/footer&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Dashboard cards</h3>
+                    <pre class="code-block"><code>&lt;article class="stat-card" aria-label="Time saved"&gt;
+    &lt;h3 class="stat-card__label"&gt;Manual hours eliminated&lt;/h3&gt;
+    &lt;p class="stat-card__value"&gt;1,240&lt;/p&gt;
+    &lt;p class="stat-card__delta stat-card__delta--positive"&gt;
+        +60% vs prior baseline
+    &lt;/p&gt;
+&lt;/article&gt;</code></pre>
+                </article>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>Additional technical deep dives for hiring managers and engineering leaders.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
