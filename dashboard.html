@@ -393,6 +393,196 @@
       font-weight: 500;
     }
 
+    .analytics-section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .section-header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .tab-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background-color: var(--white);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .tab-button {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--abbey);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tab-button.is-active {
+      background-color: var(--java);
+      color: var(--white);
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .insight-card {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .insight-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .chip--teal { background-color: var(--java); }
+    .chip--green { background-color: var(--jungle-green); }
+    .chip--purple { background-color: var(--amethyst); }
+    .chip--orange { background-color: var(--zest); }
+
+    .insight-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--mine-shaft);
+    }
+
+    .insight-change {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--jungle-green);
+    }
+
+    .insight-change.is-negative {
+      color: var(--cinnabar);
+    }
+
+    .sparkline {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 48px;
+    }
+
+    .sparkline span {
+      flex: 1;
+      background-color: rgba(27,186,225,0.25);
+      border-radius: 6px;
+    }
+
+    .snippet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .snippet-card {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .snippet-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .snippet-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      background-color: var(--athens-gray);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--java);
+      border-radius: 999px;
+    }
+
+    .snippet-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .snippet-link {
+      color: var(--java);
+      font-weight: 700;
+    }
+
+    .mini-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 42px;
+    }
+
+    .mini-bars span {
+      flex: 1;
+      border-radius: 6px;
+      background-color: rgba(175,100,204,0.35);
+    }
+
     .footer {
       grid-area: footer;
       background-color: var(--catskill-white);
@@ -617,6 +807,206 @@
         </article>
       </a>
     </div>
+
+    <section class="analytics-section">
+      <div class="section-header">
+        <div>
+          <h2>Insights Snapshot</h2>
+          <p class="text-light">Live snippets across Ops, Risk, and CX so teams stay aligned.</p>
+        </div>
+        <div class="tab-group" role="tablist" aria-label="Insight range">
+          <button class="tab-button is-active" type="button" data-range="today" aria-pressed="true">Today</button>
+          <button class="tab-button" type="button" data-range="week" aria-pressed="false">7 Days</button>
+          <button class="tab-button" type="button" data-range="month" aria-pressed="false">30 Days</button>
+        </div>
+      </div>
+
+      <div class="analytics-grid">
+        <article class="insight-card"
+          data-today-value="62%"
+          data-week-value="74%"
+          data-month-value="88%"
+          data-today-note="+4% vs yesterday"
+          data-week-note="+9% vs last week"
+          data-month-note="+12% vs last month">
+          <div class="insight-header">
+            <span>Automation coverage</span>
+            <span class="chip chip--teal">Ops</span>
+          </div>
+          <div class="insight-value">62%</div>
+          <div class="insight-change">
+            <i class="fas fa-arrow-up"></i>
+            <span>+4% vs yesterday</span>
+          </div>
+          <div class="sparkline">
+            <span style="height: 30%"></span>
+            <span style="height: 42%"></span>
+            <span style="height: 55%"></span>
+            <span style="height: 48%"></span>
+            <span style="height: 62%"></span>
+            <span style="height: 70%"></span>
+          </div>
+        </article>
+
+        <article class="insight-card"
+          data-today-value="31 min"
+          data-week-value="28 min"
+          data-month-value="25 min"
+          data-today-note="-3 min vs yesterday"
+          data-week-note="-6 min vs last week"
+          data-month-note="-10 min vs last month">
+          <div class="insight-header">
+            <span>Case resolution time</span>
+            <span class="chip chip--orange">Risk</span>
+          </div>
+          <div class="insight-value">31 min</div>
+          <div class="insight-change is-negative">
+            <i class="fas fa-arrow-down"></i>
+            <span>-3 min vs yesterday</span>
+          </div>
+          <div class="sparkline">
+            <span style="height: 65%"></span>
+            <span style="height: 58%"></span>
+            <span style="height: 50%"></span>
+            <span style="height: 46%"></span>
+            <span style="height: 40%"></span>
+            <span style="height: 36%"></span>
+          </div>
+        </article>
+
+        <article class="insight-card"
+          data-today-value="1,248"
+          data-week-value="8,632"
+          data-month-value="34,501"
+          data-today-note="+18% inbound volume"
+          data-week-note="+11% inbound volume"
+          data-month-note="+7% inbound volume">
+          <div class="insight-header">
+            <span>Inbound interactions</span>
+            <span class="chip chip--purple">CEXP</span>
+          </div>
+          <div class="insight-value">1,248</div>
+          <div class="insight-change">
+            <i class="fas fa-arrow-up"></i>
+            <span>+18% inbound volume</span>
+          </div>
+          <div class="sparkline">
+            <span style="height: 35%"></span>
+            <span style="height: 46%"></span>
+            <span style="height: 60%"></span>
+            <span style="height: 52%"></span>
+            <span style="height: 66%"></span>
+            <span style="height: 74%"></span>
+          </div>
+        </article>
+
+        <article class="insight-card"
+          data-today-value="$1.9M"
+          data-week-value="$12.4M"
+          data-month-value="$52.8M"
+          data-today-note="+6% recovered"
+          data-week-note="+4% recovered"
+          data-month-note="+8% recovered">
+          <div class="insight-header">
+            <span>Recovered revenue</span>
+            <span class="chip chip--green">Collections</span>
+          </div>
+          <div class="insight-value">$1.9M</div>
+          <div class="insight-change">
+            <i class="fas fa-arrow-up"></i>
+            <span>+6% recovered</span>
+          </div>
+          <div class="sparkline">
+            <span style="height: 40%"></span>
+            <span style="height: 52%"></span>
+            <span style="height: 58%"></span>
+            <span style="height: 64%"></span>
+            <span style="height: 70%"></span>
+            <span style="height: 80%"></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="analytics-section">
+      <div class="section-header">
+        <div>
+          <h2>Base Analytics Snippets</h2>
+          <p class="text-light">Quick reads that guide deeper report dives.</p>
+        </div>
+        <a class="snippet-link" href="data-analytics.html">Open analytics hub</a>
+      </div>
+
+      <div class="snippet-grid">
+        <article class="snippet-card">
+          <div class="snippet-title">Collections Pulse</div>
+          <div class="snippet-meta">
+            <span>Recovery rate</span>
+            <span>Target 78%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" style="width: 72%"></div>
+          </div>
+          <div class="snippet-actions">
+            <span>72% recovered this week</span>
+            <a class="snippet-link" href="collections-toolkit.html">View report</a>
+          </div>
+        </article>
+
+        <article class="snippet-card">
+          <div class="snippet-title">Underwriting Mix</div>
+          <div class="snippet-meta">
+            <span>1,243 apps today</span>
+            <span>Risk tier shift</span>
+          </div>
+          <div class="mini-bars">
+            <span style="height: 35%"></span>
+            <span style="height: 50%"></span>
+            <span style="height: 65%"></span>
+            <span style="height: 42%"></span>
+            <span style="height: 58%"></span>
+          </div>
+          <div class="snippet-actions">
+            <span>Tier A +6%, Tier C -3%</span>
+            <a class="snippet-link" href="credit-underwriting.html">View report</a>
+          </div>
+        </article>
+
+        <article class="snippet-card">
+          <div class="snippet-title">Fraud Radar</div>
+          <div class="snippet-meta">
+            <span>127 open cases</span>
+            <span>14 escalations</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" style="width: 58%; background-color: var(--cinnabar);"></div>
+          </div>
+          <div class="snippet-actions">
+            <span>58% cases resolved inside SLA</span>
+            <a class="snippet-link" href="fraud-risk.html">View report</a>
+          </div>
+        </article>
+
+        <article class="snippet-card">
+          <div class="snippet-title">Creative Momentum</div>
+          <div class="snippet-meta">
+            <span>8.4K views</span>
+            <span>3 launches queued</span>
+          </div>
+          <div class="mini-bars">
+            <span style="height: 46%; background-color: rgba(39,174,96,0.35);"></span>
+            <span style="height: 60%; background-color: rgba(39,174,96,0.35);"></span>
+            <span style="height: 40%; background-color: rgba(39,174,96,0.35);"></span>
+            <span style="height: 70%; background-color: rgba(39,174,96,0.35);"></span>
+            <span style="height: 82%; background-color: rgba(39,174,96,0.35);"></span>
+          </div>
+          <div class="snippet-actions">
+            <span>Engagement +12% this week</span>
+            <a class="snippet-link" href="creative-house.html">View report</a>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
 
     <footer class="footer">
@@ -630,6 +1020,8 @@
     const closeBtn = document.querySelector('.sidenav__brand-close');
     const sidenav = document.querySelector('.sidenav');
     const grid = document.querySelector('.grid');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const insightCards = document.querySelectorAll('.insight-card');
 
     menuBtn.addEventListener('click', () => {
       sidenav.classList.add('sidenav--show');
@@ -647,6 +1039,47 @@
         sidenav.classList.remove('sidenav--show');
         grid.classList.remove('grid--noscroll');
       }
+    });
+
+    const updateInsights = (range) => {
+      insightCards.forEach((card) => {
+        const value = card.dataset[`${range}Value`];
+        const note = card.dataset[`${range}Note`];
+        if (!value || !note) {
+          return;
+        }
+
+        const valueEl = card.querySelector('.insight-value');
+        const noteEl = card.querySelector('.insight-change span');
+        const iconEl = card.querySelector('.insight-change i');
+        const changeWrapper = card.querySelector('.insight-change');
+
+        valueEl.textContent = value;
+        noteEl.textContent = note;
+
+        if (note.trim().startsWith('-')) {
+          changeWrapper.classList.add('is-negative');
+          iconEl.classList.remove('fa-arrow-up');
+          iconEl.classList.add('fa-arrow-down');
+        } else {
+          changeWrapper.classList.remove('is-negative');
+          iconEl.classList.remove('fa-arrow-down');
+          iconEl.classList.add('fa-arrow-up');
+        }
+      });
+    };
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        tabButtons.forEach((btn) => {
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-pressed', 'false');
+        });
+
+        button.classList.add('is-active');
+        button.setAttribute('aria-pressed', 'true');
+        updateInsights(button.dataset.range);
+      });
     });
   </script>
 </body>
