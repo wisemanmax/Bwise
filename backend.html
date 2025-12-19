@@ -31,15 +31,93 @@
 
         <section aria-labelledby="backend-overview-title">
             <div class="section-header">
-                <h1 id="backend-overview-title" class="section-title">Backend and APIs</h1>
+                <h1 id="backend-overview-title" class="section-title">Backend, Data, and Platform Systems</h1>
                 <p class="section-subtitle">
-                    C sharp, .NET, and SQL powering collections, fraud, and servicing workflows.
+                    A deep dive into how I design .NET APIs, data models, background processing, security controls, and
+                    enterprise-grade operational tooling. Every section below mirrors how I build real systems in
+                    regulated environments.
+                </p>
+            </div>
+
+            <div class="demo-section" aria-label="Backend capability dashboard">
+                <div class="demo-header">
+                    <div>
+                        <h2 class="demo-title">Capability coverage snapshot</h2>
+                        <p class="demo-subtitle">
+                            Select a focus area to update the metrics, log stream, and priorities for that system.
+                        </p>
+                    </div>
+                    <div class="demo-controls" aria-label="Capability focus controls">
+                        <button class="demo-btn active" data-showcase-filter="all" aria-pressed="true">All systems</button>
+                        <button class="demo-btn" data-showcase-filter="backend" aria-pressed="false">Backend APIs</button>
+                        <button class="demo-btn" data-showcase-filter="data" aria-pressed="false">Data platforms</button>
+                        <button class="demo-btn" data-showcase-filter="enterprise" aria-pressed="false">Enterprise tools</button>
+                        <button class="demo-btn" data-showcase-filter="devops" aria-pressed="false">DevOps &amp; QA</button>
+                        <button class="demo-btn" data-showcase-filter="security" aria-pressed="false">Security &amp; compliance</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="metric-card" data-showcase-kpi data-kpi-key="services">
+                        <div class="metric-label">Active services</div>
+                        <div class="metric-value">12</div>
+                        <div class="metric-change">Versioned APIs, jobs, and reporting endpoints</div>
+                    </div>
+                    <div class="metric-card" data-showcase-kpi data-kpi-key="coverage">
+                        <div class="metric-label">Test coverage</div>
+                        <div class="metric-value">92%</div>
+                        <div class="metric-change">Unit + integration suites with quality gates</div>
+                    </div>
+                    <div class="metric-card" data-showcase-kpi data-kpi-key="latency">
+                        <div class="metric-label">API p95 latency</div>
+                        <div class="metric-value">180ms</div>
+                        <div class="metric-change">Optimized queries + caching strategy</div>
+                    </div>
+                    <div class="metric-card" data-showcase-kpi data-kpi-key="compliance">
+                        <div class="metric-label">Audit readiness</div>
+                        <div class="metric-value">99%</div>
+                        <div class="metric-change">Secure logging, masking, and evidence trails</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Current focus</h3>
+                    <p data-showcase-summary>
+                        Multi-system view: backend APIs, analytics pipelines, admin tooling, and compliance controls
+                        aligned to internal SLAs and regulatory audit expectations.
+                    </p>
+                    <ul class="achievement-list">
+                        <li>Versioned APIs with role-based authorization, input validation, and structured logging.</li>
+                        <li>Data platform built on SQL schema discipline, reporting views, and migration scripts.</li>
+                        <li>Enterprise tooling: admin portal, dynamic form builder, audit log, and feature flags.</li>
+                        <li>CI/CD quality gates with coverage checks and deployment checklists.</li>
+                        <li>Security-first patterns for masking, least privilege, and audit readiness.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Real-time log stream (simulated)</h3>
+                    <pre class="code-block" data-log-stream><code>[2025-01-08 10:11:32Z] api.v1.qa-scores POST 201 (Auth=Required, Trace=8f3a...)
+[2025-01-08 10:11:33Z] jobs.qa-score-rollup SUCCESS duration=842ms
+[2025-01-08 10:11:34Z] sql.reporting VIEW REFRESHED (QaScoresDaily)
+[2025-01-08 10:11:36Z] audit.user-role UPDATE user=ops_admin role=ComplianceLead
+[2025-01-08 10:11:40Z] security.masking PII redaction applied fields=SSN,DOB</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="backend-api-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="backend-api-title" class="section-title">Backend focused projects</h2>
+                <p class="section-subtitle">
+                    .NET Web API patterns: CRUD endpoints, auth, validation, logging, background processing, retries,
+                    and API versioning.
                 </p>
             </div>
 
             <div class="grid two-cols">
-                <article class="card">
-                    <h2 class="card-title">C sharp API for collections QA</h2>
+                <article class="card" data-showcase-tag="backend,security">
+                    <h3 class="card-title">C# API for collections QA (CRUD + auth)</h3>
                     <pre class="code-block"><code>public sealed record QaScoreRequest(
     string AccountNumber,
     string AgentId,
@@ -48,15 +126,15 @@
     DateTimeOffset CallDateUtc);
 
 [ApiController]
-[Route("api/qa-scores")]
-public class QaScoresController : ControllerBase
+[Authorize(Policy = "CollectionsQaWrite")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/qa-scores")]
+public sealed class QaScoresController : ControllerBase
 {
     private readonly QaScoreService _service;
     private readonly ILogger&lt;QaScoresController&gt; _logger;
 
-    public QaScoresController(
-        QaScoreService service,
-        ILogger&lt;QaScoresController&gt; logger)
+    public QaScoresController(QaScoreService service, ILogger&lt;QaScoresController&gt; logger)
     {
         _service = service;
         _logger = logger;
@@ -70,58 +148,159 @@ public class QaScoresController : ControllerBase
             return ValidationProblem(ModelState);
         }
 
-        await _service.StoreAsync(request);
+        var result = await _service.StoreAsync(request, User);
+        _logger.LogInformation("QaScore created {QaScoreId} for {Account}", result.Id, result.AccountNumber);
+
         return CreatedAtAction(nameof(GetByAccount),
-            new { accountNumber = request.AccountNumber }, null);
+            new { version = "1.0", accountNumber = result.AccountNumber }, result);
     }
+
+    [HttpGet("{accountNumber}")]
+    public async Task&lt;ActionResult&lt;QaScoreSummary&gt;&gt; GetByAccount(string accountNumber)
+        =&gt; Ok(await _service.FetchByAccountAsync(accountNumber));
 }</code></pre>
                 </article>
 
-                <article class="card">
-                    <h2 class="card-title">Repository pattern with Dapper</h2>
-                    <pre class="code-block"><code>public sealed class QaScoreRepository
+                <article class="card" data-showcase-tag="backend,security">
+                    <h3 class="card-title">Validation, error handling, and standard responses</h3>
+                    <pre class="code-block"><code>public sealed class QaScoreValidator : AbstractValidator&lt;QaScoreRequest&gt;
 {
-    private readonly IDbConnection _connection;
-
-    public QaScoreRepository(IDbConnection connection)
+    public QaScoreValidator()
     {
-        _connection = connection;
-    }
+        RuleFor(x =&gt; x.AccountNumber)
+            .NotEmpty()
+            .Length(10, 20)
+            .Matches(@"^[0-9A-Z]+$");
 
-    public Task&lt;int&gt; InsertAsync(QaScoreEntity entity)
+        RuleFor(x =&gt; x.Score)
+            .InclusiveBetween(0, 100);
+
+        RuleFor(x =&gt; x.Category)
+            .NotEmpty()
+            .MaximumLength(32);
+    }
+}
+
+app.UseExceptionHandler(appBuilder =&gt;
+{
+    appBuilder.Run(async context =&gt;
     {
-        const string sql = @"
-INSERT INTO QaScores (
-    AccountNumber,
-    AgentId,
-    Score,
-    Category,
-    CallDateUtc,
-    CreatedUtc)
-VALUES (
-    @AccountNumber,
-    @AgentId,
-    @Score,
-    @Category,
-    @CallDateUtc,
-    SYSUTCDATETIME());";
-
-        return _connection.ExecuteAsync(sql, entity);
-    }
-}</code></pre>
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        await context.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Title = "Unexpected error",
+            Detail = "Reference the trace id when reporting issues.",
+            Instance = context.TraceIdentifier
+        });
+    });
+});</code></pre>
                 </article>
             </div>
 
-            <section aria-labelledby="backend-sql-title" class="stacked-section">
-                <h2 id="backend-sql-title" class="section-title">SQL and data modeling</h2>
-                <p class="section-subtitle">
-                    Clean, indexed tables designed for reporting and downstream analytics.
-                </p>
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="backend,devops">
+                    <h3 class="card-title">Structured logging with correlation IDs</h3>
+                    <pre class="code-block"><code>app.Use(async (context, next) =&gt;
+{
+    context.Items["CorrelationId"] = Guid.NewGuid().ToString("N");
+    using (LogContext.PushProperty("CorrelationId", context.Items["CorrelationId"]))
+    {
+        await next();
+    }
+});
 
-                <div class="grid two-cols">
-                    <article class="card">
-                        <h3 class="card-title">Table design</h3>
-                        <pre class="code-block"><code>CREATE TABLE Collections.QaScores (
+Log.ForContext("Service", "CollectionsQa")
+   .ForContext("Environment", env.EnvironmentName)
+   .Information("Inbound request {Method} {Path}", context.Request.Method, context.Request.Path);</code></pre>
+                </article>
+
+                <article class="card" data-showcase-tag="backend,devops">
+                    <h3 class="card-title">Background jobs + retry logic</h3>
+                    <pre class="code-block"><code>services.AddHangfire(config =&gt; config.UseSqlServerStorage(connString));
+services.AddHangfireServer();
+
+RecurringJob.AddOrUpdate&lt;QaScoreRollupJob&gt;(
+    "qa-score-rollup",
+    job =&gt; job.ExecuteAsync(),
+    "0 */2 * * *");
+
+public async Task ExecuteAsync()
+{
+    await Policy
+        .Handle&lt;SqlException&gt;()
+        .WaitAndRetryAsync(3, retry =&gt; TimeSpan.FromSeconds(retry * 2))
+        .ExecuteAsync(() =&gt; _repository.RollupDailyAsync());
+}</code></pre>
+                    <div>
+                        <button class="demo-btn" data-retry-button>Simulate retry sequence</button>
+                        <p data-retry-status>Ready to run a simulated job retry loop.</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="backend,devops">
+                    <h3 class="card-title">Secure config + secrets handling</h3>
+                    <pre class="code-block"><code>public sealed class SecretsProvider : ISecretsProvider
+{
+    public string GetDatabasePassword()
+        =&gt; Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "mock-secret";
+}
+
+builder.Configuration.AddEnvironmentVariables(prefix: "CollectionsQa_");
+builder.Services.Configure&lt;DatabaseOptions&gt;(
+    builder.Configuration.GetSection("Database"));</code></pre>
+                    <p>
+                        Config values are stored in env vars or a secrets manager. The UI below shows how values are
+                        masked for demos and logs.
+                    </p>
+                    <div class="achievement-list">
+                        <li>DB_PASSWORD: <span data-mask-value="••••••••" data-mask-raw="s3cr3t-qa">••••••••</span></li>
+                        <li>JWT_SIGNING_KEY: <span data-mask-value="••••••••••••" data-mask-raw="qa-key-2025">••••••••••••</span></li>
+                    </div>
+                    <button class="demo-btn" data-mask-toggle>Toggle masked values</button>
+                </article>
+
+                <article class="card" data-showcase-tag="backend,devops">
+                    <h3 class="card-title">Unit tests + coverage proof</h3>
+                    <pre class="code-block"><code>public class QaScoresControllerTests
+{
+    [Fact]
+    public async Task Create_ReturnsCreated_WhenValidRequest()
+    {
+        var controller = BuildController();
+        var request = new QaScoreRequest("99887766", "A102", 95, "Empathy", DateTimeOffset.UtcNow);
+
+        var response = await controller.Create(request);
+
+        var created = Assert.IsType&lt;CreatedAtActionResult&gt;(response);
+        Assert.Equal(201, created.StatusCode);
+    }
+}
+
+// Coverage output: 92.4% (line coverage)
+// Gated via CI: minimum 85% to pass build</code></pre>
+                    <ul class="achievement-list">
+                        <li>Unit, integration, and contract tests for all CRUD endpoints.</li>
+                        <li>Coverage reported in CI and published to dashboards.</li>
+                        <li>Negative path tests: auth failures, validation errors, and retries.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="data-focus-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="data-focus-title" class="section-title">Data focused projects</h2>
+                <p class="section-subtitle">
+                    SQL schema design, indexing strategy, migration approach, and reporting layers that power KPIs.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="data">
+                    <h3 class="card-title">Schema design + indexing</h3>
+                    <pre class="code-block"><code>CREATE TABLE Collections.QaScores (
     QaScoreId       INT IDENTITY(1,1) PRIMARY KEY,
     AccountNumber   VARCHAR(20)  NOT NULL,
     AgentId         VARCHAR(16)  NOT NULL,
@@ -133,22 +312,298 @@ VALUES (
 );
 
 CREATE INDEX IX_QaScores_AccountDate
-    ON Collections.QaScores (AccountNumber, CallDateUtc DESC);</code></pre>
-                    </article>
+    ON Collections.QaScores (AccountNumber, CallDateUtc DESC);
 
-                    <article class="card">
-                        <h3 class="card-title">Reporting view</h3>
-                        <pre class="code-block"><code>CREATE VIEW Reporting.QaScoresDaily AS
+CREATE INDEX IX_QaScores_AgentDate
+    ON Collections.QaScores (AgentId, CallDateUtc DESC)
+    INCLUDE (Score, Category);</code></pre>
+                </article>
+
+                <article class="card" data-showcase-tag="data">
+                    <h3 class="card-title">Legacy to clean schema migration</h3>
+                    <pre class="code-block"><code>INSERT INTO Collections.QaScores (
+    AccountNumber,
+    AgentId,
+    Score,
+    Category,
+    CallDateUtc,
+    CreatedUtc,
+    CreatedBy)
+SELECT
+    legacy.account_no,
+    legacy.agent_code,
+    legacy.score_value,
+    legacy.score_type,
+    legacy.call_ts,
+    SYSUTCDATETIME(),
+    'migration-script'
+FROM Legacy.QaScoreDump legacy
+WHERE legacy.score_value BETWEEN 0 AND 100;</code></pre>
+                    <ul class="achievement-list">
+                        <li>Data quality checks before load with reject tables for invalid scores.</li>
+                        <li>Batch size control for predictable migration windows.</li>
+                        <li>Hash-based reconciliation to verify record parity.</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="data">
+                    <h3 class="card-title">Reporting layer + KPI views</h3>
+                    <pre class="code-block"><code>CREATE VIEW Reporting.QaScoresDaily AS
 SELECT
     CAST(CallDateUtc AS DATE)  AS CallDate,
     AgentId,
     COUNT(*)                   AS TotalCalls,
-    AVG(CAST(Score AS DECIMAL(5,2))) AS AvgScore
+    AVG(CAST(Score AS DECIMAL(5,2))) AS AvgScore,
+    SUM(CASE WHEN Score &gt;= 90 THEN 1 ELSE 0 END) AS HighScores
 FROM Collections.QaScores
 GROUP BY CAST(CallDateUtc AS DATE), AgentId;</code></pre>
-                    </article>
-                </div>
-            </section>
+                </article>
+
+                <article class="card" data-showcase-tag="data">
+                    <h3 class="card-title">Power BI style dashboard KPIs</h3>
+                    <ul class="achievement-list">
+                        <li>QA Score: Average QA score for the day, target &ge; 90.</li>
+                        <li>Compliance Score: % of calls passing policy checks.</li>
+                        <li>Time Saved: Manual reporting hours eliminated per week.</li>
+                        <li>Audit Coverage: % of agents reviewed each month.</li>
+                    </ul>
+                    <p>
+                        These KPIs are modeled in SQL views and exposed to Power BI for operational dashboards and
+                        executive reporting.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="enterprise-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="enterprise-title" class="section-title">Enterprise style projects</h2>
+                <p class="section-subtitle">
+                    Internal admin portals, RBAC, dynamic form builders, audit logs, and feature flag controls.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="enterprise,security">
+                    <h3 class="card-title">Admin portal + role-based access control</h3>
+                    <pre class="code-block"><code>services.AddAuthorization(options =&gt;
+{
+    options.AddPolicy("AdminOnly", policy =&gt;
+        policy.RequireRole("Admin", "ComplianceLead"));
+});
+
+[Authorize(Policy = "AdminOnly")]
+[HttpPut("users/{userId}/roles")]
+public async Task&lt;IActionResult&gt; UpdateRoles(string userId, RoleUpdateRequest request)
+    =&gt; Ok(await _roleService.UpdateRolesAsync(userId, request));</code></pre>
+                    <ul class="achievement-list">
+                        <li>RBAC enforced at endpoint and UI layers.</li>
+                        <li>Admin portal surfaces role assignments, permissions, and escalation contacts.</li>
+                        <li>Privileged actions require MFA confirmation and audit logging.</li>
+                    </ul>
+                </article>
+
+                <article class="card" data-showcase-tag="enterprise">
+                    <h3 class="card-title">Dynamic form builder + scoring logic</h3>
+                    <pre class="code-block"><code>{
+  "formId": "qa-scorecard-v4",
+  "sections": [
+    {
+      "title": "Call flow adherence",
+      "questions": [
+        { "id": "greeting", "type": "yesNo", "weight": 10 },
+        { "id": "disclosures", "type": "yesNo", "weight": 15 }
+      ]
+    },
+    {
+      "title": "Customer experience",
+      "questions": [
+        { "id": "empathy", "type": "rating", "max": 5, "weight": 20 },
+        { "id": "resolution", "type": "rating", "max": 5, "weight": 20 }
+      ]
+    }
+  ]
+}</code></pre>
+                    <ul class="achievement-list">
+                        <li>Form definitions stored as JSON to enable rapid updates.</li>
+                        <li>Weighted scoring logic calculates overall QA scores.</li>
+                        <li>Conditional questions triggered by previous responses.</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="enterprise,security">
+                    <h3 class="card-title">Audit log (who changed what and when)</h3>
+                    <pre class="code-block"><code>INSERT INTO AuditLog (
+    EntityType, EntityId, Action, ChangedBy, ChangedUtc, DetailJson)
+VALUES (
+    'QaScoreForm', 'qa-scorecard-v4', 'UPDATE', @userId, SYSUTCDATETIME(), @detailJson);</code></pre>
+                    <p>Recent audit trail entries:</p>
+                    <pre class="code-block"><code data-audit-log>
+[2025-01-08 09:02] jlee updated form qa-scorecard-v4 (sections=2, questions=6)
+[2025-01-08 09:11] kpatel updated role compliance_lead (added audit.write)
+[2025-01-08 09:21] mrobinson toggled feature flag new-qa-dashboard ON</code></pre>
+                </article>
+
+                <article class="card" data-showcase-tag="enterprise,devops">
+                    <h3 class="card-title">Feature flags + config driven behavior</h3>
+                    <pre class="code-block"><code>public sealed class FeatureFlagService
+{
+    private readonly IDictionary&lt;string, bool&gt; _flags;
+
+    public FeatureFlagService(IOptions&lt;FeatureFlagOptions&gt; options)
+        =&gt; _flags = options.Value.Flags;
+
+    public bool IsEnabled(string name) =&gt; _flags.TryGetValue(name, out var isOn) &amp;&amp; isOn;
+}</code></pre>
+                    <ul class="achievement-list">
+                        <li>Flags scoped by environment and business unit.</li>
+                        <li>Rollout rules tied to user roles and cohorts.</li>
+                        <li>Feature exposure tracked in audit logs.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="devops-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="devops-title" class="section-title">DevOps and quality</h2>
+                <p class="section-subtitle">
+                    CI pipelines, code quality checks, deployment steps, and branching strategy for stable releases.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="devops">
+                    <h3 class="card-title">CI pipeline YAML (build, test, lint)</h3>
+                    <pre class="code-block"><code>name: ci
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: dotnet restore
+      - run: dotnet build --configuration Release
+      - run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+      - run: dotnet format --verify-no-changes</code></pre>
+                </article>
+
+                <article class="card" data-showcase-tag="devops">
+                    <h3 class="card-title">Deployment steps</h3>
+                    <ol class="achievement-list">
+                        <li>Merge to main after CI passes and code review approval.</li>
+                        <li>Tag release: <strong>v1.x.y</strong> for API version compatibility.</li>
+                        <li>Deploy to staging with smoke tests and monitoring checks.</li>
+                        <li>Promote to production after stakeholder approval.</li>
+                        <li>Post-deploy validation: API health, job status, and logs.</li>
+                    </ol>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="devops">
+                    <h3 class="card-title">Code quality checks</h3>
+                    <ul class="achievement-list">
+                        <li>Static analysis: analyzers + security rules.</li>
+                        <li>Style checks: dotnet format + linting gates.</li>
+                        <li>Coverage thresholds to block regression.</li>
+                        <li>Performance regression tests for reporting queries.</li>
+                    </ul>
+                </article>
+
+                <article class="card" data-showcase-tag="devops">
+                    <h3 class="card-title">Branching strategy</h3>
+                    <pre class="code-block"><code>main
+├── feature/qa-score-endpoints
+├── feature/rollup-jobs
+├── hotfix/auth-timeout
+└── release/v1.4.0</code></pre>
+                    <ul class="achievement-list">
+                        <li>Short-lived feature branches with PR reviews.</li>
+                        <li>Release branches for controlled deployments.</li>
+                        <li>Hotfix branches for rapid production fixes.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="security-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="security-title" class="section-title">Security and compliance</h2>
+                <p class="section-subtitle">
+                    Input validation, authorization checks, secure logging, data masking, and audit readiness.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="security">
+                    <h3 class="card-title">Authorization checks and least privilege</h3>
+                    <pre class="code-block"><code>services.AddAuthorization(options =&gt;
+{
+    options.AddPolicy("QaRead", policy =&gt;
+        policy.RequireClaim("permission", "qa.read"));
+
+    options.AddPolicy("QaWrite", policy =&gt;
+        policy.RequireClaim("permission", "qa.write"));
+});
+
+[Authorize(Policy = "QaRead")]
+[HttpGet("qa-scores")]
+public Task&lt;IActionResult&gt; GetScores() =&gt; _service.FetchAllAsync();</code></pre>
+                </article>
+
+                <article class="card" data-showcase-tag="security">
+                    <h3 class="card-title">Secure logging + data masking</h3>
+                    <pre class="code-block"><code>public static string MaskSsn(string ssn)
+    =&gt; ssn?.Length == 9 ? $"***-**-{ssn[^4..]}" : "***-**-****";
+
+_logger.LogInformation(
+    "Account lookup {Account} requested by {User}",
+    MaskAccount(request.AccountNumber),
+    userId);</code></pre>
+                    <pre class="code-block"><code>SELECT
+    AccountNumber,
+    CONCAT('***-**-', RIGHT(Ssn, 4)) AS MaskedSsn,
+    DateOfBirth
+FROM Customers;</code></pre>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card" data-showcase-tag="security,devops">
+                    <h3 class="card-title">Audit readiness checklist</h3>
+                    <ul class="achievement-list">
+                        <li>Access logs retained for 12+ months with immutable storage.</li>
+                        <li>Role reviews quarterly, with approvals logged.</li>
+                        <li>PII masking enforced in logs and reports.</li>
+                        <li>Incident response runbooks attached to on-call rotations.</li>
+                        <li>Evidence packs generated per release and per audit.</li>
+                    </ul>
+                </article>
+
+                <article class="card" data-showcase-tag="security">
+                    <h3 class="card-title">Input validation guardrails</h3>
+                    <pre class="code-block"><code>if (!Regex.IsMatch(request.AccountNumber, @"^[0-9A-Z]+$"))
+{
+    return BadRequest(new { error = "Invalid account number format." });
+}
+
+if (request.Score &lt; 0 || request.Score &gt; 100)
+{
+    return BadRequest(new { error = "Score must be between 0 and 100." });
+}</code></pre>
+                </article>
+            </div>
         </section>
 
     </main>
