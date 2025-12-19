@@ -35,9 +35,8 @@
             <div class="section-header">
                 <h1 id="mock-api-overview-title" class="section-title">Mocked .NET API Blueprint</h1>
                 <p class="section-subtitle">
-                    A full-stack API showcase that demonstrates CRUD endpoints, authentication, validation, structured
-                    logging, and compliance-ready telemetry. Everything below is mocked but modeled after production
-                    .NET Web API patterns for regulated environments.
+                    A visual blueprint of a mocked API ecosystem: endpoint groups, auth gates, validation layers,
+                    job orchestration, and audit trails expressed as UI panels instead of code.
                 </p>
             </div>
 
@@ -101,153 +100,84 @@
             <div class="section-header">
                 <h2 id="api-surface-title" class="section-title">.NET Web API surface</h2>
                 <p class="section-subtitle">
-                    CRUD endpoints, API versioning, validation, and consistent error handling modeled after enterprise
-                    .NET Web API practices.
+                    A visual catalog of endpoint families, versioning, and response behavior.
                 </p>
             </div>
 
-            <div class="grid two-cols">
-                <article class="card">
-                    <h3 class="card-title">CRUD endpoints + versioning</h3>
-                    <pre class="code-block"><code>[ApiController]
-[ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/qa-scores")]
-public sealed class QaScoresController : ControllerBase
-{
-    [HttpGet]
-    public async Task&lt;ActionResult&lt;PagedResult&lt;QaScoreSummary&gt;&gt;&gt; GetAll(
-        [FromQuery] QaScoreQuery query)
-        =&gt; Ok(await _service.FetchAllAsync(query));
-
-    [HttpGet("{accountNumber}")]
-    public async Task&lt;ActionResult&lt;QaScoreSummary&gt;&gt; Get(string accountNumber)
-        =&gt; Ok(await _service.FetchAsync(accountNumber));
-
-    [HttpPost]
-    public async Task&lt;IActionResult&gt; Create([FromBody] QaScoreRequest request)
-        =&gt; CreatedAtAction(nameof(Get),
-            new { version = "1.0", accountNumber = request.AccountNumber },
-            await _service.StoreAsync(request));
-
-    [HttpPut("{qaScoreId:int}")]
-    public async Task&lt;IActionResult&gt; Update(int qaScoreId, QaScoreUpdate request)
-        =&gt; Ok(await _service.UpdateAsync(qaScoreId, request));
-
-    [HttpPatch("{qaScoreId:int}")]
-    public async Task&lt;IActionResult&gt; Patch(int qaScoreId, JsonPatchDocument&lt;QaScorePatch&gt; patch)
-        =&gt; Ok(await _service.PatchAsync(qaScoreId, patch));
-
-    [HttpDelete("{qaScoreId:int}")]
-    public async Task&lt;IActionResult&gt; Delete(int qaScoreId)
-        =&gt; Ok(await _service.DeleteAsync(qaScoreId));
-}</code></pre>
-                    <p>Every endpoint is versioned, traceable, and supports consistent pagination/metadata schemas.</p>
-                </article>
-
-                <article class="card">
-                    <h3 class="card-title">Authorization + validation</h3>
-                    <pre class="code-block"><code>[Authorize(Policy = "QaWrite")]
-[HttpPost]
-public async Task&lt;IActionResult&gt; Create(QaScoreRequest request)
-{
-    if (!ModelState.IsValid)
-    {
-        return ValidationProblem(ModelState);
-    }
-
-    return Ok(await _service.StoreAsync(request, User));
-}</code></pre>
-                    <pre class="code-block"><code>public sealed class QaScoreValidator : AbstractValidator&lt;QaScoreRequest&gt;
-{
-    public QaScoreValidator()
-    {
-        RuleFor(x =&gt; x.AccountNumber)
-            .NotEmpty()
-            .Length(10, 20)
-            .Matches(@"^[0-9A-Z]+$");
-
-        RuleFor(x =&gt; x.Score)
-            .InclusiveBetween(0, 100);
-
-        RuleFor(x =&gt; x.Category)
-            .NotEmpty()
-            .MaximumLength(32);
-
-        RuleFor(x =&gt; x.AgentId)
-            .NotEmpty()
-            .MaximumLength(16);
-    }
-}</code></pre>
-                </article>
-            </div>
-
-            <div class="grid two-cols">
-                <article class="card">
-                    <h3 class="card-title">Standardized error handling</h3>
-                    <pre class="code-block"><code>app.UseExceptionHandler(appBuilder =&gt;
-{
-    appBuilder.Run(async context =&gt;
-    {
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        await context.Response.WriteAsJsonAsync(new ProblemDetails
-        {
-            Title = "Unexpected error",
-            Detail = "Reference the trace id for support.",
-            Instance = context.TraceIdentifier
-        });
-    });
-});</code></pre>
-                    <pre class="code-block"><code>public sealed record ApiError(string Code, string Message, string TraceId);
-
-public sealed class ErrorHandlingMiddleware
-{
-    private readonly RequestDelegate _next;
-    private readonly ILogger&lt;ErrorHandlingMiddleware&gt; _logger;
-
-    public async Task InvokeAsync(HttpContext context)
-    {
-        try
-        {
-            await _next(context);
-        }
-        catch (ValidationException ex)
-        {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new ApiError(
-                "validation_error",
-                ex.Message,
-                context.TraceIdentifier));
-        }
-    }
-}</code></pre>
-                    <p>Errors return RFC-compliant Problem Details payloads with trace IDs for support workflows.</p>
-                </article>
-
-                <article class="card">
-                    <h3 class="card-title">Structured logging</h3>
-                    <pre class="code-block"><code>app.Use(async (context, next) =&gt;
-{
-    var correlationId = Guid.NewGuid().ToString("N");
-    context.Items["CorrelationId"] = correlationId;
-    using (LogContext.PushProperty("CorrelationId", correlationId))
-    {
-        await next();
-    }
-});
-
-_logger.LogInformation(
-    "QaScore created {QaScoreId} by {UserId}",
-    qaScore.Id,
-    userId);</code></pre>
-                    <pre class="code-block"><code>Log.ForContext("Service", "CollectionsQa.Api")
-   .ForContext("Environment", env.EnvironmentName)
-   .ForContext("AccountMasked", MaskAccount(accountNumber))
-   .Information("Inbound {Method} {Path} {StatusCode}",
-       context.Request.Method,
-       context.Request.Path,
-       context.Response.StatusCode);</code></pre>
-                    <p>Logs are structured, queryable, and include correlation IDs and masked fields.</p>
-                </article>
+            <div class="api-surface">
+                <div class="api-column">
+                    <h3 class="card-title">Endpoint families</h3>
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <span class="api-pill">v1</span>
+                            <strong>QA Scores</strong>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">GET</span>
+                            <span class="api-path">/qa-scores</span>
+                            <span class="api-meta">List + filters</span>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">POST</span>
+                            <span class="api-path">/qa-scores</span>
+                            <span class="api-meta">Create</span>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">PUT</span>
+                            <span class="api-path">/qa-scores/{id}</span>
+                            <span class="api-meta">Update</span>
+                        </div>
+                    </div>
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <span class="api-pill">v1</span>
+                            <strong>Audits</strong>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">GET</span>
+                            <span class="api-path">/audits</span>
+                            <span class="api-meta">Search</span>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">POST</span>
+                            <span class="api-path">/audits</span>
+                            <span class="api-meta">Write entry</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="api-column">
+                    <h3 class="card-title">Request gating</h3>
+                    <div class="api-gate">
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Auth policy</strong>
+                                <p>Role + claim validation for read/write/admin scopes.</p>
+                            </div>
+                        </div>
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Input validation</strong>
+                                <p>Account format, score ranges, and payload completeness.</p>
+                            </div>
+                        </div>
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Error envelope</strong>
+                                <p>Consistent response shape with trace IDs and retry guidance.</p>
+                            </div>
+                        </div>
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Logging + masking</strong>
+                                <p>Correlation IDs with sensitive fields obfuscated.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -262,108 +192,98 @@ _logger.LogInformation(
 
             <div class="grid two-cols">
                 <article class="card">
-                    <h3 class="card-title">Secure config handling</h3>
-                    <pre class="code-block"><code>public sealed class SecretsProvider : ISecretsProvider
-{
-    public string GetJwtSigningKey()
-        =&gt; Environment.GetEnvironmentVariable("JWT_SIGNING_KEY")
-            ?? "mock-secret-from-vault";
-}
-
-builder.Configuration.AddEnvironmentVariables(prefix: "CollectionsQa_");
-builder.Services.Configure&lt;DatabaseOptions&gt;(
-    builder.Configuration.GetSection("Database"));</code></pre>
-                    <pre class="code-block"><code>public sealed class MockSecretsManager
-{
-    private readonly IDictionary&lt;string, string&gt; _secrets = new Dictionary&lt;string, string&gt;
-    {
-        ["SqlPassword"] = "mock-sql-secret",
-        ["JwtSigningKey"] = "mock-jwt-key-2025"
-    };
-
-    public string Get(string name) =&gt; _secrets[name];
-}</code></pre>
+                    <h3 class="card-title">Secrets and configuration map</h3>
+                    <div class="config-map">
+                        <div class="config-row">
+                            <span class="config-key">JWT signing key</span>
+                            <span class="config-source">Env</span>
+                            <span class="config-mask">••••••••••</span>
+                        </div>
+                        <div class="config-row">
+                            <span class="config-key">SQL password</span>
+                            <span class="config-source">Mock vault</span>
+                            <span class="config-mask">••••••••</span>
+                        </div>
+                        <div class="config-row">
+                            <span class="config-key">API base URL</span>
+                            <span class="config-source">Config</span>
+                            <span class="config-mask">https://api.qa.local</span>
+                        </div>
+                    </div>
                     <ul class="achievement-list">
-                        <li>Secrets never checked into source control.</li>
-                        <li>Local mock vault mirrors production key retrieval.</li>
-                        <li>Config values masked before logging.</li>
+                        <li>Secrets rotated quarterly with audit evidence.</li>
+                        <li>Masked values in logs and UI previews.</li>
+                        <li>Config changes tracked via change requests.</li>
                     </ul>
                 </article>
 
                 <article class="card">
-                    <h3 class="card-title">Background jobs + retries</h3>
-                    <pre class="code-block"><code>services.AddHangfire(config =&gt; config.UseSqlServerStorage(connString));
-services.AddHangfireServer();
-
-RecurringJob.AddOrUpdate&lt;QaScoreRollupJob&gt;(
-    "qa-score-rollup",
-    job =&gt; job.ExecuteAsync(),
-    "0 */2 * * *");</code></pre>
-                    <pre class="code-block"><code>await Policy
-    .Handle&lt;SqlException&gt;()
-    .WaitAndRetryAsync(3, retry =&gt; TimeSpan.FromSeconds(retry * 2))
-    .ExecuteAsync(() =&gt; _repository.RollupDailyAsync());</code></pre>
-                    <pre class="code-block"><code>public sealed class QaScoreRollupJob
-{
-    public async Task ExecuteAsync()
-    {
-        await _audit.WriteAsync("qa-score-rollup started");
-        await _repository.RollupDailyAsync();
-        await _audit.WriteAsync("qa-score-rollup completed");
-    }
-}</code></pre>
+                    <h3 class="card-title">Job orchestration timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">02:00 UTC · QA score rollup begins.</div>
+                        <div class="timeline-item">02:05 UTC · Retry policy engaged for lagging shards.</div>
+                        <div class="timeline-item">02:12 UTC · Dashboard cache refreshed.</div>
+                        <div class="timeline-item">02:15 UTC · Audit entry published.</div>
+                    </div>
                 </article>
             </div>
         </section>
 
         <section aria-labelledby="domain-title" class="stacked-section">
             <div class="section-header">
-                <h2 id="domain-title" class="section-title">Domain modeling and data contracts</h2>
+                <h2 id="domain-title" class="section-title">Data map and response behavior</h2>
                 <p class="section-subtitle">
-                    Clear DTOs, data contracts, and persistence models that keep the API consistent for consumers.
+                    A visual summary of the data flow and response experience for consumers.
                 </p>
             </div>
 
             <div class="grid two-cols">
                 <article class="card">
-                    <h3 class="card-title">Request/response models</h3>
-                    <pre class="code-block"><code>public sealed record QaScoreRequest(
-    string AccountNumber,
-    string AgentId,
-    int Score,
-    string Category,
-    DateTimeOffset CallDateUtc);
-
-public sealed record QaScoreSummary(
-    int Id,
-    string AccountNumber,
-    string AgentId,
-    int Score,
-    string Category,
-    DateTimeOffset CallDateUtc,
-    DateTimeOffset CreatedUtc);
-
-public sealed record PagedResult&lt;T&gt;(
-    IReadOnlyList&lt;T&gt; Items,
-    int TotalCount,
-    int Page,
-    int PageSize);</code></pre>
+                    <h3 class="card-title">Data contract map</h3>
+                    <div class="data-grid">
+                        <div class="data-cell">
+                            <span>Account</span>
+                            <strong>Masked ID</strong>
+                            <small>Validated</small>
+                        </div>
+                        <div class="data-cell">
+                            <span>Agent</span>
+                            <strong>Agent ID</strong>
+                            <small>Role-scoped</small>
+                        </div>
+                        <div class="data-cell">
+                            <span>Score</span>
+                            <strong>0-100</strong>
+                            <small>Range enforced</small>
+                        </div>
+                        <div class="data-cell">
+                            <span>Category</span>
+                            <strong>QA rubric</strong>
+                            <small>Taxonomy locked</small>
+                        </div>
+                    </div>
                 </article>
 
                 <article class="card">
-                    <h3 class="card-title">Repository + query patterns</h3>
-                    <pre class="code-block"><code>public sealed class QaScoreRepository
-{
-    public async Task&lt;PagedResult&lt;QaScoreSummary&gt;&gt; FetchAsync(QaScoreQuery query)
-    {
-        var sql = @"SELECT * FROM Collections.QaScores
-                    WHERE (@agentId IS NULL OR AgentId = @agentId)
-                      AND (@fromUtc IS NULL OR CallDateUtc &gt;= @fromUtc)";
-
-        var rows = await _db.QueryAsync&lt;QaScoreSummary&gt;(sql, query);
-        return new PagedResult&lt;QaScoreSummary&gt;(rows.ToList(), rows.Count(), query.Page, query.PageSize);
-    }
-}</code></pre>
+                    <h3 class="card-title">Response experience</h3>
+                    <div class="response-grid">
+                        <div class="response-card">
+                            <strong>200 OK</strong>
+                            <p>Successful fetch with pagination metadata.</p>
+                        </div>
+                        <div class="response-card">
+                            <strong>201 Created</strong>
+                            <p>New QA score stored with audit trail.</p>
+                        </div>
+                        <div class="response-card">
+                            <strong>400 Bad Request</strong>
+                            <p>Validation errors with field hints.</p>
+                        </div>
+                        <div class="response-card">
+                            <strong>403 Forbidden</strong>
+                            <p>Policy check failed (RBAC or claims).</p>
+                        </div>
+                    </div>
                 </article>
             </div>
         </section>
@@ -379,38 +299,28 @@ public sealed record PagedResult&lt;T&gt;(
 
             <div class="grid two-cols">
                 <article class="card">
-                    <h3 class="card-title">Unit tests + coverage proof</h3>
-                    <pre class="code-block"><code>public class QaScoresControllerTests
-{
-    [Fact]
-    public async Task Create_ReturnsCreated_WhenValidRequest()
-    {
-        var controller = BuildController();
-        var request = new QaScoreRequest("99887766", "A102", 95, "Empathy", DateTimeOffset.UtcNow);
-
-        var response = await controller.Create(request);
-
-        Assert.IsType&lt;CreatedAtActionResult&gt;(response);
-    }
-}
-
-public class QaScoreValidatorTests
-{
-    [Fact]
-    public void Validator_Rejects_Invalid_Score()
-    {
-        var validator = new QaScoreValidator();
-        var result = validator.Validate(new QaScoreRequest("123", "A1", 120, "Quality", DateTimeOffset.UtcNow));
-
-        Assert.False(result.IsValid);
-    }
-}
-
-// Coverage: 93.1% (line), gated at 85%</code></pre>
+                    <h3 class="card-title">Quality coverage visualization</h3>
+                    <div class="quality-bars">
+                        <div class="quality-row">
+                            <span>Unit tests</span>
+                            <div class="quality-bar"><span style="width: 92%"></span></div>
+                            <strong>92%</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Integration</span>
+                            <div class="quality-bar"><span style="width: 87%"></span></div>
+                            <strong>87%</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Security</span>
+                            <div class="quality-bar"><span style="width: 96%"></span></div>
+                            <strong>96%</strong>
+                        </div>
+                    </div>
                     <ul class="achievement-list">
-                        <li>Positive and negative path tests for CRUD endpoints.</li>
-                        <li>Auth failures and validation errors covered.</li>
-                        <li>Coverage published to CI dashboards.</li>
+                        <li>Coverage thresholds enforced before release.</li>
+                        <li>Quality gates tracked in CI dashboards.</li>
+                        <li>Audit evidence archived with each build.</li>
                     </ul>
                 </article>
 
@@ -423,12 +333,20 @@ public class QaScoreValidatorTests
                         <li>Data masking for SSN, DOB, and account identifiers.</li>
                         <li>Audit readiness notes attached to release evidence.</li>
                     </ul>
-                    <pre class="code-block"><code>public static string MaskAccount(string account)
-    =&gt; account?.Length &gt; 4
-        ? $"****{account[^4..]}"
-        : "****";
-
-_logger.LogInformation("Lookup for {Account}", MaskAccount(request.AccountNumber));</code></pre>
+                    <div class="masking-demo">
+                        <div>
+                            <span>Account</span>
+                            <strong>****-4471</strong>
+                        </div>
+                        <div>
+                            <span>SSN</span>
+                            <strong>***-**-9912</strong>
+                        </div>
+                        <div>
+                            <span>DOB</span>
+                            <strong>**/**/1989</strong>
+                        </div>
+                    </div>
                 </article>
             </div>
 
@@ -450,16 +368,21 @@ _logger.LogInformation("Lookup for {Account}", MaskAccount(request.AccountNumber
                 </article>
 
                 <article class="card">
-                    <h3 class="card-title">Input validation and error feedback</h3>
-                    <pre class="code-block"><code>if (!Regex.IsMatch(request.AccountNumber, @"^[0-9A-Z]+$"))
-{
-    return BadRequest(new { error = "Invalid account number format." });
-}
-
-if (request.Score &lt; 0 || request.Score &gt; 100)
-{
-    return BadRequest(new { error = "Score must be between 0 and 100." });
-}</code></pre>
+                    <h3 class="card-title">Validation and error feedback</h3>
+                    <div class="error-grid">
+                        <div class="error-card">
+                            <strong>Account format</strong>
+                            <p>Accepts uppercase alphanumeric with length checks.</p>
+                        </div>
+                        <div class="error-card">
+                            <strong>Score range</strong>
+                            <p>Rejects out-of-range scores with hints.</p>
+                        </div>
+                        <div class="error-card">
+                            <strong>Category rules</strong>
+                            <p>Validates against QA rubric taxonomy.</p>
+                        </div>
+                    </div>
                     <p>Validation responses are consistent, actionable, and tracked in error dashboards.</p>
                 </article>
             </div>

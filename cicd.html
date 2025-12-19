@@ -35,8 +35,8 @@
             <div class="section-header">
                 <h1 id="cicd-overview-title" class="section-title">CI/CD &amp; DevOps Blueprint</h1>
                 <p class="section-subtitle">
-                    A mocked but production-inspired pipeline that covers build, test, lint, quality gates, deployment
-                    steps, and branching strategy. Designed to align with enterprise controls and audit readiness.
+                    A visual CI/CD pipeline map with stages, quality gates, and release checkpoints—presented as
+                    dashboards and diagrams instead of code snippets.
                 </p>
             </div>
 
@@ -146,35 +146,41 @@
 
         <section aria-labelledby="pipeline-title" class="stacked-section">
             <div class="section-header">
-                <h2 id="pipeline-title" class="section-title">CI pipeline YAML (build, test, lint)</h2>
+                <h2 id="pipeline-title" class="section-title">CI pipeline overview (build, test, lint)</h2>
                 <p class="section-subtitle">
-                    Example GitHub Actions pipeline with build, test, lint, and coverage reporting.
+                    A visual breakdown of pipeline steps, outputs, and decision gates.
                 </p>
             </div>
 
             <div class="grid two-cols">
                 <article class="card">
-                    <h3 class="card-title">CI pipeline configuration</h3>
-                    <pre class="code-block"><code>name: collections-api-ci
-on:
-  pull_request:
-  push:
-    branches: [ main ]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
-      - run: dotnet restore
-      - run: dotnet build --configuration Release
-      - run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
-      - run: dotnet format --verify-no-changes
-      - run: dotnet tool restore
-      - run: dotnet tool run security-scan
-      - run: dotnet tool run reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage</code></pre>
+                    <h3 class="card-title">Pipeline flow</h3>
+                    <div class="pipeline-flow">
+                        <div class="pipeline-node">
+                            <span class="node-title">Checkout</span>
+                            <span class="node-subtitle">Source + dependencies</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Build</span>
+                            <span class="node-subtitle">Release artifacts</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Tests</span>
+                            <span class="node-subtitle">Unit + integration</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Lint</span>
+                            <span class="node-subtitle">Formatting gate</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Security</span>
+                            <span class="node-subtitle">SAST + secret scan</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Publish</span>
+                            <span class="node-subtitle">Artifacts + reports</span>
+                        </div>
+                    </div>
                 </article>
 
                 <article class="card">
@@ -185,18 +191,21 @@ jobs:
                         <li>Linting and formatting checks with fail-fast policy.</li>
                         <li>Security scanning for dependencies and secrets.</li>
                     </ul>
-                    <pre class="code-block"><code>- run: dotnet test /p:Threshold=85
-- run: dotnet tool run security-scan
-- run: dotnet format --verify-no-changes</code></pre>
+                    <div class="quality-badges">
+                        <span class="badge">Coverage ≥ 85%</span>
+                        <span class="badge">Lint clean</span>
+                        <span class="badge">Secrets scan</span>
+                        <span class="badge">Dependency audit</span>
+                    </div>
                 </article>
             </div>
         </section>
 
         <section aria-labelledby="quality-title" class="stacked-section">
             <div class="section-header">
-                <h2 id="quality-title" class="section-title">Code quality and testing strategy</h2>
+                <h2 id="quality-title" class="section-title">Quality and testing strategy</h2>
                 <p class="section-subtitle">
-                    How quality signals are captured, surfaced, and enforced across the delivery lifecycle.
+                    Quality signals surfaced as visual checkpoints across the delivery lifecycle.
                 </p>
             </div>
 
@@ -209,33 +218,41 @@ jobs:
                         <span class="badge">Secrets scan</span>
                         <span class="badge">Dependency audit</span>
                     </div>
-                    <pre class="code-block"><code>quality:
-  coverage: 93.1
-  lintErrors: 0
-  criticalVulns: 0
-  secretsDetected: 0
-
-gates:
-  minCoverage: 85
-  failOnLint: true
-  blockOnCritical: true</code></pre>
+                    <div class="quality-bars">
+                        <div class="quality-row">
+                            <span>Coverage</span>
+                            <div class="quality-bar"><span style="width: 93%"></span></div>
+                            <strong>93%</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Lint</span>
+                            <div class="quality-bar"><span style="width: 100%"></span></div>
+                            <strong>0 issues</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Security</span>
+                            <div class="quality-bar"><span style="width: 98%"></span></div>
+                            <strong>0 critical</strong>
+                        </div>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Test pyramid example</h3>
-                    <pre class="code-block"><code>tests/
-├── unit/
-│   ├── QaScoresControllerTests.cs
-│   ├── QaScoreValidatorTests.cs
-│   └── MaskingServiceTests.cs
-├── integration/
-│   ├── ApiVersioningTests.cs
-│   ├── AuthPolicyTests.cs
-│   └── JobsIntegrationTests.cs
-└── contract/
-    ├── QaScoresContract.json
-    └── ErrorEnvelopeContract.json</code></pre>
-                    <p>Contract tests ensure versioned APIs stay compatible across releases.</p>
+                    <div class="pyramid">
+                        <div class="pyramid-layer layer-top">
+                            <strong>Contract tests</strong>
+                            <span>Version compatibility</span>
+                        </div>
+                        <div class="pyramid-layer layer-mid">
+                            <strong>Integration tests</strong>
+                            <span>API + database + jobs</span>
+                        </div>
+                        <div class="pyramid-layer layer-base">
+                            <strong>Unit tests</strong>
+                            <span>Controllers, validators, services</span>
+                        </div>
+                    </div>
                 </article>
             </div>
         </section>
@@ -312,11 +329,13 @@ gates:
             <div class="grid two-cols">
                 <article class="card">
                     <h3 class="card-title">Branch map</h3>
-                    <pre class="code-block"><code>main
-├── feature/qa-score-endpoints
-├── feature/observability-upgrades
-├── hotfix/auth-timeout
-└── release/v1.6.0</code></pre>
+                    <div class="branch-map">
+                        <div class="branch-line main-branch">main</div>
+                        <div class="branch-line feature-branch">feature/qa-score-endpoints</div>
+                        <div class="branch-line feature-branch">feature/observability-upgrades</div>
+                        <div class="branch-line hotfix-branch">hotfix/auth-timeout</div>
+                        <div class="branch-line release-branch">release/v1.6.0</div>
+                    </div>
                     <ul class="achievement-list">
                         <li>Short-lived feature branches with required reviews.</li>
                         <li>Release branches for controlled deployments.</li>
@@ -331,10 +350,20 @@ gates:
                         <li>Security reviews captured in change records.</li>
                         <li>Evidence stored alongside pipeline artifacts.</li>
                     </ul>
-                    <pre class="code-block"><code>Release v1.6.0
-- Feature: new QA score endpoints
-- Risk review: approved by compliance lead
-- Evidence: security scan + coverage report</code></pre>
+                    <div class="release-notes">
+                        <div>
+                            <strong>Release v1.6.0</strong>
+                            <p>Feature: new QA score endpoints</p>
+                        </div>
+                        <div>
+                            <strong>Risk review</strong>
+                            <p>Approved by compliance lead</p>
+                        </div>
+                        <div>
+                            <strong>Evidence pack</strong>
+                            <p>Security scan + coverage report</p>
+                        </div>
+                    </div>
                 </article>
             </div>
         </section>
