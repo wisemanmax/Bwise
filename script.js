@@ -661,6 +661,269 @@ class BackendShowcase {
 }
 
 // ============================================================================
+// PLATFORM LAB INTERACTIONS
+// ============================================================================
+
+class PlatformLab {
+  constructor() {
+    this.filterButtons = safeQueryAll('[data-lab-filter]');
+    this.cards = safeQueryAll('[data-lab-tag]');
+    this.summary = safeQuery('[data-lab-summary]');
+    this.deliverables = safeQuery('[data-lab-deliverables]');
+    this.kpiNodes = safeQueryAll('[data-lab-kpi]');
+    this.pipelineButton = safeQuery('[data-pipeline-run]');
+    this.pipelineSteps = safeQueryAll('[data-pipeline-step]');
+    this.pipelineStatus = safeQuery('[data-pipeline-status]');
+    this.promptChips = safeQueryAll('[data-prompt-chip]');
+    this.promptTitle = safeQuery('[data-prompt-title]');
+    this.promptDescription = safeQuery('[data-prompt-description]');
+    this.promptArtifacts = safeQuery('[data-prompt-artifacts]');
+    this.promptNotes = safeQuery('[data-prompt-notes]');
+    this.promptCode = safeQuery('[data-prompt-code]');
+
+    this.kpiValues = {
+      backend: {
+        deliverables: { value: '7', change: 'API modules, jobs, and support services' },
+        readiness: { value: '88%', change: 'Auth + tests in progress' },
+        owners: { value: '4', change: 'Engineering, QA, ops, security' }
+      },
+      data: {
+        deliverables: { value: '5', change: 'Schema, migrations, reporting views' },
+        readiness: { value: '82%', change: 'Indexing and KPI mapping remaining' },
+        owners: { value: '3', change: 'Data engineering + analytics' }
+      },
+      enterprise: {
+        deliverables: { value: '6', change: 'Portal, form builder, audit log' },
+        readiness: { value: '90%', change: 'RBAC and change tracking ready' },
+        owners: { value: '4', change: 'Product, ops, compliance, eng' }
+      },
+      devops: {
+        deliverables: { value: '4', change: 'Pipelines, quality gates, releases' },
+        readiness: { value: '86%', change: 'Security scans to finalize' },
+        owners: { value: '2', change: 'DevOps + engineering' }
+      },
+      security: {
+        deliverables: { value: '5', change: 'Validation, masking, audit notes' },
+        readiness: { value: '92%', change: 'Evidence pack automation' },
+        owners: { value: '3', change: 'Security + compliance' }
+      }
+    };
+
+    this.summaryText = {
+      backend: {
+        summary: 'Backend view: CRUD APIs, background jobs, versioned endpoints, and structured logging layered with secure configuration handling.',
+        deliverables: ['API v1: QA Scores', 'API v1: Audit Events', 'Secrets via Env', 'Job Scheduler']
+      },
+      data: {
+        summary: 'Data view: SQL schema normalization, legacy migration scripts, KPI rollups, and query optimization with indexed tables.',
+        deliverables: ['Schema v2', 'Migration scripts', 'KPI views', 'Query plans']
+      },
+      enterprise: {
+        summary: 'Enterprise view: Admin portal with RBAC, form builder workflows, and audit trails for every critical action.',
+        deliverables: ['Admin portal', 'Form builder', 'Audit log', 'Feature flags']
+      },
+      devops: {
+        summary: 'DevOps view: CI/CD pipelines with tests, linting, quality checks, and controlled deployments with rollback playbooks.',
+        deliverables: ['CI YAML', 'Coverage gates', 'Release checklist', 'Rollback plan']
+      },
+      security: {
+        summary: 'Security view: Input validation, authorization checks, data masking, and audit readiness notes.',
+        deliverables: ['Auth policies', 'Masking rules', 'Secure logging', 'Audit notes']
+      }
+    };
+
+    this.promptData = {
+      chatbot: {
+        title: 'AI Chatbot for Contact Center QA',
+        description: 'Build a secure chatbot that answers QA policy questions, logs feedback, and routes complex issues to supervisors.',
+        artifacts: [
+          'Node API with /messages endpoint',
+          'Policy knowledge base schema',
+          'UI chat widget with logging'
+        ],
+        notes: [
+          'Integrate auth middleware and rate limiting',
+          'Persist transcripts for audit trails',
+          'Deploy via Replit + GitHub sync'
+        ],
+        code: '// Sample prompt\n\"Build a compliance-aware QA assistant chatbot with role-based responses\\nand logging for every conversation.\"'
+      },
+      dashboard: {
+        title: 'Data Visualization Studio',
+        description: 'Generate a KPI dashboard with filters, drilldowns, and story-driven insights for leadership.',
+        artifacts: [
+          'Analytics API with KPI endpoints',
+          'Chart components for trends and alerts',
+          'CSV export pipeline'
+        ],
+        notes: [
+          'Explain KPI definitions in tooltips',
+          'Connect to Snowflake or Postgres',
+          'Ship weekly snapshots automatically'
+        ],
+        code: '// Sample prompt\n\"Create a Power BI-style dashboard with KPI cards, filters,\\nand a narrative insight panel.\"'
+      },
+      game: {
+        title: '2D Retro Ops Game',
+        description: 'Build a retro game that teaches contact center compliance through fun scenarios and scoring.',
+        artifacts: [
+          'Sprite atlas + game loop',
+          'Scoring logic and timers',
+          'Achievement system'
+        ],
+        notes: [
+          'Use leaderboard for training cohorts',
+          'Add accessibility mode for keyboard only',
+          'Deploy to Replit for quick playtests'
+        ],
+        code: '// Sample prompt\n\"Create a 2D retro training game with levels, scoring,\\nand a compliance checklist.\"'
+      },
+      mobile: {
+        title: 'Mobile Companion App',
+        description: 'Prototype a mobile app for supervisors to review QA scores and approve escalations.',
+        artifacts: [
+          'React Native UI kit',
+          'Secure API client',
+          'Offline-ready sync queue'
+        ],
+        notes: [
+          'Push notifications for urgent escalations',
+          'Masked PII by default',
+          'Sync to main API every 15 minutes'
+        ],
+        code: '// Sample prompt\n\"Design a mobile app for supervisors with QA scorecards,\\nsecure approvals, and push alerts.\"'
+      }
+    };
+
+    if (
+      this.filterButtons.length === 0 &&
+      this.cards.length === 0 &&
+      !this.pipelineButton &&
+      this.promptChips.length === 0
+    ) {
+      return;
+    }
+
+    this.currentFilter = 'backend';
+    this.pipelineInterval = null;
+    this.init();
+  }
+
+  init() {
+    this.filterButtons.forEach(button => {
+      button.addEventListener('click', () => this.applyFilter(button.dataset.labFilter));
+    });
+
+    if (this.pipelineButton) {
+      this.pipelineButton.addEventListener('click', () => this.runPipeline());
+    }
+
+    if (this.promptChips.length > 0) {
+      this.promptChips.forEach(chip => {
+        chip.addEventListener('click', () => this.setPrompt(chip.dataset.promptKey));
+      });
+    }
+
+    this.applyFilter(this.currentFilter);
+    this.setPrompt('chatbot');
+  }
+
+  applyFilter(filter) {
+    if (!filter || !this.kpiValues[filter]) return;
+    this.currentFilter = filter;
+
+    this.filterButtons.forEach(button => {
+      const isActive = button.dataset.labFilter === filter;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+
+    this.cards.forEach(card => {
+      const tags = (card.dataset.labTag || '').split(',').map(tag => tag.trim());
+      const shouldShow = tags.includes(filter);
+      card.style.display = shouldShow ? '' : 'none';
+    });
+
+    this.updateSummary();
+    this.updateKpis();
+  }
+
+  updateSummary() {
+    const info = this.summaryText[this.currentFilter];
+    if (!info) return;
+
+    if (this.summary) {
+      this.summary.textContent = info.summary;
+    }
+
+    if (this.deliverables) {
+      this.deliverables.innerHTML = info.deliverables.map(item => `<span>${item}</span>`).join('');
+    }
+  }
+
+  updateKpis() {
+    const values = this.kpiValues[this.currentFilter];
+    if (!values) return;
+
+    this.kpiNodes.forEach(node => {
+      const key = node.dataset.kpiKey;
+      if (!key || !values[key]) return;
+
+      const valueNode = node.querySelector('.metric-value');
+      const changeNode = node.querySelector('.metric-change');
+
+      if (valueNode) valueNode.textContent = values[key].value;
+      if (changeNode) changeNode.textContent = values[key].change;
+
+      node.classList.add('pulse');
+      setTimeout(() => node.classList.remove('pulse'), 600);
+    });
+  }
+
+  runPipeline() {
+    if (!this.pipelineSteps.length || !this.pipelineStatus) return;
+    if (this.pipelineInterval) clearInterval(this.pipelineInterval);
+
+    this.pipelineSteps.forEach(step => step.classList.remove('is-active'));
+    this.pipelineStatus.textContent = 'Pipeline started...';
+
+    let index = 0;
+    this.pipelineInterval = setInterval(() => {
+      if (index > 0) this.pipelineSteps[index - 1].classList.remove('is-active');
+      if (index < this.pipelineSteps.length) {
+        this.pipelineSteps[index].classList.add('is-active');
+        this.pipelineStatus.textContent = `Running: ${this.pipelineSteps[index].textContent}`;
+        index += 1;
+      } else {
+        this.pipelineStatus.textContent = 'Pipeline complete. Release ready.';
+        clearInterval(this.pipelineInterval);
+      }
+    }, 900);
+  }
+
+  setPrompt(key) {
+    if (!key || !this.promptData[key]) return;
+    const data = this.promptData[key];
+
+    this.promptChips.forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.promptKey === key);
+    });
+
+    if (this.promptTitle) this.promptTitle.textContent = data.title;
+    if (this.promptDescription) this.promptDescription.textContent = data.description;
+    if (this.promptArtifacts) {
+      this.promptArtifacts.innerHTML = data.artifacts.map(item => `<li>${item}</li>`).join('');
+    }
+    if (this.promptNotes) {
+      this.promptNotes.innerHTML = data.notes.map(item => `<li>${item}</li>`).join('');
+    }
+    if (this.promptCode) {
+      this.promptCode.textContent = data.code;
+    }
+  }
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -680,6 +943,9 @@ function init() {
 
     // Initialize backend showcase interactions
     new BackendShowcase();
+
+    // Initialize platform lab interactions
+    new PlatformLab();
 
     // Monitor performance (development only)
     if (window.location.hostname === 'localhost') {
