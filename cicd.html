@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD &amp; DevOps Blueprint · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="mock-api.html">Mock API</a></li>
+                <li><a href="cicd.html" aria-current="page">CI/CD</a></li>
+                <li><a href="react.html">React</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section aria-labelledby="cicd-overview-title">
+            <div class="section-header">
+                <h1 id="cicd-overview-title" class="section-title">CI/CD &amp; DevOps Blueprint</h1>
+                <p class="section-subtitle">
+                    A mocked but production-inspired pipeline that covers build, test, lint, quality gates, deployment
+                    steps, and branching strategy. Designed to align with enterprise controls and audit readiness.
+                </p>
+            </div>
+
+            <div class="demo-section" aria-label="DevOps metrics">
+                <div class="demo-header">
+                    <div>
+                        <h2 class="demo-title">Release readiness dashboard</h2>
+                        <p class="demo-subtitle">
+                            A quick snapshot of build health, quality gates, and deployment cadence.
+                        </p>
+                    </div>
+                    <div class="demo-controls" aria-label="DevOps focus controls">
+                        <button class="demo-btn active" aria-pressed="true">CI</button>
+                        <button class="demo-btn" aria-pressed="false">Quality</button>
+                        <button class="demo-btn" aria-pressed="false">Deploy</button>
+                        <button class="demo-btn" aria-pressed="false">Release</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Build success</div>
+                        <div class="metric-value">98.8%</div>
+                        <div class="metric-change">Last 30 builds passing</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Quality gates</div>
+                        <div class="metric-value">6</div>
+                        <div class="metric-change">Lint, tests, coverage, security</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Deploy cadence</div>
+                        <div class="metric-value">Weekly</div>
+                        <div class="metric-change">Stable, staged promotions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Mean time to recover</div>
+                        <div class="metric-value">12 min</div>
+                        <div class="metric-change">Automated rollback runbooks</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Pipeline goals</h3>
+                    <ul class="achievement-list">
+                        <li>Catch defects early with automated tests and linting.</li>
+                        <li>Enforce coverage thresholds and security checks.</li>
+                        <li>Ship predictable releases with staged approvals.</li>
+                        <li>Maintain audit trails for each deployment.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="pipeline-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="pipeline-title" class="section-title">CI pipeline YAML (build, test, lint)</h2>
+                <p class="section-subtitle">
+                    Example GitHub Actions pipeline with build, test, lint, and coverage reporting.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">CI pipeline configuration</h3>
+                    <pre class="code-block"><code>name: collections-api-ci
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: dotnet restore
+      - run: dotnet build --configuration Release
+      - run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+      - run: dotnet format --verify-no-changes</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Quality gates enforced</h3>
+                    <ul class="achievement-list">
+                        <li>Unit tests required on every pull request.</li>
+                        <li>Coverage threshold: minimum 85% to merge.</li>
+                        <li>Linting and formatting checks with fail-fast policy.</li>
+                        <li>Security scanning for dependencies and secrets.</li>
+                    </ul>
+                    <pre class="code-block"><code>- run: dotnet test /p:Threshold=85
+- run: dotnet tool run security-scan
+- run: dotnet format --verify-no-changes</code></pre>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="deployment-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="deployment-title" class="section-title">Deployment steps</h2>
+                <p class="section-subtitle">
+                    Controlled deployment process with staged approvals and rollback readiness.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Release flow</h3>
+                    <ol class="achievement-list">
+                        <li>Merge to main after CI passes and peer review.</li>
+                        <li>Create release tag (v1.x.y) and generate release notes.</li>
+                        <li>Deploy to staging with smoke tests and observability checks.</li>
+                        <li>Promote to production with stakeholder approval.</li>
+                        <li>Post-deploy validation: health checks, job status, logs.</li>
+                    </ol>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Deployment guardrails</h3>
+                    <ul class="achievement-list">
+                        <li>Blue/green slot deployment with automated rollback.</li>
+                        <li>Secrets injected at deploy time via environment variables.</li>
+                        <li>Change windows documented for compliance.</li>
+                        <li>Incident response runbooks linked to releases.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="branching-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="branching-title" class="section-title">Branching strategy</h2>
+                <p class="section-subtitle">
+                    Lightweight Gitflow-inspired branching that balances velocity with safety.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Branch map</h3>
+                    <pre class="code-block"><code>main
+├── feature/qa-score-endpoints
+├── feature/observability-upgrades
+├── hotfix/auth-timeout
+└── release/v1.6.0</code></pre>
+                    <ul class="achievement-list">
+                        <li>Short-lived feature branches with required reviews.</li>
+                        <li>Release branches for controlled deployments.</li>
+                        <li>Hotfix branches for rapid production fixes.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Audit-ready release notes</h3>
+                    <ul class="achievement-list">
+                        <li>Every release includes ticket references and approvals.</li>
+                        <li>Security reviews captured in change records.</li>
+                        <li>Evidence stored alongside pipeline artifacts.</li>
+                    </ul>
+                    <pre class="code-block"><code>Release v1.6.0
+- Feature: new QA score endpoints
+- Risk review: approved by compliance lead
+- Evidence: security scan + coverage report</code></pre>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>CI/CD blueprint showcasing build, quality, and release governance.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -238,6 +238,19 @@ img {
 }
 
 /* ----------------------------------------------------------------------------
+   GRID HELPERS
+   ---------------------------------------------------------------------------- */
+
+.grid {
+    display: grid;
+    gap: var(--space-lg);
+}
+
+.grid.two-cols {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+/* ----------------------------------------------------------------------------
    HEADER & NAVIGATION
    ---------------------------------------------------------------------------- */
 
@@ -467,6 +480,34 @@ header {
     font-weight: 700;
     margin-block-end: var(--space-md);
     color: var(--text-main);
+}
+
+/* ----------------------------------------------------------------------------
+   CODE BLOCKS
+   ---------------------------------------------------------------------------- */
+
+.code-block {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    box-shadow: var(--shadow-soft);
+    margin-block-end: var(--space-md);
+}
+
+.code-block code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* ----------------------------------------------------------------------------
+   STACKED SECTIONS
+   ---------------------------------------------------------------------------- */
+
+.stacked-section {
+    margin-block-start: var(--space-3xl);
 }
 
 /* Experience Cards */

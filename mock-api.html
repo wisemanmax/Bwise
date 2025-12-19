@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mocked .NET API Blueprint · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="mock-api.html" aria-current="page">Mock API</a></li>
+                <li><a href="cicd.html">CI/CD</a></li>
+                <li><a href="react.html">React</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section aria-labelledby="mock-api-overview-title">
+            <div class="section-header">
+                <h1 id="mock-api-overview-title" class="section-title">Mocked .NET API Blueprint</h1>
+                <p class="section-subtitle">
+                    A full-stack API showcase that demonstrates CRUD endpoints, authentication, validation, structured
+                    logging, and compliance-ready telemetry. Everything below is mocked but modeled after production
+                    .NET Web API patterns for regulated environments.
+                </p>
+            </div>
+
+            <div class="demo-section" aria-label="Mock API capability dashboard">
+                <div class="demo-header">
+                    <div>
+                        <h2 class="demo-title">Operational readiness snapshot</h2>
+                        <p class="demo-subtitle">
+                            KPI style metrics that mirror the API, security, and test posture of a live service.
+                        </p>
+                    </div>
+                    <div class="demo-controls" aria-label="API showcase filters">
+                        <button class="demo-btn active" aria-pressed="true">Core API</button>
+                        <button class="demo-btn" aria-pressed="false">Jobs</button>
+                        <button class="demo-btn" aria-pressed="false">Security</button>
+                        <button class="demo-btn" aria-pressed="false">Quality</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Versioned endpoints</div>
+                        <div class="metric-value">18</div>
+                        <div class="metric-change">CRUD + admin + reporting APIs</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Auth coverage</div>
+                        <div class="metric-value">100%</div>
+                        <div class="metric-change">RBAC, scope claims, and policy checks</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Job success rate</div>
+                        <div class="metric-value">99.3%</div>
+                        <div class="metric-change">Scheduled rollups with retries</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Unit test coverage</div>
+                        <div class="metric-value">93%</div>
+                        <div class="metric-change">CI gated with minimum threshold</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Mock API product narrative</h3>
+                    <p>
+                        This API powers a QA scoring platform for contact center operations. It captures call
+                        evaluations, schedules rollups, and enforces compliance through layered security controls.
+                    </p>
+                    <ul class="achievement-list">
+                        <li>Versioned endpoints with consistent error envelopes and tracing identifiers.</li>
+                        <li>Policy-based authorization for read, write, and admin workflows.</li>
+                        <li>Validation pipelines that block malformed payloads early.</li>
+                        <li>Structured logs with masked PII and correlation IDs.</li>
+                        <li>Background jobs that keep dashboards and audit logs in sync.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="api-surface-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="api-surface-title" class="section-title">.NET Web API surface</h2>
+                <p class="section-subtitle">
+                    CRUD endpoints, API versioning, validation, and consistent error handling modeled after enterprise
+                    .NET Web API practices.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">CRUD endpoints + versioning</h3>
+                    <pre class="code-block"><code>[ApiController]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/qa-scores")]
+public sealed class QaScoresController : ControllerBase
+{
+    [HttpGet("{accountNumber}")]
+    public async Task&lt;ActionResult&lt;QaScoreSummary&gt;&gt; Get(string accountNumber)
+        =&gt; Ok(await _service.FetchAsync(accountNumber));
+
+    [HttpPost]
+    public async Task&lt;IActionResult&gt; Create([FromBody] QaScoreRequest request)
+        =&gt; CreatedAtAction(nameof(Get),
+            new { version = "1.0", accountNumber = request.AccountNumber },
+            await _service.StoreAsync(request));
+
+    [HttpPut("{qaScoreId:int}")]
+    public async Task&lt;IActionResult&gt; Update(int qaScoreId, QaScoreUpdate request)
+        =&gt; Ok(await _service.UpdateAsync(qaScoreId, request));
+
+    [HttpDelete("{qaScoreId:int}")]
+    public async Task&lt;IActionResult&gt; Delete(int qaScoreId)
+        =&gt; Ok(await _service.DeleteAsync(qaScoreId));
+}</code></pre>
+                    <p>Every endpoint is versioned, traceable, and supports consistent pagination/metadata schemas.</p>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Authorization + validation</h3>
+                    <pre class="code-block"><code>[Authorize(Policy = "QaWrite")]
+[HttpPost]
+public async Task&lt;IActionResult&gt; Create(QaScoreRequest request)
+{
+    if (!ModelState.IsValid)
+    {
+        return ValidationProblem(ModelState);
+    }
+
+    return Ok(await _service.StoreAsync(request, User));
+}</code></pre>
+                    <pre class="code-block"><code>public sealed class QaScoreValidator : AbstractValidator&lt;QaScoreRequest&gt;
+{
+    public QaScoreValidator()
+    {
+        RuleFor(x =&gt; x.AccountNumber).NotEmpty().Length(10, 20);
+        RuleFor(x =&gt; x.Score).InclusiveBetween(0, 100);
+        RuleFor(x =&gt; x.Category).MaximumLength(32);
+    }
+}</code></pre>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Standardized error handling</h3>
+                    <pre class="code-block"><code>app.UseExceptionHandler(appBuilder =&gt;
+{
+    appBuilder.Run(async context =&gt;
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        await context.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Title = "Unexpected error",
+            Detail = "Reference the trace id for support.",
+            Instance = context.TraceIdentifier
+        });
+    });
+});</code></pre>
+                    <p>Errors return RFC-compliant Problem Details payloads with trace IDs for support workflows.</p>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Structured logging</h3>
+                    <pre class="code-block"><code>app.Use(async (context, next) =&gt;
+{
+    var correlationId = Guid.NewGuid().ToString("N");
+    context.Items["CorrelationId"] = correlationId;
+    using (LogContext.PushProperty("CorrelationId", correlationId))
+    {
+        await next();
+    }
+});
+
+_logger.LogInformation(
+    "QaScore created {QaScoreId} by {UserId}",
+    qaScore.Id,
+    userId);</code></pre>
+                    <p>Logs are structured, queryable, and include correlation IDs and masked fields.</p>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="config-jobs-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="config-jobs-title" class="section-title">Secure configuration + background jobs</h2>
+                <p class="section-subtitle">
+                    Secrets sourced from environment variables or a mock secrets manager, paired with scheduled jobs
+                    and retry logic for data rollups.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Secure config handling</h3>
+                    <pre class="code-block"><code>public sealed class SecretsProvider : ISecretsProvider
+{
+    public string GetJwtSigningKey()
+        =&gt; Environment.GetEnvironmentVariable("JWT_SIGNING_KEY")
+            ?? "mock-secret-from-vault";
+}
+
+builder.Configuration.AddEnvironmentVariables(prefix: "CollectionsQa_");
+builder.Services.Configure&lt;DatabaseOptions&gt;(
+    builder.Configuration.GetSection("Database"));</code></pre>
+                    <ul class="achievement-list">
+                        <li>Secrets never checked into source control.</li>
+                        <li>Local mock vault mirrors production key retrieval.</li>
+                        <li>Config values masked before logging.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Background jobs + retries</h3>
+                    <pre class="code-block"><code>services.AddHangfire(config =&gt; config.UseSqlServerStorage(connString));
+services.AddHangfireServer();
+
+RecurringJob.AddOrUpdate&lt;QaScoreRollupJob&gt;(
+    "qa-score-rollup",
+    job =&gt; job.ExecuteAsync(),
+    "0 */2 * * *");</code></pre>
+                    <pre class="code-block"><code>await Policy
+    .Handle&lt;SqlException&gt;()
+    .WaitAndRetryAsync(3, retry =&gt; TimeSpan.FromSeconds(retry * 2))
+    .ExecuteAsync(() =&gt; _repository.RollupDailyAsync());</code></pre>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="quality-security-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="quality-security-title" class="section-title">Quality, security, and compliance</h2>
+                <p class="section-subtitle">
+                    Unit tests, coverage evidence, input validation, authorization checks, secure logging, data masking,
+                    and audit readiness notes.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Unit tests + coverage proof</h3>
+                    <pre class="code-block"><code>public class QaScoresControllerTests
+{
+    [Fact]
+    public async Task Create_ReturnsCreated_WhenValidRequest()
+    {
+        var controller = BuildController();
+        var request = new QaScoreRequest("99887766", "A102", 95, "Empathy", DateTimeOffset.UtcNow);
+
+        var response = await controller.Create(request);
+
+        Assert.IsType&lt;CreatedAtActionResult&gt;(response);
+    }
+}
+
+// Coverage: 93.1% (line), gated at 85%</code></pre>
+                    <ul class="achievement-list">
+                        <li>Positive and negative path tests for CRUD endpoints.</li>
+                        <li>Auth failures and validation errors covered.</li>
+                        <li>Coverage published to CI dashboards.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Security controls checklist</h3>
+                    <ul class="achievement-list">
+                        <li>Input validation for account numbers, scores, and categories.</li>
+                        <li>Authorization checks enforced by policy and scope claims.</li>
+                        <li>Secure logging with masked PII and correlation IDs.</li>
+                        <li>Data masking for SSN, DOB, and account identifiers.</li>
+                        <li>Audit readiness notes attached to release evidence.</li>
+                    </ul>
+                    <pre class="code-block"><code>public static string MaskAccount(string account)
+    =&gt; account?.Length &gt; 4
+        ? $"****{account[^4..]}"
+        : "****";
+
+_logger.LogInformation("Lookup for {Account}", MaskAccount(request.AccountNumber));</code></pre>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Audit readiness notes (mock)</h3>
+                    <ul class="achievement-list">
+                        <li>Evidence packs include API change logs and reviewer approvals.</li>
+                        <li>Access logs retained for 12+ months with immutable storage.</li>
+                        <li>Privileged role assignments reviewed quarterly.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Input validation and error feedback</h3>
+                    <pre class="code-block"><code>if (!Regex.IsMatch(request.AccountNumber, @"^[0-9A-Z]+$"))
+{
+    return BadRequest(new { error = "Invalid account number format." });
+}
+
+if (request.Score &lt; 0 || request.Score &gt; 100)
+{
+    return BadRequest(new { error = "Score must be between 0 and 100." });
+}</code></pre>
+                    <p>Validation responses are consistent, actionable, and tracked in error dashboards.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>Mocked API blueprint demonstrating backend, security, and compliance patterns.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
