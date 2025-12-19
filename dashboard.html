@@ -118,6 +118,18 @@
       max-width: 500px;
     }
 
+    .header__icon {
+      font-size: 20px;
+      color: var(--fiord);
+      cursor: pointer;
+    }
+
+    .header__icon-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--fiord);
+    }
+
     .search {
       position: relative;
     }
@@ -634,8 +646,11 @@
       </div>
 
       <div style="margin-right: 20px; display: flex; gap: 15px; align-items: center;">
-        <i class="far fa-bell" style="font-size: 20px; color: var(--fiord); cursor: pointer;"></i>
-        <i class="fas fa-cog" style="font-size: 20px; color: var(--fiord); cursor: pointer;"></i>
+        <i class="far fa-bell header__icon"></i>
+        <a class="header__icon-link" href="https://www.byheir.com/" aria-label="Home">
+          <i class="fas fa-home header__icon"></i>
+        </a>
+        <i class="fas fa-cog header__icon"></i>
       </div>
     </header>
 
