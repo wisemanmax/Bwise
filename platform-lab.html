@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Delivery Lab · Byheir Wise</title>
+    <meta name="description" content="Interactive blueprint of backend, data, enterprise, DevOps, and security projects with scope boundaries and delivery plans.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="mock-api.html">Mock API</a></li>
+                <li><a href="cicd.html">CI/CD</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="platform-lab.html" aria-current="page">Platform Lab</a></li>
+                <li><a href="ai-search.html">AI Search</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="page-hero" aria-labelledby="platform-lab-title">
+            <div class="section-header">
+                <p class="hero-kicker">Interactive delivery blueprint</p>
+                <h1 id="platform-lab-title" class="section-title">Platform Delivery Lab</h1>
+                <p class="section-subtitle">
+                    A creative, end-to-end mock of the systems that power enterprise-grade operations. Every module below
+                    demonstrates how backend, data, enterprise, DevOps, and security initiatives would be delivered, even
+                    when the live infrastructure can only be simulated in a GitHub-hosted environment.
+                </p>
+                <div class="pill-row" aria-label="Focus areas">
+                    <span class="pill">.NET APIs</span>
+                    <span class="pill">Data Engineering</span>
+                    <span class="pill">Admin Portals</span>
+                    <span class="pill">DevOps &amp; QA</span>
+                    <span class="pill">Security &amp; Compliance</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="stacked-section" aria-labelledby="scope-title">
+            <div class="section-header">
+                <h2 id="scope-title" class="section-title">Scope boundaries for a GitHub-hosted demo</h2>
+                <p class="section-subtitle">
+                    Live APIs, databases, and background schedulers cannot run directly on a static site. This page shows
+                    how each requirement is represented through front-end simulations, while calling out what would run
+                    in real infrastructure (Azure, AWS, or Replit).
+                </p>
+            </div>
+            <div class="scope-grid">
+                <article class="scope-card">
+                    <h3>Available in this static demo</h3>
+                    <ul>
+                        <li>Interactive UI flows showing CRUD, validation, and auth behavior.</li>
+                        <li>Simulated logs, audit trails, and retry pipelines with JavaScript.</li>
+                        <li>Mock Power BI-style dashboards with KPIs and annotated insights.</li>
+                        <li>CI/CD checklists and branching strategies rendered as live playbooks.</li>
+                    </ul>
+                </article>
+                <article class="scope-card scope-card--accent">
+                    <h3>Simulated to represent backend services</h3>
+                    <ul>
+                        <li>.NET Web API endpoints, token handling, and secure configuration.</li>
+                        <li>SQL schema migrations, indexing, and query plans.</li>
+                        <li>Background jobs with scheduling + retry logic.</li>
+                        <li>Audit evidence packs and compliance sign-offs.</li>
+                    </ul>
+                </article>
+                <article class="scope-card scope-card--dark">
+                    <h3>Deployed on full-stack platforms</h3>
+                    <ul>
+                        <li>Replit-hosted APIs, chatbots, games, and mobile app prototypes.</li>
+                        <li>Cloud-hosted database services with managed secrets storage.</li>
+                        <li>CI/CD runners and real deployment pipelines.</li>
+                        <li>Enterprise SSO, RBAC, and audit logging services.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="stacked-section" aria-labelledby="capability-map-title">
+            <div class="section-header">
+                <h2 id="capability-map-title" class="section-title">Capability map</h2>
+                <p class="section-subtitle">
+                    Select a focus area to reveal the deliverables, sample artifacts, and operational outcomes.
+                </p>
+            </div>
+
+            <div class="demo-section">
+                <div class="demo-header">
+                    <div>
+                        <h3 class="demo-title">Project pillars</h3>
+                        <p class="demo-subtitle">Toggle between system domains for the complete blueprint.</p>
+                    </div>
+                    <div class="demo-controls" aria-label="Project pillar controls">
+                        <button class="demo-btn active" data-lab-filter="backend" aria-pressed="true">Backend</button>
+                        <button class="demo-btn" data-lab-filter="data" aria-pressed="false">Data</button>
+                        <button class="demo-btn" data-lab-filter="enterprise" aria-pressed="false">Enterprise</button>
+                        <button class="demo-btn" data-lab-filter="devops" aria-pressed="false">DevOps</button>
+                        <button class="demo-btn" data-lab-filter="security" aria-pressed="false">Security</button>
+                    </div>
+                </div>
+
+                <div class="lab-kpi-grid" aria-label="Capability KPIs">
+                    <div class="metric-card" data-lab-kpi data-kpi-key="deliverables">
+                        <div class="metric-label">Deliverables</div>
+                        <div class="metric-value">7</div>
+                        <div class="metric-change">API modules, jobs, and support services</div>
+                    </div>
+                    <div class="metric-card" data-lab-kpi data-kpi-key="readiness">
+                        <div class="metric-label">Readiness score</div>
+                        <div class="metric-value">88%</div>
+                        <div class="metric-change">Coverage + monitoring required</div>
+                    </div>
+                    <div class="metric-card" data-lab-kpi data-kpi-key="owners">
+                        <div class="metric-label">Primary owners</div>
+                        <div class="metric-value">4</div>
+                        <div class="metric-change">Engineering, data, ops, compliance</div>
+                    </div>
+                </div>
+
+                <div class="grid two-cols">
+                    <article class="card" data-lab-tag="backend">
+                        <h3 class="card-title">.NET Web API foundation</h3>
+                        <ul class="achievement-list">
+                            <li>CRUD endpoints for QA scores, audit events, and customer notes.</li>
+                            <li>JWT auth with role-based policies and versioned routing.</li>
+                            <li>Validation pipelines with FluentValidation + standard ProblemDetails.</li>
+                            <li>Structured logging via Serilog with correlation IDs.</li>
+                        </ul>
+                    </article>
+                    <article class="card" data-lab-tag="backend">
+                        <h3 class="card-title">Jobs, retries, and secure configuration</h3>
+                        <ul class="achievement-list">
+                            <li>Background workers scheduled via Hangfire or Quartz.NET.</li>
+                            <li>Retry logic with exponential backoff for downstream dependencies.</li>
+                            <li>Secrets loaded from environment variables or mock secrets manager.</li>
+                            <li>Health checks and API versioning strategy.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" data-lab-tag="data">
+                        <h3 class="card-title">SQL schema design + optimization</h3>
+                        <ul class="achievement-list">
+                            <li>Normalized schema with surrogate keys and audit metadata.</li>
+                            <li>Indexing strategy for high-volume reporting queries.</li>
+                            <li>Legacy-to-clean migration plan with validation scripts.</li>
+                            <li>Query plans reviewed for read-heavy workloads.</li>
+                        </ul>
+                    </article>
+                    <article class="card" data-lab-tag="data">
+                        <h3 class="card-title">Reporting layer + KPI storytelling</h3>
+                        <ul class="achievement-list">
+                            <li>Daily rollup views for QA scoring and compliance trends.</li>
+                            <li>Metrics API that exposes KPIs for dashboards.</li>
+                            <li>Power BI-style mock dashboards with KPI definitions.</li>
+                            <li>Data lineage notes for audit readiness.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" data-lab-tag="enterprise">
+                        <h3 class="card-title">Internal admin portal</h3>
+                        <ul class="achievement-list">
+                            <li>Role-based access for operations, compliance, and analysts.</li>
+                            <li>Configuration-driven navigation and feature gating.</li>
+                            <li>Audit log timeline with actor and timestamp.</li>
+                            <li>Self-serve configuration with approval workflow.</li>
+                        </ul>
+                    </article>
+                    <article class="card" data-lab-tag="enterprise">
+                        <h3 class="card-title">Dynamic form builder</h3>
+                        <ul class="achievement-list">
+                            <li>Question library with scoring logic and weighted categories.</li>
+                            <li>Field-level validation and dynamic branching.</li>
+                            <li>Versioning with draft, review, and publish states.</li>
+                            <li>Audit-ready change history.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" data-lab-tag="devops">
+                        <h3 class="card-title">CI pipeline + quality gates</h3>
+                        <ul class="achievement-list">
+                            <li>Build, test, and lint stages in YAML pipeline.</li>
+                            <li>Coverage threshold enforcement before merge.</li>
+                            <li>Static analysis and secret scanning gates.</li>
+                            <li>Deployment checklist tied to release evidence.</li>
+                        </ul>
+                    </article>
+                    <article class="card" data-lab-tag="devops">
+                        <h3 class="card-title">Release + branching strategy</h3>
+                        <ul class="achievement-list">
+                            <li>Git flow with protected main and release branches.</li>
+                            <li>Automated changelog generation.</li>
+                            <li>Blue/green deployment readiness steps.</li>
+                            <li>Rollback playbook stored with the release bundle.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card" data-lab-tag="security">
+                        <h3 class="card-title">Security &amp; compliance controls</h3>
+                        <ul class="achievement-list">
+                            <li>Input validation, authorization checks, and secure logging.</li>
+                            <li>Data masking for PII fields in logs and reports.</li>
+                            <li>Audit readiness notes for SOC and regulatory reviews.</li>
+                            <li>Least-privilege role definitions and quarterly reviews.</li>
+                        </ul>
+                    </article>
+                    <article class="card" data-lab-tag="security">
+                        <h3 class="card-title">Testing &amp; coverage</h3>
+                        <ul class="achievement-list">
+                            <li>Unit tests for services, repositories, and validation rules.</li>
+                            <li>Integration tests for API versions and auth policies.</li>
+                            <li>Coverage reporting surfaced in CI dashboards.</li>
+                            <li>Security regression tests for auth bypass attempts.</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <div class="card lab-summary-card">
+                    <h3 class="card-title">Delivery summary</h3>
+                    <p data-lab-summary>
+                        Backend view: CRUD APIs, background jobs, versioned endpoints, and structured logging layered with
+                        secure configuration handling.
+                    </p>
+                    <div class="lab-deliverable-list" data-lab-deliverables>
+                        <span>API v1: QA Scores</span>
+                        <span>API v1: Audit Events</span>
+                        <span>Secrets via Env</span>
+                        <span>Job Scheduler</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stacked-section" aria-labelledby="pipeline-title">
+            <div class="section-header">
+                <h2 id="pipeline-title" class="section-title">Release pipeline simulation</h2>
+                <p class="section-subtitle">
+                    Use the run button to simulate how builds, tests, and deployments progress through the delivery gate.
+                </p>
+            </div>
+            <div class="pipeline-card">
+                <div class="pipeline-header">
+                    <div>
+                        <h3>CI/CD timeline</h3>
+                        <p>Build &rarr; Test &rarr; Lint &rarr; Scan &rarr; Deploy &rarr; Audit evidence</p>
+                    </div>
+                    <button class="demo-btn" data-pipeline-run type="button">Run pipeline</button>
+                </div>
+                <div class="pipeline-steps" aria-live="polite">
+                    <div class="pipeline-step" data-pipeline-step>Build artifacts</div>
+                    <div class="pipeline-step" data-pipeline-step>Unit + integration tests</div>
+                    <div class="pipeline-step" data-pipeline-step>Lint + format checks</div>
+                    <div class="pipeline-step" data-pipeline-step>Security scan</div>
+                    <div class="pipeline-step" data-pipeline-step>Deploy to staging</div>
+                    <div class="pipeline-step" data-pipeline-step>Audit pack generated</div>
+                </div>
+                <p class="pipeline-status" data-pipeline-status>Pipeline idle.</p>
+            </div>
+        </section>
+
+        <section class="stacked-section" aria-labelledby="replit-title">
+            <div class="section-header">
+                <h2 id="replit-title" class="section-title">Replit build studio</h2>
+                <p class="section-subtitle">
+                    Replit unlocks fast prototypes for websites, AI chatbots, games, data visualizations, and mobile apps.
+                    Select a prompt to preview the build plan and the generated artifacts.
+                </p>
+            </div>
+            <div class="replit-studio">
+                <div class="prompt-column">
+                    <h3>Prompt library</h3>
+                    <button class="prompt-chip active" data-prompt-chip data-prompt-key="chatbot" type="button">AI Chatbot</button>
+                    <button class="prompt-chip" data-prompt-chip data-prompt-key="dashboard" type="button">Data Visualization</button>
+                    <button class="prompt-chip" data-prompt-chip data-prompt-key="game" type="button">2D Retro Game</button>
+                    <button class="prompt-chip" data-prompt-chip data-prompt-key="mobile" type="button">Mobile Companion App</button>
+                </div>
+                <div class="prompt-output">
+                    <div class="prompt-header">
+                        <h3 data-prompt-title>AI Chatbot for Contact Center QA</h3>
+                        <p data-prompt-description>
+                            Build a secure chatbot that answers QA policy questions, logs feedback, and routes complex
+                            issues to supervisors.
+                        </p>
+                    </div>
+                    <div class="prompt-artifacts">
+                        <div class="artifact-card">
+                            <h4>Generated artifacts</h4>
+                            <ul data-prompt-artifacts>
+                                <li>Node API with /messages endpoint</li>
+                                <li>Policy knowledge base schema</li>
+                                <li>UI chat widget with logging</li>
+                            </ul>
+                        </div>
+                        <div class="artifact-card">
+                            <h4>Delivery notes</h4>
+                            <ul data-prompt-notes>
+                                <li>Integrate auth middleware and rate limiting</li>
+                                <li>Persist transcripts for audit trails</li>
+                                <li>Deploy via Replit + GitHub sync</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <pre class="code-block" data-prompt-code><code>// Sample prompt
+"Build a compliance-aware QA assistant chatbot with role-based responses
+and logging for every conversation."</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="stacked-section" aria-labelledby="dashboard-title">
+            <div class="section-header">
+                <h2 id="dashboard-title" class="section-title">Power BI-style KPI dashboard mock</h2>
+                <p class="section-subtitle">
+                    A visual narrative of the KPIs, risk signals, and operational insights that the reporting layer would
+                    expose. All values are simulated for demonstration.
+                </p>
+            </div>
+            <div class="kpi-dashboard">
+                <div class="kpi-cards">
+                    <div class="metric-card">
+                        <div class="metric-label">QA compliance</div>
+                        <div class="metric-value">97.6%</div>
+                        <div class="metric-change">Above target threshold</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Escalation rate</div>
+                        <div class="metric-value">2.1%</div>
+                        <div class="metric-change">Down 0.4 pts MoM</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Average handle time</div>
+                        <div class="metric-value">6m 12s</div>
+                        <div class="metric-change">Stable across regions</div>
+                    </div>
+                </div>
+                <div class="kpi-panels">
+                    <div class="card">
+                        <h3 class="card-title">Top KPIs explained</h3>
+                        <ul class="achievement-list">
+                            <li><strong>QA compliance:</strong> percent of calls passing required checks.</li>
+                            <li><strong>Escalation rate:</strong> share of interactions requiring supervisor review.</li>
+                            <li><strong>Handle time:</strong> average call duration within SLA target.</li>
+                            <li><strong>Risk alerts:</strong> flagged segments for compliance review.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Regional performance</h3>
+                        <div class="bar-chart">
+                            <div class="bar" style="--bar: 92%">East <span>92%</span></div>
+                            <div class="bar" style="--bar: 88%">Central <span>88%</span></div>
+                            <div class="bar" style="--bar: 95%">West <span>95%</span></div>
+                            <div class="bar" style="--bar: 90%">Remote <span>90%</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>Platform Delivery Lab: turning requirements into a working system blueprint.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
