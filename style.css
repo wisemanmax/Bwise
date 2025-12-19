@@ -266,12 +266,17 @@ header {
 .top-nav {
     max-width: var(--max-width);
     margin-inline: auto;
-    padding-block: var(--space-md);
-    padding-inline: var(--pad-x);
+    padding-block: var(--space-sm);
+    padding-inline: var(--space-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-lg);
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(52, 152, 219, 0.12);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(12px);
 }
 
 .logo {
@@ -279,12 +284,18 @@ header {
     font-weight: 700;
     color: var(--text-main);
     letter-spacing: -0.5px;
+    background: linear-gradient(120deg, var(--primary), var(--primary-alt));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: var(--space-xl);
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .nav-menu a {
@@ -292,26 +303,24 @@ header {
     text-decoration: none;
     font-weight: 600;
     font-size: var(--text-sm);
-    padding-block: var(--space-xs);
-    border-block-end: 2px solid transparent;
-    transition: border-color var(--transition), color var(--transition);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-full);
+    background: transparent;
+    border: 1px solid transparent;
+    transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
     position: relative;
 }
 
 .nav-menu a::after {
-    content: '';
-    position: absolute;
-    inset-block-end: -2px;
-    inset-inline-start: 0;
-    width: 0;
-    height: 2px;
-    background: var(--accent);
-    transition: width var(--transition);
+    content: none;
 }
 
-.nav-menu a:hover::after,
-.nav-menu a:focus-visible::after {
-    width: 100%;
+.nav-menu a:hover,
+.nav-menu a:focus-visible {
+    color: var(--primary-alt);
+    background: rgba(102, 126, 234, 0.12);
+    border-color: rgba(102, 126, 234, 0.2);
+    box-shadow: 0 8px 18px rgba(102, 126, 234, 0.18);
 }
 
 .nav-toggle {
@@ -325,10 +334,26 @@ header {
     min-height: 44px;
 }
 
+@media (prefers-color-scheme: dark) {
+    .top-nav {
+        background: rgba(30, 41, 59, 0.92);
+        border-color: rgba(148, 163, 184, 0.2);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a:focus-visible {
+        background: rgba(148, 163, 184, 0.18);
+        border-color: rgba(148, 163, 184, 0.28);
+        color: #e2e8f0;
+    }
+}
+
 /* Mobile Navigation */
 @media (max-width: 768px) {
     .top-nav {
-        padding-inline: var(--pad-x-mobile);
+        padding-inline: var(--space-md);
+        border-radius: var(--radius-lg);
     }
 
     .nav-menu {
@@ -340,13 +365,14 @@ header {
         padding: var(--space-lg) var(--pad-x-mobile);
         background: var(--white);
         flex-direction: column;
-        gap: var(--space-md);
+        gap: var(--space-sm);
         transform-origin: top;
         transform: scaleY(0);
         opacity: 0;
         pointer-events: none;
         transition: transform var(--transition-fast), opacity var(--transition-fast);
         box-shadow: var(--shadow-strong);
+        border-radius: var(--radius-md);
     }
 
     .nav-menu.open {
