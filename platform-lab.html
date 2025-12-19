@@ -274,52 +274,28 @@
             </div>
         </section>
 
-        <section class="stacked-section" aria-labelledby="replit-title">
+        <section class="stacked-section" aria-labelledby="live-demo-title">
             <div class="section-header">
-                <h2 id="replit-title" class="section-title">Replit build studio</h2>
+                <h2 id="live-demo-title" class="section-title">Live demo</h2>
                 <p class="section-subtitle">
-                    Replit unlocks fast prototypes for websites, AI chatbots, games, data visualizations, and mobile apps.
-                    Select a prompt to preview the build plan and the generated artifacts.
+                    Explore the working prototype directly within the Platform Delivery Lab experience.
                 </p>
             </div>
-            <div class="replit-studio">
-                <div class="prompt-column">
-                    <h3>Prompt library</h3>
-                    <button class="prompt-chip active" data-prompt-chip data-prompt-key="chatbot" type="button">AI Chatbot</button>
-                    <button class="prompt-chip" data-prompt-chip data-prompt-key="dashboard" type="button">Data Visualization</button>
-                    <button class="prompt-chip" data-prompt-chip data-prompt-key="game" type="button">2D Retro Game</button>
-                    <button class="prompt-chip" data-prompt-chip data-prompt-key="mobile" type="button">Mobile Companion App</button>
-                </div>
-                <div class="prompt-output">
-                    <div class="prompt-header">
-                        <h3 data-prompt-title>AI Chatbot for Contact Center QA</h3>
-                        <p data-prompt-description>
-                            Build a secure chatbot that answers QA policy questions, logs feedback, and routes complex
-                            issues to supervisors.
-                        </p>
-                    </div>
-                    <div class="prompt-artifacts">
-                        <div class="artifact-card">
-                            <h4>Generated artifacts</h4>
-                            <ul data-prompt-artifacts>
-                                <li>Node API with /messages endpoint</li>
-                                <li>Policy knowledge base schema</li>
-                                <li>UI chat widget with logging</li>
-                            </ul>
-                        </div>
-                        <div class="artifact-card">
-                            <h4>Delivery notes</h4>
-                            <ul data-prompt-notes>
-                                <li>Integrate auth middleware and rate limiting</li>
-                                <li>Persist transcripts for audit trails</li>
-                                <li>Deploy via Replit + GitHub sync</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <pre class="code-block" data-prompt-code><code>// Sample prompt
-"Build a compliance-aware QA assistant chatbot with role-based responses
-and logging for every conversation."</code></pre>
-                </div>
+            <div class="live-demo">
+                <iframe
+                    class="live-demo-frame"
+                    src="https://solution-architect--bwisevine.replit.app"
+                    title="Live demo: Solution Architect prototype"
+                    loading="lazy"
+                    allow="clipboard-read; clipboard-write; fullscreen; web-share"
+                    referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+                <p class="live-demo-note">
+                    If the embedded demo does not load, open it directly at
+                    <a href="https://solution-architect--bwisevine.replit.app" target="_blank" rel="noopener noreferrer">
+                        solution-architect--bwisevine.replit.app
+                    </a>.
+                </p>
             </div>
         </section>
 

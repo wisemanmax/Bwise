@@ -1349,58 +1349,28 @@ footer p {
     font-weight: 600;
 }
 
-.replit-studio {
-    display: grid;
-    grid-template-columns: minmax(200px, 1fr) 2fr;
-    gap: var(--space-lg);
-    align-items: start;
-}
-
-.prompt-column {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
+.live-demo {
     background: var(--white);
     padding: var(--space-lg);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-soft);
-}
-
-.prompt-chip {
-    padding: 0.6rem 0.9rem;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(52, 152, 219, 0.3);
-    background: transparent;
-    cursor: pointer;
-    font-weight: 600;
-    text-align: left;
-    transition: var(--transition);
-}
-
-.prompt-chip.active,
-.prompt-chip:hover {
-    background: rgba(52, 152, 219, 0.18);
-    border-color: rgba(52, 152, 219, 0.6);
-}
-
-.prompt-output {
-    background: var(--white);
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
-}
-
-.prompt-artifacts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: var(--space-md);
-    margin-block: var(--space-md);
 }
 
-.artifact-card {
-    background: rgba(102, 126, 234, 0.08);
-    padding: var(--space-md);
+.live-demo-frame {
+    width: 100%;
+    min-height: 520px;
+    border: 1px solid rgba(52, 152, 219, 0.2);
     border-radius: var(--radius-md);
+    background: #fff;
+    box-shadow: var(--shadow-soft);
+}
+
+.live-demo-note {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
 }
 
 .kpi-dashboard {
@@ -1454,8 +1424,8 @@ footer p {
 }
 
 @media (max-width: 900px) {
-    .replit-studio {
-        grid-template-columns: 1fr;
+    .live-demo-frame {
+        min-height: 420px;
     }
 }
 
