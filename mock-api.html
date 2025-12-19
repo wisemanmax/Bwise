@@ -114,6 +114,11 @@
 [Route("api/v{version:apiVersion}/qa-scores")]
 public sealed class QaScoresController : ControllerBase
 {
+    [HttpGet]
+    public async Task&lt;ActionResult&lt;PagedResult&lt;QaScoreSummary&gt;&gt;&gt; GetAll(
+        [FromQuery] QaScoreQuery query)
+        =&gt; Ok(await _service.FetchAllAsync(query));
+
     [HttpGet("{accountNumber}")]
     public async Task&lt;ActionResult&lt;QaScoreSummary&gt;&gt; Get(string accountNumber)
         =&gt; Ok(await _service.FetchAsync(accountNumber));
@@ -127,6 +132,10 @@ public sealed class QaScoresController : ControllerBase
     [HttpPut("{qaScoreId:int}")]
     public async Task&lt;IActionResult&gt; Update(int qaScoreId, QaScoreUpdate request)
         =&gt; Ok(await _service.UpdateAsync(qaScoreId, request));
+
+    [HttpPatch("{qaScoreId:int}")]
+    public async Task&lt;IActionResult&gt; Patch(int qaScoreId, JsonPatchDocument&lt;QaScorePatch&gt; patch)
+        =&gt; Ok(await _service.PatchAsync(qaScoreId, patch));
 
     [HttpDelete("{qaScoreId:int}")]
     public async Task&lt;IActionResult&gt; Delete(int qaScoreId)
@@ -152,9 +161,21 @@ public async Task&lt;IActionResult&gt; Create(QaScoreRequest request)
 {
     public QaScoreValidator()
     {
-        RuleFor(x =&gt; x.AccountNumber).NotEmpty().Length(10, 20);
-        RuleFor(x =&gt; x.Score).InclusiveBetween(0, 100);
-        RuleFor(x =&gt; x.Category).MaximumLength(32);
+        RuleFor(x =&gt; x.AccountNumber)
+            .NotEmpty()
+            .Length(10, 20)
+            .Matches(@"^[0-9A-Z]+$");
+
+        RuleFor(x =&gt; x.Score)
+            .InclusiveBetween(0, 100);
+
+        RuleFor(x =&gt; x.Category)
+            .NotEmpty()
+            .MaximumLength(32);
+
+        RuleFor(x =&gt; x.AgentId)
+            .NotEmpty()
+            .MaximumLength(16);
     }
 }</code></pre>
                 </article>
@@ -176,6 +197,29 @@ public async Task&lt;IActionResult&gt; Create(QaScoreRequest request)
         });
     });
 });</code></pre>
+                    <pre class="code-block"><code>public sealed record ApiError(string Code, string Message, string TraceId);
+
+public sealed class ErrorHandlingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger&lt;ErrorHandlingMiddleware&gt; _logger;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (ValidationException ex)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new ApiError(
+                "validation_error",
+                ex.Message,
+                context.TraceIdentifier));
+        }
+    }
+}</code></pre>
                     <p>Errors return RFC-compliant Problem Details payloads with trace IDs for support workflows.</p>
                 </article>
 
@@ -195,6 +239,13 @@ _logger.LogInformation(
     "QaScore created {QaScoreId} by {UserId}",
     qaScore.Id,
     userId);</code></pre>
+                    <pre class="code-block"><code>Log.ForContext("Service", "CollectionsQa.Api")
+   .ForContext("Environment", env.EnvironmentName)
+   .ForContext("AccountMasked", MaskAccount(accountNumber))
+   .Information("Inbound {Method} {Path} {StatusCode}",
+       context.Request.Method,
+       context.Request.Path,
+       context.Response.StatusCode);</code></pre>
                     <p>Logs are structured, queryable, and include correlation IDs and masked fields.</p>
                 </article>
             </div>
@@ -222,6 +273,16 @@ _logger.LogInformation(
 builder.Configuration.AddEnvironmentVariables(prefix: "CollectionsQa_");
 builder.Services.Configure&lt;DatabaseOptions&gt;(
     builder.Configuration.GetSection("Database"));</code></pre>
+                    <pre class="code-block"><code>public sealed class MockSecretsManager
+{
+    private readonly IDictionary&lt;string, string&gt; _secrets = new Dictionary&lt;string, string&gt;
+    {
+        ["SqlPassword"] = "mock-sql-secret",
+        ["JwtSigningKey"] = "mock-jwt-key-2025"
+    };
+
+    public string Get(string name) =&gt; _secrets[name];
+}</code></pre>
                     <ul class="achievement-list">
                         <li>Secrets never checked into source control.</li>
                         <li>Local mock vault mirrors production key retrieval.</li>
@@ -242,6 +303,67 @@ RecurringJob.AddOrUpdate&lt;QaScoreRollupJob&gt;(
     .Handle&lt;SqlException&gt;()
     .WaitAndRetryAsync(3, retry =&gt; TimeSpan.FromSeconds(retry * 2))
     .ExecuteAsync(() =&gt; _repository.RollupDailyAsync());</code></pre>
+                    <pre class="code-block"><code>public sealed class QaScoreRollupJob
+{
+    public async Task ExecuteAsync()
+    {
+        await _audit.WriteAsync("qa-score-rollup started");
+        await _repository.RollupDailyAsync();
+        await _audit.WriteAsync("qa-score-rollup completed");
+    }
+}</code></pre>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="domain-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="domain-title" class="section-title">Domain modeling and data contracts</h2>
+                <p class="section-subtitle">
+                    Clear DTOs, data contracts, and persistence models that keep the API consistent for consumers.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Request/response models</h3>
+                    <pre class="code-block"><code>public sealed record QaScoreRequest(
+    string AccountNumber,
+    string AgentId,
+    int Score,
+    string Category,
+    DateTimeOffset CallDateUtc);
+
+public sealed record QaScoreSummary(
+    int Id,
+    string AccountNumber,
+    string AgentId,
+    int Score,
+    string Category,
+    DateTimeOffset CallDateUtc,
+    DateTimeOffset CreatedUtc);
+
+public sealed record PagedResult&lt;T&gt;(
+    IReadOnlyList&lt;T&gt; Items,
+    int TotalCount,
+    int Page,
+    int PageSize);</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Repository + query patterns</h3>
+                    <pre class="code-block"><code>public sealed class QaScoreRepository
+{
+    public async Task&lt;PagedResult&lt;QaScoreSummary&gt;&gt; FetchAsync(QaScoreQuery query)
+    {
+        var sql = @"SELECT * FROM Collections.QaScores
+                    WHERE (@agentId IS NULL OR AgentId = @agentId)
+                      AND (@fromUtc IS NULL OR CallDateUtc &gt;= @fromUtc)";
+
+        var rows = await _db.QueryAsync&lt;QaScoreSummary&gt;(sql, query);
+        return new PagedResult&lt;QaScoreSummary&gt;(rows.ToList(), rows.Count(), query.Page, query.PageSize);
+    }
+}</code></pre>
                 </article>
             </div>
         </section>
@@ -269,6 +391,18 @@ RecurringJob.AddOrUpdate&lt;QaScoreRollupJob&gt;(
         var response = await controller.Create(request);
 
         Assert.IsType&lt;CreatedAtActionResult&gt;(response);
+    }
+}
+
+public class QaScoreValidatorTests
+{
+    [Fact]
+    public void Validator_Rejects_Invalid_Score()
+    {
+        var validator = new QaScoreValidator();
+        var result = validator.Validate(new QaScoreRequest("123", "A1", 120, "Quality", DateTimeOffset.UtcNow));
+
+        Assert.False(result.IsValid);
     }
 }
 
@@ -306,6 +440,13 @@ _logger.LogInformation("Lookup for {Account}", MaskAccount(request.AccountNumber
                         <li>Access logs retained for 12+ months with immutable storage.</li>
                         <li>Privileged role assignments reviewed quarterly.</li>
                     </ul>
+                    <div class="callout">
+                        <strong>Audit prep highlights:</strong>
+                        <p>
+                            Release evidence is stored alongside pipeline artifacts and includes approval trails, test
+                            reports, and security scan snapshots.
+                        </p>
+                    </div>
                 </article>
 
                 <article class="card">
@@ -321,6 +462,46 @@ if (request.Score &lt; 0 || request.Score &gt; 100)
 }</code></pre>
                     <p>Validation responses are consistent, actionable, and tracked in error dashboards.</p>
                 </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="operations-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="operations-title" class="section-title">Operational workflows</h2>
+                <p class="section-subtitle">
+                    How the API supports agents, analysts, and compliance teams with consistent workflows and
+                    reliability controls.
+                </p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Workflow</div>
+                    <h3 class="showcase-title">Agent QA submission flow</h3>
+                    <ul class="achievement-list">
+                        <li>Agent completes QA form in the contact center tool.</li>
+                        <li>API validates payload and confirms policy compliance.</li>
+                        <li>Audit log written for submission with masked account identifiers.</li>
+                    </ul>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Workflow</div>
+                    <h3 class="showcase-title">Compliance review flow</h3>
+                    <ul class="achievement-list">
+                        <li>Compliance lead fetches scorecards via admin endpoints.</li>
+                        <li>Role-based access checks applied for export operations.</li>
+                        <li>Export logs retained with trace IDs and approval notes.</li>
+                    </ul>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Workflow</div>
+                    <h3 class="showcase-title">Scheduled rollup flow</h3>
+                    <ul class="achievement-list">
+                        <li>Hangfire job aggregates scores and writes to reporting tables.</li>
+                        <li>Retry logic replays failed rollups automatically.</li>
+                        <li>Job completion broadcast to dashboards and logs.</li>
+                    </ul>
+                </div>
             </div>
         </section>
     </main>

@@ -91,6 +91,59 @@
             </div>
         </section>
 
+        <section aria-labelledby="pipeline-map-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="pipeline-map-title" class="section-title">Pipeline stages and artifacts</h2>
+                <p class="section-subtitle">
+                    A full pipeline map showing the artifacts produced at each stage and how quality signals roll up
+                    into release readiness.
+                </p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 1</div>
+                    <h3 class="showcase-title">Build + package</h3>
+                    <div class="tag-list">
+                        <span class="tag">restore</span>
+                        <span class="tag">compile</span>
+                        <span class="tag">publish</span>
+                    </div>
+                    <p>Produces versioned build artifacts and SBOM metadata for security review.</p>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 2</div>
+                    <h3 class="showcase-title">Test + coverage</h3>
+                    <div class="tag-list">
+                        <span class="tag">unit</span>
+                        <span class="tag">integration</span>
+                        <span class="tag">coverage</span>
+                    </div>
+                    <p>Publishes coverage reports and blocks merges below threshold.</p>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 3</div>
+                    <h3 class="showcase-title">Security + quality</h3>
+                    <div class="tag-list">
+                        <span class="tag">SAST</span>
+                        <span class="tag">secret-scan</span>
+                        <span class="tag">lint</span>
+                    </div>
+                    <p>Runs code quality checks, dependency audits, and secret detection.</p>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 4</div>
+                    <h3 class="showcase-title">Deploy + verify</h3>
+                    <div class="tag-list">
+                        <span class="tag">staging</span>
+                        <span class="tag">smoke-tests</span>
+                        <span class="tag">monitoring</span>
+                    </div>
+                    <p>Performs smoke tests, validates telemetry, and prepares release notes.</p>
+                </div>
+            </div>
+        </section>
+
         <section aria-labelledby="pipeline-title" class="stacked-section">
             <div class="section-header">
                 <h2 id="pipeline-title" class="section-title">CI pipeline YAML (build, test, lint)</h2>
@@ -118,7 +171,10 @@ jobs:
       - run: dotnet restore
       - run: dotnet build --configuration Release
       - run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
-      - run: dotnet format --verify-no-changes</code></pre>
+      - run: dotnet format --verify-no-changes
+      - run: dotnet tool restore
+      - run: dotnet tool run security-scan
+      - run: dotnet tool run reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage</code></pre>
                 </article>
 
                 <article class="card">
@@ -132,6 +188,54 @@ jobs:
                     <pre class="code-block"><code>- run: dotnet test /p:Threshold=85
 - run: dotnet tool run security-scan
 - run: dotnet format --verify-no-changes</code></pre>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="quality-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="quality-title" class="section-title">Code quality and testing strategy</h2>
+                <p class="section-subtitle">
+                    How quality signals are captured, surfaced, and enforced across the delivery lifecycle.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Quality scorecard</h3>
+                    <div class="badge-row">
+                        <span class="badge">Coverage ≥ 85%</span>
+                        <span class="badge">Lint clean</span>
+                        <span class="badge">Secrets scan</span>
+                        <span class="badge">Dependency audit</span>
+                    </div>
+                    <pre class="code-block"><code>quality:
+  coverage: 93.1
+  lintErrors: 0
+  criticalVulns: 0
+  secretsDetected: 0
+
+gates:
+  minCoverage: 85
+  failOnLint: true
+  blockOnCritical: true</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Test pyramid example</h3>
+                    <pre class="code-block"><code>tests/
+├── unit/
+│   ├── QaScoresControllerTests.cs
+│   ├── QaScoreValidatorTests.cs
+│   └── MaskingServiceTests.cs
+├── integration/
+│   ├── ApiVersioningTests.cs
+│   ├── AuthPolicyTests.cs
+│   └── JobsIntegrationTests.cs
+└── contract/
+    ├── QaScoresContract.json
+    └── ErrorEnvelopeContract.json</code></pre>
+                    <p>Contract tests ensure versioned APIs stay compatible across releases.</p>
                 </article>
             </div>
         </section>
@@ -165,6 +269,35 @@ jobs:
                         <li>Incident response runbooks linked to releases.</li>
                     </ul>
                 </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="observability-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="observability-title" class="section-title">Observability and deployment validation</h2>
+                <p class="section-subtitle">
+                    Rollout monitoring, alerting, and audit-ready evidence collection during release windows.
+                </p>
+            </div>
+
+            <div class="split-card card">
+                <div>
+                    <h3 class="card-title">Telemetry checklist</h3>
+                    <ul class="achievement-list">
+                        <li>API latency, error rates, and saturation tracked per release.</li>
+                        <li>Job queues and retries surfaced to on-call dashboards.</li>
+                        <li>Audit logs piped to immutable storage with retention policies.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="card-title">Release validation notes</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">T-0: Deploy to staging and run smoke tests.</div>
+                        <div class="timeline-item">T+10: Validate metrics and error budgets.</div>
+                        <div class="timeline-item">T+30: Promote to production with approvals.</div>
+                        <div class="timeline-item">T+60: Post-deploy evidence pack generated.</div>
+                    </div>
+                </div>
             </div>
         </section>
 
