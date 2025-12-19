@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Mock API Blueprint · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="mock-api.html" aria-current="page">Mock API</a></li>
+                <li><a href="cicd.html">CI/CD</a></li>
+                <li><a href="react.html">React</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section aria-labelledby="mock-api-overview-title">
+            <div class="section-header">
+                <h1 id="mock-api-overview-title" class="section-title">Visual Mock API Blueprint</h1>
+                <p class="section-subtitle">
+                    A visual blueprint of a mocked API ecosystem: endpoint groups, auth gates, validation layers,
+                    job orchestration, and audit trails expressed as UI panels instead of code.
+                </p>
+            </div>
+
+            <div class="demo-section" aria-label="Mock API capability dashboard">
+                <div class="demo-header">
+                    <div>
+                        <h2 class="demo-title">Operational readiness snapshot</h2>
+                        <p class="demo-subtitle">
+                            KPI style metrics that mirror the API, security, and test posture of a live service.
+                        </p>
+                    </div>
+                    <div class="demo-controls" aria-label="API showcase filters">
+                        <button class="demo-btn active" aria-pressed="true">Core API</button>
+                        <button class="demo-btn" aria-pressed="false">Jobs</button>
+                        <button class="demo-btn" aria-pressed="false">Security</button>
+                        <button class="demo-btn" aria-pressed="false">Quality</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Versioned endpoints</div>
+                        <div class="metric-value">18</div>
+                        <div class="metric-change">CRUD + admin + reporting APIs</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Auth coverage</div>
+                        <div class="metric-value">100%</div>
+                        <div class="metric-change">RBAC, scope claims, and policy checks</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Job success rate</div>
+                        <div class="metric-value">99.3%</div>
+                        <div class="metric-change">Scheduled rollups with retries</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Unit test coverage</div>
+                        <div class="metric-value">93%</div>
+                        <div class="metric-change">CI gated with minimum threshold</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Mock API product narrative</h3>
+                    <p>
+                        This API powers a QA scoring platform for contact center operations. It captures call
+                        evaluations, schedules rollups, and enforces compliance through layered security controls.
+                    </p>
+                    <ul class="achievement-list">
+                        <li>Versioned endpoints with consistent error envelopes and tracing identifiers.</li>
+                        <li>Policy-based authorization for read, write, and admin workflows.</li>
+                        <li>Validation pipelines that block malformed payloads early.</li>
+                        <li>Structured logs with masked PII and correlation IDs.</li>
+                        <li>Background jobs that keep dashboards and audit logs in sync.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="api-surface-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="api-surface-title" class="section-title">API surface visualization</h2>
+                <p class="section-subtitle">
+                    A visual catalog of endpoint families, versioning, and response behavior.
+                </p>
+            </div>
+
+            <div class="api-surface">
+                <div class="api-column">
+                    <h3 class="card-title">Endpoint families</h3>
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <span class="api-pill">v1</span>
+                            <strong>QA Scores</strong>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">GET</span>
+                            <span class="api-path">/qa-scores</span>
+                            <span class="api-meta">List + filters</span>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">POST</span>
+                            <span class="api-path">/qa-scores</span>
+                            <span class="api-meta">Create</span>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">PUT</span>
+                            <span class="api-path">/qa-scores/{id}</span>
+                            <span class="api-meta">Update</span>
+                        </div>
+                    </div>
+                    <div class="api-card">
+                        <div class="api-card-header">
+                            <span class="api-pill">v1</span>
+                            <strong>Audits</strong>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">GET</span>
+                            <span class="api-path">/audits</span>
+                            <span class="api-meta">Search</span>
+                        </div>
+                        <div class="api-verb-row">
+                            <span class="api-verb">POST</span>
+                            <span class="api-path">/audits</span>
+                            <span class="api-meta">Write entry</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="api-column">
+                    <h3 class="card-title">Request gating</h3>
+                    <div class="api-gate">
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Auth policy</strong>
+                                <p>Role + claim validation for read/write/admin scopes.</p>
+                            </div>
+                        </div>
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Input validation</strong>
+                                <p>Account format, score ranges, and payload completeness.</p>
+                            </div>
+                        </div>
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Error envelope</strong>
+                                <p>Consistent response shape with trace IDs and retry guidance.</p>
+                            </div>
+                        </div>
+                        <div class="gate-step">
+                            <span class="gate-dot"></span>
+                            <div>
+                                <strong>Logging + masking</strong>
+                                <p>Correlation IDs with sensitive fields obfuscated.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="config-jobs-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="config-jobs-title" class="section-title">Secure configuration + background jobs</h2>
+                <p class="section-subtitle">
+                    Secrets sourced from environment variables or a mock secrets manager, paired with scheduled jobs
+                    and retry logic for data rollups.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Secrets and configuration map</h3>
+                    <div class="config-map">
+                        <div class="config-row">
+                            <span class="config-key">JWT signing key</span>
+                            <span class="config-source">Env</span>
+                            <span class="config-mask">••••••••••</span>
+                        </div>
+                        <div class="config-row">
+                            <span class="config-key">SQL password</span>
+                            <span class="config-source">Mock vault</span>
+                            <span class="config-mask">••••••••</span>
+                        </div>
+                        <div class="config-row">
+                            <span class="config-key">API base URL</span>
+                            <span class="config-source">Config</span>
+                            <span class="config-mask">https://api.qa.local</span>
+                        </div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>Secrets rotated quarterly with audit evidence.</li>
+                        <li>Masked values in logs and UI previews.</li>
+                        <li>Config changes tracked via change requests.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Job orchestration timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">02:00 UTC · QA score rollup begins.</div>
+                        <div class="timeline-item">02:05 UTC · Retry policy engaged for lagging shards.</div>
+                        <div class="timeline-item">02:12 UTC · Dashboard cache refreshed.</div>
+                        <div class="timeline-item">02:15 UTC · Audit entry published.</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="domain-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="domain-title" class="section-title">Data map and response behavior</h2>
+                <p class="section-subtitle">
+                    A visual summary of the data flow and response experience for consumers.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Data contract map</h3>
+                    <div class="data-grid">
+                        <div class="data-cell">
+                            <span>Account</span>
+                            <strong>Masked ID</strong>
+                            <small>Validated</small>
+                        </div>
+                        <div class="data-cell">
+                            <span>Agent</span>
+                            <strong>Agent ID</strong>
+                            <small>Role-scoped</small>
+                        </div>
+                        <div class="data-cell">
+                            <span>Score</span>
+                            <strong>0-100</strong>
+                            <small>Range enforced</small>
+                        </div>
+                        <div class="data-cell">
+                            <span>Category</span>
+                            <strong>QA rubric</strong>
+                            <small>Taxonomy locked</small>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Response experience</h3>
+                    <div class="response-grid">
+                        <div class="response-card">
+                            <strong>200 OK</strong>
+                            <p>Successful fetch with pagination metadata.</p>
+                        </div>
+                        <div class="response-card">
+                            <strong>201 Created</strong>
+                            <p>New QA score stored with audit trail.</p>
+                        </div>
+                        <div class="response-card">
+                            <strong>400 Bad Request</strong>
+                            <p>Validation errors with field hints.</p>
+                        </div>
+                        <div class="response-card">
+                            <strong>403 Forbidden</strong>
+                            <p>Policy check failed (RBAC or claims).</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="quality-security-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="quality-security-title" class="section-title">Quality, security, and compliance</h2>
+                <p class="section-subtitle">
+                    Unit tests, coverage evidence, input validation, authorization checks, secure logging, data masking,
+                    and audit readiness notes.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Quality coverage visualization</h3>
+                    <div class="quality-bars">
+                        <div class="quality-row">
+                            <span>Unit tests</span>
+                            <div class="quality-bar"><span style="width: 92%"></span></div>
+                            <strong>92%</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Integration</span>
+                            <div class="quality-bar"><span style="width: 87%"></span></div>
+                            <strong>87%</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Security</span>
+                            <div class="quality-bar"><span style="width: 96%"></span></div>
+                            <strong>96%</strong>
+                        </div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>Coverage thresholds enforced before release.</li>
+                        <li>Quality gates tracked in CI dashboards.</li>
+                        <li>Audit evidence archived with each build.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Security controls checklist</h3>
+                    <ul class="achievement-list">
+                        <li>Input validation for account numbers, scores, and categories.</li>
+                        <li>Authorization checks enforced by policy and scope claims.</li>
+                        <li>Secure logging with masked PII and correlation IDs.</li>
+                        <li>Data masking for SSN, DOB, and account identifiers.</li>
+                        <li>Audit readiness notes attached to release evidence.</li>
+                    </ul>
+                    <div class="masking-demo">
+                        <div>
+                            <span>Account</span>
+                            <strong>****-4471</strong>
+                        </div>
+                        <div>
+                            <span>SSN</span>
+                            <strong>***-**-9912</strong>
+                        </div>
+                        <div>
+                            <span>DOB</span>
+                            <strong>**/**/1989</strong>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Audit readiness notes (mock)</h3>
+                    <ul class="achievement-list">
+                        <li>Evidence packs include API change logs and reviewer approvals.</li>
+                        <li>Access logs retained for 12+ months with immutable storage.</li>
+                        <li>Privileged role assignments reviewed quarterly.</li>
+                    </ul>
+                    <div class="callout">
+                        <strong>Audit prep highlights:</strong>
+                        <p>
+                            Release evidence is stored alongside pipeline artifacts and includes approval trails, test
+                            reports, and security scan snapshots.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Validation and error feedback</h3>
+                    <div class="error-grid">
+                        <div class="error-card">
+                            <strong>Account format</strong>
+                            <p>Accepts uppercase alphanumeric with length checks.</p>
+                        </div>
+                        <div class="error-card">
+                            <strong>Score range</strong>
+                            <p>Rejects out-of-range scores with hints.</p>
+                        </div>
+                        <div class="error-card">
+                            <strong>Category rules</strong>
+                            <p>Validates against QA rubric taxonomy.</p>
+                        </div>
+                    </div>
+                    <p>Validation responses are consistent, actionable, and tracked in error dashboards.</p>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="operations-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="operations-title" class="section-title">Operational workflows</h2>
+                <p class="section-subtitle">
+                    How the API supports agents, analysts, and compliance teams with consistent workflows and
+                    reliability controls.
+                </p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Workflow</div>
+                    <h3 class="showcase-title">Agent QA submission flow</h3>
+                    <ul class="achievement-list">
+                        <li>Agent completes QA form in the contact center tool.</li>
+                        <li>API validates payload and confirms policy compliance.</li>
+                        <li>Audit log written for submission with masked account identifiers.</li>
+                    </ul>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Workflow</div>
+                    <h3 class="showcase-title">Compliance review flow</h3>
+                    <ul class="achievement-list">
+                        <li>Compliance lead fetches scorecards via admin endpoints.</li>
+                        <li>Role-based access checks applied for export operations.</li>
+                        <li>Export logs retained with trace IDs and approval notes.</li>
+                    </ul>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Workflow</div>
+                    <h3 class="showcase-title">Scheduled rollup flow</h3>
+                    <ul class="achievement-list">
+                        <li>Hangfire job aggregates scores and writes to reporting tables.</li>
+                        <li>Retry logic replays failed rollups automatically.</li>
+                        <li>Job completion broadcast to dashboards and logs.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>Mocked API blueprint demonstrating backend, security, and compliance patterns.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

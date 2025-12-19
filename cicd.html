@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual CI/CD Blueprint · Byheir Wise</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                ☰
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#demo">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="mock-api.html">Mock API</a></li>
+                <li><a href="cicd.html" aria-current="page">CI/CD</a></li>
+                <li><a href="react.html">React</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section aria-labelledby="cicd-overview-title">
+            <div class="section-header">
+                <h1 id="cicd-overview-title" class="section-title">Visual CI/CD Blueprint</h1>
+                <p class="section-subtitle">
+                    A visual CI/CD pipeline map with stages, quality gates, and release checkpoints—presented as
+                    dashboards and diagrams instead of code snippets.
+                </p>
+            </div>
+
+            <div class="demo-section" aria-label="DevOps metrics">
+                <div class="demo-header">
+                    <div>
+                        <h2 class="demo-title">Release readiness dashboard</h2>
+                        <p class="demo-subtitle">
+                            A quick snapshot of build health, quality gates, and deployment cadence.
+                        </p>
+                    </div>
+                    <div class="demo-controls" aria-label="DevOps focus controls">
+                        <button class="demo-btn active" aria-pressed="true">CI</button>
+                        <button class="demo-btn" aria-pressed="false">Quality</button>
+                        <button class="demo-btn" aria-pressed="false">Deploy</button>
+                        <button class="demo-btn" aria-pressed="false">Release</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Build success</div>
+                        <div class="metric-value">98.8%</div>
+                        <div class="metric-change">Last 30 builds passing</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Quality gates</div>
+                        <div class="metric-value">6</div>
+                        <div class="metric-change">Lint, tests, coverage, security</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Deploy cadence</div>
+                        <div class="metric-value">Weekly</div>
+                        <div class="metric-change">Stable, staged promotions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Mean time to recover</div>
+                        <div class="metric-value">12 min</div>
+                        <div class="metric-change">Automated rollback runbooks</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Pipeline goals</h3>
+                    <ul class="achievement-list">
+                        <li>Catch defects early with automated tests and linting.</li>
+                        <li>Enforce coverage thresholds and security checks.</li>
+                        <li>Ship predictable releases with staged approvals.</li>
+                        <li>Maintain audit trails for each deployment.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="pipeline-map-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="pipeline-map-title" class="section-title">Pipeline stages and artifacts</h2>
+                <p class="section-subtitle">
+                    A full pipeline map showing the artifacts produced at each stage and how quality signals roll up
+                    into release readiness.
+                </p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 1</div>
+                    <h3 class="showcase-title">Build + package</h3>
+                    <div class="tag-list">
+                        <span class="tag">restore</span>
+                        <span class="tag">compile</span>
+                        <span class="tag">publish</span>
+                    </div>
+                    <p>Produces versioned build artifacts and SBOM metadata for security review.</p>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 2</div>
+                    <h3 class="showcase-title">Test + coverage</h3>
+                    <div class="tag-list">
+                        <span class="tag">unit</span>
+                        <span class="tag">integration</span>
+                        <span class="tag">coverage</span>
+                    </div>
+                    <p>Publishes coverage reports and blocks merges below threshold.</p>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 3</div>
+                    <h3 class="showcase-title">Security + quality</h3>
+                    <div class="tag-list">
+                        <span class="tag">SAST</span>
+                        <span class="tag">secret-scan</span>
+                        <span class="tag">lint</span>
+                    </div>
+                    <p>Runs code quality checks, dependency audits, and secret detection.</p>
+                </div>
+                <div class="showcase-panel">
+                    <div class="showcase-kicker">Stage 4</div>
+                    <h3 class="showcase-title">Deploy + verify</h3>
+                    <div class="tag-list">
+                        <span class="tag">staging</span>
+                        <span class="tag">smoke-tests</span>
+                        <span class="tag">monitoring</span>
+                    </div>
+                    <p>Performs smoke tests, validates telemetry, and prepares release notes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="pipeline-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="pipeline-title" class="section-title">CI pipeline visualization (build, test, lint)</h2>
+                <p class="section-subtitle">
+                    A visual breakdown of pipeline steps, outputs, and decision gates.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Pipeline flow</h3>
+                    <div class="pipeline-flow">
+                        <div class="pipeline-node">
+                            <span class="node-title">Checkout</span>
+                            <span class="node-subtitle">Source + dependencies</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Build</span>
+                            <span class="node-subtitle">Release artifacts</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Tests</span>
+                            <span class="node-subtitle">Unit + integration</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Lint</span>
+                            <span class="node-subtitle">Formatting gate</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Security</span>
+                            <span class="node-subtitle">SAST + secret scan</span>
+                        </div>
+                        <div class="pipeline-node">
+                            <span class="node-title">Publish</span>
+                            <span class="node-subtitle">Artifacts + reports</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Quality gates enforced</h3>
+                    <ul class="achievement-list">
+                        <li>Unit tests required on every pull request.</li>
+                        <li>Coverage threshold: minimum 85% to merge.</li>
+                        <li>Linting and formatting checks with fail-fast policy.</li>
+                        <li>Security scanning for dependencies and secrets.</li>
+                    </ul>
+                    <div class="quality-badges">
+                        <span class="badge">Coverage ≥ 85%</span>
+                        <span class="badge">Lint clean</span>
+                        <span class="badge">Secrets scan</span>
+                        <span class="badge">Dependency audit</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="quality-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="quality-title" class="section-title">Quality and testing strategy</h2>
+                <p class="section-subtitle">
+                    Quality signals surfaced as visual checkpoints across the delivery lifecycle.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Quality scorecard</h3>
+                    <div class="badge-row">
+                        <span class="badge">Coverage ≥ 85%</span>
+                        <span class="badge">Lint clean</span>
+                        <span class="badge">Secrets scan</span>
+                        <span class="badge">Dependency audit</span>
+                    </div>
+                    <div class="quality-bars">
+                        <div class="quality-row">
+                            <span>Coverage</span>
+                            <div class="quality-bar"><span style="width: 93%"></span></div>
+                            <strong>93%</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Lint</span>
+                            <div class="quality-bar"><span style="width: 100%"></span></div>
+                            <strong>0 issues</strong>
+                        </div>
+                        <div class="quality-row">
+                            <span>Security</span>
+                            <div class="quality-bar"><span style="width: 98%"></span></div>
+                            <strong>0 critical</strong>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Test pyramid example</h3>
+                    <div class="pyramid">
+                        <div class="pyramid-layer layer-top">
+                            <strong>Contract tests</strong>
+                            <span>Version compatibility</span>
+                        </div>
+                        <div class="pyramid-layer layer-mid">
+                            <strong>Integration tests</strong>
+                            <span>API + database + jobs</span>
+                        </div>
+                        <div class="pyramid-layer layer-base">
+                            <strong>Unit tests</strong>
+                            <span>Controllers, validators, services</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="deployment-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="deployment-title" class="section-title">Deployment steps</h2>
+                <p class="section-subtitle">
+                    Controlled deployment process with staged approvals and rollback readiness.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Release flow</h3>
+                    <ol class="achievement-list">
+                        <li>Merge to main after CI passes and peer review.</li>
+                        <li>Create release tag (v1.x.y) and generate release notes.</li>
+                        <li>Deploy to staging with smoke tests and observability checks.</li>
+                        <li>Promote to production with stakeholder approval.</li>
+                        <li>Post-deploy validation: health checks, job status, logs.</li>
+                    </ol>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Deployment guardrails</h3>
+                    <ul class="achievement-list">
+                        <li>Blue/green slot deployment with automated rollback.</li>
+                        <li>Secrets injected at deploy time via environment variables.</li>
+                        <li>Change windows documented for compliance.</li>
+                        <li>Incident response runbooks linked to releases.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="observability-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="observability-title" class="section-title">Observability and deployment validation</h2>
+                <p class="section-subtitle">
+                    Rollout monitoring, alerting, and audit-ready evidence collection during release windows.
+                </p>
+            </div>
+
+            <div class="split-card card">
+                <div>
+                    <h3 class="card-title">Telemetry checklist</h3>
+                    <ul class="achievement-list">
+                        <li>API latency, error rates, and saturation tracked per release.</li>
+                        <li>Job queues and retries surfaced to on-call dashboards.</li>
+                        <li>Audit logs piped to immutable storage with retention policies.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="card-title">Release validation notes</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">T-0: Deploy to staging and run smoke tests.</div>
+                        <div class="timeline-item">T+10: Validate metrics and error budgets.</div>
+                        <div class="timeline-item">T+30: Promote to production with approvals.</div>
+                        <div class="timeline-item">T+60: Post-deploy evidence pack generated.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="branching-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="branching-title" class="section-title">Branching strategy</h2>
+                <p class="section-subtitle">
+                    Lightweight Gitflow-inspired branching that balances velocity with safety.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Branch map</h3>
+                    <div class="branch-map">
+                        <div class="branch-line main-branch">main</div>
+                        <div class="branch-line feature-branch">feature/qa-score-endpoints</div>
+                        <div class="branch-line feature-branch">feature/observability-upgrades</div>
+                        <div class="branch-line hotfix-branch">hotfix/auth-timeout</div>
+                        <div class="branch-line release-branch">release/v1.6.0</div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>Short-lived feature branches with required reviews.</li>
+                        <li>Release branches for controlled deployments.</li>
+                        <li>Hotfix branches for rapid production fixes.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Audit-ready release notes</h3>
+                    <ul class="achievement-list">
+                        <li>Every release includes ticket references and approvals.</li>
+                        <li>Security reviews captured in change records.</li>
+                        <li>Evidence stored alongside pipeline artifacts.</li>
+                    </ul>
+                    <div class="release-notes">
+                        <div>
+                            <strong>Release v1.6.0</strong>
+                            <p>Feature: new QA score endpoints</p>
+                        </div>
+                        <div>
+                            <strong>Risk review</strong>
+                            <p>Approved by compliance lead</p>
+                        </div>
+                        <div>
+                            <strong>Evidence pack</strong>
+                            <p>Security scan + coverage report</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Byheir Wise · Lead Business Execution Consultant</p>
+        <p>CI/CD blueprint showcasing build, quality, and release governance.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
