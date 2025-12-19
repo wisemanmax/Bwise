@@ -448,6 +448,219 @@ function initSmoothScroll() {
 }
 
 // ============================================================================
+// BACKEND SHOWCASE INTERACTIONS
+// ============================================================================
+
+class BackendShowcase {
+  constructor() {
+    this.filterButtons = safeQueryAll('[data-showcase-filter]');
+    this.cards = safeQueryAll('[data-showcase-tag]');
+    this.summary = safeQuery('[data-showcase-summary]');
+    this.kpiNodes = safeQueryAll('[data-showcase-kpi]');
+    this.maskToggle = safeQuery('[data-mask-toggle]');
+    this.maskedValues = safeQueryAll('[data-mask-value]');
+    this.retryButton = safeQuery('[data-retry-button]');
+    this.retryStatus = safeQuery('[data-retry-status]');
+    this.logStream = safeQuery('[data-log-stream]');
+    this.auditLog = safeQuery('[data-audit-log]');
+
+    this.kpiValues = {
+      all: {
+        services: { value: '12', change: 'Versioned APIs, jobs, and reporting endpoints' },
+        coverage: { value: '92%', change: 'Unit + integration suites with quality gates' },
+        latency: { value: '180ms', change: 'Optimized queries + caching strategy' },
+        compliance: { value: '99%', change: 'Secure logging, masking, and evidence trails' }
+      },
+      backend: {
+        services: { value: '6', change: 'CRUD APIs, auth middleware, and background jobs' },
+        coverage: { value: '94%', change: 'Controller + service layer test coverage' },
+        latency: { value: '140ms', change: 'API optimized with async I/O + caching' },
+        compliance: { value: '97%', change: 'Threat modeling and endpoint hardening' }
+      },
+      data: {
+        services: { value: '4', change: 'Reporting views and data validation jobs' },
+        coverage: { value: '90%', change: 'SQL unit tests + migration verification' },
+        latency: { value: '220ms', change: 'Index tuning on high volume reports' },
+        compliance: { value: '98%', change: 'Data lineage and masking controls' }
+      },
+      enterprise: {
+        services: { value: '5', change: 'Admin portal, RBAC, and form builder' },
+        coverage: { value: '93%', change: 'Role/permission logic fully tested' },
+        latency: { value: '160ms', change: 'UI actions backed by cached policies' },
+        compliance: { value: '99%', change: 'Audit log coverage for all admin actions' }
+      },
+      devops: {
+        services: { value: '8', change: 'CI pipelines, checks, and deployments' },
+        coverage: { value: '95%', change: 'Coverage gates enforced in CI' },
+        latency: { value: '170ms', change: 'Performance baselines tracked per release' },
+        compliance: { value: '98%', change: 'Release evidence and change logs' }
+      },
+      security: {
+        services: { value: '7', change: 'Authorization and security services' },
+        coverage: { value: '91%', change: 'Auth, validation, and logging tests' },
+        latency: { value: '150ms', change: 'Security middleware optimized' },
+        compliance: { value: '99%', change: 'Audit readiness controls always on' }
+      }
+    };
+
+    this.summaryText = {
+      all: 'Multi-system view: backend APIs, analytics pipelines, admin tooling, and compliance controls aligned to internal SLAs and regulatory audit expectations.',
+      backend: 'Backend view: CRUD APIs, versioned endpoints, background jobs, retry logic, and structured logging for operational visibility.',
+      data: 'Data view: normalized SQL schemas, migration scripts, indexed tables, and KPI-ready reporting layers.',
+      enterprise: 'Enterprise view: admin portals with RBAC, feature flags, dynamic form builders, and audit trails.',
+      devops: 'DevOps view: CI/CD, test coverage gates, deployment readiness, and branching discipline.',
+      security: 'Security view: input validation, authorization checks, secure logging, and data masking.'
+    };
+
+    if (
+      this.filterButtons.length === 0 &&
+      this.cards.length === 0 &&
+      !this.summary &&
+      this.kpiNodes.length === 0
+    ) {
+      return;
+    }
+
+    this.currentFilter = 'all';
+    this.init();
+  }
+
+  init() {
+    this.filterButtons.forEach(button => {
+      button.addEventListener('click', () => this.applyFilter(button.dataset.showcaseFilter));
+    });
+
+    if (this.maskToggle) {
+      this.maskToggle.addEventListener('click', () => this.toggleMaskedValues());
+    }
+
+    if (this.retryButton) {
+      this.retryButton.addEventListener('click', () => this.simulateRetries());
+    }
+
+    if (this.logStream) {
+      this.startLogStreamRotation();
+    }
+
+    if (this.auditLog) {
+      this.startAuditLogRotation();
+    }
+  }
+
+  applyFilter(filter) {
+    if (!filter || !this.kpiValues[filter]) {
+      return;
+    }
+
+    this.currentFilter = filter;
+    this.filterButtons.forEach(button => {
+      const isActive = button.dataset.showcaseFilter === filter;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+
+    this.cards.forEach(card => {
+      const tags = (card.dataset.showcaseTag || '').split(',').map(tag => tag.trim());
+      const shouldShow = filter === 'all' || tags.includes(filter);
+      card.style.display = shouldShow ? '' : 'none';
+    });
+
+    this.updateSummary();
+    this.updateKpis();
+  }
+
+  updateSummary() {
+    if (this.summary) {
+      this.summary.textContent = this.summaryText[this.currentFilter] || this.summaryText.all;
+    }
+  }
+
+  updateKpis() {
+    const values = this.kpiValues[this.currentFilter];
+    if (!values) return;
+
+    this.kpiNodes.forEach(node => {
+      const key = node.dataset.kpiKey;
+      if (!key || !values[key]) return;
+
+      const valueNode = node.querySelector('.metric-value');
+      const changeNode = node.querySelector('.metric-change');
+
+      if (valueNode) valueNode.textContent = values[key].value;
+      if (changeNode) changeNode.textContent = values[key].change;
+
+      node.classList.add('pulse');
+      setTimeout(() => node.classList.remove('pulse'), 600);
+    });
+  }
+
+  toggleMaskedValues() {
+    this.maskedValues.forEach(valueNode => {
+      const isMasked = valueNode.textContent === valueNode.dataset.maskValue;
+      valueNode.textContent = isMasked ? valueNode.dataset.maskRaw : valueNode.dataset.maskValue;
+    });
+  }
+
+  simulateRetries() {
+    if (!this.retryStatus) return;
+    const steps = [
+      'Attempt 1 failed: SQL timeout. Waiting 2s...',
+      'Attempt 2 failed: transient network error. Waiting 4s...',
+      'Attempt 3 succeeded: rollup completed.'
+    ];
+
+    let index = 0;
+    this.retryStatus.textContent = steps[index];
+
+    const interval = setInterval(() => {
+      index += 1;
+      if (index >= steps.length) {
+        clearInterval(interval);
+        return;
+      }
+      this.retryStatus.textContent = steps[index];
+    }, 1000);
+  }
+
+  startLogStreamRotation() {
+    const messages = [
+      '[2025-01-08 10:11:32Z] api.v1.qa-scores POST 201 (Auth=Required, Trace=8f3a...)',
+      '[2025-01-08 10:11:33Z] jobs.qa-score-rollup SUCCESS duration=842ms',
+      '[2025-01-08 10:11:34Z] sql.reporting VIEW REFRESHED (QaScoresDaily)',
+      '[2025-01-08 10:11:36Z] audit.user-role UPDATE user=ops_admin role=ComplianceLead',
+      '[2025-01-08 10:11:40Z] security.masking PII redaction applied fields=SSN,DOB',
+      '[2025-01-08 10:11:45Z] auth.jwt REFRESH token issued user=qa_supervisor'
+    ];
+
+    let offset = 0;
+    setInterval(() => {
+      if (!this.logStream) return;
+      offset = (offset + 1) % messages.length;
+      const output = messages.slice(offset).concat(messages.slice(0, offset)).join('\n');
+      this.logStream.textContent = output;
+    }, 6000);
+  }
+
+  startAuditLogRotation() {
+    const entries = [
+      '[2025-01-08 09:02] jlee updated form qa-scorecard-v4 (sections=2, questions=6)',
+      '[2025-01-08 09:11] kpatel updated role compliance_lead (added audit.write)',
+      '[2025-01-08 09:21] mrobinson toggled feature flag new-qa-dashboard ON',
+      '[2025-01-08 09:34] rhuang exported QA report (filters=region-east, month=Dec)',
+      '[2025-01-08 09:47] sjohnson approved release v1.4.0 (change-id=CR-1842)'
+    ];
+
+    let start = 0;
+    setInterval(() => {
+      if (!this.auditLog) return;
+      start = (start + 1) % entries.length;
+      const output = entries.slice(start).concat(entries.slice(0, start)).join('\n');
+      this.auditLog.textContent = output;
+    }, 8000);
+  }
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -464,6 +677,9 @@ function init() {
 
     // Initialize smooth scrolling
     initSmoothScroll();
+
+    // Initialize backend showcase interactions
+    new BackendShowcase();
 
     // Monitor performance (development only)
     if (window.location.hostname === 'localhost') {
