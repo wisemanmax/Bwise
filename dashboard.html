@@ -131,28 +131,6 @@
       color: var(--fiord);
     }
 
-    .header__notification {
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      position: relative;
-      padding: 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .header__notification-dot {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--cinnabar);
-      box-shadow: 0 0 0 2px var(--catskill-white);
-    }
-
     .status-pill {
       padding: 6px 14px;
       border-radius: 20px;
@@ -1119,6 +1097,7 @@
           <i class="far fa-bell header__icon"></i>
           <span class="header__notification-dot" aria-hidden="true"></span>
         </button>
+        <i class="far fa-bell header__icon"></i>
         <a class="header__icon-link" href="https://www.byheir.com/" aria-label="Home">
           <i class="fas fa-home header__icon"></i>
         </a>
@@ -1213,54 +1192,6 @@
       </ul>
     </div>
   </aside>
-
-  <div class="notification-panel" id="notification-panel" role="dialog" aria-label="Notifications">
-    <div class="panel-header">
-      <div class="panel-title">Notifications</div>
-      <div class="panel-actions">
-        <button class="btn-ghost" type="button" id="clear-notifications">Clear all</button>
-      </div>
-    </div>
-    <div class="notification-filter" role="tablist" aria-label="Notification filters">
-      <button class="chip-pill is-active" type="button" data-notification-filter="all" aria-pressed="true">All</button>
-      <button class="chip-pill" type="button" data-notification-filter="high" aria-pressed="false">High</button>
-      <button class="chip-pill" type="button" data-notification-filter="medium" aria-pressed="false">Medium</button>
-      <button class="chip-pill" type="button" data-notification-filter="low" aria-pressed="false">Low</button>
-    </div>
-    <div class="notification-item" data-notification="high">
-      <div class="notification-item__title">Fraud spike escalation</div>
-      <div class="notification-item__meta">
-        <span><i class="fas fa-clock"></i>Due in 45 min</span>
-        <span><i class="fas fa-user-shield"></i>Atlas Squad</span>
-      </div>
-      <div class="notification-item__actions">
-        <button type="button" class="acknowledge-btn">Acknowledge</button>
-        <button type="button">Open</button>
-      </div>
-    </div>
-    <div class="notification-item" data-notification="medium">
-      <div class="notification-item__title">Disclosure gap flagged</div>
-      <div class="notification-item__meta">
-        <span><i class="fas fa-file-alt"></i>5 policy hits</span>
-        <span><i class="fas fa-clock"></i>Due in 3 hrs</span>
-      </div>
-      <div class="notification-item__actions">
-        <button type="button" class="acknowledge-btn">Acknowledge</button>
-        <button type="button">Open</button>
-      </div>
-    </div>
-    <div class="notification-item" data-notification="low">
-      <div class="notification-item__title">CX survey backlog</div>
-      <div class="notification-item__meta">
-        <span><i class="fas fa-comment-dots"></i>32 surveys queued</span>
-        <span><i class="fas fa-clock"></i>Send by EOD</span>
-      </div>
-      <div class="notification-item__actions">
-        <button type="button" class="acknowledge-btn">Acknowledge</button>
-        <button type="button">Open</button>
-      </div>
-    </div>
-  </div>
 
     <main class="main" id="main-content">
     <div class="main-header">
