@@ -5,6 +5,7 @@
   <title>Data & Analytics · Byheir Wise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --fiord: #394263;
@@ -140,6 +141,79 @@
       font-weight: 700;
     }
 
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .toolbar__filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--abbey);
+      letter-spacing: 0.4px;
+    }
+
+    .filter-select {
+      border: 1px solid var(--mischka);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 14px;
+      background: var(--white);
+    }
+
+    .toolbar__actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--java);
+      color: var(--white);
+      box-shadow: 0 8px 16px rgba(27, 186, 225, 0.2);
+    }
+
+    .btn-secondary {
+      background: var(--catskill-white);
+      color: var(--fiord);
+      border: 1px solid var(--mischka);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
     .section-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -202,6 +276,152 @@
       margin: 8px 0 0 0;
     }
 
+    .metrics__updated {
+      font-size: 12px;
+      color: var(--abbey);
+      margin-top: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--athens-gray);
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--abbey);
+      border-bottom: 3px solid transparent;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .tab.active {
+      color: var(--java);
+      border-bottom-color: var(--java);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .chart-card {
+      background: var(--catskill-white);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--athens-gray);
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .chart-canvas {
+      height: 200px;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--catskill-white);
+      padding: 14px 18px;
+      border-radius: 6px;
+      border: 1px solid var(--athens-gray);
+    }
+
+    .status-item__name {
+      font-weight: 600;
+    }
+
+    .status-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-pill.success {
+      background: rgba(39, 174, 96, 0.15);
+      color: var(--jungle-green);
+    }
+
+    .status-pill.warning {
+      background: rgba(230, 126, 34, 0.15);
+      color: var(--zest);
+    }
+
+    .status-pill.info {
+      background: rgba(27, 186, 225, 0.15);
+      color: var(--java);
+    }
+
+    .progress-track {
+      background: var(--athens-gray);
+      border-radius: 999px;
+      overflow: hidden;
+      height: 8px;
+      margin-top: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--java);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--athens-gray);
+      font-size: 14px;
+    }
+
+    .data-table th {
+      background: var(--catskill-white);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--abbey);
+    }
+
     .footer {
       grid-area: footer;
       display: flex;
@@ -240,24 +460,62 @@
         <p class="page-header__subtitle">Data pipelines, analytics platforms, and business intelligence tools</p>
       </div>
 
+      <div class="toolbar">
+        <div class="toolbar__filters">
+          <div class="filter-group">
+            <span class="filter-label">Portfolio</span>
+            <select class="filter-select">
+              <option selected>All Products</option>
+              <option>Installment</option>
+              <option>Line of Credit</option>
+              <option>Card</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Time Range</span>
+            <select class="filter-select">
+              <option>Last 7 Days</option>
+              <option selected>Last 30 Days</option>
+              <option>Quarter to Date</option>
+              <option>Year to Date</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <span class="filter-label">Region</span>
+            <select class="filter-select">
+              <option selected>National</option>
+              <option>West</option>
+              <option>Midwest</option>
+              <option>South</option>
+              <option>Northeast</option>
+            </select>
+          </div>
+        </div>
+        <div class="toolbar__actions">
+          <button class="btn btn-secondary"><i class="fas fa-sliders-h"></i> Configure</button>
+          <button class="btn btn-primary" id="refreshMetrics"><i class="fas fa-sync"></i> Refresh Metrics</button>
+        </div>
+      </div>
+
       <div class="metrics">
-        <div class="metric-card">
+        <div class="metric-card" data-value="15.2" data-unit="TB">
           <p class="metric-card__value">15.2TB</p>
           <p class="metric-card__label">Data Warehouse Size</p>
         </div>
-        <div class="metric-card">
+        <div class="metric-card" data-value="847" data-unit="">
           <p class="metric-card__value">847</p>
           <p class="metric-card__label">Active Dashboards</p>
         </div>
-        <div class="metric-card">
+        <div class="metric-card" data-value="99.8" data-unit="%">
           <p class="metric-card__value">99.8%</p>
           <p class="metric-card__label">Pipeline Uptime</p>
         </div>
-        <div class="metric-card">
+        <div class="metric-card" data-value="2.4" data-unit="M">
           <p class="metric-card__value">2.4M</p>
           <p class="metric-card__label">Daily Records</p>
         </div>
       </div>
+      <div class="metrics__updated" id="metricsTimestamp">Last refresh: 3 minutes ago</div>
 
       <div class="card">
         <h2 class="card__title text-light">Analytics <strong>Platforms</strong></h2>
@@ -296,22 +554,135 @@
       </div>
 
       <div class="card">
-        <h2 class="card__title text-light">Pipeline <strong>Status</strong></h2>
-        <div class="section-grid">
-          <div class="tool-item" style="border-left-color: var(--jungle-green);">
-            <div class="tool-item__icon" style="color: var(--jungle-green);"><i class="fas fa-check-circle"></i></div>
-            <h3 class="tool-item__title">Nightly Jobs</h3>
-            <p class="tool-item__description">All SAS to Snowflake jobs completed successfully. Data fresh as of 6:42 AM today.</p>
+        <h2 class="card__title text-light">Insight <strong>Workbench</strong></h2>
+        <div class="tabs">
+          <button class="tab active" onclick="switchAnalyticsTab(event, 'overview')">
+            <i class="fas fa-chart-area"></i> Overview
+          </button>
+          <button class="tab" onclick="switchAnalyticsTab(event, 'operations')">
+            <i class="fas fa-project-diagram"></i> Pipeline Ops
+          </button>
+          <button class="tab" onclick="switchAnalyticsTab(event, 'governance')">
+            <i class="fas fa-shield-alt"></i> Governance
+          </button>
+        </div>
+
+        <div id="overview" class="tab-content active">
+          <div class="chart-grid">
+            <div class="chart-card">
+              <div class="chart-title">Ingest Volume by Source</div>
+              <canvas id="ingestChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="chart-card">
+              <div class="chart-title">Query Performance</div>
+              <canvas id="queryChart" class="chart-canvas"></canvas>
+            </div>
+            <div class="chart-card">
+              <div class="chart-title">Model Accuracy Trend</div>
+              <canvas id="modelChart" class="chart-canvas"></canvas>
+            </div>
           </div>
-          <div class="tool-item" style="border-left-color: var(--java);">
-            <div class="tool-item__icon" style="color: var(--java);"><i class="fas fa-sync-alt"></i></div>
-            <h3 class="tool-item__title">Real-Time Feeds</h3>
-            <p class="tool-item__description">Transaction and event streams processing normally. Average latency: 1.2 seconds.</p>
+        </div>
+
+        <div id="operations" class="tab-content">
+          <div class="section-grid">
+            <div class="tool-item" style="border-left-color: var(--jungle-green);">
+              <div class="tool-item__icon" style="color: var(--jungle-green);"><i class="fas fa-check-circle"></i></div>
+              <h3 class="tool-item__title">Nightly Jobs</h3>
+              <p class="tool-item__description">All SAS to Snowflake jobs completed successfully. Data fresh as of 6:42 AM today.</p>
+              <div class="progress-track"><div class="progress-fill" style="width: 96%;"></div></div>
+            </div>
+            <div class="tool-item" style="border-left-color: var(--java);">
+              <div class="tool-item__icon" style="color: var(--java);"><i class="fas fa-sync-alt"></i></div>
+              <h3 class="tool-item__title">Real-Time Feeds</h3>
+              <p class="tool-item__description">Transaction and event streams processing normally. Average latency: 1.2 seconds.</p>
+              <div class="progress-track"><div class="progress-fill" style="width: 88%;"></div></div>
+            </div>
+            <div class="tool-item" style="border-left-color: var(--amethyst);">
+              <div class="tool-item__icon" style="color: var(--amethyst);"><i class="fas fa-chart-line"></i></div>
+              <h3 class="tool-item__title">Data Quality</h3>
+              <p class="tool-item__description">Automated validation checks passed. 2 minor data quality issues flagged for review.</p>
+              <div class="progress-track"><div class="progress-fill" style="width: 93%;"></div></div>
+            </div>
           </div>
-          <div class="tool-item" style="border-left-color: var(--amethyst);">
-            <div class="tool-item__icon" style="color: var(--amethyst);"><i class="fas fa-chart-line"></i></div>
-            <h3 class="tool-item__title">Data Quality</h3>
-            <p class="tool-item__description">Automated validation checks passed. 2 minor data quality issues flagged for review.</p>
+          <div class="status-list">
+            <div class="status-item">
+              <div>
+                <div class="status-item__name">Latency SLA</div>
+                <div class="metrics__updated">Streaming feeds within 2s target</div>
+              </div>
+              <span class="status-pill success">Healthy</span>
+            </div>
+            <div class="status-item">
+              <div>
+                <div class="status-item__name">Cost Controls</div>
+                <div class="metrics__updated">Warehouse spend 4% under forecast</div>
+              </div>
+              <span class="status-pill info">Optimized</span>
+            </div>
+            <div class="status-item">
+              <div>
+                <div class="status-item__name">Schema Changes</div>
+                <div class="metrics__updated">2 upstream schema updates pending review</div>
+              </div>
+              <span class="status-pill warning">Review</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="governance" class="tab-content">
+          <div class="section-grid">
+            <div class="chart-card">
+              <div class="chart-title">Access Requests</div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Requester</th>
+                    <th>Dataset</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Marina Lowe</td>
+                    <td>Credit Score Features</td>
+                    <td>High</td>
+                    <td><span class="status-pill info">Review</span></td>
+                  </tr>
+                  <tr>
+                    <td>Rafael Cruz</td>
+                    <td>Fraud Alerts</td>
+                    <td>Medium</td>
+                    <td><span class="status-pill success">Approved</span></td>
+                  </tr>
+                  <tr>
+                    <td>Priya Patel</td>
+                    <td>Servicing Tickets</td>
+                    <td>Low</td>
+                    <td><span class="status-pill warning">Pending</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="chart-card">
+              <div class="chart-title">Data Quality Reviews</div>
+              <div class="status-list">
+                <div class="status-item">
+                  <div class="status-item__name">Duplicate Account IDs</div>
+                  <span class="status-pill warning">3 flags</span>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__name">Missing Income Values</div>
+                  <span class="status-pill info">Monitoring</span>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__name">Late File Arrivals</div>
+                  <span class="status-pill success">Resolved</span>
+                </div>
+              </div>
+              <div class="metrics__updated">Next governance council: Friday 2:00 PM ET</div>
+            </div>
           </div>
         </div>
       </div>
@@ -322,5 +693,110 @@
       <p>Data & Analytics</p>
     </footer>
   </div>
+
+  <script>
+    function switchAnalyticsTab(event, tabId) {
+      const tabs = document.querySelectorAll('.tab');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+
+      event.target.closest('.tab').classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function updateMetrics() {
+      const metricCards = document.querySelectorAll('.metric-card');
+      metricCards.forEach(card => {
+        const baseValue = parseFloat(card.dataset.value);
+        const unit = card.dataset.unit;
+        const variance = (Math.random() * 6 - 3) / 100;
+        const newValue = (baseValue + baseValue * variance);
+        const formatted = unit === '%'
+          ? `${newValue.toFixed(1)}${unit}`
+          : unit === 'TB'
+            ? `${newValue.toFixed(1)}${unit}`
+            : unit === 'M'
+              ? `${newValue.toFixed(2)}${unit}`
+              : `${Math.round(newValue)}`;
+        card.querySelector('.metric-card__value').textContent = formatted;
+      });
+
+      const timestamp = document.getElementById('metricsTimestamp');
+      const now = new Date();
+      timestamp.textContent = `Last refresh: ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
+
+    window.addEventListener('load', () => {
+      const refreshButton = document.getElementById('refreshMetrics');
+      if (refreshButton) {
+        refreshButton.addEventListener('click', updateMetrics);
+      }
+
+      const ingestCtx = document.getElementById('ingestChart');
+      if (ingestCtx) {
+        new Chart(ingestCtx, {
+          type: 'bar',
+          data: {
+            labels: ['SAS', 'APIs', 'CRM', 'Core', '3rd Party'],
+            datasets: [{
+              label: 'TB',
+              data: [4.2, 2.8, 3.1, 4.7, 0.9],
+              backgroundColor: ['#1bbae1', '#27ae60', '#e67e22', '#af64cc', '#e74c3c']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+
+      const queryCtx = document.getElementById('queryChart');
+      if (queryCtx) {
+        new Chart(queryCtx, {
+          type: 'line',
+          data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+              label: 'Avg Query (s)',
+              data: [3.6, 3.2, 3.1, 2.9, 2.7, 2.5, 2.6],
+              borderColor: '#1bbae1',
+              backgroundColor: 'rgba(27, 186, 225, 0.15)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: false } }
+          }
+        });
+      }
+
+      const modelCtx = document.getElementById('modelChart');
+      if (modelCtx) {
+        new Chart(modelCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Champion', 'Challenger', 'Shadow'],
+            datasets: [{
+              data: [87, 9, 4],
+              backgroundColor: ['#27ae60', '#1bbae1', '#e67e22']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
