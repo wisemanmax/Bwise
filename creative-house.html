@@ -127,6 +127,46 @@
       margin: 0;
     }
 
+    .ops-strip {
+      margin: 20px 0 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .ops-strip__card {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--white);
+      backdrop-filter: blur(10px);
+    }
+
+    .ops-strip__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 700;
+    }
+
+    .ops-strip__value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .ops-strip__meta {
+      margin-top: 6px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
     .card {
       background-color: rgba(255, 255, 255, 0.15);
       border-radius: 12px;
@@ -251,6 +291,24 @@
         <h1 class="page-header__title text-light">Creative <strong>House</strong></h1>
         <p class="page-header__subtitle">Content creation, streaming, and digital media production hub</p>
       </div>
+
+      <section class="ops-strip">
+        <div class="ops-strip__card">
+          <div class="ops-strip__label">Launch calendar</div>
+          <div class="ops-strip__value">3 drops</div>
+          <div class="ops-strip__meta"><i class="fas fa-calendar"></i>Next drop in 2 days</div>
+        </div>
+        <div class="ops-strip__card">
+          <div class="ops-strip__label">Content health</div>
+          <div class="ops-strip__value">98%</div>
+          <div class="ops-strip__meta"><i class="fas fa-check-circle"></i>2 edits pending</div>
+        </div>
+        <div class="ops-strip__card">
+          <div class="ops-strip__label">Streaming uptime</div>
+          <div class="ops-strip__value">99.2%</div>
+          <div class="ops-strip__meta"><i class="fas fa-broadcast-tower"></i>Last outage 18d ago</div>
+        </div>
+      </section>
 
       <div class="metrics">
         <div class="metric-card">
