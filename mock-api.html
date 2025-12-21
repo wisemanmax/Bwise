@@ -40,7 +40,7 @@
                 </p>
             </div>
 
-            <div class="demo-section" aria-label="Mock API capability dashboard">
+            <div class="demo-section" aria-label="Mock API capability dashboard" data-dashboard="mock-api">
                 <div class="demo-header">
                     <div>
                         <h2 class="demo-title">Operational readiness snapshot</h2>
@@ -49,30 +49,30 @@
                         </p>
                     </div>
                     <div class="demo-controls" aria-label="API showcase filters">
-                        <button class="demo-btn active" aria-pressed="true">Core API</button>
-                        <button class="demo-btn" aria-pressed="false">Jobs</button>
-                        <button class="demo-btn" aria-pressed="false">Security</button>
-                        <button class="demo-btn" aria-pressed="false">Quality</button>
+                        <button class="demo-btn active" data-view="core" aria-pressed="true">Core API</button>
+                        <button class="demo-btn" data-view="jobs" aria-pressed="false">Jobs</button>
+                        <button class="demo-btn" data-view="security" aria-pressed="false">Security</button>
+                        <button class="demo-btn" data-view="quality" aria-pressed="false">Quality</button>
                     </div>
                 </div>
 
                 <div class="dashboard-grid">
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="versionedEndpoints">
                         <div class="metric-label">Versioned endpoints</div>
                         <div class="metric-value">18</div>
                         <div class="metric-change">CRUD + admin + reporting APIs</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="authCoverage">
                         <div class="metric-label">Auth coverage</div>
                         <div class="metric-value">100%</div>
                         <div class="metric-change">RBAC, scope claims, and policy checks</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="jobSuccessRate">
                         <div class="metric-label">Job success rate</div>
                         <div class="metric-value">99.3%</div>
                         <div class="metric-change">Scheduled rollups with retries</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="testCoverage">
                         <div class="metric-label">Unit test coverage</div>
                         <div class="metric-value">93%</div>
                         <div class="metric-change">CI gated with minimum threshold</div>

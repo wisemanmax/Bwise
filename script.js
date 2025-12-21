@@ -155,43 +155,28 @@ class MobileNavigation {
 // DASHBOARD MANAGER
 // ============================================================================
 
-class DashboardManager {
-  constructor() {
-    this.currentView = 'monthly';
+class DashboardSection {
+  constructor(root, dataSet) {
+    this.root = root;
+    this.dataSet = dataSet;
     this.animationTimeout = null;
-    this.data = {
-      monthly: {
-        totalReports: { value: '2,847', change: 'Up 12 percent from last period' },
-        timeSaved: { value: '1,240', change: 'About 60 percent efficiency gain' },
-        complianceScore: { value: '98.4', change: 'Stable and in target range' },
-        userSatisfaction: { value: '4.8', change: 'High adoption and positive feedback' }
-      },
-      quarterly: {
-        totalReports: { value: '8,310', change: 'Up 18 percent vs prior quarter' },
-        timeSaved: { value: '3,720', change: 'Manual work down about 64 percent' },
-        complianceScore: { value: '98.7', change: 'Slight improvement after new checks' },
-        userSatisfaction: { value: '4.7', change: 'Consistent positive feedback' }
-      },
-      yearly: {
-        totalReports: { value: '32,400', change: 'Up 26 percent year over year' },
-        timeSaved: { value: '14,800', change: 'Full year impact across all units' },
-        complianceScore: { value: '98.9', change: 'Sustained performance at target' },
-        userSatisfaction: { value: '4.8', change: 'Strong sentiment at scale' }
-      }
-    };
+    this.viewButtons = safeQueryAll('.demo-btn[data-view]', this.root);
+    this.metricCards = safeQueryAll('.metric-card', this.root);
 
-    this.viewButtons = safeQueryAll('.demo-btn');
-    
     if (this.viewButtons.length === 0) {
-      console.info('Dashboard not present on this page');
       return;
     }
 
+    this.currentView = this.getInitialView();
     this.init();
   }
 
+  getInitialView() {
+    const activeButton = this.viewButtons.find(btn => btn.classList.contains('active')) || this.viewButtons[0];
+    return activeButton ? activeButton.dataset.view : null;
+  }
+
   init() {
-    // Setup button event listeners
     this.viewButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const view = btn.dataset.view;
@@ -199,16 +184,19 @@ class DashboardManager {
       });
     });
 
-    // Keyboard navigation for buttons
     this.setupKeyboardNavigation();
+
+    if (this.currentView) {
+      this.setView(this.currentView);
+    }
   }
 
   setupKeyboardNavigation() {
     this.viewButtons.forEach((btn, index) => {
       btn.addEventListener('keydown', (e) => {
         let targetIndex;
-        
-        switch(e.key) {
+
+        switch (e.key) {
           case 'ArrowRight':
           case 'ArrowDown':
             targetIndex = (index + 1) % this.viewButtons.length;
@@ -234,20 +222,19 @@ class DashboardManager {
   }
 
   setView(view) {
-    if (!this.data[view]) {
+    if (!this.dataSet[view]) {
       console.error(`Invalid view: ${view}`);
       return;
     }
 
     this.currentView = view;
-    
+
     try {
-      this.updateMetrics(this.data[view]);
+      this.updateMetrics(this.dataSet[view]);
       this.updateButtons(view);
       this.animateCards();
-      
-      // Announce change to screen readers
-      const viewName = view.charAt(0).toUpperCase() + view.slice(1);
+
+      const viewName = view.replace(/-/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
       announceToScreenReader(`${viewName} view selected`);
     } catch (error) {
       console.error('Error updating dashboard view:', error);
@@ -256,25 +243,45 @@ class DashboardManager {
   }
 
   updateMetrics(data) {
+    const metricNodes = safeQueryAll('[data-metric-key]', this.root);
+
+    if (metricNodes.length > 0) {
+      metricNodes.forEach(node => {
+        const key = node.dataset.metricKey;
+        const values = data[key];
+        if (!values) return;
+
+        const valueElement = node.querySelector('.metric-value');
+        const changeElement = node.querySelector('.metric-change');
+
+        this.animateValueChange(valueElement, values.value);
+        if (changeElement) {
+          changeElement.textContent = values.change;
+        }
+      });
+      return;
+    }
+
     Object.entries(data).forEach(([key, values]) => {
       const valueElement = document.getElementById(key);
       const changeElement = document.getElementById(`${key}Change`);
 
-      if (valueElement) {
-        // Add transition for smooth value change
-        valueElement.style.transition = 'opacity 0.2s';
-        valueElement.style.opacity = '0.5';
-        
-        setTimeout(() => {
-          valueElement.textContent = values.value;
-          valueElement.style.opacity = '1';
-        }, 100);
-      }
-
+      this.animateValueChange(valueElement, values.value);
       if (changeElement) {
         changeElement.textContent = values.change;
       }
     });
+  }
+
+  animateValueChange(valueElement, nextValue) {
+    if (!valueElement) return;
+    valueElement.style.transition = 'opacity 0.2s';
+    valueElement.style.opacity = '0.5';
+
+    setTimeout(() => {
+      valueElement.textContent = nextValue;
+      valueElement.style.opacity = '1';
+    }, 100);
   }
 
   updateButtons(activeView) {
@@ -286,24 +293,111 @@ class DashboardManager {
   }
 
   animateCards() {
-    // Clear existing timeout
     clearTimeout(this.animationTimeout);
 
-    // Debounce animation to prevent spam
     this.animationTimeout = setTimeout(() => {
-      const cards = safeQueryAll('.metric-card');
-      cards.forEach((card, index) => {
+      this.metricCards.forEach((card, index) => {
         card.classList.remove('pulse');
-        
-        // Force reflow
         void card.offsetWidth;
-        
-        // Stagger animations
         setTimeout(() => {
           card.classList.add('pulse');
         }, index * 50);
       });
     }, 100);
+  }
+}
+
+class DashboardManager {
+  constructor() {
+    this.dataSets = {
+      reporting: {
+        monthly: {
+          totalReports: { value: '2,847', change: 'Up 12 percent from last period' },
+          timeSaved: { value: '1,240', change: 'About 60 percent efficiency gain' },
+          complianceScore: { value: '98.4', change: 'Stable and in target range' },
+          userSatisfaction: { value: '4.8', change: 'High adoption and positive feedback' }
+        },
+        quarterly: {
+          totalReports: { value: '8,310', change: 'Up 18 percent vs prior quarter' },
+          timeSaved: { value: '3,720', change: 'Manual work down about 64 percent' },
+          complianceScore: { value: '98.7', change: 'Slight improvement after new checks' },
+          userSatisfaction: { value: '4.7', change: 'Consistent positive feedback' }
+        },
+        yearly: {
+          totalReports: { value: '32,400', change: 'Up 26 percent year over year' },
+          timeSaved: { value: '14,800', change: 'Full year impact across all units' },
+          complianceScore: { value: '98.9', change: 'Sustained performance at target' },
+          userSatisfaction: { value: '4.8', change: 'Strong sentiment at scale' }
+        }
+      },
+      'mock-api': {
+        core: {
+          versionedEndpoints: { value: '18', change: 'CRUD, admin, and reporting APIs' },
+          authCoverage: { value: '100%', change: 'RBAC, scopes, and policy checks' },
+          jobSuccessRate: { value: '99.3%', change: 'Scheduled rollups with retries' },
+          testCoverage: { value: '93%', change: 'CI gated with minimum threshold' }
+        },
+        jobs: {
+          versionedEndpoints: { value: '12', change: 'Job-triggering endpoints + webhooks' },
+          authCoverage: { value: '100%', change: 'Signed payloads for job workflows' },
+          jobSuccessRate: { value: '99.6%', change: 'Retry queue within SLA' },
+          testCoverage: { value: '91%', change: 'Job workflows + scheduler tests' }
+        },
+        security: {
+          versionedEndpoints: { value: '16', change: 'Auth endpoints with token rotation' },
+          authCoverage: { value: '100%', change: 'Policy + MFA-ready session controls' },
+          jobSuccessRate: { value: '98.8%', change: 'Security checks inline with jobs' },
+          testCoverage: { value: '95%', change: 'Security unit + integration tests' }
+        },
+        quality: {
+          versionedEndpoints: { value: '20', change: 'API catalog fully documented' },
+          authCoverage: { value: '100%', change: 'Coverage verified by test suites' },
+          jobSuccessRate: { value: '99.1%', change: 'Stability tracked in QA dashboards' },
+          testCoverage: { value: '96%', change: 'Automation gates and regression packs' }
+        }
+      },
+      cicd: {
+        ci: {
+          buildSuccess: { value: '98.8%', change: 'Last 30 builds passing' },
+          qualityGates: { value: '6', change: 'Lint, tests, coverage, security' },
+          deployCadence: { value: 'Weekly', change: 'Stable, staged promotions' },
+          mttr: { value: '12 min', change: 'Automated rollback runbooks' }
+        },
+        quality: {
+          buildSuccess: { value: '99.1%', change: 'Optimized caching and build reuse' },
+          qualityGates: { value: '8', change: 'Added contract + perf checks' },
+          deployCadence: { value: 'Bi-weekly', change: 'Quality focus window' },
+          mttr: { value: '10 min', change: 'Incident response refinements' }
+        },
+        deploy: {
+          buildSuccess: { value: '98.4%', change: 'Deployment smoke tests tracked' },
+          qualityGates: { value: '7', change: 'Release checklist enforced' },
+          deployCadence: { value: 'Weekly', change: 'Automated stage promotions' },
+          mttr: { value: '9 min', change: 'Blue/green rollback ready' }
+        },
+        release: {
+          buildSuccess: { value: '99.3%', change: 'Release stabilization branch' },
+          qualityGates: { value: '9', change: 'Audit + approval gates added' },
+          deployCadence: { value: 'Monthly', change: 'Stakeholder release cadence' },
+          mttr: { value: '11 min', change: 'Post-release validation runbook' }
+        }
+      }
+    };
+
+    this.sections = safeQueryAll('.demo-section');
+
+    if (this.sections.length === 0) {
+      console.info('Dashboard not present on this page');
+      return;
+    }
+
+    this.sections.forEach(section => {
+      const key = section.dataset.dashboard || 'reporting';
+      const dataSet = this.dataSets[key];
+      if (dataSet) {
+        new DashboardSection(section, dataSet);
+      }
+    });
   }
 }
 
