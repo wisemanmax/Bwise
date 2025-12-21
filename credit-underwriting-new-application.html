@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Application Intake - Credit & Underwriting | Byheir Wise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #27ae60; --primary-dark: #229954; --primary-light: #52c77a;
+      --success: #27ae60; --warning: #e67e22; --danger: #e74c3c; --info: #3498db;
+      --dark: #2c3e50; --text: #34495e; --text-light: #7f8c8d;
+      --border: #e1e8ed; --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #52c77a 0%, #27ae60 50%, #1e8449 100%);
+      color: var(--text); line-height: 1.6; min-height: 100vh;
+    }
+    .header {
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(20px);
+      padding: 20px 40px; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
+      animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .header__back {
+      display: flex; align-items: center; gap: 10px; color: var(--primary);
+      text-decoration: none; font-weight: 600; padding: 10px 20px;
+      border-radius: 8px; transition: all 0.3s;
+    }
+    .header__back:hover { background: #f0f0f0; transform: translateX(-5px); }
+    .header__title {
+      font-size: 24px; font-weight: 900; font-family: 'JetBrains Mono', monospace;
+      background: linear-gradient(135deg, var(--primary), #52c77a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header__actions { display: flex; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+      border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+      transition: all 0.3s; text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(39,174,96,0.3); }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .btn-secondary { background: white; color: var(--primary); border: 2px solid var(--primary); }
+    .btn-secondary:hover { background: var(--primary); color: white; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px 80px; }
+    .page-header {
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(20px);
+      border-radius: 20px; padding: 40px; margin-bottom: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15); animation: fadeInUp 0.6s ease;
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+    .page-header__title {
+      font-size: 44px; font-weight: 300; margin-bottom: 15px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .page-header__title strong {
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), #52c77a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .page-header__subtitle { font-size: 18px; color: var(--text-light); line-height: 1.8; }
+    .meta-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px; margin-top: 25px; padding-top: 25px; border-top: 2px solid #f0f0f0;
+    }
+    .meta-card {
+      background: #f5fbf8; border-radius: 14px; padding: 18px; border: 1px solid #e6f4ec;
+      display: flex; gap: 12px; align-items: center;
+    }
+    .meta-card i { color: var(--primary); font-size: 20px; }
+    .meta-card__label { font-size: 13px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.6px; }
+    .meta-card__value { font-size: 16px; font-weight: 600; }
+    .section {
+      margin-bottom: 35px; animation: fadeInUp 0.6s ease 0.2s both;
+    }
+    .section-title {
+      font-size: 32px; font-weight: 300; color: white;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3); margin-bottom: 20px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .section-title strong { font-weight: 900; }
+    .card {
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(20px);
+      border-radius: 16px; padding: 30px; box-shadow: var(--shadow);
+      border: 1px solid #f0f0f0;
+    }
+    .card-title {
+      font-size: 22px; font-weight: 300; margin-bottom: 20px;
+      padding-bottom: 15px; border-bottom: 2px solid #f0f0f0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card-title strong { font-weight: 900; color: var(--primary); }
+    .form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-weight: 600; font-size: 13px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.4px; }
+    input, select, textarea {
+      border: 1px solid #e3e8ee; padding: 12px 14px; border-radius: 10px;
+      font-size: 14px; font-family: 'Inter', sans-serif; background: #fff;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(39,174,96,0.15);
+    }
+    textarea { resize: vertical; min-height: 110px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px;
+      border-radius: 999px; background: rgba(39,174,96,0.1); color: var(--primary);
+      font-weight: 600; font-size: 13px;
+    }
+    .status-pill {
+      padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;
+      background: rgba(39,174,96,0.12); color: var(--success);
+    }
+    .split-card {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px;
+    }
+    .info-panel {
+      background: #f5fbf8; border-radius: 14px; padding: 18px; border: 1px dashed #d9eee3;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .info-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text-light); }
+    .info-item i { color: var(--primary); margin-top: 2px; }
+    .footer-actions {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      margin-top: 25px;
+    }
+    .toast {
+      position: fixed; right: 30px; bottom: 30px; background: #ffffff;
+      border-radius: 12px; padding: 16px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex; align-items: center; gap: 12px; opacity: 0; transform: translateY(20px);
+      pointer-events: none; transition: all 0.4s; border: 1px solid #eaf5ee;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast i { color: var(--success); font-size: 22px; }
+    .toast__title { font-weight: 700; }
+    .toast__message { color: var(--text-light); font-size: 14px; }
+    @media (max-width: 900px) {
+      .split-card { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .header { padding: 15px 20px; flex-wrap: wrap; }
+      .header__title { font-size: 18px; }
+      .container { padding: 20px 15px 60px; }
+      .page-header { padding: 25px; }
+      .page-header__title { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="credit-underwriting.html" class="header__back">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Credit & Underwriting</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">
+        <i class="fas fa-layer-group"></i> Review Queue
+      </a>
+      <button class="btn btn-primary" form="new-application-form">
+        <i class="fas fa-paper-plane"></i> Submit Application
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="page-header">
+      <h1 class="page-header__title">New <strong>Application Intake</strong></h1>
+      <p class="page-header__subtitle">
+        Capture complete borrower, underwriting, and compliance detail before routing the case to the decisioning engine.
+        This intake aligns to policy rules, pricing strategy, and documentation checklists.
+      </p>
+      <div class="meta-grid">
+        <div class="meta-card">
+          <i class="fas fa-user-tie"></i>
+          <div>
+            <div class="meta-card__label">Assigned Underwriter</div>
+            <div class="meta-card__value">Marcus Chen</div>
+          </div>
+        </div>
+        <div class="meta-card">
+          <i class="fas fa-shield-check"></i>
+          <div>
+            <div class="meta-card__label">Policy Tier</div>
+            <div class="meta-card__value">Tier 1 • Prime</div>
+          </div>
+        </div>
+        <div class="meta-card">
+          <i class="fas fa-clock"></i>
+          <div>
+            <div class="meta-card__label">Decision SLA</div>
+            <div class="meta-card__value">24 Hours <span class="status-pill">Active</span></div>
+          </div>
+        </div>
+        <div class="meta-card">
+          <i class="fas fa-clipboard-check"></i>
+          <div>
+            <div class="meta-card__label">Required Docs</div>
+            <div class="meta-card__value">8 of 10 Collected</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <form id="new-application-form">
+      <section class="section">
+        <h2 class="section-title">Application <strong>Overview</strong></h2>
+        <div class="card">
+          <div class="card-title">Application <strong>Identifiers</strong></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="application-id">Application ID</label>
+              <input id="application-id" type="text" value="APP-2025-11842" required>
+            </div>
+            <div class="form-group">
+              <label for="loan-type">Loan Product</label>
+              <select id="loan-type">
+                <option>Auto Loan</option>
+                <option>Personal Loan</option>
+                <option>Mortgage</option>
+                <option>SMB Line of Credit</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="channel">Origination Channel</label>
+              <select id="channel">
+                <option>Digital Direct</option>
+                <option>Branch Referral</option>
+                <option>Partner Marketplace</option>
+                <option>Broker Submission</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="priority">Priority Flag</label>
+              <select id="priority">
+                <option>Standard Review</option>
+                <option>Fast Track</option>
+                <option>Manual Review</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Borrower <strong>Profile</strong></h2>
+        <div class="card split-card">
+          <div>
+            <div class="card-title">Primary <strong>Applicant</strong></div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input id="full-name" type="text" value="Jordan Blake" required>
+              </div>
+              <div class="form-group">
+                <label for="ssn">SSN / Tax ID</label>
+                <input id="ssn" type="text" value="***-**-4821" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input id="phone" type="tel" value="(212) 555-0147" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" value="jordan.blake@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="address">Current Address</label>
+                <input id="address" type="text" value="455 Park Ave, New York, NY 10022">
+              </div>
+              <div class="form-group">
+                <label for="residency">Residency Status</label>
+                <select id="residency">
+                  <option>Owner</option>
+                  <option>Renter</option>
+                  <option>Living with Family</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 18px;">
+              <label for="coapplicant">Co-Applicant</label>
+              <input id="coapplicant" type="text" value="Elena Blake">
+            </div>
+          </div>
+          <aside class="info-panel">
+            <div class="info-item"><i class="fas fa-user-check"></i>KYC Status: Verified</div>
+            <div class="info-item"><i class="fas fa-building"></i>Employer: Carter & Hayes LLC</div>
+            <div class="info-item"><i class="fas fa-briefcase"></i>Employment Tenure: 5.2 Years</div>
+            <div class="info-item"><i class="fas fa-globe"></i>Citizenship: US</div>
+            <div class="info-item"><i class="fas fa-shield"></i>Fraud Screening: Clear</div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Financial <strong>Snapshot</strong></h2>
+        <div class="card">
+          <div class="card-title">Income & <strong>Obligations</strong></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="monthly-income">Monthly Gross Income</label>
+              <input id="monthly-income" type="text" value="$8,950">
+            </div>
+            <div class="form-group">
+              <label for="monthly-debt">Monthly Debt</label>
+              <input id="monthly-debt" type="text" value="$1,840">
+            </div>
+            <div class="form-group">
+              <label for="dti">Debt-to-Income Ratio</label>
+              <input id="dti" type="text" value="20.6%">
+            </div>
+            <div class="form-group">
+              <label for="assets">Liquid Assets</label>
+              <input id="assets" type="text" value="$42,500">
+            </div>
+            <div class="form-group">
+              <label for="housing">Monthly Housing Expense</label>
+              <input id="housing" type="text" value="$2,250">
+            </div>
+            <div class="form-group">
+              <label for="employment">Employment Type</label>
+              <select id="employment">
+                <option>Full-Time</option>
+                <option>Self-Employed</option>
+                <option>Part-Time</option>
+                <option>Contractor</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 18px;">
+            <label for="income-notes">Income Verification Notes</label>
+            <textarea id="income-notes">Verified via payroll sync. Bonus income not included. Two additional bank statements pending.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Credit <strong>Analysis</strong></h2>
+        <div class="card split-card">
+          <div>
+            <div class="card-title">Scorecards & <strong>Signals</strong></div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="fico">FICO Score</label>
+                <input id="fico" type="text" value="742">
+              </div>
+              <div class="form-group">
+                <label for="vantage">VantageScore</label>
+                <input id="vantage" type="text" value="751">
+              </div>
+              <div class="form-group">
+                <label for="trade-lines">Open Trade Lines</label>
+                <input id="trade-lines" type="text" value="11">
+              </div>
+              <div class="form-group">
+                <label for="inquiries">Recent Inquiries (90d)</label>
+                <input id="inquiries" type="text" value="2">
+              </div>
+              <div class="form-group">
+                <label for="delinquencies">Delinquencies (24m)</label>
+                <input id="delinquencies" type="text" value="0">
+              </div>
+              <div class="form-group">
+                <label for="utilization">Revolving Utilization</label>
+                <input id="utilization" type="text" value="18%">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 18px;">
+              <label for="bureau-notes">Bureau Summary</label>
+              <textarea id="bureau-notes">Clean credit file with stable utilization. No public records. Longest trade line 7.5 years.</textarea>
+            </div>
+          </div>
+          <aside class="info-panel">
+            <div class="card-title" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">Policy Signals</div>
+            <div class="chip-group">
+              <span class="chip"><i class="fas fa-check"></i>Score > 720</span>
+              <span class="chip"><i class="fas fa-check"></i>DTI < 25%</span>
+              <span class="chip"><i class="fas fa-check"></i>No delinquencies</span>
+              <span class="chip"><i class="fas fa-check"></i>Stable employment</span>
+            </div>
+            <div class="info-item"><i class="fas fa-circle-info"></i>Pre-approval recommended for rate tier A.</div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Loan <strong>Structure</strong></h2>
+        <div class="card">
+          <div class="card-title">Requested <strong>Terms</strong></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="amount">Requested Amount</label>
+              <input id="amount" type="text" value="$32,500">
+            </div>
+            <div class="form-group">
+              <label for="term">Term Length</label>
+              <select id="term">
+                <option>60 Months</option>
+                <option>48 Months</option>
+                <option>72 Months</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="rate">Pricing Rate</label>
+              <input id="rate" type="text" value="5.85%">
+            </div>
+            <div class="form-group">
+              <label for="ltv">Loan-to-Value</label>
+              <input id="ltv" type="text" value="78%">
+            </div>
+            <div class="form-group">
+              <label for="collateral">Collateral</label>
+              <input id="collateral" type="text" value="2024 Honda CR-V">
+            </div>
+            <div class="form-group">
+              <label for="down-payment">Down Payment</label>
+              <input id="down-payment" type="text" value="$5,000">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 18px;">
+            <label for="structure-notes">Structure Notes</label>
+            <textarea id="structure-notes">Customer prefers monthly auto-pay. Dealer incentive applied. Final rate pending document verification.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Decisioning <strong>Workflow</strong></h2>
+        <div class="card split-card">
+          <div>
+            <div class="card-title">Underwriting <strong>Decision</strong></div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="decision">Decision Status</label>
+                <select id="decision">
+                  <option>Conditional Approval</option>
+                  <option>Approve</option>
+                  <option>Refer</option>
+                  <option>Decline</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="conditions">Conditions</label>
+                <input id="conditions" type="text" value="Proof of insurance, final pay stub">
+              </div>
+              <div class="form-group">
+                <label for="policy-owner">Policy Owner</label>
+                <input id="policy-owner" type="text" value="Credit Strategy Team">
+              </div>
+              <div class="form-group">
+                <label for="pricing-tier">Pricing Tier</label>
+                <select id="pricing-tier">
+                  <option>Tier A</option>
+                  <option>Tier B</option>
+                  <option>Tier C</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 18px;">
+              <label for="decision-notes">Decision Notes</label>
+              <textarea id="decision-notes">Conditional approval pending updated proof of insurance and latest pay stub.</textarea>
+            </div>
+          </div>
+          <aside class="info-panel">
+            <div class="card-title" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">Checklist</div>
+            <div class="chip-group">
+              <span class="chip"><i class="fas fa-check"></i>AML Cleared</span>
+              <span class="chip"><i class="fas fa-check"></i>OFAC Clear</span>
+              <span class="chip"><i class="fas fa-check"></i>Pricing Approved</span>
+              <span class="chip"><i class="fas fa-check"></i>Documents Verified</span>
+            </div>
+            <div class="info-item"><i class="fas fa-file-circle-check"></i>4 documents still pending verification.</div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Documentation <strong>Review</strong></h2>
+        <div class="card">
+          <div class="card-title">Supporting <strong>Files</strong></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="doc-1">ID Verification</label>
+              <input id="doc-1" type="text" value="Drivers_License.pdf">
+            </div>
+            <div class="form-group">
+              <label for="doc-2">Income Proof</label>
+              <input id="doc-2" type="text" value="Payroll_Statements_Q3.pdf">
+            </div>
+            <div class="form-group">
+              <label for="doc-3">Insurance Binder</label>
+              <input id="doc-3" type="text" value="Insurance_Binder.pdf">
+            </div>
+            <div class="form-group">
+              <label for="doc-4">Collateral Appraisal</label>
+              <input id="doc-4" type="text" value="Vehicle_Appraisal.pdf">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Final <strong>Submission</strong></h2>
+        <div class="card">
+          <div class="card-title">Submission <strong>Summary</strong></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="reviewer">Reviewer</label>
+              <input id="reviewer" type="text" value="Hannah Ortiz">
+            </div>
+            <div class="form-group">
+              <label for="qa">Quality Check</label>
+              <select id="qa">
+                <option>Ready for Decision</option>
+                <option>Needs Follow-Up</option>
+                <option>Pending Documents</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="next-step">Next Step</label>
+              <input id="next-step" type="text" value="Request final insurance binder">
+            </div>
+            <div class="form-group">
+              <label for="eta">Decision ETA</label>
+              <input id="eta" type="text" value="Within 24 hours">
+            </div>
+          </div>
+          <div class="footer-actions">
+            <div class="info-item"><i class="fas fa-lock"></i>Submission will be logged to the underwriting audit trail.</div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <a class="btn btn-secondary" href="credit-underwriting.html">
+                <i class="fas fa-times"></i> Cancel
+              </a>
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-paper-plane"></i> Submit Application
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+
+  <div class="toast" id="success-toast" role="status" aria-live="polite">
+    <i class="fas fa-circle-check"></i>
+    <div>
+      <div class="toast__title">successfully submitted!</div>
+      <div class="toast__message">Returning you to Credit & Underwriting...</div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('new-application-form');
+    const toast = document.getElementById('success-toast');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      toast.classList.add('show');
+      setTimeout(() => {
+        window.location.href = 'credit-underwriting.html';
+      }, 1600);
+    });
+  </script>
+</body>
+</html>

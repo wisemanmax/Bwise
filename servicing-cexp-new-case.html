@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Case Intake · Servicing & CEXP · Byheir Wise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --fiord: #394263;
+      --white: #ffffff;
+      --athens-gray: #eaedf1;
+      --catskill-white: #f9fafc;
+      --abbey: #777777;
+      --mischka: #dadae3;
+      --java: #1bbae1;
+      --mine-shaft: #333333;
+      --zest: #e67e22;
+      --jungle-green: #27ae60;
+      --cinnabar: #e74c3c;
+      --amethyst: #af64cc;
+      --alto: #d3d3d3;
+      --header-h: 50px;
+      --footer-h: 50px;
+      --sidenav-w: 240px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      height: 100%;
+    }
+
+    body {
+      background-color: var(--athens-gray);
+      color: var(--fiord);
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--java);
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .text-light {
+      font-weight: 300;
+    }
+
+    .text-bold {
+      font-weight: 700;
+    }
+
+    .grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: var(--header-h) 1fr var(--footer-h);
+      grid-template-areas:
+        "header"
+        "main"
+        "footer";
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--catskill-white);
+      padding: 0 20px;
+    }
+
+    .header__title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--fiord);
+    }
+
+    .header__back {
+      display: flex;
+      align-items: center;
+      color: var(--java);
+      cursor: pointer;
+    }
+
+    .header__back i {
+      margin-right: 8px;
+    }
+
+    .header__actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--amethyst);
+      color: var(--white);
+      box-shadow: 0 6px 14px rgba(175, 100, 204, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--amethyst);
+      border: 1px solid var(--mischka);
+    }
+
+    main {
+      grid-area: main;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 30px;
+      background: var(--white);
+      border-radius: 18px;
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--mischka);
+    }
+
+    .page-header__title {
+      font-size: 32px;
+      font-weight: 300;
+      margin: 0 0 10px 0;
+    }
+
+    .page-header__title strong {
+      font-weight: 700;
+    }
+
+    .page-header__subtitle {
+      font-size: 16px;
+      color: var(--abbey);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .meta-card {
+      background: var(--catskill-white);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--mischka);
+    }
+
+    .meta-card i {
+      color: var(--amethyst);
+      font-size: 18px;
+    }
+
+    .meta-card__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--abbey);
+      letter-spacing: 0.5px;
+    }
+
+    .meta-card__value {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin: 0 0 12px 0;
+      color: var(--fiord);
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--mischka);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--fiord);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--abbey);
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      border: 1px solid var(--mischka);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--catskill-white);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .split-card {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    .info-panel {
+      background: var(--catskill-white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px dashed var(--mischka);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 10px;
+      color: var(--abbey);
+      font-size: 13px;
+    }
+
+    .info-item i {
+      color: var(--amethyst);
+      margin-top: 2px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(175, 100, 204, 0.12);
+      color: var(--amethyst);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      background: var(--white);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      border: 1px solid var(--mischka);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast i {
+      color: var(--jungle-green);
+      font-size: 20px;
+    }
+
+    .toast__title {
+      font-weight: 700;
+    }
+
+    .toast__message {
+      color: var(--abbey);
+      font-size: 13px;
+    }
+
+    .footer {
+      grid-area: footer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--catskill-white);
+      color: var(--abbey);
+      font-size: 12px;
+      text-align: center;
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .split-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <header class="header">
+      <a href="servicing-cexp.html" class="header__back">
+        <i class="fas fa-arrow-left"></i>
+        Back to Dashboard
+      </a>
+      <div class="header__title">Servicing & CEXP</div>
+      <div class="header__actions">
+        <a class="btn btn-secondary" href="servicing-cexp.html"><i class="fas fa-list"></i> Case Queue</a>
+        <button class="btn btn-primary" form="servicing-case-form"><i class="fas fa-paper-plane"></i> Submit Case</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <section class="page-header">
+          <h1 class="page-header__title">New <strong>Case Intake</strong></h1>
+          <p class="page-header__subtitle">
+            Document customer experience signals, service escalations, and resolution plans. This intake
+            powers the servicing operations queue and CX performance reporting.
+          </p>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <i class="fas fa-user-headset"></i>
+              <div>
+                <div class="meta-card__label">Case Owner</div>
+                <div class="meta-card__value">Amira Lawson</div>
+              </div>
+            </div>
+            <div class="meta-card">
+              <i class="fas fa-clock"></i>
+              <div>
+                <div class="meta-card__label">SLA Window</div>
+                <div class="meta-card__value">12 Hours <span class="pill">Active</span></div>
+              </div>
+            </div>
+            <div class="meta-card">
+              <i class="fas fa-face-smile"></i>
+              <div>
+                <div class="meta-card__label">CX Impact</div>
+                <div class="meta-card__value">High</div>
+              </div>
+            </div>
+            <div class="meta-card">
+              <i class="fas fa-flag"></i>
+              <div>
+                <div class="meta-card__label">Escalation Level</div>
+                <div class="meta-card__value">Tier 2</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <form id="servicing-case-form">
+          <section class="section">
+            <h2 class="section-title">Case Overview</h2>
+            <div class="card">
+              <div class="card-title">Identifiers</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="case-id">Case ID</label>
+                  <input id="case-id" type="text" value="SVC-2025-0148" required>
+                </div>
+                <div class="form-group">
+                  <label for="case-type">Case Type</label>
+                  <select id="case-type">
+                    <option>Service Escalation</option>
+                    <option>Payment Assistance</option>
+                    <option>Dispute Resolution</option>
+                    <option>Account Maintenance</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="priority">Priority</label>
+                  <select id="priority">
+                    <option>Priority 2</option>
+                    <option>Priority 1</option>
+                    <option>Priority 3</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="channel">Intake Channel</label>
+                  <select id="channel">
+                    <option>Inbound Call</option>
+                    <option>Secure Message</option>
+                    <option>Branch Visit</option>
+                    <option>Digital Form</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Customer Profile</h2>
+            <div class="card split-card">
+              <div>
+                <div class="card-title">Primary Contact</div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="customer-name">Customer Name</label>
+                    <input id="customer-name" type="text" value="Cameron Fields" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="account">Account Number</label>
+                    <input id="account" type="text" value="CX-9033441">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input id="phone" type="tel" value="(415) 555-0172">
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" value="cameron.fields@email.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="segment">Segment</label>
+                    <select id="segment">
+                      <option>Premier</option>
+                      <option>Mass Market</option>
+                      <option>SMB</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="timezone">Timezone</label>
+                    <input id="timezone" type="text" value="Pacific">
+                  </div>
+                </div>
+              </div>
+              <aside class="info-panel">
+                <div class="info-item"><i class="fas fa-face-smile"></i>CSAT: 88%</div>
+                <div class="info-item"><i class="fas fa-phone"></i>Preferred Channel: Phone + SMS</div>
+                <div class="info-item"><i class="fas fa-repeat"></i>Recent Contacts: 3 in 30 days</div>
+                <div class="info-item"><i class="fas fa-triangle-exclamation"></i>Sentiment: Frustrated</div>
+                <div class="info-item"><i class="fas fa-language"></i>Language: English</div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Issue Details</h2>
+            <div class="card">
+              <div class="card-title">Service Request</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="issue-category">Issue Category</label>
+                  <select id="issue-category">
+                    <option>Billing Dispute</option>
+                    <option>Payment Assistance</option>
+                    <option>Account Correction</option>
+                    <option>Digital Support</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="severity">Severity</label>
+                  <select id="severity">
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="product">Product</label>
+                  <input id="product" type="text" value="Auto Loan - Prime">
+                </div>
+                <div class="form-group">
+                  <label for="open-date">Opened</label>
+                  <input id="open-date" type="date" value="2025-11-01">
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="issue-summary">Issue Summary</label>
+                <textarea id="issue-summary">Customer reports two duplicate payments posted after a system outage. Requests immediate reversal and confirmation.</textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Resolution Plan</h2>
+            <div class="card split-card">
+              <div>
+                <div class="card-title">Action Plan</div>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="owner">Assigned Specialist</label>
+                    <input id="owner" type="text" value="Tasha Green">
+                  </div>
+                  <div class="form-group">
+                    <label for="target">Target Resolution</label>
+                    <input id="target" type="text" value="Within 8 hours">
+                  </div>
+                  <div class="form-group">
+                    <label for="refund">Refund Amount</label>
+                    <input id="refund" type="text" value="$1,200">
+                  </div>
+                  <div class="form-group">
+                    <label for="approval">Approval Needed</label>
+                    <select id="approval">
+                      <option>Manager Approval</option>
+                      <option>No Approval</option>
+                      <option>Finance Review</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                  <label for="resolution-notes">Resolution Notes</label>
+                  <textarea id="resolution-notes">Duplicate payments confirmed in ledger. Request submitted for refund and fee reversal. Customer to receive confirmation SMS.</textarea>
+                </div>
+              </div>
+              <aside class="info-panel">
+                <div class="info-item"><i class="fas fa-check"></i>Payment team notified</div>
+                <div class="info-item"><i class="fas fa-envelope"></i>Email confirmation drafted</div>
+                <div class="info-item"><i class="fas fa-calendar"></i>Follow-up scheduled</div>
+                <div class="info-item"><i class="fas fa-file"></i>Case notes updated</div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Experience Signals</h2>
+            <div class="card">
+              <div class="card-title">CX Metrics</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="csat">CSAT Forecast</label>
+                  <input id="csat" type="text" value="91%">
+                </div>
+                <div class="form-group">
+                  <label for="nps">NPS Impact</label>
+                  <input id="nps" type="text" value="+6">
+                </div>
+                <div class="form-group">
+                  <label for="effort">Customer Effort Score</label>
+                  <input id="effort" type="text" value="3.2 / 5">
+                </div>
+                <div class="form-group">
+                  <label for="sentiment">Sentiment Trend</label>
+                  <select id="sentiment">
+                    <option>Improving</option>
+                    <option>Stable</option>
+                    <option>Declining</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="cx-notes">CX Notes</label>
+                <textarea id="cx-notes">Customer expressed frustration with duplicate charges. Provided proactive reassurance and scheduled follow-up within 4 hours.</textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Compliance</h2>
+            <div class="card">
+              <div class="card-title">Documentation & Approvals</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="consent">Consent Recorded</label>
+                  <select id="consent">
+                    <option>Yes</option>
+                    <option>Pending</option>
+                    <option>No</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="verification">Identity Verification</label>
+                  <select id="verification">
+                    <option>Complete</option>
+                    <option>In Progress</option>
+                    <option>Required</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="audit">Audit Flag</label>
+                  <select id="audit">
+                    <option>None</option>
+                    <option>Review Required</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="doc-owner">Compliance Owner</label>
+                  <input id="doc-owner" type="text" value="Maya Ruiz">
+                </div>
+              </div>
+              <div class="form-group" style="margin-top: 16px;">
+                <label for="compliance-notes">Compliance Notes</label>
+                <textarea id="compliance-notes">Consent verified on call recording. Documentation uploaded to customer vault for audit readiness.</textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Final Review</h2>
+            <div class="card">
+              <div class="card-title">Submit Case</div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="reviewer">Reviewer</label>
+                  <input id="reviewer" type="text" value="Elijah Park">
+                </div>
+                <div class="form-group">
+                  <label for="next-step">Next Step</label>
+                  <input id="next-step" type="text" value="Send confirmation and refund timeline">
+                </div>
+                <div class="form-group">
+                  <label for="follow-up">Follow-Up Cadence</label>
+                  <input id="follow-up" type="text" value="Every 2 hours until resolved">
+                </div>
+                <div class="form-group">
+                  <label for="owner-group">Owner Group</label>
+                  <input id="owner-group" type="text" value="Service Recovery Desk">
+                </div>
+              </div>
+              <div class="footer-actions">
+                <div class="info-item"><i class="fas fa-lock"></i>Case submission is logged in servicing audit trail.</div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a class="btn btn-secondary" href="servicing-cexp.html"><i class="fas fa-times"></i> Cancel</a>
+                  <button class="btn btn-primary" type="submit"><i class="fas fa-paper-plane"></i> Submit Case</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__copyright">Byheir Wise</p>
+      <p>Servicing & CEXP Operations</p>
+    </footer>
+  </div>
+
+  <div class="toast" id="success-toast" role="status" aria-live="polite">
+    <i class="fas fa-circle-check"></i>
+    <div>
+      <div class="toast__title">successfully submitted!</div>
+      <div class="toast__message">Returning you to Servicing & CEXP...</div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('servicing-case-form');
+    const toast = document.getElementById('success-toast');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      toast.classList.add('show');
+      setTimeout(() => {
+        window.location.href = 'servicing-cexp.html';
+      }, 1600);
+    });
+  </script>
+</body>
+</html>
