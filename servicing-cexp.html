@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Servicing & CEXP · Byheir Wise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --fiord: #394263;
@@ -23,6 +23,7 @@
       --header-h: 50px;
       --footer-h: 50px;
       --sidenav-w: 240px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
 
     html, body {
@@ -94,10 +95,50 @@
       margin-right: 8px;
     }
 
+    .header__actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--amethyst);
+      color: var(--white);
+      box-shadow: 0 6px 14px rgba(175, 100, 204, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--amethyst);
+      border: 1px solid var(--mischka);
+    }
+
     main {
       grid-area: main;
       padding: 30px;
       overflow-y: auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .page-header {
@@ -187,6 +228,29 @@
       border-radius: 4px;
       text-align: center;
       box-shadow: 0 2px 2px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(175, 100, 204, 0.12), rgba(27, 186, 225, 0.12));
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .metric-card:hover::after {
+      opacity: 1;
     }
 
     .metric-card__value {
@@ -200,6 +264,264 @@
       font-size: 14px;
       color: var(--abbey);
       margin: 8px 0 0 0;
+    }
+
+    .metric-card__detail {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .metric-card:hover .metric-card__detail {
+      opacity: 1;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 300;
+      margin: 0;
+    }
+
+    .section-title strong {
+      font-weight: 700;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--athens-gray);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      border: none;
+      background: transparent;
+      color: var(--abbey);
+      padding: 10px 16px;
+      border-radius: 16px 16px 0 0;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .tab:hover {
+      color: var(--amethyst);
+      background: rgba(175, 100, 204, 0.08);
+    }
+
+    .tab.active {
+      color: var(--amethyst);
+      border-bottom: 3px solid var(--amethyst);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tool-card {
+      padding: 20px;
+      background-color: var(--catskill-white);
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tool-card:hover {
+      border-color: var(--amethyst);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tool-card__badge {
+      background: rgba(175, 100, 204, 0.12);
+      color: var(--amethyst);
+      padding: 4px 10px;
+      font-size: 11px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .tool-card__actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tool-action {
+      border: none;
+      background: var(--white);
+      border-radius: 14px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--amethyst);
+      border: 1px solid var(--mischka);
+      transition: all 0.2s ease;
+    }
+
+    .tool-action:hover {
+      background: var(--amethyst);
+      color: var(--white);
+    }
+
+    .queue-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid var(--mischka);
+      background: var(--white);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--abbey);
+      font-weight: 600;
+    }
+
+    .chip.active {
+      background: var(--java);
+      border-color: var(--java);
+      color: var(--white);
+    }
+
+    .queue-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .queue-item {
+      background: var(--catskill-white);
+      border-radius: 12px;
+      padding: 16px;
+      border-left: 4px solid var(--java);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .queue-item.high {
+      border-left-color: var(--cinnabar);
+    }
+
+    .queue-item.medium {
+      border-left-color: var(--zest);
+    }
+
+    .queue-item.low {
+      border-left-color: var(--jungle-green);
+    }
+
+    .queue-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .queue-item__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .queue-item__meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .queue-item__details {
+      display: none;
+      font-size: 13px;
+      color: var(--abbey);
+      border-top: 1px solid var(--athens-gray);
+      padding-top: 10px;
+      line-height: 1.5;
+    }
+
+    .queue-item.expanded .queue-item__details {
+      display: block;
+    }
+
+    .queue-item__toggle {
+      background: transparent;
+      border: none;
+      color: var(--amethyst);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .progress {
+      height: 6px;
+      background: var(--athens-gray);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      background: var(--amethyst);
+      border-radius: 999px;
+    }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .insight-card {
+      background: var(--catskill-white);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .footer {
@@ -232,88 +554,268 @@
         Back to Dashboard
       </a>
       <div class="header__title">Servicing & CEXP</div>
+      <div class="header__actions">
+        <button class="btn btn-secondary"><i class="fas fa-filter"></i> Filters</button>
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> New Case</button>
+      </div>
     </header>
 
     <main>
-      <div class="page-header">
-        <h1 class="page-header__title text-light">Servicing & <strong>CEXP</strong></h1>
-        <p class="page-header__subtitle">Customer experience, account servicing, and loss mitigation workflows</p>
-      </div>
+      <div class="container">
+        <div class="page-header">
+          <h1 class="page-header__title text-light">Servicing & <strong>CEXP</strong></h1>
+          <p class="page-header__subtitle">Customer experience, account servicing, and loss mitigation workflows</p>
+        </div>
 
-      <div class="metrics">
-        <div class="metric-card">
-          <p class="metric-card__value">89%</p>
-          <p class="metric-card__label">Customer Satisfaction</p>
+        <div class="metrics">
+          <div class="metric-card">
+            <p class="metric-card__value">89%</p>
+            <p class="metric-card__label">Customer Satisfaction</p>
+            <p class="metric-card__detail">+4% vs. last week</p>
+          </div>
+          <div class="metric-card">
+            <p class="metric-card__value">2.3min</p>
+            <p class="metric-card__label">Avg Handle Time</p>
+            <p class="metric-card__detail">Target: 3.0min</p>
+          </div>
+          <div class="metric-card">
+            <p class="metric-card__value">542</p>
+            <p class="metric-card__label">Active Cases</p>
+            <p class="metric-card__detail">128 escalations</p>
+          </div>
+          <div class="metric-card">
+            <p class="metric-card__value">94%</p>
+            <p class="metric-card__label">First Call Resolution</p>
+            <p class="metric-card__detail">Goal: 92%</p>
+          </div>
         </div>
-        <div class="metric-card">
-          <p class="metric-card__value">2.3min</p>
-          <p class="metric-card__label">Avg Handle Time</p>
-        </div>
-        <div class="metric-card">
-          <p class="metric-card__value">542</p>
-          <p class="metric-card__label">Active Cases</p>
-        </div>
-        <div class="metric-card">
-          <p class="metric-card__value">94%</p>
-          <p class="metric-card__label">First Call Resolution</p>
-        </div>
-      </div>
 
-      <div class="card">
-        <h2 class="card__title text-light">Customer Experience <strong>Tools</strong></h2>
-        <div class="section-grid">
-          <div class="tool-item">
-            <div class="tool-item__icon"><i class="fas fa-headset"></i></div>
-            <h3 class="tool-item__title">Support Portal</h3>
-            <p class="tool-item__description">Omnichannel support desk with chat, email, and phone integration for customer inquiries.</p>
+        <section class="card">
+          <div class="section-header">
+            <h2 class="section-title text-light">Customer Experience <strong>Toolkit</strong></h2>
+            <div class="queue-controls">
+              <button class="btn btn-secondary"><i class="fas fa-bolt"></i> Playbooks</button>
+              <button class="btn btn-primary"><i class="fas fa-wand-magic-sparkles"></i> Automations</button>
+            </div>
           </div>
-          <div class="tool-item">
-            <div class="tool-item__icon"><i class="fas fa-user-circle"></i></div>
-            <h3 class="tool-item__title">Account Management</h3>
-            <p class="tool-item__description">Full customer account view with history, transactions, and relationship details.</p>
-          </div>
-          <div class="tool-item">
-            <div class="tool-item__icon"><i class="fas fa-life-ring"></i></div>
-            <h3 class="tool-item__title">Loss Mitigation</h3>
-            <p class="tool-item__description">Hardship programs, payment deferrals, and workout plan management tools.</p>
-          </div>
-          <div class="tool-item">
-            <div class="tool-item__icon"><i class="fas fa-comments"></i></div>
-            <h3 class="tool-item__title">Communication Hub</h3>
-            <p class="tool-item__description">Automated and manual communication tools for statements, alerts, and notifications.</p>
-          </div>
-          <div class="tool-item">
-            <div class="tool-item__icon"><i class="fas fa-star"></i></div>
-            <h3 class="tool-item__title">Feedback & Surveys</h3>
-            <p class="tool-item__description">Customer satisfaction surveys, NPS tracking, and feedback analysis dashboards.</p>
-          </div>
-          <div class="tool-item">
-            <div class="tool-item__icon"><i class="fas fa-exchange-alt"></i></div>
-            <h3 class="tool-item__title">Account Updates</h3>
-            <p class="tool-item__description">Process address changes, payment method updates, and account modifications.</p>
-          </div>
-        </div>
-      </div>
 
-      <div class="card">
-        <h2 class="card__title text-light">Today's <strong>Activity</strong></h2>
-        <div class="section-grid">
-          <div class="tool-item" style="border-left-color: var(--jungle-green);">
-            <div class="tool-item__icon" style="color: var(--jungle-green);"><i class="fas fa-check-circle"></i></div>
-            <h3 class="tool-item__title">Resolved Cases</h3>
-            <p class="tool-item__description">87 cases closed today with 92% customer satisfaction rating. Strong performance across the team.</p>
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'tools')"><i class="fas fa-toolbox"></i> Tools</button>
+            <button class="tab" onclick="switchTab(event, 'journeys')"><i class="fas fa-route"></i> Journeys</button>
+            <button class="tab" onclick="switchTab(event, 'surveys')"><i class="fas fa-star-half-stroke"></i> Surveys</button>
           </div>
-          <div class="tool-item" style="border-left-color: var(--zest);">
-            <div class="tool-item__icon" style="color: var(--zest);"><i class="fas fa-clock"></i></div>
-            <h3 class="tool-item__title">Pending Reviews</h3>
-            <p class="tool-item__description">24 hardship applications awaiting management approval. Average wait time: 18 hours.</p>
+
+          <div id="tools" class="tab-content active">
+            <div class="section-grid">
+              <div class="tool-card">
+                <div class="tool-card__header">
+                  <div class="tool-item__icon"><i class="fas fa-headset"></i></div>
+                  <span class="tool-card__badge">Live</span>
+                </div>
+                <h3 class="tool-item__title">Support Portal</h3>
+                <p class="tool-item__description">Omnichannel support desk with chat, email, and phone integration for customer inquiries.</p>
+                <div class="tool-card__actions">
+                  <button class="tool-action">Open Console</button>
+                  <button class="tool-action">View Queue</button>
+                </div>
+              </div>
+              <div class="tool-card">
+                <div class="tool-card__header">
+                  <div class="tool-item__icon"><i class="fas fa-user-circle"></i></div>
+                  <span class="tool-card__badge">Unified</span>
+                </div>
+                <h3 class="tool-item__title">Account Management</h3>
+                <p class="tool-item__description">Full customer account view with history, transactions, and relationship details.</p>
+                <div class="tool-card__actions">
+                  <button class="tool-action">Open Profile</button>
+                  <button class="tool-action">Recent Notes</button>
+                </div>
+              </div>
+              <div class="tool-card">
+                <div class="tool-card__header">
+                  <div class="tool-item__icon"><i class="fas fa-life-ring"></i></div>
+                  <span class="tool-card__badge">Active</span>
+                </div>
+                <h3 class="tool-item__title">Loss Mitigation</h3>
+                <p class="tool-item__description">Hardship programs, payment deferrals, and workout plan management tools.</p>
+                <div class="tool-card__actions">
+                  <button class="tool-action">Open Requests</button>
+                  <button class="tool-action">Run Scenarios</button>
+                </div>
+              </div>
+              <div class="tool-card">
+                <div class="tool-card__header">
+                  <div class="tool-item__icon"><i class="fas fa-comments"></i></div>
+                  <span class="tool-card__badge">Automated</span>
+                </div>
+                <h3 class="tool-item__title">Communication Hub</h3>
+                <p class="tool-item__description">Automated and manual communication tools for statements, alerts, and notifications.</p>
+                <div class="tool-card__actions">
+                  <button class="tool-action">Send Alert</button>
+                  <button class="tool-action">Templates</button>
+                </div>
+              </div>
+              <div class="tool-card">
+                <div class="tool-card__header">
+                  <div class="tool-item__icon"><i class="fas fa-star"></i></div>
+                  <span class="tool-card__badge">Insights</span>
+                </div>
+                <h3 class="tool-item__title">Feedback & Surveys</h3>
+                <p class="tool-item__description">Customer satisfaction surveys, NPS tracking, and feedback analysis dashboards.</p>
+                <div class="tool-card__actions">
+                  <button class="tool-action">Launch Survey</button>
+                  <button class="tool-action">NPS Trends</button>
+                </div>
+              </div>
+              <div class="tool-card">
+                <div class="tool-card__header">
+                  <div class="tool-item__icon"><i class="fas fa-exchange-alt"></i></div>
+                  <span class="tool-card__badge">Self-Serve</span>
+                </div>
+                <h3 class="tool-item__title">Account Updates</h3>
+                <p class="tool-item__description">Process address changes, payment method updates, and account modifications.</p>
+                <div class="tool-card__actions">
+                  <button class="tool-action">Verify Change</button>
+                  <button class="tool-action">Audit Log</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="tool-item" style="border-left-color: var(--java);">
-            <div class="tool-item__icon" style="color: var(--java);"><i class="fas fa-chart-bar"></i></div>
-            <h3 class="tool-item__title">Quality Scores</h3>
-            <p class="tool-item__description">Weekly QA completed. Team average 91%, exceeding target of 85%. Great work!</p>
+
+          <div id="journeys" class="tab-content">
+            <div class="section-grid">
+              <div class="tool-item">
+                <div class="tool-item__icon"><i class="fas fa-envelope-open-text"></i></div>
+                <h3 class="tool-item__title">New Account Onboarding</h3>
+                <p class="tool-item__description">Automated welcome series with milestone check-ins and digital guidance.</p>
+              </div>
+              <div class="tool-item">
+                <div class="tool-item__icon"><i class="fas fa-credit-card"></i></div>
+                <h3 class="tool-item__title">Payment Reminder Flow</h3>
+                <p class="tool-item__description">Triggered reminders across SMS, email, and in-app notifications.</p>
+              </div>
+              <div class="tool-item">
+                <div class="tool-item__icon"><i class="fas fa-shield-heart"></i></div>
+                <h3 class="tool-item__title">Care Escalation Journey</h3>
+                <p class="tool-item__description">Priority routing with real-time supervisor alerts and recovery offers.</p>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div id="surveys" class="tab-content">
+            <div class="section-grid">
+              <div class="tool-item">
+                <div class="tool-item__icon"><i class="fas fa-face-smile"></i></div>
+                <h3 class="tool-item__title">Post-Call CSAT</h3>
+                <p class="tool-item__description">Short-form survey auto-sent after every live interaction.</p>
+              </div>
+              <div class="tool-item">
+                <div class="tool-item__icon"><i class="fas fa-ranking-star"></i></div>
+                <h3 class="tool-item__title">Quarterly NPS Pulse</h3>
+                <p class="tool-item__description">Segmented NPS tracking by product, channel, and region.</p>
+              </div>
+              <div class="tool-item">
+                <div class="tool-item__icon"><i class="fas fa-comment-dots"></i></div>
+                <h3 class="tool-item__title">Voice of Customer</h3>
+                <p class="tool-item__description">Open-ended feedback analysis and sentiment tagging.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-header">
+            <h2 class="section-title text-light">Live Service <strong>Queue</strong></h2>
+            <div class="queue-controls">
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip" data-filter="high">High Priority</button>
+              <button class="chip" data-filter="medium">Medium</button>
+              <button class="chip" data-filter="low">Low</button>
+            </div>
+          </div>
+
+          <div class="queue-list" id="queueList">
+            <div class="queue-item high" data-status="high">
+              <div class="queue-item__header">
+                <div>
+                  <strong>Case #C-4021 · Escalated Billing Issue</strong>
+                  <div class="queue-item__meta">
+                    <span><i class="fas fa-user"></i> Maya R.</span>
+                    <span><i class="fas fa-clock"></i> Waiting 18 min</span>
+                    <span><i class="fas fa-signal"></i> Tier 2</span>
+                  </div>
+                </div>
+                <button class="queue-item__toggle" data-toggle>View details</button>
+              </div>
+              <div class="progress"><span style="width: 72%;"></span></div>
+              <div class="queue-item__details">
+                Billing dispute flagged as high impact. Recommended actions: refund review, payment reissue, manager callback within 30 minutes.
+              </div>
+            </div>
+            <div class="queue-item medium" data-status="medium">
+              <div class="queue-item__header">
+                <div>
+                  <strong>Case #C-3987 · Payment Plan Adjustment</strong>
+                  <div class="queue-item__meta">
+                    <span><i class="fas fa-user"></i> Jonah K.</span>
+                    <span><i class="fas fa-clock"></i> Waiting 9 min</span>
+                    <span><i class="fas fa-signal"></i> Tier 1</span>
+                  </div>
+                </div>
+                <button class="queue-item__toggle" data-toggle>View details</button>
+              </div>
+              <div class="progress"><span style="width: 45%;"></span></div>
+              <div class="queue-item__details">
+                Customer requested lower payment installment. Suggested options: extend term or offer hardship assistance.
+              </div>
+            </div>
+            <div class="queue-item low" data-status="low">
+              <div class="queue-item__header">
+                <div>
+                  <strong>Case #C-4012 · Address Update</strong>
+                  <div class="queue-item__meta">
+                    <span><i class="fas fa-user"></i> Priya S.</span>
+                    <span><i class="fas fa-clock"></i> Waiting 4 min</span>
+                    <span><i class="fas fa-signal"></i> Self-Serve</span>
+                  </div>
+                </div>
+                <button class="queue-item__toggle" data-toggle>View details</button>
+              </div>
+              <div class="progress"><span style="width: 20%;"></span></div>
+              <div class="queue-item__details">
+                Address update validated automatically. Pending final confirmation and document upload.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-header">
+            <h2 class="section-title text-light">Customer <strong>Insights</strong></h2>
+          </div>
+          <div class="insights-grid">
+            <div class="insight-card">
+              <strong>NPS Trend</strong>
+              <p class="tool-item__description">Rolling 30-day NPS +42, driven by faster callback times.</p>
+              <div class="progress"><span style="width: 84%;"></span></div>
+            </div>
+            <div class="insight-card">
+              <strong>SLA Compliance</strong>
+              <p class="tool-item__description">92% of cases resolved within target SLA this week.</p>
+              <div class="progress"><span style="width: 92%;"></span></div>
+            </div>
+            <div class="insight-card">
+              <strong>Self-Service Adoption</strong>
+              <p class="tool-item__description">65% of routine requests now completed in-app without agent handoff.</p>
+              <div class="progress"><span style="width: 65%;"></span></div>
+            </div>
+            <div class="insight-card">
+              <strong>Agent Load Balance</strong>
+              <p class="tool-item__description">Even distribution across 18 agents, with 3 overflow ready.</p>
+              <div class="progress"><span style="width: 78%;"></span></div>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
 
@@ -322,5 +824,38 @@
       <p>Servicing & Customer Experience</p>
     </footer>
   </div>
+
+  <script>
+    function switchTab(event, tabId) {
+      const tabButtons = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabButtons.forEach((tab) => tab.classList.remove('active'));
+      tabContents.forEach((content) => content.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    const queueList = document.getElementById('queueList');
+    const chips = document.querySelectorAll('.chip');
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((item) => item.classList.remove('active'));
+        chip.classList.add('active');
+        const filter = chip.dataset.filter;
+        queueList.querySelectorAll('.queue-item').forEach((item) => {
+          const matches = filter === 'all' || item.dataset.status === filter;
+          item.style.display = matches ? 'flex' : 'none';
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const item = button.closest('.queue-item');
+        item.classList.toggle('expanded');
+        button.textContent = item.classList.contains('expanded') ? 'Hide details' : 'View details';
+      });
+    });
+  </script>
 </body>
 </html>
