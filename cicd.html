@@ -40,7 +40,7 @@
                 </p>
             </div>
 
-            <div class="demo-section" aria-label="DevOps metrics">
+            <div class="demo-section" aria-label="DevOps metrics" data-dashboard="cicd">
                 <div class="demo-header">
                     <div>
                         <h2 class="demo-title">Release readiness dashboard</h2>
@@ -49,30 +49,30 @@
                         </p>
                     </div>
                     <div class="demo-controls" aria-label="DevOps focus controls">
-                        <button class="demo-btn active" aria-pressed="true">CI</button>
-                        <button class="demo-btn" aria-pressed="false">Quality</button>
-                        <button class="demo-btn" aria-pressed="false">Deploy</button>
-                        <button class="demo-btn" aria-pressed="false">Release</button>
+                        <button class="demo-btn active" data-view="ci" aria-pressed="true">CI</button>
+                        <button class="demo-btn" data-view="quality" aria-pressed="false">Quality</button>
+                        <button class="demo-btn" data-view="deploy" aria-pressed="false">Deploy</button>
+                        <button class="demo-btn" data-view="release" aria-pressed="false">Release</button>
                     </div>
                 </div>
 
                 <div class="dashboard-grid">
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="buildSuccess">
                         <div class="metric-label">Build success</div>
                         <div class="metric-value">98.8%</div>
                         <div class="metric-change">Last 30 builds passing</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="qualityGates">
                         <div class="metric-label">Quality gates</div>
                         <div class="metric-value">6</div>
                         <div class="metric-change">Lint, tests, coverage, security</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="deployCadence">
                         <div class="metric-label">Deploy cadence</div>
                         <div class="metric-value">Weekly</div>
                         <div class="metric-change">Stable, staged promotions</div>
                     </div>
-                    <div class="metric-card">
+                    <div class="metric-card" data-metric-key="mttr">
                         <div class="metric-label">Mean time to recover</div>
                         <div class="metric-value">12 min</div>
                         <div class="metric-change">Automated rollback runbooks</div>
