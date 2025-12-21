@@ -349,6 +349,30 @@
       gap: 5px;
     }
 
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip-pill {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--mischka);
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chip-pill.is-active {
+      background: var(--java);
+      color: var(--white);
+      border-color: var(--java);
+    }
+
     .main-overview {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -498,6 +522,267 @@
       text-align: center;
       color: var(--abbey);
       display: none;
+    }
+
+    .panel {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .notification-panel {
+      position: fixed;
+      right: 24px;
+      top: 70px;
+      width: min(360px, 90vw);
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: 0 20px 40px rgba(57, 66, 99, 0.2);
+      padding: 18px;
+      display: none;
+      z-index: 6;
+    }
+
+    .notification-panel.is-open {
+      display: block;
+    }
+
+    .notification-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .notification-item {
+      border-radius: 12px;
+      padding: 12px;
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .notification-item__title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .notification-item__meta {
+      font-size: 12px;
+      color: var(--abbey);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .notification-item__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .notification-item__actions button {
+      border: none;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      background: var(--white);
+      border: 1px solid var(--mischka);
+    }
+
+    .notification-item.is-ack {
+      opacity: 0.7;
+    }
+
+    .team-heatmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .heatmap-card {
+      background: var(--catskill-white);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid var(--mischka);
+      display: grid;
+      gap: 8px;
+    }
+
+    .heatmap-card__title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .heatmap-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--mischka);
+      overflow: hidden;
+    }
+
+    .heatmap-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+    }
+
+    .heatmap-meta {
+      font-size: 12px;
+      color: var(--abbey);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .alert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .alert-card {
+      background: var(--white);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+      border-left: 4px solid var(--java);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .alert-card--high { border-left-color: var(--cinnabar); }
+    .alert-card--medium { border-left-color: var(--zest); }
+    .alert-card--low { border-left-color: var(--jungle-green); }
+
+    .alert-card__title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alert-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .alert-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--abbey);
+      margin-top: 6px;
+    }
+
+    .timeline {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+    }
+
+    .timeline__item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--mischka);
+    }
+
+    .timeline__item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline__time {
+      font-size: 12px;
+      color: var(--abbey);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .timeline__title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .timeline__meta {
+      font-size: 13px;
+      color: var(--abbey);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .quick-action {
+      background: var(--catskill-white);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--mischka);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quick-action__title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quick-action__meta {
+      font-size: 13px;
+      color: var(--abbey);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .overviewCard {
@@ -808,6 +1093,10 @@
           <i class="fas fa-wave-square"></i>
           <span>All systems normal</span>
         </div>
+        <button class="header__notification" type="button" aria-label="Open notifications" aria-expanded="false">
+          <i class="far fa-bell header__icon"></i>
+          <span class="header__notification-dot" aria-hidden="true"></span>
+        </button>
         <i class="far fa-bell header__icon"></i>
         <a class="header__icon-link" href="https://www.byheir.com/" aria-label="Home">
           <i class="fas fa-home header__icon"></i>
@@ -941,6 +1230,25 @@
         </div>
       </div>
     </div>
+
+    <section class="panel" aria-label="Saved views">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Saved views</div>
+          <div class="text-light">Switch focus instantly across teams and priorities.</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-ghost" type="button">Manage views</button>
+        </div>
+      </div>
+      <div class="chip-group" role="tablist" aria-label="Dashboard saved views">
+        <button class="chip-pill is-active" type="button" data-view="all" aria-pressed="true">All Operations</button>
+        <button class="chip-pill" type="button" data-view="risk" aria-pressed="false">Risk Focus</button>
+        <button class="chip-pill" type="button" data-view="collections" aria-pressed="false">Collections Focus</button>
+        <button class="chip-pill" type="button" data-view="cx" aria-pressed="false">CX Focus</button>
+        <button class="chip-pill" type="button" data-view="data" aria-pressed="false">Data Ops</button>
+      </div>
+    </section>
 
     <section class="status-banner" aria-label="Operational pulse">
       <div class="status-card">
@@ -1125,6 +1433,173 @@
             <span>Avg SLA 5.8 hrs</span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="analytics-section">
+      <div class="section-header">
+        <div>
+          <h2>Team Health Heatmap</h2>
+          <p class="text-light">Capacity and sentiment pulse across squads.</p>
+        </div>
+        <a class="snippet-link" href="servicing-cexp.html">Open staffing details</a>
+      </div>
+      <div class="team-heatmap">
+        <div class="heatmap-card" data-search="team health atlas capacity">
+          <div class="heatmap-card__title">Atlas Squad</div>
+          <div class="heatmap-bar"><span style="width: 82%; background: var(--cinnabar);"></span></div>
+          <div class="heatmap-meta">
+            <span>82% utilized</span>
+            <span>Sentiment 3.6</span>
+          </div>
+        </div>
+        <div class="heatmap-card" data-search="team health nova capacity">
+          <div class="heatmap-card__title">Nova Squad</div>
+          <div class="heatmap-bar"><span style="width: 61%; background: var(--java);"></span></div>
+          <div class="heatmap-meta">
+            <span>61% utilized</span>
+            <span>Sentiment 4.1</span>
+          </div>
+        </div>
+        <div class="heatmap-card" data-search="team health pulse capacity">
+          <div class="heatmap-card__title">Pulse Squad</div>
+          <div class="heatmap-bar"><span style="width: 54%; background: var(--jungle-green);"></span></div>
+          <div class="heatmap-meta">
+            <span>54% utilized</span>
+            <span>Sentiment 4.4</span>
+          </div>
+        </div>
+        <div class="heatmap-card" data-search="team health ledger capacity">
+          <div class="heatmap-card__title">Ledger Squad</div>
+          <div class="heatmap-bar"><span style="width: 47%; background: var(--zest);"></span></div>
+          <div class="heatmap-meta">
+            <span>47% utilized</span>
+            <span>Sentiment 3.9</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="analytics-section">
+      <div class="section-header">
+        <div>
+          <h2>Alerts & Escalations</h2>
+          <p class="text-light">Live alerts needing immediate attention across Ops and Risk.</p>
+        </div>
+        <a class="snippet-link" href="fraud-risk.html">Open alert queue</a>
+      </div>
+      <div class="alert-grid">
+        <article class="alert-card alert-card--high" data-search="alert escalation fraud velocity">
+          <div class="alert-card__title"><i class="fas fa-exclamation-triangle"></i>Fraud velocity spike</div>
+          <div class="alert-card__meta">
+            <span><i class="fas fa-layer-group"></i>12 cases flagged</span>
+            <span><i class="fas fa-clock"></i>Escalate in 45 min</span>
+          </div>
+          <div class="alert-card__footer">
+            <span>Owner: Atlas Squad</span>
+            <a class="action-card__cta" href="fraud-risk.html">Review alerts</a>
+          </div>
+        </article>
+        <article class="alert-card alert-card--medium" data-search="alert compliance disclosure review">
+          <div class="alert-card__title"><i class="fas fa-clipboard-list"></i>Disclosure gap detected</div>
+          <div class="alert-card__meta">
+            <span><i class="fas fa-file-alt"></i>5 policy hits</span>
+            <span><i class="fas fa-clock"></i>Due in 3 hrs</span>
+          </div>
+          <div class="alert-card__footer">
+            <span>Owner: Ledger Team</span>
+            <a class="action-card__cta" href="compliance-matrix.html">Open controls</a>
+          </div>
+        </article>
+        <article class="alert-card alert-card--low" data-search="alert cexp survey backlog">
+          <div class="alert-card__title"><i class="fas fa-comment-dots"></i>CEXP survey backlog</div>
+          <div class="alert-card__meta">
+            <span><i class="fas fa-inbox"></i>32 surveys pending</span>
+            <span><i class="fas fa-clock"></i>Send by EOD</span>
+          </div>
+          <div class="alert-card__footer">
+            <span>Owner: Pulse Team</span>
+            <a class="action-card__cta" href="servicing-cexp.html">Launch surveys</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="analytics-section">
+      <div class="section-header">
+        <div>
+          <h2>Ops Timeline</h2>
+          <p class="text-light">Latest deployments, model updates, and data refreshes.</p>
+        </div>
+        <a class="snippet-link" href="sas-jobs.html">View job history</a>
+      </div>
+      <div class="timeline" data-search="ops timeline deployments refreshes">
+        <div class="timeline__item">
+          <div class="timeline__time">09:32 AM</div>
+          <div>
+            <div class="timeline__title">Collections scoring model v4.2 deployed</div>
+            <div class="timeline__meta">
+              <span><i class="fas fa-code-branch"></i>Release 2041</span>
+              <span><i class="fas fa-user"></i>By Data Ops</span>
+              <span><i class="fas fa-check-circle"></i>No incidents</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__time">09:18 AM</div>
+          <div>
+            <div class="timeline__title">Fraud monitoring feed refreshed</div>
+            <div class="timeline__meta">
+              <span><i class="fas fa-sync-alt"></i>Delta load 3.2M records</span>
+              <span><i class="fas fa-database"></i>Latency 9 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__time">08:57 AM</div>
+          <div>
+            <div class="timeline__title">CEXP playbook update published</div>
+            <div class="timeline__meta">
+              <span><i class="fas fa-book"></i>Playbook 12.6</span>
+              <span><i class="fas fa-user"></i>Pulse Enablement</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="analytics-section">
+      <div class="section-header">
+        <div>
+          <h2>Quick Actions</h2>
+          <p class="text-light">Jump into high-frequency workflows with curated shortcuts.</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <a class="snippet-link" href="collections-toolkit.html">Open collections hub</a>
+          <a class="snippet-link" href="#" role="button">Download summary</a>
+        </div>
+      </div>
+      <div class="quick-actions">
+        <article class="quick-action" data-search="quick action collections export">
+          <div class="quick-action__title"><i class="fas fa-download"></i>Export collections snapshot</div>
+          <div class="quick-action__meta"><i class="fas fa-file-export"></i>Last run 24 hrs ago</div>
+          <a class="action-card__cta" href="collections-toolkit.html">Run export</a>
+        </article>
+        <article class="quick-action" data-search="quick action underwriting review">
+          <div class="quick-action__title"><i class="fas fa-balance-scale"></i>Review underwriting tier mix</div>
+          <div class="quick-action__meta"><i class="fas fa-chart-pie"></i>Tier A trending +6%</div>
+          <a class="action-card__cta" href="credit-underwriting.html">Open mix view</a>
+        </article>
+        <article class="quick-action" data-search="quick action analytics pipeline status">
+          <div class="quick-action__title"><i class="fas fa-project-diagram"></i>Check pipeline status</div>
+          <div class="quick-action__meta"><i class="fas fa-satellite-dish"></i>3 pipelines in maintenance</div>
+          <a class="action-card__cta" href="data-analytics.html">View pipelines</a>
+        </article>
+        <article class="quick-action" data-search="quick action creative launch">
+          <div class="quick-action__title"><i class="fas fa-video"></i>Launch creative drop</div>
+          <div class="quick-action__meta"><i class="fas fa-calendar"></i>Next release in 2 days</div>
+          <a class="action-card__cta" href="creative-house.html">Open launch plan</a>
+        </article>
       </div>
     </section>
 
@@ -1364,6 +1839,13 @@
     const searchInput = document.querySelector('.search__input');
     const searchableItems = document.querySelectorAll('[data-search]');
     const searchEmpty = document.getElementById('search-empty');
+    const notificationBtn = document.querySelector('.header__notification');
+    const notificationPanel = document.getElementById('notification-panel');
+    const notificationFilters = document.querySelectorAll('[data-notification-filter]');
+    const notificationItems = document.querySelectorAll('[data-notification]');
+    const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
+    const clearNotifications = document.getElementById('clear-notifications');
+    const savedViewButtons = document.querySelectorAll('.chip-pill[data-view]');
 
     menuBtn.addEventListener('click', () => {
       sidenav.classList.add('sidenav--show');
@@ -1391,6 +1873,12 @@
         sidenav.classList.remove('sidenav--show');
         grid.classList.remove('grid--noscroll');
         menuBtn.setAttribute('aria-expanded', 'false');
+        if (notificationPanel) {
+          notificationPanel.classList.remove('is-open');
+        }
+        if (notificationBtn) {
+          notificationBtn.setAttribute('aria-expanded', 'false');
+        }
       }
     });
 
@@ -1458,6 +1946,78 @@
         filterSearchResults(e.target.value);
       });
     }
+
+    if (notificationBtn && notificationPanel) {
+      notificationBtn.addEventListener('click', () => {
+        const isOpen = notificationPanel.classList.toggle('is-open');
+        notificationBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+
+    if (notificationPanel && notificationBtn) {
+      document.addEventListener('click', (e) => {
+        if (!notificationPanel.contains(e.target) && !notificationBtn.contains(e.target)) {
+          notificationPanel.classList.remove('is-open');
+          notificationBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    notificationFilters.forEach((filterBtn) => {
+      filterBtn.addEventListener('click', () => {
+        const filter = filterBtn.dataset.notificationFilter;
+        notificationFilters.forEach((btn) => {
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-pressed', 'false');
+        });
+        filterBtn.classList.add('is-active');
+        filterBtn.setAttribute('aria-pressed', 'true');
+
+        notificationItems.forEach((item) => {
+          const level = item.dataset.notification;
+          item.style.display = filter === 'all' || level === filter ? '' : 'none';
+        });
+      });
+    });
+
+    acknowledgeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.notification-item');
+        if (item) {
+          item.classList.add('is-ack');
+        }
+      });
+    });
+
+    if (clearNotifications) {
+      clearNotifications.addEventListener('click', () => {
+        notificationItems.forEach((item) => {
+          item.remove();
+        });
+      });
+    }
+
+    savedViewButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        savedViewButtons.forEach((button) => {
+          button.classList.remove('is-active');
+          button.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+
+        if (view === 'all') {
+          filterSearchResults('');
+          if (searchInput) searchInput.value = '';
+          return;
+        }
+        if (searchInput) {
+          searchInput.value = view;
+        }
+        filterSearchResults(view);
+      });
+    });
   </script>
 </body>
 </html>
