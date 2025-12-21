@@ -162,6 +162,46 @@
       gap: 8px;
     }
 
+    .ops-strip {
+      max-width: 1200px;
+      margin: 24px auto 0;
+      padding: 0 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .ops-strip__card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(46, 204, 113, 0.15);
+    }
+
+    .ops-strip__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .ops-strip__value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .ops-strip__meta {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -364,6 +404,24 @@
       <a class="btn btn-primary" href="#teams"><i class="fas fa-shield-check"></i> Team Breakdown</a>
     </div>
   </header>
+
+  <section class="ops-strip">
+    <div class="ops-strip__card">
+      <div class="ops-strip__label">Audit readiness</div>
+      <div class="ops-strip__value">96%</div>
+      <div class="ops-strip__meta"><i class="fas fa-clipboard-check"></i>2 controls in review</div>
+    </div>
+    <div class="ops-strip__card">
+      <div class="ops-strip__label">Exception window</div>
+      <div class="ops-strip__value">4 open</div>
+      <div class="ops-strip__meta"><i class="fas fa-exclamation-triangle"></i>Next SLA in 3 hrs</div>
+    </div>
+    <div class="ops-strip__card">
+      <div class="ops-strip__label">Data freshness</div>
+      <div class="ops-strip__value">12 min</div>
+      <div class="ops-strip__meta"><i class="fas fa-sync-alt"></i>Last sync 09:14</div>
+    </div>
+  </section>
 
   <main class="container">
     <section class="page-header">

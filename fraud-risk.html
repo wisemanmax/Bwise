@@ -75,6 +75,25 @@
       display: flex; gap: 30px; padding-top: 25px; margin-top: 25px;
       border-top: 2px solid #f0f0f0; flex-wrap: wrap;
     }
+    .ops-strip {
+      max-width: 1400px; margin: 25px auto 0; padding: 0 20px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .ops-strip__card {
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(20px);
+      border-radius: 14px; padding: 18px; box-shadow: var(--shadow);
+      border: 1px solid #eef1f4;
+    }
+    .ops-strip__label {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-light); font-weight: 700;
+    }
+    .ops-strip__value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .ops-strip__meta {
+      margin-top: 6px; font-size: 13px; color: var(--text-light);
+      display: flex; gap: 6px; align-items: center;
+    }
     .meta-item {
       display: flex; align-items: center; gap: 8px;
       color: var(--text-light); font-size: 14px;
@@ -319,6 +338,24 @@
       </button>
     </div>
   </header>
+
+  <section class="ops-strip">
+    <div class="ops-strip__card">
+      <div class="ops-strip__label">Alert volume</div>
+      <div class="ops-strip__value">127 open</div>
+      <div class="ops-strip__meta"><i class="fas fa-bell"></i>14 escalations today</div>
+    </div>
+    <div class="ops-strip__card">
+      <div class="ops-strip__label">Auto-triage</div>
+      <div class="ops-strip__value">71%</div>
+      <div class="ops-strip__meta"><i class="fas fa-robot"></i>Coverage in last 24h</div>
+    </div>
+    <div class="ops-strip__card">
+      <div class="ops-strip__label">Data freshness</div>
+      <div class="ops-strip__value">9 min</div>
+      <div class="ops-strip__meta"><i class="fas fa-sync-alt"></i>Last refresh 09:18</div>
+    </div>
+  </section>
 
   <div class="container">
     <div class="page-header">
