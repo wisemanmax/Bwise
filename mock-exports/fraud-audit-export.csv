@@ -1,4 +1,0 @@
-Evidence Item,Source,Retention,Status
-Transaction logs,Core ledger,7 years,Packaged
-Device snapshots,Risk telemetry,5 years,Packaged
-Geo trail,Location service,10 years,Packaged
