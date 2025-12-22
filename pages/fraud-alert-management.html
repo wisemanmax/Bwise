@@ -34,6 +34,67 @@
       </div>
     </section>
 
+    <div class="toolbar">
+      <div class="toolbar__left">
+        <div class="filter-group">
+          Priority
+          <select>
+            <option>All priorities</option>
+            <option>Critical</option>
+            <option>High</option>
+            <option>Medium</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          Queue
+          <select>
+            <option>All queues</option>
+            <option>Immediate</option>
+            <option>High</option>
+            <option>Standard</option>
+          </select>
+        </div>
+      </div>
+      <div class="toolbar__right">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="search" placeholder="Search alerts, signals, owners">
+        </div>
+        <button class="btn btn-ghost"><i class="fas fa-file-export"></i> Export</button>
+      </div>
+    </div>
+
+    <section class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-card__icon"><i class="fas fa-triangle-exclamation"></i></div>
+        <div>
+          <div class="summary-card__title">Escalation Load</div>
+          <div class="summary-card__meta">12 escalations active, 3 awaiting approval</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__icon"><i class="fas fa-shield-halved"></i></div>
+        <div>
+          <div class="summary-card__title">Auto Triage</div>
+          <div class="summary-card__meta">61% auto-closed, 29% routed to review</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__icon"><i class="fas fa-stopwatch"></i></div>
+        <div>
+          <div class="summary-card__title">SLA Performance</div>
+          <div class="summary-card__meta">Median response 12m, 4 queues at risk</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card__icon"><i class="fas fa-sitemap"></i></div>
+        <div>
+          <div class="summary-card__title">Routing Coverage</div>
+          <div class="summary-card__meta">14 rules active across 5 alert types</div>
+        </div>
+      </div>
+    </section>
+
     <h2 class="section-title">Alert <strong>Pulse</strong></h2>
     <section class="kpi-grid">
       <div class="kpi-card">
@@ -57,6 +118,14 @@
         <div class="kpi-meta"><i class="fas fa-clock"></i> SLA 15m</div>
       </div>
     </section>
+
+    <div class="info-banner">
+      <i class="fas fa-circle-info"></i>
+      <div>
+        <strong>Workflow update:</strong> New escalation routing for chargeback disputes is live. Monitor the
+        high-priority queue for any SLA drift.
+      </div>
+    </div>
 
     <section class="grid">
       <div class="card">
@@ -169,6 +238,2787 @@
           </tr>
         </tbody>
       </table>
+    </section>
+      <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Alert Routing Operations Log</div>
+      <p class="card-subtitle">Expanded mock data for enterprise readiness, governance, and operational coverage.</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Record</th>
+            <th>Priority Tier</th>
+            <th>Owner</th>
+            <th>Playbook</th>
+            <th>Last Reviewed</th>
+            <th>Health</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ALR-OPS-0001</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v1.0</td>
+            <td>02 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0002</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v2.1</td>
+            <td>03 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0003</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v3.2</td>
+            <td>04 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0004</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v4.3</td>
+            <td>05 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0005</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v5.4</td>
+            <td>06 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0006</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v1.5</td>
+            <td>07 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0007</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v2.6</td>
+            <td>08 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0008</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v3.7</td>
+            <td>09 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0009</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v4.8</td>
+            <td>10 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0010</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v5.9</td>
+            <td>11 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0011</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v1.0</td>
+            <td>12 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0012</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v2.1</td>
+            <td>13 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0013</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v3.2</td>
+            <td>14 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0014</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v4.3</td>
+            <td>15 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0015</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v5.4</td>
+            <td>16 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0016</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v1.5</td>
+            <td>17 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0017</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v2.6</td>
+            <td>18 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0018</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v3.7</td>
+            <td>19 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0019</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v4.8</td>
+            <td>20 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0020</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v5.9</td>
+            <td>21 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0021</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v1.0</td>
+            <td>22 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0022</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v2.1</td>
+            <td>23 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0023</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v3.2</td>
+            <td>24 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0024</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v4.3</td>
+            <td>25 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0025</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v5.4</td>
+            <td>26 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0026</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v1.5</td>
+            <td>27 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0027</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v2.6</td>
+            <td>28 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0028</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v3.7</td>
+            <td>01 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0029</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v4.8</td>
+            <td>02 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0030</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v5.9</td>
+            <td>03 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0031</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v1.0</td>
+            <td>04 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0032</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v2.1</td>
+            <td>05 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0033</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v3.2</td>
+            <td>06 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0034</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v4.3</td>
+            <td>07 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0035</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v5.4</td>
+            <td>08 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0036</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v1.5</td>
+            <td>09 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0037</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v2.6</td>
+            <td>10 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0038</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v3.7</td>
+            <td>11 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0039</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v4.8</td>
+            <td>12 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0040</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v5.9</td>
+            <td>13 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0041</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v1.0</td>
+            <td>14 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0042</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v2.1</td>
+            <td>15 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0043</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v3.2</td>
+            <td>16 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0044</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v4.3</td>
+            <td>17 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0045</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v5.4</td>
+            <td>18 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0046</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v1.5</td>
+            <td>19 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0047</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v2.6</td>
+            <td>20 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0048</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v3.7</td>
+            <td>21 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0049</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v4.8</td>
+            <td>22 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0050</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v5.9</td>
+            <td>23 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0051</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v1.0</td>
+            <td>24 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0052</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v2.1</td>
+            <td>25 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0053</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v3.2</td>
+            <td>26 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0054</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v4.3</td>
+            <td>27 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0055</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v5.4</td>
+            <td>28 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0056</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v1.5</td>
+            <td>01 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0057</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v2.6</td>
+            <td>02 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0058</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v3.7</td>
+            <td>03 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0059</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v4.8</td>
+            <td>04 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0060</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v5.9</td>
+            <td>05 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0061</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v1.0</td>
+            <td>06 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0062</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v2.1</td>
+            <td>07 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0063</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v3.2</td>
+            <td>08 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0064</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v4.3</td>
+            <td>09 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0065</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v5.4</td>
+            <td>10 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0066</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v1.5</td>
+            <td>11 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0067</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v2.6</td>
+            <td>12 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0068</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v3.7</td>
+            <td>13 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0069</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v4.8</td>
+            <td>14 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0070</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v5.9</td>
+            <td>15 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0071</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v1.0</td>
+            <td>16 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0072</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v2.1</td>
+            <td>17 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0073</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v3.2</td>
+            <td>18 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0074</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v4.3</td>
+            <td>19 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0075</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v5.4</td>
+            <td>20 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0076</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v1.5</td>
+            <td>21 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0077</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v2.6</td>
+            <td>22 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0078</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v3.7</td>
+            <td>23 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0079</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v4.8</td>
+            <td>24 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0080</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v5.9</td>
+            <td>25 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0081</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v1.0</td>
+            <td>26 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0082</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v2.1</td>
+            <td>27 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0083</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v3.2</td>
+            <td>28 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0084</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v4.3</td>
+            <td>01 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0085</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v5.4</td>
+            <td>02 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0086</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v1.5</td>
+            <td>03 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0087</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v2.6</td>
+            <td>04 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0088</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v3.7</td>
+            <td>05 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0089</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v4.8</td>
+            <td>06 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0090</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v5.9</td>
+            <td>07 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0091</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v1.0</td>
+            <td>08 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0092</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v2.1</td>
+            <td>09 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0093</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v3.2</td>
+            <td>10 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0094</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v4.3</td>
+            <td>11 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0095</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v5.4</td>
+            <td>12 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0096</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v1.5</td>
+            <td>13 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0097</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v2.6</td>
+            <td>14 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0098</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v3.7</td>
+            <td>15 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0099</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v4.8</td>
+            <td>16 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0100</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v5.9</td>
+            <td>17 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0101</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v1.0</td>
+            <td>18 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0102</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v2.1</td>
+            <td>19 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0103</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v3.2</td>
+            <td>20 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0104</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v4.3</td>
+            <td>21 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0105</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v5.4</td>
+            <td>22 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0106</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v1.5</td>
+            <td>23 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0107</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v2.6</td>
+            <td>24 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0108</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v3.7</td>
+            <td>25 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0109</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v4.8</td>
+            <td>26 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0110</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v5.9</td>
+            <td>27 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0111</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v1.0</td>
+            <td>28 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0112</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v2.1</td>
+            <td>01 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0113</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v3.2</td>
+            <td>02 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0114</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v4.3</td>
+            <td>03 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0115</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v5.4</td>
+            <td>04 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0116</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v1.5</td>
+            <td>05 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0117</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v2.6</td>
+            <td>06 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0118</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v3.7</td>
+            <td>07 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0119</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v4.8</td>
+            <td>08 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0120</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v5.9</td>
+            <td>09 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0121</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v1.0</td>
+            <td>10 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0122</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v2.1</td>
+            <td>11 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0123</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v3.2</td>
+            <td>12 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0124</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v4.3</td>
+            <td>13 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0125</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v5.4</td>
+            <td>14 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0126</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v1.5</td>
+            <td>15 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0127</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v2.6</td>
+            <td>16 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0128</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v3.7</td>
+            <td>17 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0129</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v4.8</td>
+            <td>18 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0130</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v5.9</td>
+            <td>19 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0131</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v1.0</td>
+            <td>20 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0132</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v2.1</td>
+            <td>21 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0133</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v3.2</td>
+            <td>22 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0134</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v4.3</td>
+            <td>23 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0135</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v5.4</td>
+            <td>24 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0136</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v1.5</td>
+            <td>25 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0137</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v2.6</td>
+            <td>26 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0138</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v3.7</td>
+            <td>27 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0139</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v4.8</td>
+            <td>28 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0140</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v5.9</td>
+            <td>01 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0141</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v1.0</td>
+            <td>02 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0142</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v2.1</td>
+            <td>03 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0143</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v3.2</td>
+            <td>04 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0144</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v4.3</td>
+            <td>05 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0145</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v5.4</td>
+            <td>06 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0146</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v1.5</td>
+            <td>07 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0147</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v2.6</td>
+            <td>08 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0148</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v3.7</td>
+            <td>09 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0149</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v4.8</td>
+            <td>10 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0150</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v5.9</td>
+            <td>11 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0151</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v1.0</td>
+            <td>12 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0152</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v2.1</td>
+            <td>13 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0153</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v3.2</td>
+            <td>14 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0154</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v4.3</td>
+            <td>15 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0155</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v5.4</td>
+            <td>16 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0156</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v1.5</td>
+            <td>17 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0157</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v2.6</td>
+            <td>18 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0158</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v3.7</td>
+            <td>19 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0159</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v4.8</td>
+            <td>20 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0160</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v5.9</td>
+            <td>21 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0161</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v1.0</td>
+            <td>22 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0162</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v2.1</td>
+            <td>23 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0163</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v3.2</td>
+            <td>24 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0164</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v4.3</td>
+            <td>25 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0165</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v5.4</td>
+            <td>26 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0166</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v1.5</td>
+            <td>27 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0167</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v2.6</td>
+            <td>28 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0168</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v3.7</td>
+            <td>01 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0169</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v4.8</td>
+            <td>02 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0170</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v5.9</td>
+            <td>03 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0171</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v1.0</td>
+            <td>04 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0172</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v2.1</td>
+            <td>05 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0173</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v3.2</td>
+            <td>06 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0174</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v4.3</td>
+            <td>07 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0175</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v5.4</td>
+            <td>08 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0176</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v1.5</td>
+            <td>09 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0177</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v2.6</td>
+            <td>10 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0178</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v3.7</td>
+            <td>11 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0179</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v4.8</td>
+            <td>12 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0180</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v5.9</td>
+            <td>13 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0181</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v1.0</td>
+            <td>14 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0182</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v2.1</td>
+            <td>15 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0183</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v3.2</td>
+            <td>16 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0184</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v4.3</td>
+            <td>17 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0185</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v5.4</td>
+            <td>18 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0186</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v1.5</td>
+            <td>19 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0187</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v2.6</td>
+            <td>20 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0188</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v3.7</td>
+            <td>21 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0189</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v4.8</td>
+            <td>22 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0190</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v5.9</td>
+            <td>23 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0191</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v1.0</td>
+            <td>24 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0192</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v2.1</td>
+            <td>25 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0193</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v3.2</td>
+            <td>26 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0194</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v4.3</td>
+            <td>27 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0195</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v5.4</td>
+            <td>28 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0196</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v1.5</td>
+            <td>01 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0197</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v2.6</td>
+            <td>02 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0198</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v3.7</td>
+            <td>03 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0199</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v4.8</td>
+            <td>04 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0200</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v5.9</td>
+            <td>05 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0201</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v1.0</td>
+            <td>06 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0202</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v2.1</td>
+            <td>07 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0203</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v3.2</td>
+            <td>08 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0204</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v4.3</td>
+            <td>09 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0205</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v5.4</td>
+            <td>10 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0206</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v1.5</td>
+            <td>11 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0207</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v2.6</td>
+            <td>12 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0208</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v3.7</td>
+            <td>13 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0209</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v4.8</td>
+            <td>14 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0210</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v5.9</td>
+            <td>15 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0211</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v1.0</td>
+            <td>16 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0212</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v2.1</td>
+            <td>17 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0213</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v3.2</td>
+            <td>18 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0214</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v4.3</td>
+            <td>19 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0215</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v5.4</td>
+            <td>20 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0216</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v1.5</td>
+            <td>21 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0217</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v2.6</td>
+            <td>22 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0218</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v3.7</td>
+            <td>23 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0219</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v4.8</td>
+            <td>24 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0220</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v5.9</td>
+            <td>25 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0221</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v1.0</td>
+            <td>26 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0222</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v2.1</td>
+            <td>27 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0223</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v3.2</td>
+            <td>28 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0224</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v4.3</td>
+            <td>01 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0225</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v5.4</td>
+            <td>02 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0226</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v1.5</td>
+            <td>03 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0227</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v2.6</td>
+            <td>04 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0228</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v3.7</td>
+            <td>05 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0229</td>
+            <td>Tier 1</td>
+            <td>Owner 1</td>
+            <td>Runbook v4.8</td>
+            <td>06 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0230</td>
+            <td>Tier 2</td>
+            <td>Owner 2</td>
+            <td>Runbook v5.9</td>
+            <td>07 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0231</td>
+            <td>Tier 3</td>
+            <td>Owner 3</td>
+            <td>Runbook v1.0</td>
+            <td>08 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0232</td>
+            <td>Tier 4</td>
+            <td>Owner 4</td>
+            <td>Runbook v2.1</td>
+            <td>09 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0233</td>
+            <td>Tier 1</td>
+            <td>Owner 5</td>
+            <td>Runbook v3.2</td>
+            <td>10 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0234</td>
+            <td>Tier 2</td>
+            <td>Owner 6</td>
+            <td>Runbook v4.3</td>
+            <td>11 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0235</td>
+            <td>Tier 3</td>
+            <td>Owner 7</td>
+            <td>Runbook v5.4</td>
+            <td>12 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0236</td>
+            <td>Tier 4</td>
+            <td>Owner 8</td>
+            <td>Runbook v1.5</td>
+            <td>13 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0237</td>
+            <td>Tier 1</td>
+            <td>Owner 9</td>
+            <td>Runbook v2.6</td>
+            <td>14 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0238</td>
+            <td>Tier 2</td>
+            <td>Owner 10</td>
+            <td>Runbook v3.7</td>
+            <td>15 Sep 2025</td>
+            <td>Amber</td>
+            <td>Needs review</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0239</td>
+            <td>Tier 3</td>
+            <td>Owner 11</td>
+            <td>Runbook v4.8</td>
+            <td>16 Sep 2025</td>
+            <td>Red</td>
+            <td>Escalated</td>
+          </tr>
+          <tr>
+            <td>ALR-OPS-0240</td>
+            <td>Tier 4</td>
+            <td>Owner 12</td>
+            <td>Runbook v5.9</td>
+            <td>17 Sep 2025</td>
+            <td>Green</td>
+            <td>On track</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="grid" style="margin-top: 24px;">
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 01</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">81%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 2</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">11 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">02 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 02</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">82%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 3</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">12 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">03 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 03</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">83%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 4</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">13 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">04 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 04</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">84%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 5</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">14 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">05 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 05</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">85%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 6</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">15 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">06 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 06</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">86%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 7</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">16 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">07 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 07</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">87%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 8</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">17 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">08 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 08</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">88%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 9</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">18 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">09 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 09</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">89%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 10</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">19 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">10 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 10</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">90%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 11</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">20 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">11 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 11</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">91%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 12</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">21 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">12 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 12</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">92%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 1</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">22 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">13 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 13</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">93%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 2</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">23 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">14 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 14</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">94%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 3</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">24 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">15 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 15</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">95%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 4</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">25 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">16 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 16</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">96%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 5</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">26 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">17 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 17</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">97%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 6</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">27 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">18 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 18</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">98%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 7</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">28 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">19 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 19</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">99%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 8</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">29 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">20 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 20</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">80%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 9</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">30 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">21 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 21</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">81%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 10</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">31 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">22 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 22</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">82%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 11</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">32 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">23 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 23</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">83%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 12</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">33 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">24 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 24</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">84%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 1</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">34 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">25 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 25</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">85%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 2</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">35 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">26 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 26</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">86%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 3</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">36 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">27 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 27</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">87%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 4</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">37 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">28 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 28</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">88%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 5</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">38 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">01 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 29</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">89%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 6</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">39 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">02 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 30</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">90%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 7</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">40 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">03 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 31</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">91%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 8</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">41 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">04 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 32</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">92%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 9</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">42 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">05 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 33</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">93%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 10</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">43 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">06 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 34</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">94%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 11</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">44 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">07 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 35</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">95%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 12</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">45 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">08 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 36</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">96%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 1</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">46 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">09 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 37</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">97%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 2</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">47 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">10 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 38</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">98%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 3</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">48 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">11 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 39</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">99%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 4</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">49 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">12 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 40</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">80%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 5</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">50 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">13 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 41</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">81%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 6</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">51 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">14 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 42</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">82%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 7</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">52 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">15 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 43</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">83%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 8</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">53 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">16 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 44</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">84%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 9</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">54 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">17 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 45</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">85%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 10</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">55 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">18 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 46</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">86%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 11</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">56 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">19 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 47</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">87%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 12</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">57 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">20 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 48</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">88%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 1</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">58 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">21 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 49</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">89%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 2</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">59 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">22 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 50</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">90%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 3</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">60 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">23 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 51</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">91%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 4</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">61 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">24 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 52</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">92%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 5</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">62 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">25 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 53</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">93%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 6</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">63 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">26 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 54</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">94%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 7</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">64 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">27 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 55</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">95%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 8</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">65 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">28 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 56</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">96%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 9</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">66 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">01 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 57</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">97%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 10</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">67 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">02 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 58</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">98%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 11</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">68 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">03 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 59</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">99%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 12</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">69 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">04 Sep</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Routing Operations Log Detail 60</div>
+        <p class="card-subtitle">Operational detail set</p>
+        <ul class="list">
+          <li class="list-item"><span>Control coverage</span><span class="badge success">80%</span></li>
+          <li class="list-item"><span>Policy owner</span><span class="pill">Owner 1</span></li>
+          <li class="list-item"><span>Evidence packets</span><span class="badge info">70 files</span></li>
+          <li class="list-item"><span>Last drill</span><span class="badge warning">05 Sep</span></li>
+        </ul>
+      </div>
     </section>
   </main>
 </body>
