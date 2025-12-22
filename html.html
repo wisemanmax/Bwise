@@ -48,7 +48,37 @@
                         I treat HTML as the foundation for performance, accessibility, and maintainability,
                         using landmarks and meaningful structure so teams can build safely on top.
                     </p>
-                    <pre class="code-block"><code>&lt;header class="app-header" aria-label="Primary site header"&gt;
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a semantic header, navigation, and KPI cards">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="preview-header">
+                                <div class="preview-logo">Byheir Wise</div>
+                                <div class="preview-nav">
+                                    <span>About</span>
+                                    <span>Experience</span>
+                                    <span>Dashboard</span>
+                                </div>
+                                <button type="button" class="preview-toggle" aria-label="Toggle navigation">☰</button>
+                            </div>
+                            <div class="preview-main">
+                                <div class="preview-section-title">Key delivery metrics</div>
+                                <div class="preview-kpis">
+                                    <div class="preview-kpi-card">
+                                        <span>Reports</span>
+                                        <strong>2,847</strong>
+                                    </div>
+                                    <div class="preview-kpi-card">
+                                        <span>Time saved</span>
+                                        <strong>1,240 hrs</strong>
+                                    </div>
+                                    <div class="preview-kpi-card">
+                                        <span>Accuracy</span>
+                                        <strong>98.6%</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;header class="app-header" aria-label="Primary site header"&gt;
     &lt;nav class="top-nav" aria-label="Main navigation"&gt;
         &lt;a class="logo" href="/"&gt;Byheir Wise&lt;/a&gt;
         &lt;button class="nav-toggle"
@@ -68,8 +98,9 @@
         &lt;div class="kpi-grid" role="list"&gt;
             &lt;article class="kpi-card" role="listitem"&gt;...&lt;/article&gt;
         &lt;/div&gt;
-    &lt;/section&gt;
+            &lt;/section&gt;
 &lt;/main&gt;</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
@@ -78,7 +109,36 @@
                         Collections, fraud, and compliance work lives in data. I build tables with proper
                         headers, captions, sorting controls, and responsive behavior.
                     </p>
-                    <pre class="code-block"><code>&lt;table class="metrics-table"&gt;
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a metrics data table">
+                            <div class="code-preview__label">Preview</div>
+                            <table class="metrics-table">
+                                <caption>Monthly collections performance by portfolio</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Portfolio</th>
+                                        <th scope="col">Delinquency rate</th>
+                                        <th scope="col">Roll rate</th>
+                                        <th scope="col">Agent coverage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Private Student Loans</th>
+                                        <td>1.8%</td>
+                                        <td>0.3%</td>
+                                        <td>97%</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Refi</th>
+                                        <td>1.2%</td>
+                                        <td>0.1%</td>
+                                        <td>99%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>&lt;table class="metrics-table"&gt;
     &lt;caption&gt;Monthly collections performance by portfolio&lt;/caption&gt;
     &lt;thead&gt;
         &lt;tr&gt;
@@ -103,6 +163,7 @@
         &lt;/tr&gt;
     &lt;/tbody&gt;
 &lt;/table&gt;</code></pre>
+                    </div>
                 </article>
             </div>
         </section>
@@ -116,7 +177,26 @@
             <div class="grid three-cols">
                 <article class="card">
                     <h3 class="card-title">Form layouts</h3>
-                    <pre class="code-block"><code>&lt;form class="form form--two-col" novalidate&gt;
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a two-column form layout">
+                            <div class="code-preview__label">Preview</div>
+                            <form class="form-preview" aria-label="Risk form preview">
+                                <div class="form-preview__row">
+                                    <label for="acct-preview">Account number</label>
+                                    <input id="acct-preview" name="acct-preview" placeholder="000-12345" />
+                                </div>
+                                <div class="form-preview__row">
+                                    <label for="segment-preview">Risk segment</label>
+                                    <select id="segment-preview" name="segment-preview">
+                                        <option>Prime</option>
+                                        <option>Near-prime</option>
+                                        <option>Sub-prime</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary">Run decision</button>
+                            </form>
+                        </div>
+                        <pre class="code-block"><code>&lt;form class="form form--two-col" novalidate&gt;
     &lt;div class="form-row"&gt;
         &lt;label for="acct"&gt;Account number&lt;/label&gt;
         &lt;input id="acct" name="acct" inputmode="numeric"
@@ -132,11 +212,27 @@
     &lt;/div&gt;
     &lt;button type="submit" class="btn btn-primary"&gt;Run decision&lt;/button&gt;
 &lt;/form&gt;</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Accessible modals</h3>
-                    <pre class="code-block"><code>&lt;div class="modal" role="dialog"
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a confirmation modal dialog">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="modal-preview">
+                                <header class="modal-preview__header">
+                                    <h4>Confirm batch publish</h4>
+                                    <button type="button" class="modal-preview__close" aria-label="Close dialog">×</button>
+                                </header>
+                                <p>You are about to update 1,000+ accounts. This action is logged.</p>
+                                <footer class="modal-preview__footer">
+                                    <button type="button" class="btn btn-secondary">Cancel</button>
+                                    <button type="button" class="btn btn-danger">Confirm</button>
+                                </footer>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;div class="modal" role="dialog"
      aria-modal="true"
      aria-labelledby="modal-title"
      aria-describedby="modal-body"&gt;
@@ -154,17 +250,28 @@
         &lt;/footer&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Dashboard cards</h3>
-                    <pre class="code-block"><code>&lt;article class="stat-card" aria-label="Time saved"&gt;
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a dashboard statistics card">
+                            <div class="code-preview__label">Preview</div>
+                            <article class="stat-preview-card" aria-label="Time saved">
+                                <span class="stat-preview-card__label">Manual hours eliminated</span>
+                                <strong class="stat-preview-card__value">1,240</strong>
+                                <span class="stat-preview-card__delta">+60% vs prior baseline</span>
+                            </article>
+                        </div>
+                        <pre class="code-block"><code>&lt;article class="stat-card" aria-label="Time saved"&gt;
     &lt;h3 class="stat-card__label"&gt;Manual hours eliminated&lt;/h3&gt;
     &lt;p class="stat-card__value"&gt;1,240&lt;/p&gt;
     &lt;p class="stat-card__delta stat-card__delta--positive"&gt;
         +60% vs prior baseline
     &lt;/p&gt;
 &lt;/article&gt;</code></pre>
+                    </div>
                 </article>
             </div>
         </section>

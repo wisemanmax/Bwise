@@ -44,7 +44,22 @@
             <div class="grid two-cols">
                 <article class="card">
                     <h2 class="card-title">Design tokens and theming</h2>
-                    <pre class="code-block"><code>:root { 
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of design tokens applied to a card and color swatches">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="token-preview">
+                                <div class="token-preview__swatches">
+                                    <span class="token-preview__swatch token-preview__swatch--bg">BG</span>
+                                    <span class="token-preview__swatch token-preview__swatch--surface">Surface</span>
+                                    <span class="token-preview__swatch token-preview__swatch--accent">Accent</span>
+                                </div>
+                                <div class="token-preview__card">
+                                    <h4>Token-driven card</h4>
+                                    <p>Shared tokens keep dashboards consistent and easy to theme.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>:root { 
     --color-bg: #050816;
     --color-surface: #0b1020;
     --color-accent: #F15A22;
@@ -69,11 +84,33 @@ body {
     box-shadow: var(--shadow-soft);
     border: 1px solid rgba(148,163,184,0.15);
 }</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h2 class="card-title">Layout utilities</h2>
-                    <pre class="code-block"><code>.stack {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of stack, cluster, and grid layout utilities">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="layout-preview">
+                                <div class="layout-preview__stack">
+                                    <span>Stack item A</span>
+                                    <span>Stack item B</span>
+                                    <span>Stack item C</span>
+                                </div>
+                                <div class="layout-preview__cluster">
+                                    <span>Cluster tag</span>
+                                    <span>Another tag</span>
+                                    <span>Utility class</span>
+                                </div>
+                                <div class="layout-preview__grid">
+                                    <span>Grid 1</span>
+                                    <span>Grid 2</span>
+                                    <span>Grid 3</span>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>.stack {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -105,6 +142,7 @@ body {
         grid-template-columns: minmax(0, 1fr);
     }
 }</code></pre>
+                    </div>
                 </article>
             </div>
         </section>
@@ -118,7 +156,15 @@ body {
             <div class="grid three-cols">
                 <article class="card">
                     <h3 class="card-title">Badges and chips</h3>
-                    <pre class="code-block"><code>.badge {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of success and critical badges">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="badge-preview">
+                                <span class="badge badge--success">Approved</span>
+                                <span class="badge badge--critical">Needs review</span>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>.badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -140,11 +186,37 @@ body {
     color: #fca5a5;
     border: 1px solid rgba(248, 113, 113, 0.6);
 }</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Interactive table rows</h3>
-                    <pre class="code-block"><code>.metrics-table tr {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of hoverable table rows">
+                            <div class="code-preview__label">Preview</div>
+                            <table class="metrics-table">
+                                <thead>
+                                    <tr>
+                                        <th>Queue</th>
+                                        <th>Status</th>
+                                        <th>Owner</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Fraud review</td>
+                                        <td>Active</td>
+                                        <td>Ops</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Collections</td>
+                                        <td>Monitoring</td>
+                                        <td>QA</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <pre class="code-block"><code>.metrics-table tr {
     transition: background-color 0.18s ease, transform 0.18s ease;
 }
 
@@ -152,17 +224,27 @@ body {
     background-color: rgba(15, 23, 42, 0.9);
     transform: translateY(-1px);
 }</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Glass cards on gradient</h3>
-                    <pre class="code-block"><code>.glass-card {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a glassmorphism card">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="glass-card">
+                                <h4>Portfolio uplift</h4>
+                                <p>Soft gradients with a glass effect keep dashboards light and readable.</p>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>.glass-card {
     position: relative;
     border-radius: 24px;
     background: linear-gradient(145deg, rgba(15,23,42,0.9), rgba(15,23,42,0.65));
     border: 1px solid rgba(148,163,184,0.25);
     backdrop-filter: blur(18px);
 }</code></pre>
+                    </div>
                 </article>
             </div>
         </section>
