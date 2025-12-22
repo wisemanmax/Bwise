@@ -357,6 +357,17 @@ header {
     }
 
     .nav-menu {
+        position: static;
+        flex-direction: column;
+        gap: var(--space-sm);
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .js-enabled .nav-menu {
         position: absolute;
         inset-block-start: 100%;
         inset-inline: 0;
@@ -364,8 +375,6 @@ header {
         margin-inline: auto;
         padding: var(--space-lg) var(--pad-x-mobile);
         background: var(--white);
-        flex-direction: column;
-        gap: var(--space-sm);
         transform-origin: top;
         transform: scaleY(0);
         opacity: 0;
@@ -375,7 +384,7 @@ header {
         border-radius: var(--radius-md);
     }
 
-    .nav-menu.open {
+    .js-enabled .nav-menu.open {
         transform: scaleY(1);
         opacity: 1;
         pointer-events: auto;

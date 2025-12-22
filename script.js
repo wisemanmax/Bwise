@@ -1,5 +1,7 @@
 // Improved script.js with error handling, performance optimizations, and accessibility
 
+document.documentElement.classList.add('js-enabled');
+
 // ============================================================================
 // UTILITY FUNCTIONS
 // ============================================================================
