@@ -44,7 +44,27 @@
             <div class="grid two-cols">
                 <article class="card">
                     <h2 class="card-title">Stateful dashboard interactions</h2>
-                    <pre class="code-block"><code>const dashboardState = {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a dashboard with mode toggles and KPIs">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="js-preview-dashboard">
+                                <div class="js-preview-dashboard__controls">
+                                    <button type="button" class="js-preview-dashboard__button js-preview-dashboard__button--active">Monthly</button>
+                                    <button type="button" class="js-preview-dashboard__button">Quarterly</button>
+                                </div>
+                                <div class="js-preview-dashboard__kpis">
+                                    <div>
+                                        <span>Reports</span>
+                                        <strong>2,847</strong>
+                                    </div>
+                                    <div>
+                                        <span>Time saved</span>
+                                        <strong>1,240 hrs</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>const dashboardState = {
     mode: "monthly",
     data: {
         monthly: { reports: 2847, timeSaved: 1240 },
@@ -73,11 +93,27 @@ document.querySelectorAll("[data-mode-toggle]").forEach(button =&gt; {
 });
 
 renderDashboard();</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h2 class="card-title">Accessible modal controller</h2>
-                    <pre class="code-block"><code>function createModalController(root) {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of an accessible modal with focusable actions">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="modal-preview modal-preview--compact">
+                                <header class="modal-preview__header">
+                                    <h4>Update QA checklist</h4>
+                                    <button type="button" class="modal-preview__close" aria-label="Close dialog">×</button>
+                                </header>
+                                <p>Review the latest compliance updates before publishing.</p>
+                                <footer class="modal-preview__footer">
+                                    <button type="button" class="btn btn-secondary">Cancel</button>
+                                    <button type="button" class="btn btn-primary">Publish</button>
+                                </footer>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>function createModalController(root) {
     const openButtons = document.querySelectorAll("[data-open-modal]");
     const closeButtons = root.querySelectorAll("[data-close-modal]");
     const dialog = root.querySelector("[role='dialog']");
@@ -104,6 +140,7 @@ renderDashboard();</code></pre>
         if (event.key === "Escape" &amp;&amp; !root.hidden) closeModal();
     });
 }</code></pre>
+                    </div>
                 </article>
             </div>
         </section>
@@ -117,7 +154,20 @@ renderDashboard();</code></pre>
             <div class="grid three-cols">
                 <article class="card">
                     <h3 class="card-title">Debounced search</h3>
-                    <pre class="code-block"><code>function debounce(fn, delay = 250) {
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a debounced search input with suggestions">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="js-preview-search">
+                                <label for="search-preview">Account search</label>
+                                <input id="search-preview" type="search" placeholder="Search by account ID" />
+                                <ul class="js-preview-search__results">
+                                    <li>PSL-22031 · Active</li>
+                                    <li>PSL-22044 · On hold</li>
+                                    <li>PSL-22098 · Escalated</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>function debounce(fn, delay = 250) {
     let handle;
     return function (...args) {
         clearTimeout(handle);
@@ -134,20 +184,45 @@ searchInput.addEventListener(
         fetch("/api/accounts?query=" + encodeURIComponent(value));
     }, 300)
 );</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Client-side feature flags</h3>
-                    <pre class="code-block"><code>const flags = new Map([["newCollectionsView", true]]);
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of feature flag states">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="js-preview-flags">
+                                <div>
+                                    <span>newCollectionsView</span>
+                                    <strong class="js-preview-flags__state js-preview-flags__state--on">ON</strong>
+                                </div>
+                                <div>
+                                    <span>agentAssistPanel</span>
+                                    <strong class="js-preview-flags__state js-preview-flags__state--off">OFF</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>const flags = new Map([["newCollectionsView", true]]);
 
 export function isFeatureEnabled(name) {
     return flags.get(name) === true;
 }</code></pre>
+                    </div>
                 </article>
 
                 <article class="card">
                     <h3 class="card-title">Form validation</h3>
-                    <pre class="code-block"><code>const form = document.querySelector("[data-form='qa-score']");
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a validated QA score form">
+                            <div class="code-preview__label">Preview</div>
+                            <form class="js-preview-form" aria-label="QA score preview">
+                                <label for="qa-score-preview">QA score</label>
+                                <input id="qa-score-preview" type="number" min="0" max="100" placeholder="0 - 100" />
+                                <button type="button" class="btn btn-primary">Submit score</button>
+                            </form>
+                        </div>
+                        <pre class="code-block"><code>const form = document.querySelector("[data-form='qa-score']");
 
 form.addEventListener("submit", event =&gt; {
     const score = Number(form.elements["score"].value);
@@ -156,6 +231,7 @@ form.addEventListener("submit", event =&gt; {
         alert("Score must be between 0 and 100.");
     }
 });</code></pre>
+                    </div>
                 </article>
             </div>
         </section>
