@@ -122,6 +122,37 @@
       border-radius: 999px; background: rgba(39,174,96,0.1); color: var(--primary);
       font-weight: 600; font-size: 13px;
     }
+    .filter-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .filter-summary {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+    }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+      border-radius: 999px; background: rgba(39,174,96,0.12); color: var(--primary);
+      font-weight: 600; font-size: 12px;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-top: 10px;
+    }
+    .stat-card {
+      border-radius: 14px; padding: 16px; border: 1px solid #e5f2ea; background: #f5fbf8;
+    }
+    .stat-card__label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light); }
+    .stat-card__value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .stat-card__note { font-size: 13px; color: var(--text-light); margin-top: 6px; }
+    .data-table {
+      width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px;
+    }
+    .data-table th, .data-table td {
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid #e6f4ec;
+    }
+    .data-table th {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light);
+    }
     .status-pill {
       padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;
       background: rgba(39,174,96,0.12); color: var(--success);
@@ -218,6 +249,129 @@
     </section>
 
     <form id="new-application-form">
+      <section class="section">
+        <h2 class="section-title">Decision <strong>Filters</strong></h2>
+        <div class="card">
+          <div class="card-title">Policy & Pricing <strong>Routing</strong></div>
+          <div class="filter-grid">
+            <div class="form-group">
+              <label for="channel-filter">Origination Channel</label>
+              <select id="channel-filter">
+                <option>Digital Application</option>
+                <option>Branch Referral</option>
+                <option>Partner Marketplace</option>
+                <option>Broker Channel</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="product-filter">Product Family</label>
+              <select id="product-filter">
+                <option>Prime Auto Loan</option>
+                <option>Credit Card</option>
+                <option>Personal Loan</option>
+                <option>SMB Line of Credit</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="score-filter">Score Band</label>
+              <select id="score-filter">
+                <option>720 - 780</option>
+                <option>680 - 719</option>
+                <option>620 - 679</option>
+                <option>780+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ltv-filter">LTV Range</label>
+              <select id="ltv-filter">
+                <option>70% - 85%</option>
+                <option>60% - 69%</option>
+                <option>85% - 95%</option>
+                <option>95%+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="pricing-filter">Pricing Tier</label>
+              <select id="pricing-filter">
+                <option>Tier 1 Preferred</option>
+                <option>Tier 2 Standard</option>
+                <option>Tier 3 Alt</option>
+                <option>Manual Override</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-summary">
+            <span class="filter-pill"><i class="fas fa-filter"></i> Prime Policy • 24h SLA</span>
+            <span class="filter-pill"><i class="fas fa-percent"></i> Avg APR 6.2%</span>
+            <span class="filter-pill"><i class="fas fa-file-circle-check"></i> 80% Doc Completion</span>
+            <span class="filter-pill"><i class="fas fa-route"></i> Straight-through Eligible</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Underwriting <strong>Intelligence</strong></h2>
+        <div class="card">
+          <div class="card-title">Portfolio <strong>Signals</strong></div>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card__label">Approval Probability</div>
+              <div class="stat-card__value">78%</div>
+              <div class="stat-card__note">Model v5.4 • last scored 2 min ago</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Debt-to-Income</div>
+              <div class="stat-card__value">31%</div>
+              <div class="stat-card__note">Policy max 40%</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Collateral Coverage</div>
+              <div class="stat-card__value">112%</div>
+              <div class="stat-card__note">Appraised vs. loan amount</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Fraud Screening</div>
+              <div class="stat-card__value">Low Risk</div>
+              <div class="stat-card__note">Device trusted • 0 alerts</div>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Rule Trigger</th>
+                <th>Severity</th>
+                <th>Owner</th>
+                <th>Evidence</th>
+                <th>Disposition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Income Verification</td>
+                <td>Medium</td>
+                <td>Marcus Chen</td>
+                <td>Payroll feed • 2 paystubs</td>
+                <td>Accepted</td>
+              </tr>
+              <tr>
+                <td>Recent Credit Inquiry</td>
+                <td>Low</td>
+                <td>Alina Patel</td>
+                <td>Soft pull • 8/15</td>
+                <td>Monitor</td>
+              </tr>
+              <tr>
+                <td>LTV Exception</td>
+                <td>High</td>
+                <td>Risk Desk</td>
+                <td>Appraisal variance 7%</td>
+                <td>Escalate</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="section">
         <h2 class="section-title">Application <strong>Overview</strong></h2>
         <div class="card">

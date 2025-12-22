@@ -122,6 +122,37 @@
       border-radius: 999px; background: rgba(231,76,60,0.1); color: var(--primary);
       font-weight: 600; font-size: 13px;
     }
+    .filter-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .filter-summary {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+    }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+      border-radius: 999px; background: rgba(231,76,60,0.12); color: var(--primary);
+      font-weight: 600; font-size: 12px;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-top: 10px;
+    }
+    .stat-card {
+      border-radius: 14px; padding: 16px; border: 1px solid #fde2df; background: #fef3f2;
+    }
+    .stat-card__label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light); }
+    .stat-card__value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .stat-card__note { font-size: 13px; color: var(--text-light); margin-top: 6px; }
+    .data-table {
+      width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px;
+    }
+    .data-table th, .data-table td {
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid #fde2df;
+    }
+    .data-table th {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light);
+    }
     .status-pill {
       padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;
       background: rgba(231,76,60,0.12); color: var(--danger);
@@ -227,6 +258,129 @@
     </section>
 
     <form id="new-fraud-case-form">
+      <section class="section">
+        <h2 class="section-title">Alert <strong>Filters</strong></h2>
+        <div class="card">
+          <div class="card-title">Signal <strong>Routing</strong></div>
+          <div class="filter-grid">
+            <div class="form-group">
+              <label for="source-filter">Alert Source</label>
+              <select id="source-filter">
+                <option>Card Present + ATM</option>
+                <option>Digital Session</option>
+                <option>Third-Party Watchlist</option>
+                <option>Chargeback Queue</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="region-filter">Region Cluster</label>
+              <select id="region-filter">
+                <option>North America - East</option>
+                <option>North America - West</option>
+                <option>EMEA</option>
+                <option>LATAM</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="velocity-filter">Velocity</label>
+              <select id="velocity-filter">
+                <option>5+ events / hour</option>
+                <option>3-4 events / hour</option>
+                <option>1-2 events / hour</option>
+                <option>Single event</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="loss-filter">Estimated Loss</label>
+              <select id="loss-filter">
+                <option>$50k - $120k</option>
+                <option>$10k - $50k</option>
+                <option>$120k+</option>
+                <option>&lt;$10k</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="case-filter">Case Type</label>
+              <select id="case-filter">
+                <option>Account Takeover</option>
+                <option>Card Skimming</option>
+                <option>Synthetic Identity</option>
+                <option>Merchant Collusion</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-summary">
+            <span class="filter-pill"><i class="fas fa-filter"></i> High Severity • Escalated</span>
+            <span class="filter-pill"><i class="fas fa-map"></i> 4 geos impacted</span>
+            <span class="filter-pill"><i class="fas fa-user-shield"></i> 12 accounts flagged</span>
+            <span class="filter-pill"><i class="fas fa-triangle-exclamation"></i> 2 critical rules</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Threat <strong>Intelligence</strong></h2>
+        <div class="card">
+          <div class="card-title">Risk <strong>Signals</strong></div>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card__label">Estimated Exposure</div>
+              <div class="stat-card__value">$84,600</div>
+              <div class="stat-card__note">Projected 48h loss without action</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Velocity Score</div>
+              <div class="stat-card__value">92 / 100</div>
+              <div class="stat-card__note">Spike across 6 merchants</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Confidence Level</div>
+              <div class="stat-card__value">High</div>
+              <div class="stat-card__note">Cross-channel corroboration</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Containment Status</div>
+              <div class="stat-card__value">In Progress</div>
+              <div class="stat-card__note">8 cards blocked • 4 pending</div>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Alert</th>
+                <th>Signal</th>
+                <th>Owner</th>
+                <th>Action</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ATM Burst</td>
+                <td>12 transactions / 15 min</td>
+                <td>Priya Nair</td>
+                <td>Card freeze</td>
+                <td>Stopped</td>
+              </tr>
+              <tr>
+                <td>Device Mismatch</td>
+                <td>New device + VPN</td>
+                <td>Omar Khan</td>
+                <td>Step-up auth</td>
+                <td>Pending</td>
+              </tr>
+              <tr>
+                <td>Merchant Cluster</td>
+                <td>3 risky MCC codes</td>
+                <td>Sara Lee</td>
+                <td>Merchant review</td>
+                <td>Monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="section">
         <h2 class="section-title">Case <strong>Overview</strong></h2>
         <div class="card">

@@ -122,6 +122,37 @@
       border-radius: 999px; background: rgba(27,186,225,0.1); color: var(--primary);
       font-weight: 600; font-size: 13px;
     }
+    .filter-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .filter-summary {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+    }
+    .filter-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+      border-radius: 999px; background: rgba(27,186,225,0.12); color: var(--primary);
+      font-weight: 600; font-size: 12px;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-top: 10px;
+    }
+    .stat-card {
+      border-radius: 14px; padding: 16px; border: 1px solid #e7eef6; background: #f8fbfe;
+    }
+    .stat-card__label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light); }
+    .stat-card__value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .stat-card__note { font-size: 13px; color: var(--text-light); margin-top: 6px; }
+    .data-table {
+      width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px;
+    }
+    .data-table th, .data-table td {
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid #eef3f7;
+    }
+    .data-table th {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-light);
+    }
     .status-pill {
       padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700;
       background: rgba(39,174,96,0.12); color: var(--success);
@@ -227,6 +258,129 @@
     </section>
 
     <form id="new-case-form">
+      <section class="section">
+        <h2 class="section-title">Operational <strong>Filters</strong></h2>
+        <div class="card">
+          <div class="card-title">Queue <strong>Routing</strong></div>
+          <div class="filter-grid">
+            <div class="form-group">
+              <label for="region-filter">Region</label>
+              <select id="region-filter">
+                <option>Midwest - Central</option>
+                <option>West - Pacific</option>
+                <option>South - Gulf</option>
+                <option>Northeast - Metro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="balance-filter">Balance Range</label>
+              <select id="balance-filter">
+                <option>$10k - $25k</option>
+                <option>$25k - $50k</option>
+                <option>$5k - $10k</option>
+                <option>$50k+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="risk-filter">Risk Band</label>
+              <select id="risk-filter">
+                <option>Moderate (650-720)</option>
+                <option>High (600-649)</option>
+                <option>Severe (&lt;600)</option>
+                <option>Low (720+)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="channel-filter">Preferred Channel</label>
+              <select id="channel-filter">
+                <option>Phone + SMS</option>
+                <option>Email + Portal</option>
+                <option>Field Visit</option>
+                <option>Agent Assisted</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="strategy-filter">Strategy</label>
+              <select id="strategy-filter">
+                <option>Retention + Hardship</option>
+                <option>Repossession Review</option>
+                <option>Payment Plan Escalation</option>
+                <option>Charge-Off Recovery</option>
+              </select>
+            </div>
+          </div>
+          <div class="filter-summary">
+            <span class="filter-pill"><i class="fas fa-filter"></i> Midwest Auto Loans • Tier A</span>
+            <span class="filter-pill"><i class="fas fa-bullseye"></i> 76 DPD Median</span>
+            <span class="filter-pill"><i class="fas fa-user-clock"></i> 18 Cases / Collector</span>
+            <span class="filter-pill"><i class="fas fa-shield-check"></i> Compliance Clear</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Portfolio <strong>Intelligence</strong></h2>
+        <div class="card">
+          <div class="card-title">Risk & Recovery <strong>Signals</strong></div>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-card__label">Expected Recovery</div>
+              <div class="stat-card__value">$12.4M</div>
+              <div class="stat-card__note">Next 30 days across 118 cases</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Promise-to-Pay Rate</div>
+              <div class="stat-card__value">62%</div>
+              <div class="stat-card__note">Up 8% vs. last quarter</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">High Risk Watchlist</div>
+              <div class="stat-card__value">24 Accounts</div>
+              <div class="stat-card__note">Critical compliance review required</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card__label">Digital Self-Cure</div>
+              <div class="stat-card__value">31%</div>
+              <div class="stat-card__note">Portal + SMS journey adoption</div>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Risk Flag</th>
+                <th>Collector</th>
+                <th>Last Touch</th>
+                <th>Next Step</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ACC-4589103</td>
+                <td>Income Volatility</td>
+                <td>Maria Alvarez</td>
+                <td>10/28 • SMS Reminder</td>
+                <td>Offer bi-weekly plan</td>
+              </tr>
+              <tr>
+                <td>ACC-4591120</td>
+                <td>Broken PTP</td>
+                <td>Jordan Reed</td>
+                <td>10/26 • Call Attempt</td>
+                <td>Escalate to hardship</td>
+              </tr>
+              <tr>
+                <td>ACC-4593184</td>
+                <td>Collateral Risk</td>
+                <td>Camille Ross</td>
+                <td>10/24 • Field Visit</td>
+                <td>Asset verification</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="section">
         <h2 class="section-title">Case <strong>Overview</strong></h2>
         <div class="card">
