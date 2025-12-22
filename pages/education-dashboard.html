@@ -1,0 +1,2701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Education Dashboard · Byheir Wise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+
+    :root {
+      --fiord: #394263;
+      --white: #ffffff;
+      --athens-gray: #eaedf1;
+      --catskill-white: #f9fafc;
+      --abbey: #777777;
+      --mischka: #dadae3;
+      --java: #1bbae1;
+      --mine-shaft: #333333;
+      --zest: #e67e22;
+      --jungle-green: #27ae60;
+      --cinnabar: #e74c3c;
+      --amethyst: #af64cc;
+      --alto: #d3d3d3;
+      --header-h: 50px;
+      --footer-h: 50px;
+      --sidenav-w: 240px;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+      height: 100%;
+    }
+
+    body {
+      background-color: var(--athens-gray);
+      color: var(--fiord);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .text-light {
+      font-weight: 300;
+    }
+
+    .text-bold {
+      font-weight: 700;
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .row--align-v-center {
+      align-items: center;
+    }
+
+    .row--align-h-center {
+      justify-content: center;
+    }
+
+    .grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: var(--header-h) 1fr var(--footer-h);
+      grid-template-areas:
+        "header"
+        "main"
+        "footer";
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .grid--noscroll {
+      overflow-y: hidden;
+    }
+
+    .header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--catskill-white);
+      position: relative;
+      z-index: 3;
+    }
+
+    .header__menu {
+      position: fixed;
+      padding: 13px;
+      left: 12px;
+      background-color: var(--mischka);
+      border-radius: 50%;
+      z-index: 4;
+      color: var(--fiord);
+      cursor: pointer;
+      width: 45px;
+      height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .header__menu:hover {
+      background-color: var(--abbey);
+      color: var(--white);
+    }
+
+    .header__search {
+      margin-left: 60px;
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .header__icon {
+      font-size: 20px;
+      color: var(--fiord);
+      cursor: pointer;
+    }
+
+    .header__actions {
+      margin-right: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .header__notification {
+      position: relative;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .header__notification-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cinnabar);
+      border: 2px solid var(--catskill-white);
+    }
+
+    .header__user {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 1px solid var(--mischka);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .header__user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--java), var(--amethyst));
+    }
+
+    .header__icon-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--fiord);
+    }
+
+    .status-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(27, 186, 225, 0.12);
+      color: var(--java);
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-pill--warning {
+      background: rgba(230, 126, 34, 0.14);
+      color: var(--zest);
+    }
+
+    .status-pill--success {
+      background: rgba(39, 174, 96, 0.12);
+      color: var(--jungle-green);
+    }
+
+    .search {
+      position: relative;
+    }
+
+    .search__input {
+      width: 100%;
+      padding: 10px 15px 10px 40px;
+      border: 1px solid var(--mischka);
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .search__input:focus {
+      border-color: var(--java);
+    }
+
+    .search__icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--abbey);
+    }
+
+    .sidenav {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidenav-w);
+      background-color: var(--fiord);
+      transform: translateX(calc(var(--sidenav-w) * -1));
+      transition: transform 0.3s;
+      z-index: 5;
+      overflow-y: auto;
+      color: var(--white);
+    }
+
+    .sidenav--show {
+      transform: translateX(0);
+    }
+
+    .sidenav__brand {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: rgba(0,0,0,0.1);
+    }
+
+    .sidenav__brand-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      color: var(--java);
+    }
+
+    .sidenav__brand-link {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .sidenav__brand-close {
+      margin-left: auto;
+      cursor: pointer;
+      font-size: 20px;
+      padding: 5px;
+      transition: color 0.3s;
+    }
+
+    .sidenav__brand-close:hover {
+      color: var(--cinnabar);
+    }
+
+    .sidenav__profile {
+      padding: 20px;
+      text-align: center;
+      background-color: rgba(0,0,0,0.05);
+    }
+
+    .sidenav__profile-avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--java), var(--jungle-green));
+    }
+
+    .sidenav__profile-title {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .navList {
+      list-style: none;
+      padding: 20px 0;
+      width: 100%;
+    }
+
+    .navList__heading {
+      padding: 15px 20px 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navList__heading i {
+      opacity: 0.5;
+    }
+
+    .navList__item {
+      margin: 5px 0;
+    }
+
+    .navList__link {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: rgba(255,255,255,0.8);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .navList__link:hover {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--white);
+      padding-left: 25px;
+    }
+
+    .navList__link-icon {
+      width: 30px;
+      font-size: 16px;
+      margin-right: 12px;
+      text-align: center;
+    }
+
+    .navList__link-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .main {
+      grid-area: main;
+      padding: 30px 40px;
+      overflow-y: auto;
+    }
+
+    .main-header {
+      margin-bottom: 40px;
+    }
+
+    .main-header__intro-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .main-header__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .meta-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 1px solid var(--mischka);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fiord);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .main-header__welcome-title {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .main-header__welcome-subtitle {
+      font-size: 14px;
+      color: var(--abbey);
+    }
+
+    .quickview {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .quickview__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 25px;
+      background-color: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .quickview__item-total {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--java);
+      margin-bottom: 5px;
+    }
+
+    .quickview__item-description {
+      font-size: 12px;
+      color: var(--abbey);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip-pill {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--mischka);
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chip-pill.is-active {
+      background: var(--java);
+      color: var(--white);
+      border-color: var(--java);
+    }
+
+    .filters-panel {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+      display: grid;
+      gap: 14px;
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-control {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 160px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .filter-select {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--mischka);
+      background: var(--white);
+      font-size: 13px;
+      color: var(--fiord);
+    }
+
+    .filter-summary {
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .main-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .status-banner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      background: var(--white);
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+      margin-top: 25px;
+    }
+
+    .executive-brief {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .brief-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+      display: grid;
+      gap: 10px;
+    }
+
+    .brief-card__title {
+      font-weight: 700;
+    }
+
+    .brief-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .brief-card__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--fiord);
+    }
+
+    .brief-card__list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-card {
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+    }
+
+    .status-card__title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--abbey);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .status-card__value {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .status-card__meta {
+      font-size: 13px;
+      color: var(--abbey);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .action-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .action-card__title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .card-tag {
+      background: rgba(57, 66, 99, 0.08);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .card-tag--critical { background: rgba(231, 76, 60, 0.18); color: var(--cinnabar); }
+    .card-tag--risk { background: rgba(230, 126, 34, 0.18); color: var(--zest); }
+    .card-tag--ops { background: rgba(27, 186, 225, 0.18); color: var(--java); }
+    .card-tag--success { background: rgba(39, 174, 96, 0.18); color: var(--jungle-green); }
+
+    .action-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .action-card__footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .action-card__cta {
+      color: var(--java);
+      font-weight: 600;
+    }
+
+    .workload-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .workload-card {
+      background: var(--white);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+    }
+
+    .workload-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .workload-bar {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--mischka);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .workload-bar span {
+      position: absolute;
+      height: 100%;
+      left: 0;
+      top: 0;
+      border-radius: inherit;
+    }
+
+    .workload-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .search-empty {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px dashed var(--mischka);
+      text-align: center;
+      color: var(--abbey);
+      display: none;
+    }
+
+    .panel {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-ghost.is-active {
+      background: var(--java);
+      color: var(--white);
+      border-color: var(--java);
+    }
+
+    .notification-panel {
+      position: fixed;
+      right: 24px;
+      top: 70px;
+      width: min(360px, 90vw);
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: 0 20px 40px rgba(57, 66, 99, 0.2);
+      padding: 18px;
+      display: none;
+      z-index: 6;
+    }
+
+    .notification-panel.is-open {
+      display: block;
+    }
+
+    .notification-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .notification-item {
+      border-radius: 12px;
+      padding: 12px;
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .notification-item__title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .notification-item__meta {
+      font-size: 12px;
+      color: var(--abbey);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .notification-item__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .notification-item__actions button {
+      border: none;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      background: var(--white);
+      border: 1px solid var(--mischka);
+    }
+
+    .notification-item.is-ack {
+      opacity: 0.7;
+    }
+
+    .team-heatmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .heatmap-card {
+      background: var(--catskill-white);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid var(--mischka);
+      display: grid;
+      gap: 8px;
+    }
+
+    .heatmap-card__title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .heatmap-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--mischka);
+      overflow: hidden;
+    }
+
+    .heatmap-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+    }
+
+    .heatmap-meta {
+      font-size: 12px;
+      color: var(--abbey);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .alert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .alert-card {
+      background: var(--white);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+      border-left: 4px solid var(--java);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .alert-card--high { border-left-color: var(--cinnabar); }
+    .alert-card--medium { border-left-color: var(--zest); }
+    .alert-card--low { border-left-color: var(--jungle-green); }
+
+    .alert-card__title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alert-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .alert-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--abbey);
+      margin-top: 6px;
+    }
+
+    .timeline {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+    }
+
+    .timeline__item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--mischka);
+    }
+
+    .timeline__item:last-child {
+      border-bottom: none;
+    }
+
+    .timeline__time {
+      font-size: 12px;
+      color: var(--abbey);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .timeline__title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .timeline__meta {
+      font-size: 13px;
+      color: var(--abbey);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .quick-action {
+      background: var(--catskill-white);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--mischka);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quick-action__title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quick-action__meta {
+      font-size: 13px;
+      color: var(--abbey);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .overviewCard {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(57, 66, 99, 0.08);
+    }
+
+    .overviewCard::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: var(--java);
+      transform: scaleY(0);
+      transition: transform 0.3s;
+    }
+
+    .overviewCard:hover::before {
+      transform: scaleY(1);
+    }
+
+    .overviewCard:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .overviewCard.java::before { background-color: var(--java); }
+    .overviewCard.jungle-green::before { background-color: var(--jungle-green); }
+    .overviewCard.cinnabar::before { background-color: var(--cinnabar); }
+    .overviewCard.amethyst::before { background-color: var(--amethyst); }
+    .overviewCard.zest::before { background-color: var(--zest); }
+
+    .overviewCard__icon {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .overviewCard.java .overviewCard__icon { color: var(--java); }
+    .overviewCard.jungle-green .overviewCard__icon { color: var(--jungle-green); }
+    .overviewCard.cinnabar .overviewCard__icon { color: var(--cinnabar); }
+    .overviewCard.amethyst .overviewCard__icon { color: var(--amethyst); }
+    .overviewCard.zest .overviewCard__icon { color: var(--zest); }
+
+    .overviewCard__info {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-family: "Courier New", monospace;
+    }
+
+    .overviewCard__description {
+      font-size: 14px;
+      color: var(--abbey);
+      font-weight: 500;
+    }
+
+    .analytics-section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .section-header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .tab-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background-color: var(--white);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .tab-button {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--abbey);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tab-button.is-active {
+      background-color: var(--java);
+      color: var(--white);
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .insight-card {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .insight-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    .chip--teal { background-color: var(--java); }
+    .chip--green { background-color: var(--jungle-green); }
+    .chip--purple { background-color: var(--amethyst); }
+    .chip--orange { background-color: var(--zest); }
+
+    .insight-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--mine-shaft);
+    }
+
+    .insight-change {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--jungle-green);
+    }
+
+    .insight-change.is-negative {
+      color: var(--cinnabar);
+    }
+
+    .sparkline {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 48px;
+    }
+
+    .sparkline span {
+      flex: 1;
+      background-color: rgba(27,186,225,0.25);
+      border-radius: 6px;
+    }
+
+    .snippet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .snippet-card {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .snippet-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .snippet-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      background-color: var(--athens-gray);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--java);
+      border-radius: 999px;
+    }
+
+    .snippet-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .snippet-link {
+      color: var(--java);
+      font-weight: 700;
+    }
+
+    .mini-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 42px;
+    }
+
+    .mini-bars span {
+      flex: 1;
+      border-radius: 6px;
+      background-color: rgba(175,100,204,0.35);
+    }
+
+    .footer {
+      grid-area: footer;
+      background-color: var(--catskill-white);
+      padding: 15px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .footer a {
+      color: var(--java);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .header__search {
+        display: none;
+      }
+
+      .main {
+        padding: 20px;
+      }
+
+      .main-overview {
+        grid-template-columns: 1fr;
+      }
+
+      .quickview {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  
+
+    .builder-grid,
+    .library-grid,
+    .cohort-grid,
+    .analytics-grid,
+    .settings-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .builder-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .builder-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(57, 66, 99, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .builder-card__header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .builder-card__title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .builder-card__subtitle {
+      font-size: 13px;
+      color: var(--abbey);
+    }
+
+    .builder-card__form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--fiord);
+    }
+
+    .builder-card__form input,
+    .builder-card__form select {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--mischka);
+    }
+
+    .builder-card__row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .builder-card__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .assignment-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    .assignment-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .assignment-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: grid;
+      gap: 12px;
+      box-shadow: 0 8px 16px rgba(57, 66, 99, 0.08);
+    }
+
+    .assignment-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .assignment-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .assignment-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .assignment-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(27, 186, 225, 0.14);
+      color: var(--java);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tag-pill--warning {
+      background: rgba(230, 126, 34, 0.15);
+      color: var(--zest);
+    }
+
+    .tag-pill--success {
+      background: rgba(39, 174, 96, 0.15);
+      color: var(--jungle-green);
+    }
+
+    .assignment-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--athens-gray);
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--java), var(--amethyst));
+    }
+
+    .assignment-sidebar {
+      display: grid;
+      gap: 16px;
+    }
+
+    .sidebar-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 16px rgba(57, 66, 99, 0.08);
+    }
+
+    .sidebar-card__title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .progress-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .progress-stack__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .progress-stack__bar {
+      flex: 1;
+      height: 8px;
+      margin: 0 8px;
+      border-radius: 999px;
+      background: var(--athens-gray);
+      overflow: hidden;
+    }
+
+    .progress-stack__bar span {
+      display: block;
+      height: 100%;
+      background: var(--java);
+    }
+
+    .tag-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .library-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .library-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 16px rgba(57, 66, 99, 0.08);
+      display: grid;
+      gap: 10px;
+    }
+
+    .library-card__title {
+      font-weight: 700;
+    }
+
+    .library-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .cohort-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .cohort-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 16px rgba(57, 66, 99, 0.08);
+      display: grid;
+      gap: 12px;
+    }
+
+    .cohort-card__title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .cohort-card__meta {
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .analytics-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .analytics-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      box-shadow: 0 8px 16px rgba(57, 66, 99, 0.08);
+    }
+
+    .analytics-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .analytics-card__title {
+      font-weight: 700;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rank-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .rank-score {
+      font-weight: 700;
+      color: var(--fiord);
+    }
+
+    .velocity-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      height: 120px;
+    }
+
+    .velocity-bar {
+      flex: 1;
+      border-radius: 12px 12px 0 0;
+      background: rgba(27, 186, 225, 0.35);
+    }
+
+    .settings-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .settings-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 8px 16px rgba(57, 66, 99, 0.08);
+    }
+
+    @media (max-width: 900px) {
+      .assignment-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="grid">
+    <header class="header">
+      <button class="header__menu" type="button" aria-label="Open navigation menu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="header__search">
+        <div class="search">
+          <i class="fas fa-search search__icon"></i>
+          <input type="text" class="search__input" placeholder="Search modules, quizzes, cohorts..." aria-label="Search learning assignments and content">
+        </div>
+      </div>
+
+      <div class="header__actions">
+        <div class="status-pill status-pill--success">
+          <i class="fas fa-seedling"></i>
+          <span>Semester pulse: Strong</span>
+        </div>
+        <div class="status-pill status-pill--warning">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Next cohort kickoff 9:00 AM</span>
+        </div>
+        <button class="header__notification" type="button" aria-label="Open notifications" aria-expanded="false">
+          <i class="far fa-bell header__icon"></i>
+          <span class="header__notification-dot" aria-hidden="true"></span>
+        </button>
+        <a class="header__icon-link" href="https://www.byheir.com/" aria-label="Home">
+          <i class="fas fa-home header__icon"></i>
+        </a>
+        <i class="fas fa-cog header__icon" aria-hidden="true"></i>
+        <div class="header__user">
+          <div class="header__user-avatar" aria-hidden="true"></div>
+          <span>Edu Ops · Learning Lead</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="notification-panel" id="notification-panel" role="dialog" aria-label="Notifications">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Notifications</div>
+          <div class="text-light">Learning operations alerts and approvals.</div>
+        </div>
+        <button class="btn-ghost" type="button" id="clear-notifications">Clear all</button>
+      </div>
+      <div class="notification-filter" role="tablist" aria-label="Notification filters">
+        <button class="btn-ghost is-active" type="button" data-notification-filter="all" aria-pressed="true">All</button>
+        <button class="btn-ghost" type="button" data-notification-filter="critical" aria-pressed="false">Critical</button>
+        <button class="btn-ghost" type="button" data-notification-filter="attention" aria-pressed="false">Attention</button>
+        <button class="btn-ghost" type="button" data-notification-filter="info" aria-pressed="false">Info</button>
+      </div>
+      <div class="notification-item" data-notification="critical">
+        <div class="notification-item__title">Compliance exam ready for QA approval</div>
+        <div class="notification-item__meta">
+          <span>Policy & Risk</span>
+          <span>Due in 3 hours</span>
+        </div>
+        <div class="notification-item__actions">
+          <button type="button">Open</button>
+          <button type="button" class="acknowledge-btn">Acknowledge</button>
+        </div>
+      </div>
+      <div class="notification-item" data-notification="attention">
+        <div class="notification-item__title">New hire bootcamp is missing quiz content</div>
+        <div class="notification-item__meta">
+          <span>Onboarding</span>
+          <span>3 modules impacted</span>
+        </div>
+        <div class="notification-item__actions">
+          <button type="button">Review</button>
+          <button type="button" class="acknowledge-btn">Acknowledge</button>
+        </div>
+      </div>
+      <div class="notification-item" data-notification="info">
+        <div class="notification-item__title">Quarterly curriculum sync completed</div>
+        <div class="notification-item__meta">
+          <span>Academy Ops</span>
+          <span>Synced 42 assets</span>
+        </div>
+        <div class="notification-item__actions">
+          <button type="button">View</button>
+          <button type="button" class="acknowledge-btn">Acknowledge</button>
+        </div>
+      </div>
+    </div>
+
+  <aside class="sidenav">
+    <div class="sidenav__brand">
+      <i class="fas fa-graduation-cap sidenav__brand-icon"></i>
+      <a class="sidenav__brand-link" href="#">Byheir<span class="text-light">LearnOps</span></a>
+      <i class="fas fa-times sidenav__brand-close"></i>
+    </div>
+
+    <div class="sidenav__profile">
+      <div class="sidenav__profile-avatar"></div>
+      <div class="sidenav__profile-title text-light">Edu Ops · Learning Lead</div>
+    </div>
+
+    <div class="row row--align-v-center row--align-h-center">
+      <ul class="navList">
+        <li class="navList__heading">Education HQ<i class="fas fa-university"></i></li>
+
+        <li class="navList__item">
+          <a href="education-overview.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-layer-group"></i></span>
+            <span class="navList__link-title">Dashboard Overview</span>
+          </a>
+        </li>
+
+        <li class="navList__item">
+          <a href="education-content-studio.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-pen-nib"></i></span>
+            <span class="navList__link-title">Content Studio</span>
+          </a>
+        </li>
+
+        <li class="navList__item">
+          <a href="education-library.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-book"></i></span>
+            <span class="navList__link-title">Learning Library</span>
+          </a>
+        </li>
+
+        <li class="navList__heading">Builders<i class="fas fa-tools"></i></li>
+
+        <li class="navList__item">
+          <a href="education-modules.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-chalkboard-teacher"></i></span>
+            <span class="navList__link-title">Modules</span>
+          </a>
+        </li>
+
+        <li class="navList__item">
+          <a href="education-quizzes.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-question-circle"></i></span>
+            <span class="navList__link-title">Quizzes</span>
+          </a>
+        </li>
+
+        <li class="navList__item">
+          <a href="education-tests.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-clipboard-check"></i></span>
+            <span class="navList__link-title">Tests & Exams</span>
+          </a>
+        </li>
+
+        <li class="navList__heading">Performance<i class="fas fa-chart-line"></i></li>
+
+        <li class="navList__item">
+          <a href="education-cohorts.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-users"></i></span>
+            <span class="navList__link-title">Cohort Pulse</span>
+          </a>
+        </li>
+
+        <li class="navList__item">
+          <a href="education-analytics.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-chart-bar"></i></span>
+            <span class="navList__link-title">Engagement Analytics</span>
+          </a>
+        </li>
+
+        <li class="navList__item">
+          <a href="education-settings.html" class="navList__link">
+            <span class="navList__link-icon"><i class="fas fa-sliders-h"></i></span>
+            <span class="navList__link-title">Learning Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+    <main class="main" id="main-content">
+    <div class="main-header">
+      <div class="main-header__intro-wrapper">
+        <div class="main-header__welcome">
+          <div class="main-header__welcome-title text-light">
+            Welcome back, <strong>Education Team</strong>
+          </div>
+          <div class="main-header__welcome-subtitle text-light">
+            Create modules, quizzes, and tests that power every learning assignment.
+          </div>
+          <div class="main-header__meta">
+            <span class="meta-pill"><i class="fas fa-calendar-alt"></i>Term: Fall 2025</span>
+            <span class="meta-pill"><i class="fas fa-users"></i>Active cohorts: 8</span>
+            <span class="meta-pill"><i class="fas fa-sync-alt"></i>Last data sync 6 min ago</span>
+          </div>
+        </div>
+
+        <div class="quickview" id="quickview">
+          <div class="quickview__item">
+            <div class="quickview__item-total" data-stat="active-assignments">0</div>
+            <div class="quickview__item-description">
+              <i class="far fa-calendar-alt"></i>
+              <span class="text-light">Active assignments</span>
+            </div>
+          </div>
+          <div class="quickview__item">
+            <div class="quickview__item-total" data-stat="published-modules">0</div>
+            <div class="quickview__item-description">
+              <i class="fas fa-book"></i>
+              <span class="text-light">Modules published</span>
+            </div>
+          </div>
+          <div class="quickview__item">
+            <div class="quickview__item-total" data-stat="assessments-review">0</div>
+            <div class="quickview__item-description">
+              <i class="fas fa-clipboard-check"></i>
+              <span class="text-light">Assessments in review</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="panel" aria-label="Saved views">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Saved learning views</div>
+          <div class="text-light">Pivot between tracks, cohorts, and assignment types.</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-ghost" type="button">Manage views</button>
+        </div>
+      </div>
+      <div class="chip-group" role="tablist" aria-label="Dashboard saved views">
+        <button class="chip-pill is-active" type="button" data-view="all" aria-pressed="true">All tracks</button>
+        <button class="chip-pill" type="button" data-view="onboarding" aria-pressed="false">New Hire Track</button>
+        <button class="chip-pill" type="button" data-view="compliance" aria-pressed="false">Compliance Track</button>
+        <button class="chip-pill" type="button" data-view="leadership" aria-pressed="false">Leadership Track</button>
+        <button class="chip-pill" type="button" data-view="product" aria-pressed="false">Product Track</button>
+      </div>
+      <div class="filters-panel" aria-label="Dashboard filters">
+        <div class="filters-row">
+          <div class="filter-control">
+            <label for="filter-type">Assignment type</label>
+            <select id="filter-type" class="filter-select" data-filter-control="type">
+              <option value="all">All types</option>
+              <option value="module">Modules</option>
+              <option value="quiz">Quizzes</option>
+              <option value="test">Tests</option>
+            </select>
+          </div>
+          <div class="filter-control">
+            <label for="filter-track">Track</label>
+            <select id="filter-track" class="filter-select" data-filter-control="track">
+              <option value="all">All tracks</option>
+              <option value="onboarding">Onboarding</option>
+              <option value="compliance">Compliance</option>
+              <option value="leadership">Leadership</option>
+              <option value="product">Product</option>
+            </select>
+          </div>
+          <div class="filter-control">
+            <label for="filter-status">Status</label>
+            <select id="filter-status" class="filter-select" data-filter-control="status">
+              <option value="all">All statuses</option>
+              <option value="live">Live</option>
+              <option value="draft">Draft</option>
+              <option value="review">Needs review</option>
+            </select>
+          </div>
+          <button class="btn-ghost" type="button" id="reset-filters">Reset filters</button>
+        </div>
+        <div class="filter-summary" aria-live="polite">
+          Showing <strong id="filter-count">0</strong> of <span id="filter-total">0</span> assignment cards
+        </div>
+      </div>
+    </section>
+
+    <section class="status-banner" aria-label="Learning operations pulse">
+      <div class="status-card">
+        <div class="status-card__title">Learning health</div>
+        <div class="status-card__value">Healthy</div>
+        <div class="status-card__meta">92% of cohorts on track</div>
+      </div>
+      <div class="status-card">
+        <div class="status-card__title">Engagement</div>
+        <div class="status-card__value">74%</div>
+        <div class="status-card__meta">Weekly completion up 6%</div>
+      </div>
+      <div class="status-card">
+        <div class="status-card__title">Assessment risk</div>
+        <div class="status-card__value">Low</div>
+        <div class="status-card__meta">3 exams waiting approval</div>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Learning insights">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Learning insights</div>
+          <div class="text-light">Dynamic trends connected to your modules, quizzes, and tests.</div>
+        </div>
+        <div class="panel-actions">
+          <div class="tab-group" role="tablist" aria-label="Insight range">
+            <button class="tab-button is-active" type="button" data-range="week" aria-pressed="true">Week</button>
+            <button class="tab-button" type="button" data-range="month" aria-pressed="false">Month</button>
+            <button class="tab-button" type="button" data-range="quarter" aria-pressed="false">Quarter</button>
+          </div>
+        </div>
+      </div>
+      <div class="insight-grid">
+        <article class="insight-card" data-week-value="1,242" data-week-note="+8%" data-month-value="4,812" data-month-note="+14%" data-quarter-value="12,441" data-quarter-note="+19%">
+          <div class="insight-label">Learning minutes delivered</div>
+          <div class="insight-value">1,242</div>
+          <div class="insight-change"><i class="fas fa-arrow-up"></i><span>+8%</span></div>
+        </article>
+        <article class="insight-card" data-week-value="78%" data-week-note="+4%" data-month-value="74%" data-month-note="+6%" data-quarter-value="72%" data-quarter-note="+9%">
+          <div class="insight-label">Average completion rate</div>
+          <div class="insight-value">78%</div>
+          <div class="insight-change"><i class="fas fa-arrow-up"></i><span>+4%</span></div>
+        </article>
+        <article class="insight-card" data-week-value="16" data-week-note="-2" data-month-value="21" data-month-note="+1" data-quarter-value="29" data-quarter-note="+4">
+          <div class="insight-label">Content pieces in QA</div>
+          <div class="insight-value">16</div>
+          <div class="insight-change"><i class="fas fa-arrow-down"></i><span>-2</span></div>
+        </article>
+        <article class="insight-card" data-week-value="93%" data-week-note="+2%" data-month-value="91%" data-month-note="+1%" data-quarter-value="89%" data-quarter-note="+3%">
+          <div class="insight-label">Assessment accuracy</div>
+          <div class="insight-value">93%</div>
+          <div class="insight-change"><i class="fas fa-arrow-up"></i><span>+2%</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="content-studio" aria-label="Content studio">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Content studio</div>
+          <div class="text-light">Launch new modules, quizzes, and tests with structured templates.</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-primary" type="button">+ New learning assignment</button>
+        </div>
+      </div>
+      <div class="builder-grid">
+        <article class="builder-card" id="modules">
+          <div class="builder-card__header">
+            <div>
+              <div class="builder-card__title">Module Builder</div>
+              <div class="builder-card__subtitle">Micro lessons, videos, and activities.</div>
+            </div>
+            <span class="status-pill">Template</span>
+          </div>
+          <div class="builder-card__form">
+            <label>
+              Module name
+              <input type="text" placeholder="Intro to Customer Empathy" />
+            </label>
+            <div class="builder-card__row">
+              <label>
+                Track
+                <select>
+                  <option>Onboarding</option>
+                  <option>Compliance</option>
+                  <option>Leadership</option>
+                  <option>Product</option>
+                </select>
+              </label>
+              <label>
+                Format
+                <select>
+                  <option>Video + Knowledge Check</option>
+                  <option>Interactive Scenario</option>
+                  <option>Slide Deck</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              Learning objectives
+              <input type="text" placeholder="3 objectives aligned to the module" />
+            </label>
+            <div class="builder-card__actions">
+              <button class="btn-ghost" type="button">Save draft</button>
+              <button class="btn-primary" type="button">Launch module</button>
+            </div>
+          </div>
+        </article>
+        <article class="builder-card" id="quizzes">
+          <div class="builder-card__header">
+            <div>
+              <div class="builder-card__title">Quiz Builder</div>
+              <div class="builder-card__subtitle">Pulse checks with adaptive difficulty.</div>
+            </div>
+            <span class="status-pill status-pill--warning">8 drafts</span>
+          </div>
+          <div class="builder-card__form">
+            <label>
+              Quiz name
+              <input type="text" placeholder="Policy refresh checkpoint" />
+            </label>
+            <div class="builder-card__row">
+              <label>
+                Linked module
+                <select>
+                  <option>Intro to Compliance</option>
+                  <option>Data Privacy Essentials</option>
+                  <option>Customer Care Moments</option>
+                </select>
+              </label>
+              <label>
+                Question count
+                <input type="number" value="12" />
+              </label>
+            </div>
+            <label>
+              Passing score
+              <input type="text" placeholder="80%" />
+            </label>
+            <div class="builder-card__actions">
+              <button class="btn-ghost" type="button">Save draft</button>
+              <button class="btn-primary" type="button">Publish quiz</button>
+            </div>
+          </div>
+        </article>
+        <article class="builder-card" id="tests">
+          <div class="builder-card__header">
+            <div>
+              <div class="builder-card__title">Test & Exam Builder</div>
+              <div class="builder-card__subtitle">High-stakes assessments for certification.</div>
+            </div>
+            <span class="status-pill status-pill--success">QA Ready</span>
+          </div>
+          <div class="builder-card__form">
+            <label>
+              Exam title
+              <input type="text" placeholder="Quarterly Compliance Exam" />
+            </label>
+            <div class="builder-card__row">
+              <label>
+                Cohort group
+                <select>
+                  <option>Compliance Champions</option>
+                  <option>Leadership Lab</option>
+                  <option>Product Academy</option>
+                </select>
+              </label>
+              <label>
+                Duration
+                <input type="text" placeholder="45 minutes" />
+              </label>
+            </div>
+            <label>
+              Proctoring level
+              <select>
+                <option>Standard</option>
+                <option>Enhanced</option>
+                <option>Live proctor</option>
+              </select>
+            </label>
+            <div class="builder-card__actions">
+              <button class="btn-ghost" type="button">Send to review</button>
+              <button class="btn-primary" type="button">Schedule exam</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Assignment pipeline">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Assignment pipeline</div>
+          <div class="text-light">Every assignment connects back to modules, quizzes, and tests.</div>
+        </div>
+        <div class="panel-actions">
+          <span class="status-pill">Live updates</span>
+        </div>
+      </div>
+      <div class="assignment-grid" data-filter-section>
+        <div id="assignment-list" class="assignment-list"></div>
+        <div class="assignment-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-card__title">Next 7 days</div>
+            <ul class="sidebar-list" id="upcoming-list"></ul>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card__title">Content load</div>
+            <div class="progress-stack" id="load-stack"></div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card__title">Focus areas</div>
+            <div class="tag-stack" id="focus-tags"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="library" aria-label="Learning library">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Learning library</div>
+          <div class="text-light">Central catalog of modules, quizzes, and tests.</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-ghost" type="button">Export catalog</button>
+        </div>
+      </div>
+      <div class="library-grid" id="library-grid"></div>
+    </section>
+
+    <section class="panel" id="cohorts" aria-label="Cohort performance">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Cohort performance</div>
+          <div class="text-light">Live progress, completion, and assessment impact.</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-ghost" type="button">View cohort report</button>
+        </div>
+      </div>
+      <div class="cohort-grid" id="cohort-grid"></div>
+    </section>
+
+    <section class="panel" id="analytics" aria-label="Engagement analytics">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Engagement analytics</div>
+          <div class="text-light">Correlated insight between content production and learner outcomes.</div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn-primary" type="button">Share dashboard</button>
+        </div>
+      </div>
+      <div class="analytics-grid">
+        <article class="analytics-card">
+          <div class="analytics-card__header">
+            <div>
+              <div class="analytics-card__title">Top-performing modules</div>
+              <div class="analytics-card__subtitle">Based on completion and quiz scores.</div>
+            </div>
+            <span class="status-pill status-pill--success">+12%</span>
+          </div>
+          <div class="rank-list" id="top-modules"></div>
+        </article>
+        <article class="analytics-card">
+          <div class="analytics-card__header">
+            <div>
+              <div class="analytics-card__title">Assessment readiness</div>
+              <div class="analytics-card__subtitle">Track exams aligned to each module cluster.</div>
+            </div>
+            <span class="status-pill status-pill--warning">3 at risk</span>
+          </div>
+          <div class="progress-stack" id="assessment-readiness"></div>
+        </article>
+        <article class="analytics-card">
+          <div class="analytics-card__header">
+            <div>
+              <div class="analytics-card__title">Content velocity</div>
+              <div class="analytics-card__subtitle">Weekly production across formats.</div>
+            </div>
+            <span class="status-pill">4-week view</span>
+          </div>
+          <div class="velocity-chart" id="velocity-chart"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" id="settings" aria-label="Learning operations settings">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Learning operations settings</div>
+          <div class="text-light">Configure approvals, reviewers, and assignment routing.</div>
+        </div>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-card__title">Approval workflow</div>
+          <p class="text-light">Route modules to policy, legal, and training leads based on content tags.</p>
+          <div class="chip-group">
+            <span class="chip-pill is-active">Policy review</span>
+            <span class="chip-pill">Legal QA</span>
+            <span class="chip-pill">Instructional Design</span>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card__title">Assignment automation</div>
+          <p class="text-light">Auto-assign quizzes when modules hit 80% completion.</p>
+          <button class="btn-primary" type="button">Edit automation</button>
+        </div>
+        <div class="settings-card">
+          <div class="settings-card__title">Notification routing</div>
+          <p class="text-light">Notify cohort managers when tests drop below thresholds.</p>
+          <button class="btn-ghost" type="button">Manage routing</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <footer class="footer">
+      <div>&copy; 2025 Byheir Wise. Education operations dashboard for your learning ecosystem.</div>
+      <div>Built with ❤️ by Byheir Wise</div>
+    </footer>
+  </div>
+
+  <script>
+    const menuBtn = document.querySelector('.header__menu');
+    const closeBtn = document.querySelector('.sidenav__brand-close');
+    const sidenav = document.querySelector('.sidenav');
+    const grid = document.querySelector('.grid');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const insightCards = document.querySelectorAll('.insight-card');
+    const searchInput = document.querySelector('.search__input');
+    const filterControls = document.querySelectorAll('[data-filter-control]');
+    const resetFilters = document.getElementById('reset-filters');
+    const filterCount = document.getElementById('filter-count');
+    const filterTotal = document.getElementById('filter-total');
+    const notificationBtn = document.querySelector('.header__notification');
+    const notificationPanel = document.getElementById('notification-panel');
+    const notificationFilters = document.querySelectorAll('[data-notification-filter]');
+    const notificationItems = document.querySelectorAll('[data-notification]');
+    const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
+    const clearNotifications = document.getElementById('clear-notifications');
+    const savedViewButtons = document.querySelectorAll('.chip-pill[data-view]');
+
+    const learningData = {
+      modules: [
+        { name: 'Customer Empathy Foundations', track: 'onboarding', status: 'live', completion: 82, owner: 'Instructional Design', minutes: 45 },
+        { name: 'Data Privacy Essentials', track: 'compliance', status: 'live', completion: 76, owner: 'Policy', minutes: 35 },
+        { name: 'Product Discovery Sprint', track: 'product', status: 'draft', completion: 40, owner: 'Product Enablement', minutes: 50 },
+        { name: 'Leadership Feedback Loop', track: 'leadership', status: 'review', completion: 66, owner: 'Leadership Lab', minutes: 60 }
+      ],
+      quizzes: [
+        { name: 'Empathy Checkpoint', track: 'onboarding', status: 'live', questions: 10, avgScore: 86 },
+        { name: 'Privacy Pulse', track: 'compliance', status: 'review', questions: 14, avgScore: 78 },
+        { name: 'Product Principles Quiz', track: 'product', status: 'draft', questions: 12, avgScore: 0 }
+      ],
+      tests: [
+        { name: 'Quarterly Compliance Exam', track: 'compliance', status: 'review', duration: '45m', avgScore: 81 },
+        { name: 'Leadership Certification', track: 'leadership', status: 'live', duration: '60m', avgScore: 88 }
+      ],
+      cohorts: [
+        { name: 'New Hire Cohort 08', track: 'onboarding', progress: 72, engagement: 78, due: 'Sep 24' },
+        { name: 'Compliance Champions', track: 'compliance', progress: 84, engagement: 74, due: 'Sep 18' },
+        { name: 'Product Academy', track: 'product', progress: 61, engagement: 69, due: 'Oct 02' },
+        { name: 'Leadership Lab', track: 'leadership', progress: 79, engagement: 81, due: 'Sep 28' }
+      ],
+      assignments: [
+        {
+          title: 'Onboarding Sprint Week 1',
+          type: 'module',
+          track: 'onboarding',
+          status: 'live',
+          priority: 'high',
+          owner: 'Cohort Lead',
+          due: 'Sep 14',
+          completion: 68,
+          modules: ['Customer Empathy Foundations', 'Tools Overview'],
+          quizzes: ['Empathy Checkpoint'],
+          tests: []
+        },
+        {
+          title: 'Privacy Compliance Refresh',
+          type: 'test',
+          track: 'compliance',
+          status: 'review',
+          priority: 'high',
+          owner: 'Policy Team',
+          due: 'Sep 16',
+          completion: 52,
+          modules: ['Data Privacy Essentials'],
+          quizzes: ['Privacy Pulse'],
+          tests: ['Quarterly Compliance Exam']
+        },
+        {
+          title: 'Product Discovery Foundations',
+          type: 'module',
+          track: 'product',
+          status: 'draft',
+          priority: 'medium',
+          owner: 'Product Enablement',
+          due: 'Sep 22',
+          completion: 34,
+          modules: ['Product Discovery Sprint'],
+          quizzes: ['Product Principles Quiz'],
+          tests: []
+        },
+        {
+          title: 'Leadership Feedback Certification',
+          type: 'quiz',
+          track: 'leadership',
+          status: 'live',
+          priority: 'medium',
+          owner: 'Leadership Lab',
+          due: 'Sep 19',
+          completion: 74,
+          modules: ['Leadership Feedback Loop'],
+          quizzes: ['Leadership Pulse Check'],
+          tests: ['Leadership Certification']
+        },
+        {
+          title: 'Customer Care Scenarios',
+          type: 'module',
+          track: 'onboarding',
+          status: 'live',
+          priority: 'low',
+          owner: 'Training Ops',
+          due: 'Sep 20',
+          completion: 81,
+          modules: ['Customer Empathy Foundations'],
+          quizzes: ['Empathy Checkpoint'],
+          tests: []
+        }
+      ]
+    };
+
+    const statsTargets = {
+      'active-assignments': learningData.assignments.filter(item => item.status === 'live').length,
+      'published-modules': learningData.modules.filter(item => item.status === 'live').length,
+      'assessments-review': learningData.quizzes.filter(item => item.status === 'review').length + learningData.tests.filter(item => item.status === 'review').length
+    };
+
+    Object.entries(statsTargets).forEach(([key, value]) => {
+      const target = document.querySelector(`[data-stat="${key}"]`);
+      if (target) target.textContent = value;
+    });
+
+    menuBtn.addEventListener('click', () => {
+      sidenav.classList.add('sidenav--show');
+      grid.classList.add('grid--noscroll');
+      menuBtn.setAttribute('aria-expanded', 'true');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      sidenav.classList.remove('sidenav--show');
+      grid.classList.remove('grid--noscroll');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!sidenav.contains(event.target) && !menuBtn.contains(event.target)) {
+        sidenav.classList.remove('sidenav--show');
+        grid.classList.remove('grid--noscroll');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        sidenav.classList.remove('sidenav--show');
+        grid.classList.remove('grid--noscroll');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        if (notificationPanel) {
+          notificationPanel.classList.remove('is-open');
+        }
+        if (notificationBtn) {
+          notificationBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    const updateInsights = (range) => {
+      insightCards.forEach((card) => {
+        const value = card.dataset[`${range}Value`];
+        const note = card.dataset[`${range}Note`];
+        if (!value || !note) return;
+
+        const valueEl = card.querySelector('.insight-value');
+        const noteEl = card.querySelector('.insight-change span');
+        const iconEl = card.querySelector('.insight-change i');
+        const changeWrapper = card.querySelector('.insight-change');
+
+        valueEl.textContent = value;
+        noteEl.textContent = note;
+
+        if (note.trim().startsWith('-')) {
+          changeWrapper.classList.add('is-negative');
+          iconEl.classList.remove('fa-arrow-up');
+          iconEl.classList.add('fa-arrow-down');
+        } else {
+          changeWrapper.classList.remove('is-negative');
+          iconEl.classList.remove('fa-arrow-down');
+          iconEl.classList.add('fa-arrow-up');
+        }
+      });
+    };
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        tabButtons.forEach((btn) => {
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-pressed', 'false');
+        });
+
+        button.classList.add('is-active');
+        button.setAttribute('aria-pressed', 'true');
+        updateInsights(button.dataset.range);
+      });
+    });
+
+    const filterState = {
+      search: '',
+      view: 'all',
+      type: 'all',
+      track: 'all',
+      status: 'all'
+    };
+
+    const assignmentList = document.getElementById('assignment-list');
+    const upcomingList = document.getElementById('upcoming-list');
+    const loadStack = document.getElementById('load-stack');
+    const focusTags = document.getElementById('focus-tags');
+
+    const renderAssignments = () => {
+      if (!assignmentList) return;
+      assignmentList.innerHTML = '';
+      learningData.assignments.forEach((assignment) => {
+        const card = document.createElement('article');
+        card.className = 'assignment-card';
+        card.dataset.filterable = 'card';
+        card.dataset.type = assignment.type;
+        card.dataset.track = assignment.track;
+        card.dataset.status = assignment.status;
+        card.dataset.priority = assignment.priority;
+        card.dataset.search = `${assignment.title} ${assignment.owner} ${assignment.modules.join(' ')} ${assignment.quizzes.join(' ')} ${assignment.tests.join(' ')}`;
+
+        card.innerHTML = `
+          <div class="assignment-card__header">
+            <div class="assignment-title">${assignment.title}</div>
+            <span class="status-pill">${assignment.status}</span>
+          </div>
+          <div class="assignment-meta">
+            <span><i class="fas fa-user"></i> ${assignment.owner}</span>
+            <span><i class="fas fa-calendar"></i> Due ${assignment.due}</span>
+            <span><i class="fas fa-layer-group"></i> Track: ${assignment.track}</span>
+          </div>
+          <div class="assignment-tags">
+            ${assignment.modules.map((item) => `<span class="tag-pill">${item}</span>`).join('')}
+            ${assignment.quizzes.map((item) => `<span class="tag-pill tag-pill--warning">${item}</span>`).join('')}
+            ${assignment.tests.map((item) => `<span class="tag-pill tag-pill--success">${item}</span>`).join('')}
+          </div>
+          <div class="assignment-progress">
+            <span>${assignment.completion}% ready</span>
+            <div class="progress-bar"><span style="width: ${assignment.completion}%"></span></div>
+          </div>
+        `;
+        assignmentList.appendChild(card);
+      });
+    };
+
+    const renderUpcoming = () => {
+      if (!upcomingList) return;
+      upcomingList.innerHTML = '';
+      learningData.assignments.slice(0, 4).forEach((assignment) => {
+        const item = document.createElement('li');
+        item.textContent = `${assignment.title} · ${assignment.due}`;
+        upcomingList.appendChild(item);
+      });
+    };
+
+    const renderLoadStack = () => {
+      if (!loadStack) return;
+      loadStack.innerHTML = '';
+      const stackItems = [
+        { label: 'Modules', value: 12 },
+        { label: 'Quizzes', value: 8 },
+        { label: 'Tests', value: 5 }
+      ];
+      stackItems.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'progress-stack__item';
+        row.innerHTML = `
+          <span>${item.label}</span>
+          <div class="progress-stack__bar"><span style="width: ${item.value * 7}%"></span></div>
+          <strong>${item.value}</strong>
+        `;
+        loadStack.appendChild(row);
+      });
+    };
+
+    const renderFocusTags = () => {
+      if (!focusTags) return;
+      const tags = ['Role-play scenarios', 'Regulatory updates', 'Leadership coaching', 'Product enablement', 'Data literacy'];
+      focusTags.innerHTML = tags.map((tag) => `<span class="tag-pill">${tag}</span>`).join('');
+    };
+
+    const renderLibrary = () => {
+      const libraryGrid = document.getElementById('library-grid');
+      if (!libraryGrid) return;
+      const items = [
+        ...learningData.modules.map((item) => ({ type: 'Module', name: item.name, track: item.track, status: item.status, meta: `${item.minutes} min` })),
+        ...learningData.quizzes.map((item) => ({ type: 'Quiz', name: item.name, track: item.track, status: item.status, meta: `${item.questions} questions` })),
+        ...learningData.tests.map((item) => ({ type: 'Test', name: item.name, track: item.track, status: item.status, meta: item.duration }))
+      ];
+
+      libraryGrid.innerHTML = items.map((item) => `
+        <article class="library-card">
+          <div class="library-card__title">${item.name}</div>
+          <div class="library-card__meta">
+            <span>${item.type}</span>
+            <span>${item.track}</span>
+            <span>${item.status}</span>
+          </div>
+          <div class="assignment-progress">
+            <span>${item.meta}</span>
+            <div class="progress-bar"><span style="width: ${item.status === 'live' ? 90 : item.status === 'review' ? 65 : 40}%"></span></div>
+          </div>
+        </article>
+      `).join('');
+    };
+
+    const renderCohorts = () => {
+      const cohortGrid = document.getElementById('cohort-grid');
+      if (!cohortGrid) return;
+      cohortGrid.innerHTML = learningData.cohorts.map((cohort) => `
+        <article class="cohort-card">
+          <div class="cohort-card__title">${cohort.name}</div>
+          <div class="cohort-card__meta">Track: ${cohort.track} · Next milestone ${cohort.due}</div>
+          <div class="assignment-progress">
+            <span>Completion ${cohort.progress}%</span>
+            <div class="progress-bar"><span style="width: ${cohort.progress}%"></span></div>
+          </div>
+          <div class="assignment-progress">
+            <span>Engagement ${cohort.engagement}%</span>
+            <div class="progress-bar"><span style="width: ${cohort.engagement}%"></span></div>
+          </div>
+        </article>
+      `).join('');
+    };
+
+    const renderTopModules = () => {
+      const topModules = document.getElementById('top-modules');
+      if (!topModules) return;
+      topModules.innerHTML = learningData.modules.map((module, index) => `
+        <div class="rank-item">
+          <span>${index + 1}. ${module.name}</span>
+          <span class="rank-score">${module.completion}%</span>
+        </div>
+      `).join('');
+    };
+
+    const renderAssessmentReadiness = () => {
+      const readiness = document.getElementById('assessment-readiness');
+      if (!readiness) return;
+      const readinessItems = [
+        { label: 'Compliance cluster', value: 64 },
+        { label: 'Leadership cluster', value: 78 },
+        { label: 'Onboarding cluster', value: 88 }
+      ];
+      readiness.innerHTML = readinessItems.map((item) => `
+        <div class="progress-stack__item">
+          <span>${item.label}</span>
+          <div class="progress-stack__bar"><span style="width: ${item.value}%"></span></div>
+          <strong>${item.value}%</strong>
+        </div>
+      `).join('');
+    };
+
+    const renderVelocityChart = () => {
+      const velocity = document.getElementById('velocity-chart');
+      if (!velocity) return;
+      const bars = [52, 68, 44, 72, 61, 82];
+      velocity.innerHTML = bars.map((value) => `<div class="velocity-bar" style="height: ${value}%"></div>`).join('');
+    };
+
+    const hasMatch = (value, filter) => {
+      if (!filter || filter === 'all') return true;
+      if (!value) return false;
+      return value.split(' ').includes(filter);
+    };
+
+    const applyFilters = () => {
+      const normalized = filterState.search.trim().toLowerCase();
+      const filterableCards = document.querySelectorAll('[data-filterable="card"]');
+      let visibleCount = 0;
+
+      filterableCards.forEach((item) => {
+        const haystack = (item.dataset.search || '').toLowerCase();
+        const matchesSearch = !normalized || haystack.includes(normalized);
+        const matchesView = hasMatch(item.dataset.track, filterState.view);
+        const matchesType = hasMatch(item.dataset.type, filterState.type);
+        const matchesTrack = hasMatch(item.dataset.track, filterState.track);
+        const matchesStatus = hasMatch(item.dataset.status, filterState.status);
+        const isVisible = matchesSearch && matchesView && matchesType && matchesTrack && matchesStatus;
+
+        item.style.display = isVisible ? '' : 'none';
+        item.setAttribute('aria-hidden', String(!isVisible));
+        if (isVisible) visibleCount += 1;
+      });
+
+      if (filterCount) filterCount.textContent = String(visibleCount);
+      if (filterTotal) filterTotal.textContent = String(filterableCards.length);
+    };
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (event) => {
+        filterState.search = event.target.value;
+        applyFilters();
+      });
+    }
+
+    if (notificationBtn && notificationPanel) {
+      notificationBtn.addEventListener('click', () => {
+        const isOpen = notificationPanel.classList.toggle('is-open');
+        notificationBtn.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+
+    if (notificationPanel && notificationBtn) {
+      document.addEventListener('click', (event) => {
+        if (!notificationPanel.contains(event.target) && !notificationBtn.contains(event.target)) {
+          notificationPanel.classList.remove('is-open');
+          notificationBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    notificationFilters.forEach((filterBtn) => {
+      filterBtn.addEventListener('click', () => {
+        const filter = filterBtn.dataset.notificationFilter;
+        notificationFilters.forEach((btn) => {
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-pressed', 'false');
+        });
+        filterBtn.classList.add('is-active');
+        filterBtn.setAttribute('aria-pressed', 'true');
+
+        notificationItems.forEach((item) => {
+          const level = item.dataset.notification;
+          item.style.display = filter === 'all' || level === filter ? '' : 'none';
+        });
+      });
+    });
+
+    acknowledgeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.notification-item');
+        if (item) item.classList.add('is-ack');
+      });
+    });
+
+    if (clearNotifications) {
+      clearNotifications.addEventListener('click', () => {
+        notificationItems.forEach((item) => {
+          item.remove();
+        });
+      });
+    }
+
+    savedViewButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        savedViewButtons.forEach((button) => {
+          button.classList.remove('is-active');
+          button.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+
+        filterState.view = view;
+        applyFilters();
+      });
+    });
+
+    filterControls.forEach((control) => {
+      control.addEventListener('change', (event) => {
+        const key = event.target.dataset.filterControl;
+        filterState[key] = event.target.value;
+        applyFilters();
+      });
+    });
+
+    if (resetFilters) {
+      resetFilters.addEventListener('click', () => {
+        filterState.search = '';
+        filterState.view = 'all';
+        filterState.type = 'all';
+        filterState.track = 'all';
+        filterState.status = 'all';
+        savedViewButtons.forEach((button) => {
+          const isAll = button.dataset.view === 'all';
+          button.classList.toggle('is-active', isAll);
+          button.setAttribute('aria-pressed', String(isAll));
+        });
+        filterControls.forEach((control) => {
+          control.value = 'all';
+        });
+        if (searchInput) searchInput.value = '';
+        applyFilters();
+      });
+    }
+
+    renderAssignments();
+    renderUpcoming();
+    renderLoadStack();
+    renderFocusTags();
+    renderLibrary();
+    renderCohorts();
+    renderTopModules();
+    renderAssessmentReadiness();
+    renderVelocityChart();
+    applyFilters();
+  </script>
+</body>
+</html>
