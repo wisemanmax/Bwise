@@ -25,12 +25,14 @@
     <section class="hero">
       <h1 class="hero__title">Skip <strong>Trace Intelligence</strong></h1>
       <p class="hero__subtitle">
-        Enrich contact data with multi-source tracing, batch processing, and address validation tools.
+        Enrich contact data with enterprise-grade tracing, multi-source orchestration, and governance controls
+        that prioritize accuracy, timeliness, and compliant outreach.
       </p>
       <div class="hero__meta">
-        <div class="hero__meta-item"><i class="fas fa-database"></i> Sources connected: 5</div>
-        <div class="hero__meta-item"><i class="fas fa-bolt"></i> Success rate: 84%</div>
-        <div class="hero__meta-item"><i class="fas fa-clock"></i> Avg turnaround: 2h 15m</div>
+        <div class="hero__meta-item"><i class="fas fa-database"></i> Sources connected: 8</div>
+        <div class="hero__meta-item"><i class="fas fa-bolt"></i> Success rate: 89%</div>
+        <div class="hero__meta-item"><i class="fas fa-shield-alt"></i> Consent coverage: 97%</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Avg turnaround: 1h 32m</div>
       </div>
     </section>
 
@@ -43,21 +45,32 @@
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Matches Found</div>
-        <div class="kpi-value">1,482</div>
-        <div class="kpi-meta"><i class="fas fa-location-dot"></i> 4 sources verified</div>
+        <div class="kpi-value">2,214</div>
+        <div class="kpi-meta"><i class="fas fa-location-dot"></i> 6 sources verified</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Phone Appends</div>
-        <div class="kpi-value">612</div>
-        <div class="kpi-meta"><i class="fas fa-phone"></i> 73% valid</div>
+        <div class="kpi-value">944</div>
+        <div class="kpi-meta"><i class="fas fa-phone"></i> 78% valid</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Address Changes</div>
-        <div class="kpi-value">214</div>
-        <div class="kpi-meta"><i class="fas fa-map-pin"></i> 52% verified</div>
+        <div class="kpi-value">361</div>
+        <div class="kpi-meta"><i class="fas fa-map-pin"></i> 61% verified</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Email Appends</div>
+        <div class="kpi-value">588</div>
+        <div class="kpi-meta"><i class="fas fa-envelope"></i> 81% valid</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">SLA Compliance</div>
+        <div class="kpi-value">95.6%</div>
+        <div class="kpi-meta"><i class="fas fa-stopwatch"></i> 7 jobs at risk</div>
       </div>
     </section>
 
+    <h2 class="section-title">Source & <strong>Pipeline</strong></h2>
     <section class="grid">
       <div class="card">
         <div class="card-title">Data Sources</div>
@@ -76,6 +89,10 @@
           </li>
           <li class="list-item">
             <span>Social graph signals</span>
+            <span class="badge success">Connected</span>
+          </li>
+          <li class="list-item">
+            <span>Postal change of address</span>
             <span class="badge success">Connected</span>
           </li>
         </ul>
@@ -101,6 +118,10 @@
             <span>Legal notice returns</span>
             <span class="pill">98 accounts</span>
           </li>
+          <li class="list-item">
+            <span>Recent contact refresh</span>
+            <span class="pill">740 accounts</span>
+          </li>
         </ul>
       </div>
 
@@ -123,6 +144,100 @@
           <li class="list-item">
             <span>Do-not-contact scrub</span>
             <span class="badge success">Enabled</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Source Performance</div>
+        <p class="card-subtitle">Hit rate vs accuracy</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Credit bureau</span>
+            <span class="pill">92% / 88%</span>
+          </li>
+          <li class="list-item">
+            <span>LexisNexis</span>
+            <span class="pill">89% / 84%</span>
+          </li>
+          <li class="list-item">
+            <span>Utility bureau</span>
+            <span class="pill">76% / 81%</span>
+          </li>
+          <li class="list-item">
+            <span>Postal change</span>
+            <span class="pill">71% / 90%</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Compliance Controls</div>
+        <p class="card-subtitle">Privacy + consent</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Consent verification</span>
+            <span class="badge success">Active</span>
+          </li>
+          <li class="list-item">
+            <span>State-specific contact rules</span>
+            <span class="badge warning">2 exceptions</span>
+          </li>
+          <li class="list-item">
+            <span>Litigious account suppressions</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Data retention policy</span>
+            <span class="badge success">90 days</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data Quality Watchlist</div>
+        <p class="card-subtitle">Anomalies</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Duplicate household matches</span>
+            <span class="badge warning">12 flagged</span>
+          </li>
+          <li class="list-item">
+            <span>Low-confidence phones</span>
+            <span class="badge warning">38 queued</span>
+          </li>
+          <li class="list-item">
+            <span>Address verification failures</span>
+            <span class="badge danger">7 critical</span>
+          </li>
+          <li class="list-item">
+            <span>Stale employer data</span>
+            <span class="badge warning">19 pending</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Trace SLA</div>
+        <p class="card-subtitle">By queue</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Priority legal</span>
+            <span class="badge success">1h SLA</span>
+          </li>
+          <li class="list-item">
+            <span>Charge-off recovery</span>
+            <span class="badge warning">3h SLA</span>
+          </li>
+          <li class="list-item">
+            <span>Early stage refresh</span>
+            <span class="badge success">4h SLA</span>
+          </li>
+          <li class="list-item">
+            <span>Portfolio clean-up</span>
+            <span class="badge warning">8h SLA</span>
           </li>
         </ul>
       </div>
@@ -172,6 +287,2823 @@
         </tbody>
       </table>
     </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Priority Trace Queue</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Reason</th>
+            <th>Last Attempt</th>
+            <th>Confidence</th>
+            <th>Next Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#4401-7780</td>
+            <td>Legal notice returned</td>
+            <td>2 days ago</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Rush trace + supervisor review</td>
+          </tr>
+          <tr>
+            <td>#1160-9934</td>
+            <td>High-balance charge-off</td>
+            <td>1 day ago</td>
+            <td><span class="badge success">High</span></td>
+            <td>Auto-load to dialer</td>
+          </tr>
+          <tr>
+            <td>#6602-1141</td>
+            <td>Bankruptcy watchlist</td>
+            <td>6 hours ago</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Verify before outreach</td>
+          </tr>
+          <tr>
+            <td>#9300-4421</td>
+            <td>Deceased indicator</td>
+            <td>5 hours ago</td>
+            <td><span class="badge danger">Hold</span></td>
+            <td>Escalate to compliance</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Skip Trace Evidence Vault</div>
+      <p class="card-subtitle">Source-level evidence, confidence scoring, and contact provenance tracking across large batch operations.</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Trace ID</th>
+            <th>Account</th>
+            <th>Signal</th>
+            <th>Confidence</th>
+            <th>Source</th>
+            <th>Verified</th>
+            <th>Region</th>
+            <th>Owner</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>TR-5101</td>
+            <td>#7701-B001</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5102</td>
+            <td>#7702-B002</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5103</td>
+            <td>#7703-B003</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5104</td>
+            <td>#7704-B004</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5105</td>
+            <td>#7705-B005</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5106</td>
+            <td>#7706-B006</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5107</td>
+            <td>#7707-B007</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5108</td>
+            <td>#7708-B008</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5109</td>
+            <td>#7709-B009</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5110</td>
+            <td>#7710-B010</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5111</td>
+            <td>#7711-B011</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5112</td>
+            <td>#7712-B012</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5113</td>
+            <td>#7713-B013</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5114</td>
+            <td>#7714-B014</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5115</td>
+            <td>#7715-B015</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5116</td>
+            <td>#7716-B016</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5117</td>
+            <td>#7717-B017</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5118</td>
+            <td>#7718-B018</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5119</td>
+            <td>#7719-B019</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5120</td>
+            <td>#7720-B020</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5121</td>
+            <td>#7721-B021</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5122</td>
+            <td>#7722-B022</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5123</td>
+            <td>#7723-B023</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5124</td>
+            <td>#7724-B024</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5125</td>
+            <td>#7725-B025</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5126</td>
+            <td>#7726-B026</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5127</td>
+            <td>#7727-B027</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5128</td>
+            <td>#7728-B028</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5129</td>
+            <td>#7729-B029</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5130</td>
+            <td>#7730-B030</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5131</td>
+            <td>#7731-B031</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5132</td>
+            <td>#7732-B032</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5133</td>
+            <td>#7733-B033</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5134</td>
+            <td>#7734-B034</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5135</td>
+            <td>#7735-B035</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5136</td>
+            <td>#7736-B036</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5137</td>
+            <td>#7737-B037</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5138</td>
+            <td>#7738-B038</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5139</td>
+            <td>#7739-B039</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5140</td>
+            <td>#7740-B040</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5141</td>
+            <td>#7741-B041</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5142</td>
+            <td>#7742-B042</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5143</td>
+            <td>#7743-B043</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5144</td>
+            <td>#7744-B044</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5145</td>
+            <td>#7745-B045</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5146</td>
+            <td>#7746-B046</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5147</td>
+            <td>#7747-B047</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5148</td>
+            <td>#7748-B048</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5149</td>
+            <td>#7749-B049</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5150</td>
+            <td>#7750-B050</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5151</td>
+            <td>#7751-B051</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5152</td>
+            <td>#7752-B052</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5153</td>
+            <td>#7753-B053</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5154</td>
+            <td>#7754-B054</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5155</td>
+            <td>#7755-B055</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5156</td>
+            <td>#7756-B056</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5157</td>
+            <td>#7757-B057</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5158</td>
+            <td>#7758-B058</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5159</td>
+            <td>#7759-B059</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5160</td>
+            <td>#7760-B060</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5161</td>
+            <td>#7761-B061</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5162</td>
+            <td>#7762-B062</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5163</td>
+            <td>#7763-B063</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5164</td>
+            <td>#7764-B064</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5165</td>
+            <td>#7765-B065</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5166</td>
+            <td>#7766-B066</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5167</td>
+            <td>#7767-B067</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5168</td>
+            <td>#7768-B068</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5169</td>
+            <td>#7769-B069</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5170</td>
+            <td>#7770-B070</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5171</td>
+            <td>#7771-B071</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5172</td>
+            <td>#7772-B072</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5173</td>
+            <td>#7773-B073</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5174</td>
+            <td>#7774-B074</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5175</td>
+            <td>#7775-B075</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5176</td>
+            <td>#7776-B076</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5177</td>
+            <td>#7777-B077</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5178</td>
+            <td>#7778-B078</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5179</td>
+            <td>#7779-B079</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5180</td>
+            <td>#7780-B080</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5181</td>
+            <td>#7781-B081</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5182</td>
+            <td>#7782-B082</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5183</td>
+            <td>#7783-B083</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5184</td>
+            <td>#7784-B084</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5185</td>
+            <td>#7785-B085</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5186</td>
+            <td>#7786-B086</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5187</td>
+            <td>#7787-B087</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5188</td>
+            <td>#7788-B088</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5189</td>
+            <td>#7789-B089</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5190</td>
+            <td>#7790-B090</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5191</td>
+            <td>#7791-B091</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5192</td>
+            <td>#7792-B092</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5193</td>
+            <td>#7793-B093</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5194</td>
+            <td>#7794-B094</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5195</td>
+            <td>#7795-B095</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5196</td>
+            <td>#7796-B096</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5197</td>
+            <td>#7797-B097</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5198</td>
+            <td>#7798-B098</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5199</td>
+            <td>#7799-B099</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5200</td>
+            <td>#77100-B100</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5201</td>
+            <td>#77101-B101</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5202</td>
+            <td>#77102-B102</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5203</td>
+            <td>#77103-B103</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5204</td>
+            <td>#77104-B104</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5205</td>
+            <td>#77105-B105</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5206</td>
+            <td>#77106-B106</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5207</td>
+            <td>#77107-B107</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5208</td>
+            <td>#77108-B108</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5209</td>
+            <td>#77109-B109</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5210</td>
+            <td>#77110-B110</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5211</td>
+            <td>#77111-B111</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5212</td>
+            <td>#77112-B112</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5213</td>
+            <td>#77113-B113</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5214</td>
+            <td>#77114-B114</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5215</td>
+            <td>#77115-B115</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5216</td>
+            <td>#77116-B116</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5217</td>
+            <td>#77117-B117</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5218</td>
+            <td>#77118-B118</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5219</td>
+            <td>#77119-B119</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5220</td>
+            <td>#77120-B120</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5221</td>
+            <td>#77121-B121</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5222</td>
+            <td>#77122-B122</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5223</td>
+            <td>#77123-B123</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5224</td>
+            <td>#77124-B124</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5225</td>
+            <td>#77125-B125</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5226</td>
+            <td>#77126-B126</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5227</td>
+            <td>#77127-B127</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5228</td>
+            <td>#77128-B128</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5229</td>
+            <td>#77129-B129</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5230</td>
+            <td>#77130-B130</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5231</td>
+            <td>#77131-B131</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5232</td>
+            <td>#77132-B132</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5233</td>
+            <td>#77133-B133</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5234</td>
+            <td>#77134-B134</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5235</td>
+            <td>#77135-B135</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5236</td>
+            <td>#77136-B136</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5237</td>
+            <td>#77137-B137</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5238</td>
+            <td>#77138-B138</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5239</td>
+            <td>#77139-B139</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5240</td>
+            <td>#77140-B140</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5241</td>
+            <td>#77141-B141</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5242</td>
+            <td>#77142-B142</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5243</td>
+            <td>#77143-B143</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5244</td>
+            <td>#77144-B144</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5245</td>
+            <td>#77145-B145</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5246</td>
+            <td>#77146-B146</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5247</td>
+            <td>#77147-B147</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5248</td>
+            <td>#77148-B148</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5249</td>
+            <td>#77149-B149</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5250</td>
+            <td>#77150-B150</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5251</td>
+            <td>#77151-B151</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5252</td>
+            <td>#77152-B152</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5253</td>
+            <td>#77153-B153</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5254</td>
+            <td>#77154-B154</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5255</td>
+            <td>#77155-B155</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5256</td>
+            <td>#77156-B156</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5257</td>
+            <td>#77157-B157</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5258</td>
+            <td>#77158-B158</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5259</td>
+            <td>#77159-B159</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5260</td>
+            <td>#77160-B160</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5261</td>
+            <td>#77161-B161</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5262</td>
+            <td>#77162-B162</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5263</td>
+            <td>#77163-B163</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5264</td>
+            <td>#77164-B164</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5265</td>
+            <td>#77165-B165</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5266</td>
+            <td>#77166-B166</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5267</td>
+            <td>#77167-B167</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5268</td>
+            <td>#77168-B168</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5269</td>
+            <td>#77169-B169</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5270</td>
+            <td>#77170-B170</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5271</td>
+            <td>#77171-B171</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5272</td>
+            <td>#77172-B172</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5273</td>
+            <td>#77173-B173</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5274</td>
+            <td>#77174-B174</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5275</td>
+            <td>#77175-B175</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5276</td>
+            <td>#77176-B176</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5277</td>
+            <td>#77177-B177</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5278</td>
+            <td>#77178-B178</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5279</td>
+            <td>#77179-B179</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5280</td>
+            <td>#77180-B180</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5281</td>
+            <td>#77181-B181</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5282</td>
+            <td>#77182-B182</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5283</td>
+            <td>#77183-B183</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5284</td>
+            <td>#77184-B184</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5285</td>
+            <td>#77185-B185</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5286</td>
+            <td>#77186-B186</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5287</td>
+            <td>#77187-B187</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5288</td>
+            <td>#77188-B188</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5289</td>
+            <td>#77189-B189</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5290</td>
+            <td>#77190-B190</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5291</td>
+            <td>#77191-B191</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5292</td>
+            <td>#77192-B192</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5293</td>
+            <td>#77193-B193</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5294</td>
+            <td>#77194-B194</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5295</td>
+            <td>#77195-B195</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5296</td>
+            <td>#77196-B196</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5297</td>
+            <td>#77197-B197</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5298</td>
+            <td>#77198-B198</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5299</td>
+            <td>#77199-B199</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5300</td>
+            <td>#77200-B200</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5301</td>
+            <td>#77201-B201</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5302</td>
+            <td>#77202-B202</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5303</td>
+            <td>#77203-B203</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5304</td>
+            <td>#77204-B204</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5305</td>
+            <td>#77205-B205</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5306</td>
+            <td>#77206-B206</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5307</td>
+            <td>#77207-B207</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5308</td>
+            <td>#77208-B208</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5309</td>
+            <td>#77209-B209</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5310</td>
+            <td>#77210-B210</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5311</td>
+            <td>#77211-B211</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5312</td>
+            <td>#77212-B212</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5313</td>
+            <td>#77213-B213</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5314</td>
+            <td>#77214-B214</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5315</td>
+            <td>#77215-B215</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5316</td>
+            <td>#77216-B216</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5317</td>
+            <td>#77217-B217</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5318</td>
+            <td>#77218-B218</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5319</td>
+            <td>#77219-B219</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5320</td>
+            <td>#77220-B220</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5321</td>
+            <td>#77221-B221</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5322</td>
+            <td>#77222-B222</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5323</td>
+            <td>#77223-B223</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5324</td>
+            <td>#77224-B224</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5325</td>
+            <td>#77225-B225</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5326</td>
+            <td>#77226-B226</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5327</td>
+            <td>#77227-B227</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5328</td>
+            <td>#77228-B228</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5329</td>
+            <td>#77229-B229</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5330</td>
+            <td>#77230-B230</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5331</td>
+            <td>#77231-B231</td>
+            <td>Email</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5332</td>
+            <td>#77232-B232</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5333</td>
+            <td>#77233-B233</td>
+            <td>Address</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5334</td>
+            <td>#77234-B234</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">High</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5335</td>
+            <td>#77235-B235</td>
+            <td>Mobile</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5336</td>
+            <td>#77236-B236</td>
+            <td>Email</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5337</td>
+            <td>#77237-B237</td>
+            <td>Employer</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5338</td>
+            <td>#77238-B238</td>
+            <td>Address</td>
+            <td><span class="badge success">High</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5339</td>
+            <td>#77239-B239</td>
+            <td>Alt Contact</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5340</td>
+            <td>#77240-B240</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5341</td>
+            <td>#77241-B241</td>
+            <td>Email</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Credit Bureau</td>
+            <td>No</td>
+            <td>SE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5342</td>
+            <td>#77242-B242</td>
+            <td>Employer</td>
+            <td><span class="badge success">High</span></td>
+            <td>Utility</td>
+            <td>Yes</td>
+            <td>MW</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5343</td>
+            <td>#77243-B243</td>
+            <td>Address</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Postal</td>
+            <td>No</td>
+            <td>SW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5344</td>
+            <td>#77244-B244</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Social Graph</td>
+            <td>Yes</td>
+            <td>NW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5345</td>
+            <td>#77245-B245</td>
+            <td>Mobile</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>LexisNexis</td>
+            <td>No</td>
+            <td>NE</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5346</td>
+            <td>#77246-B246</td>
+            <td>Email</td>
+            <td><span class="badge success">High</span></td>
+            <td>Credit Bureau</td>
+            <td>Yes</td>
+            <td>SE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+          <tr>
+            <td>TR-5347</td>
+            <td>#77247-B247</td>
+            <td>Employer</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Utility</td>
+            <td>No</td>
+            <td>MW</td>
+            <td>Compliance</td>
+            <td>Hold</td>
+          </tr>
+          <tr>
+            <td>TR-5348</td>
+            <td>#77248-B248</td>
+            <td>Address</td>
+            <td><span class="badge warning">Low</span></td>
+            <td>Postal</td>
+            <td>Yes</td>
+            <td>SW</td>
+            <td>Trace Ops</td>
+            <td>Queue Dialer</td>
+          </tr>
+          <tr>
+            <td>TR-5349</td>
+            <td>#77249-B249</td>
+            <td>Alt Contact</td>
+            <td><span class="badge warning">Medium</span></td>
+            <td>Social Graph</td>
+            <td>No</td>
+            <td>NW</td>
+            <td>Recovery</td>
+            <td>Verify</td>
+          </tr>
+          <tr>
+            <td>TR-5350</td>
+            <td>#77250-B250</td>
+            <td>Mobile</td>
+            <td><span class="badge success">High</span></td>
+            <td>LexisNexis</td>
+            <td>Yes</td>
+            <td>NE</td>
+            <td>Legal</td>
+            <td>Escalate</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
   </main>
 </body>
 </html>

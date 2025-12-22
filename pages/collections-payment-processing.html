@@ -25,12 +25,14 @@
     <section class="hero">
       <h1 class="hero__title">Payment <strong>Operations</strong></h1>
       <p class="hero__subtitle">
-        Manage daily payments, promise-to-pay commitments, and installment plans with automated reminders.
+        Orchestrate enterprise-grade payment workflows, settlement controls, and exception handling with real-time
+        visibility across channels, plans, and regulatory disclosures.
       </p>
       <div class="hero__meta">
-        <div class="hero__meta-item"><i class="fas fa-dollar-sign"></i> Collected today: $61.2K</div>
-        <div class="hero__meta-item"><i class="fas fa-file-contract"></i> Active payment plans: 143</div>
-        <div class="hero__meta-item"><i class="fas fa-clock"></i> Next settlement batch: 2:00 PM</div>
+        <div class="hero__meta-item"><i class="fas fa-dollar-sign"></i> Collected today: $318.4K</div>
+        <div class="hero__meta-item"><i class="fas fa-file-contract"></i> Active payment plans: 482</div>
+        <div class="hero__meta-item"><i class="fas fa-shield-alt"></i> Compliance confirmations: 99.2%</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Next settlement batch: 2:00 PM ET</div>
       </div>
     </section>
 
@@ -43,21 +45,32 @@
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Promise-to-Pay</div>
-        <div class="kpi-value">67.8%</div>
-        <div class="kpi-meta"><i class="fas fa-handshake"></i> 423 commitments</div>
+        <div class="kpi-value">71.4%</div>
+        <div class="kpi-meta"><i class="fas fa-handshake"></i> 612 commitments</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Failed Transactions</div>
-        <div class="kpi-value">9</div>
-        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> 2 escalated</div>
+        <div class="kpi-value">14</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> 5 escalated</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Auto Reminders</div>
-        <div class="kpi-value">1,284</div>
+        <div class="kpi-value">3,042</div>
         <div class="kpi-meta"><i class="fas fa-bell"></i> Sent in 24h</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Settlement Accuracy</div>
+        <div class="kpi-value">99.6%</div>
+        <div class="kpi-meta"><i class="fas fa-check-circle"></i> 2 mismatches flagged</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">ACH Return Rate</div>
+        <div class="kpi-value">0.8%</div>
+        <div class="kpi-meta"><i class="fas fa-chart-line"></i> -0.3% vs last week</div>
       </div>
     </section>
 
+    <h2 class="section-title">Operations & <strong>Controls</strong></h2>
     <section class="grid">
       <div class="card">
         <div class="card-title">Settlement Queue</div>
@@ -78,6 +91,10 @@
             <span>Disputed Transactions</span>
             <span class="badge danger">2 active</span>
           </li>
+          <li class="list-item">
+            <span>Chargeback reviews</span>
+            <span class="badge warning">4 pending</span>
+          </li>
         </ul>
       </div>
 
@@ -87,19 +104,23 @@
         <ul class="list">
           <li class="list-item">
             <span>On-time payments</span>
-            <span class="badge success">82.3%</span>
+            <span class="badge success">86.1%</span>
           </li>
           <li class="list-item">
             <span>At-risk plans</span>
-            <span class="badge warning">21 plans</span>
+            <span class="badge warning">29 plans</span>
           </li>
           <li class="list-item">
             <span>Auto-drafts enabled</span>
-            <span class="badge success">69%</span>
+            <span class="badge success">74%</span>
           </li>
           <li class="list-item">
             <span>Extensions approved</span>
-            <span class="badge warning">8 this week</span>
+            <span class="badge warning">12 this week</span>
+          </li>
+          <li class="list-item">
+            <span>Plan restructures</span>
+            <span class="badge warning">6 pending</span>
           </li>
         </ul>
       </div>
@@ -122,10 +143,158 @@
           </li>
           <li class="list-item">
             <span>One-time IVR</span>
-            <span class="pill">$4.4K</span>
+            <span class="pill">$9.8K</span>
+          </li>
+          <li class="list-item">
+            <span>Lockbox</span>
+            <span class="pill">$6.3K</span>
           </li>
         </ul>
       </div>
+
+      <div class="card">
+        <div class="card-title">Risk & Exceptions</div>
+        <p class="card-subtitle">Today</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>NSF retries queued</span>
+            <span class="badge warning">18</span>
+          </li>
+          <li class="list-item">
+            <span>Refund requests</span>
+            <span class="badge warning">7 open</span>
+          </li>
+          <li class="list-item">
+            <span>Duplicate payment alerts</span>
+            <span class="badge danger">3 to review</span>
+          </li>
+          <li class="list-item">
+            <span>Reg E disputes</span>
+            <span class="badge warning">2 in SLA</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Upcoming Actions</div>
+        <p class="card-subtitle">48-hour horizon</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Plan autopay renewals</span>
+            <span class="pill">56 accounts</span>
+          </li>
+          <li class="list-item">
+            <span>Settlement cut-off</span>
+            <span class="pill">12:30 PM ET</span>
+          </li>
+          <li class="list-item">
+            <span>Dispute documentation due</span>
+            <span class="pill">4 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Bank file reconciliation</span>
+            <span class="pill">5 files</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Channel Health</div>
+        <p class="card-subtitle">Last 24 hours</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Card authorization rate</span>
+            <span class="badge success">97.9%</span>
+          </li>
+          <li class="list-item">
+            <span>ACH validation success</span>
+            <span class="badge success">98.8%</span>
+          </li>
+          <li class="list-item">
+            <span>IVR drop-off</span>
+            <span class="badge warning">6.2%</span>
+          </li>
+          <li class="list-item">
+            <span>Portal payment latency</span>
+            <span class="badge warning">2.4s</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Compliance Controls</div>
+        <p class="card-subtitle">Disclosure + consent</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Authorization capture</span>
+            <span class="badge success">100%</span>
+          </li>
+          <li class="list-item">
+            <span>Payment disclosure accuracy</span>
+            <span class="badge success">98.7%</span>
+          </li>
+          <li class="list-item">
+            <span>Refund timeline adherence</span>
+            <span class="badge warning">94.9%</span>
+          </li>
+          <li class="list-item">
+            <span>PCI validation checks</span>
+            <span class="badge success">Active</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Settlement Batches</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Batch</th>
+            <th>Channel</th>
+            <th>Volume</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>SLA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ACH-2403</td>
+            <td>ACH</td>
+            <td>189</td>
+            <td>$92,140</td>
+            <td><span class="badge success">Balanced</span></td>
+            <td>2:00 PM ET</td>
+          </tr>
+          <tr>
+            <td>CRD-2403</td>
+            <td>Card</td>
+            <td>141</td>
+            <td>$61,820</td>
+            <td><span class="badge warning">Reconciling</span></td>
+            <td>3:15 PM ET</td>
+          </tr>
+          <tr>
+            <td>PLN-2403</td>
+            <td>Plans</td>
+            <td>82</td>
+            <td>$38,410</td>
+            <td><span class="badge success">Ready</span></td>
+            <td>4:00 PM ET</td>
+          </tr>
+          <tr>
+            <td>IVR-2403</td>
+            <td>IVR</td>
+            <td>56</td>
+            <td>$12,090</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>4:30 PM ET</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section class="card" style="margin-top: 24px;">
@@ -172,6 +341,2778 @@
         </tbody>
       </table>
     </section>
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Enterprise Payment Ledger</div>
+      <p class="card-subtitle">Deep-dive ledgers, exception narratives, funding schedules, and multi-rail reconciliation across every payment event.</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Ledger ID</th>
+            <th>Account</th>
+            <th>Channel</th>
+            <th>Amount</th>
+            <th>Fee</th>
+            <th>Net</th>
+            <th>Status</th>
+            <th>Owner</th>
+            <th>Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LED-2401</td>
+            <td>#4801-A001</td>
+            <td>Card</td>
+            <td>$123</td>
+            <td>$2.21</td>
+            <td>$120.79</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2402</td>
+            <td>#4802-A002</td>
+            <td>IVR</td>
+            <td>$126</td>
+            <td>$2.27</td>
+            <td>$123.73</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2403</td>
+            <td>#4803-A003</td>
+            <td>Portal</td>
+            <td>$129</td>
+            <td>$2.32</td>
+            <td>$126.68</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2404</td>
+            <td>#4804-A004</td>
+            <td>Lockbox</td>
+            <td>$132</td>
+            <td>$2.38</td>
+            <td>$129.62</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2405</td>
+            <td>#4805-A005</td>
+            <td>ACH</td>
+            <td>$135</td>
+            <td>$2.43</td>
+            <td>$132.57</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2406</td>
+            <td>#4806-A006</td>
+            <td>Card</td>
+            <td>$138</td>
+            <td>$2.48</td>
+            <td>$135.52</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2407</td>
+            <td>#4807-A007</td>
+            <td>IVR</td>
+            <td>$141</td>
+            <td>$2.54</td>
+            <td>$138.46</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2408</td>
+            <td>#4808-A008</td>
+            <td>Portal</td>
+            <td>$144</td>
+            <td>$2.59</td>
+            <td>$141.41</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2409</td>
+            <td>#4809-A009</td>
+            <td>Lockbox</td>
+            <td>$147</td>
+            <td>$2.65</td>
+            <td>$144.35</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2410</td>
+            <td>#4810-A010</td>
+            <td>ACH</td>
+            <td>$150</td>
+            <td>$2.70</td>
+            <td>$147.30</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2411</td>
+            <td>#4811-A011</td>
+            <td>Card</td>
+            <td>$153</td>
+            <td>$2.75</td>
+            <td>$150.25</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2412</td>
+            <td>#4812-A012</td>
+            <td>IVR</td>
+            <td>$156</td>
+            <td>$2.81</td>
+            <td>$153.19</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2413</td>
+            <td>#4813-A013</td>
+            <td>Portal</td>
+            <td>$159</td>
+            <td>$2.86</td>
+            <td>$156.14</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2414</td>
+            <td>#4814-A014</td>
+            <td>Lockbox</td>
+            <td>$162</td>
+            <td>$2.92</td>
+            <td>$159.08</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2415</td>
+            <td>#4815-A015</td>
+            <td>ACH</td>
+            <td>$165</td>
+            <td>$2.97</td>
+            <td>$162.03</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2416</td>
+            <td>#4816-A016</td>
+            <td>Card</td>
+            <td>$168</td>
+            <td>$3.02</td>
+            <td>$164.98</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2417</td>
+            <td>#4817-A017</td>
+            <td>IVR</td>
+            <td>$171</td>
+            <td>$3.08</td>
+            <td>$167.92</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2418</td>
+            <td>#4818-A018</td>
+            <td>Portal</td>
+            <td>$174</td>
+            <td>$3.13</td>
+            <td>$170.87</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2419</td>
+            <td>#4819-A019</td>
+            <td>Lockbox</td>
+            <td>$177</td>
+            <td>$3.19</td>
+            <td>$173.81</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2420</td>
+            <td>#4820-A020</td>
+            <td>ACH</td>
+            <td>$180</td>
+            <td>$3.24</td>
+            <td>$176.76</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2421</td>
+            <td>#4821-A021</td>
+            <td>Card</td>
+            <td>$183</td>
+            <td>$3.29</td>
+            <td>$179.71</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2422</td>
+            <td>#4822-A022</td>
+            <td>IVR</td>
+            <td>$186</td>
+            <td>$3.35</td>
+            <td>$182.65</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2423</td>
+            <td>#4823-A023</td>
+            <td>Portal</td>
+            <td>$189</td>
+            <td>$3.40</td>
+            <td>$185.60</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2424</td>
+            <td>#4824-A024</td>
+            <td>Lockbox</td>
+            <td>$192</td>
+            <td>$3.46</td>
+            <td>$188.54</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2425</td>
+            <td>#4825-A025</td>
+            <td>ACH</td>
+            <td>$195</td>
+            <td>$3.51</td>
+            <td>$191.49</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2426</td>
+            <td>#4826-A026</td>
+            <td>Card</td>
+            <td>$198</td>
+            <td>$3.56</td>
+            <td>$194.44</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2427</td>
+            <td>#4827-A027</td>
+            <td>IVR</td>
+            <td>$201</td>
+            <td>$3.62</td>
+            <td>$197.38</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2428</td>
+            <td>#4828-A028</td>
+            <td>Portal</td>
+            <td>$204</td>
+            <td>$3.67</td>
+            <td>$200.33</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2429</td>
+            <td>#4829-A029</td>
+            <td>Lockbox</td>
+            <td>$207</td>
+            <td>$3.73</td>
+            <td>$203.27</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2430</td>
+            <td>#4830-A030</td>
+            <td>ACH</td>
+            <td>$210</td>
+            <td>$3.78</td>
+            <td>$206.22</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2431</td>
+            <td>#4831-A031</td>
+            <td>Card</td>
+            <td>$213</td>
+            <td>$3.83</td>
+            <td>$209.17</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2432</td>
+            <td>#4832-A032</td>
+            <td>IVR</td>
+            <td>$216</td>
+            <td>$3.89</td>
+            <td>$212.11</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2433</td>
+            <td>#4833-A033</td>
+            <td>Portal</td>
+            <td>$219</td>
+            <td>$3.94</td>
+            <td>$215.06</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2434</td>
+            <td>#4834-A034</td>
+            <td>Lockbox</td>
+            <td>$222</td>
+            <td>$4.00</td>
+            <td>$218.00</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2435</td>
+            <td>#4835-A035</td>
+            <td>ACH</td>
+            <td>$225</td>
+            <td>$4.05</td>
+            <td>$220.95</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2436</td>
+            <td>#4836-A036</td>
+            <td>Card</td>
+            <td>$228</td>
+            <td>$4.10</td>
+            <td>$223.90</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2437</td>
+            <td>#4837-A037</td>
+            <td>IVR</td>
+            <td>$231</td>
+            <td>$4.16</td>
+            <td>$226.84</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2438</td>
+            <td>#4838-A038</td>
+            <td>Portal</td>
+            <td>$234</td>
+            <td>$4.21</td>
+            <td>$229.79</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2439</td>
+            <td>#4839-A039</td>
+            <td>Lockbox</td>
+            <td>$237</td>
+            <td>$4.27</td>
+            <td>$232.73</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2440</td>
+            <td>#4840-A040</td>
+            <td>ACH</td>
+            <td>$240</td>
+            <td>$4.32</td>
+            <td>$235.68</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2441</td>
+            <td>#4841-A041</td>
+            <td>Card</td>
+            <td>$243</td>
+            <td>$4.37</td>
+            <td>$238.63</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2442</td>
+            <td>#4842-A042</td>
+            <td>IVR</td>
+            <td>$246</td>
+            <td>$4.43</td>
+            <td>$241.57</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2443</td>
+            <td>#4843-A043</td>
+            <td>Portal</td>
+            <td>$249</td>
+            <td>$4.48</td>
+            <td>$244.52</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2444</td>
+            <td>#4844-A044</td>
+            <td>Lockbox</td>
+            <td>$252</td>
+            <td>$4.54</td>
+            <td>$247.46</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2445</td>
+            <td>#4845-A045</td>
+            <td>ACH</td>
+            <td>$255</td>
+            <td>$4.59</td>
+            <td>$250.41</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2446</td>
+            <td>#4846-A046</td>
+            <td>Card</td>
+            <td>$258</td>
+            <td>$4.64</td>
+            <td>$253.36</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2447</td>
+            <td>#4847-A047</td>
+            <td>IVR</td>
+            <td>$261</td>
+            <td>$4.70</td>
+            <td>$256.30</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2448</td>
+            <td>#4848-A048</td>
+            <td>Portal</td>
+            <td>$264</td>
+            <td>$4.75</td>
+            <td>$259.25</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2449</td>
+            <td>#4849-A049</td>
+            <td>Lockbox</td>
+            <td>$267</td>
+            <td>$4.81</td>
+            <td>$262.19</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2450</td>
+            <td>#4850-A050</td>
+            <td>ACH</td>
+            <td>$270</td>
+            <td>$4.86</td>
+            <td>$265.14</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2451</td>
+            <td>#4851-A051</td>
+            <td>Card</td>
+            <td>$273</td>
+            <td>$4.91</td>
+            <td>$268.09</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2452</td>
+            <td>#4852-A052</td>
+            <td>IVR</td>
+            <td>$276</td>
+            <td>$4.97</td>
+            <td>$271.03</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2453</td>
+            <td>#4853-A053</td>
+            <td>Portal</td>
+            <td>$279</td>
+            <td>$5.02</td>
+            <td>$273.98</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2454</td>
+            <td>#4854-A054</td>
+            <td>Lockbox</td>
+            <td>$282</td>
+            <td>$5.08</td>
+            <td>$276.92</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2455</td>
+            <td>#4855-A055</td>
+            <td>ACH</td>
+            <td>$285</td>
+            <td>$5.13</td>
+            <td>$279.87</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2456</td>
+            <td>#4856-A056</td>
+            <td>Card</td>
+            <td>$288</td>
+            <td>$5.18</td>
+            <td>$282.82</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2457</td>
+            <td>#4857-A057</td>
+            <td>IVR</td>
+            <td>$291</td>
+            <td>$5.24</td>
+            <td>$285.76</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2458</td>
+            <td>#4858-A058</td>
+            <td>Portal</td>
+            <td>$294</td>
+            <td>$5.29</td>
+            <td>$288.71</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2459</td>
+            <td>#4859-A059</td>
+            <td>Lockbox</td>
+            <td>$297</td>
+            <td>$5.35</td>
+            <td>$291.65</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2460</td>
+            <td>#4860-A060</td>
+            <td>ACH</td>
+            <td>$300</td>
+            <td>$5.40</td>
+            <td>$294.60</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2461</td>
+            <td>#4861-A061</td>
+            <td>Card</td>
+            <td>$303</td>
+            <td>$5.45</td>
+            <td>$297.55</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2462</td>
+            <td>#4862-A062</td>
+            <td>IVR</td>
+            <td>$306</td>
+            <td>$5.51</td>
+            <td>$300.49</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2463</td>
+            <td>#4863-A063</td>
+            <td>Portal</td>
+            <td>$309</td>
+            <td>$5.56</td>
+            <td>$303.44</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2464</td>
+            <td>#4864-A064</td>
+            <td>Lockbox</td>
+            <td>$312</td>
+            <td>$5.62</td>
+            <td>$306.38</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2465</td>
+            <td>#4865-A065</td>
+            <td>ACH</td>
+            <td>$315</td>
+            <td>$5.67</td>
+            <td>$309.33</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2466</td>
+            <td>#4866-A066</td>
+            <td>Card</td>
+            <td>$318</td>
+            <td>$5.72</td>
+            <td>$312.28</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2467</td>
+            <td>#4867-A067</td>
+            <td>IVR</td>
+            <td>$321</td>
+            <td>$5.78</td>
+            <td>$315.22</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2468</td>
+            <td>#4868-A068</td>
+            <td>Portal</td>
+            <td>$324</td>
+            <td>$5.83</td>
+            <td>$318.17</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2469</td>
+            <td>#4869-A069</td>
+            <td>Lockbox</td>
+            <td>$327</td>
+            <td>$5.89</td>
+            <td>$321.11</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2470</td>
+            <td>#4870-A070</td>
+            <td>ACH</td>
+            <td>$330</td>
+            <td>$5.94</td>
+            <td>$324.06</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2471</td>
+            <td>#4871-A071</td>
+            <td>Card</td>
+            <td>$333</td>
+            <td>$5.99</td>
+            <td>$327.01</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2472</td>
+            <td>#4872-A072</td>
+            <td>IVR</td>
+            <td>$336</td>
+            <td>$6.05</td>
+            <td>$329.95</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2473</td>
+            <td>#4873-A073</td>
+            <td>Portal</td>
+            <td>$339</td>
+            <td>$6.10</td>
+            <td>$332.90</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2474</td>
+            <td>#4874-A074</td>
+            <td>Lockbox</td>
+            <td>$342</td>
+            <td>$6.16</td>
+            <td>$335.84</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2475</td>
+            <td>#4875-A075</td>
+            <td>ACH</td>
+            <td>$345</td>
+            <td>$6.21</td>
+            <td>$338.79</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2476</td>
+            <td>#4876-A076</td>
+            <td>Card</td>
+            <td>$348</td>
+            <td>$6.26</td>
+            <td>$341.74</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2477</td>
+            <td>#4877-A077</td>
+            <td>IVR</td>
+            <td>$351</td>
+            <td>$6.32</td>
+            <td>$344.68</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2478</td>
+            <td>#4878-A078</td>
+            <td>Portal</td>
+            <td>$354</td>
+            <td>$6.37</td>
+            <td>$347.63</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2479</td>
+            <td>#4879-A079</td>
+            <td>Lockbox</td>
+            <td>$357</td>
+            <td>$6.43</td>
+            <td>$350.57</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2480</td>
+            <td>#4880-A080</td>
+            <td>ACH</td>
+            <td>$360</td>
+            <td>$6.48</td>
+            <td>$353.52</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2481</td>
+            <td>#4881-A081</td>
+            <td>Card</td>
+            <td>$363</td>
+            <td>$6.53</td>
+            <td>$356.47</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2482</td>
+            <td>#4882-A082</td>
+            <td>IVR</td>
+            <td>$366</td>
+            <td>$6.59</td>
+            <td>$359.41</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2483</td>
+            <td>#4883-A083</td>
+            <td>Portal</td>
+            <td>$369</td>
+            <td>$6.64</td>
+            <td>$362.36</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2484</td>
+            <td>#4884-A084</td>
+            <td>Lockbox</td>
+            <td>$372</td>
+            <td>$6.70</td>
+            <td>$365.30</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2485</td>
+            <td>#4885-A085</td>
+            <td>ACH</td>
+            <td>$375</td>
+            <td>$6.75</td>
+            <td>$368.25</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2486</td>
+            <td>#4886-A086</td>
+            <td>Card</td>
+            <td>$378</td>
+            <td>$6.80</td>
+            <td>$371.20</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2487</td>
+            <td>#4887-A087</td>
+            <td>IVR</td>
+            <td>$381</td>
+            <td>$6.86</td>
+            <td>$374.14</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2488</td>
+            <td>#4888-A088</td>
+            <td>Portal</td>
+            <td>$384</td>
+            <td>$6.91</td>
+            <td>$377.09</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2489</td>
+            <td>#4889-A089</td>
+            <td>Lockbox</td>
+            <td>$387</td>
+            <td>$6.97</td>
+            <td>$380.03</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2490</td>
+            <td>#4890-A090</td>
+            <td>ACH</td>
+            <td>$390</td>
+            <td>$7.02</td>
+            <td>$382.98</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2491</td>
+            <td>#4891-A091</td>
+            <td>Card</td>
+            <td>$393</td>
+            <td>$7.07</td>
+            <td>$385.93</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2492</td>
+            <td>#4892-A092</td>
+            <td>IVR</td>
+            <td>$396</td>
+            <td>$7.13</td>
+            <td>$388.87</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2493</td>
+            <td>#4893-A093</td>
+            <td>Portal</td>
+            <td>$399</td>
+            <td>$7.18</td>
+            <td>$391.82</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2494</td>
+            <td>#4894-A094</td>
+            <td>Lockbox</td>
+            <td>$402</td>
+            <td>$7.24</td>
+            <td>$394.76</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2495</td>
+            <td>#4895-A095</td>
+            <td>ACH</td>
+            <td>$405</td>
+            <td>$7.29</td>
+            <td>$397.71</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2496</td>
+            <td>#4896-A096</td>
+            <td>Card</td>
+            <td>$408</td>
+            <td>$7.34</td>
+            <td>$400.66</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2497</td>
+            <td>#4897-A097</td>
+            <td>IVR</td>
+            <td>$411</td>
+            <td>$7.40</td>
+            <td>$403.60</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2498</td>
+            <td>#4898-A098</td>
+            <td>Portal</td>
+            <td>$414</td>
+            <td>$7.45</td>
+            <td>$406.55</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2499</td>
+            <td>#4899-A099</td>
+            <td>Lockbox</td>
+            <td>$417</td>
+            <td>$7.51</td>
+            <td>$409.49</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2500</td>
+            <td>#48100-A100</td>
+            <td>ACH</td>
+            <td>$420</td>
+            <td>$7.56</td>
+            <td>$412.44</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2501</td>
+            <td>#48101-A101</td>
+            <td>Card</td>
+            <td>$423</td>
+            <td>$7.61</td>
+            <td>$415.39</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2502</td>
+            <td>#48102-A102</td>
+            <td>IVR</td>
+            <td>$426</td>
+            <td>$7.67</td>
+            <td>$418.33</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2503</td>
+            <td>#48103-A103</td>
+            <td>Portal</td>
+            <td>$429</td>
+            <td>$7.72</td>
+            <td>$421.28</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2504</td>
+            <td>#48104-A104</td>
+            <td>Lockbox</td>
+            <td>$432</td>
+            <td>$7.78</td>
+            <td>$424.22</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2505</td>
+            <td>#48105-A105</td>
+            <td>ACH</td>
+            <td>$435</td>
+            <td>$7.83</td>
+            <td>$427.17</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2506</td>
+            <td>#48106-A106</td>
+            <td>Card</td>
+            <td>$438</td>
+            <td>$7.88</td>
+            <td>$430.12</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2507</td>
+            <td>#48107-A107</td>
+            <td>IVR</td>
+            <td>$441</td>
+            <td>$7.94</td>
+            <td>$433.06</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2508</td>
+            <td>#48108-A108</td>
+            <td>Portal</td>
+            <td>$444</td>
+            <td>$7.99</td>
+            <td>$436.01</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2509</td>
+            <td>#48109-A109</td>
+            <td>Lockbox</td>
+            <td>$447</td>
+            <td>$8.05</td>
+            <td>$438.95</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2510</td>
+            <td>#48110-A110</td>
+            <td>ACH</td>
+            <td>$450</td>
+            <td>$8.10</td>
+            <td>$441.90</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2511</td>
+            <td>#48111-A111</td>
+            <td>Card</td>
+            <td>$453</td>
+            <td>$8.15</td>
+            <td>$444.85</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2512</td>
+            <td>#48112-A112</td>
+            <td>IVR</td>
+            <td>$456</td>
+            <td>$8.21</td>
+            <td>$447.79</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2513</td>
+            <td>#48113-A113</td>
+            <td>Portal</td>
+            <td>$459</td>
+            <td>$8.26</td>
+            <td>$450.74</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2514</td>
+            <td>#48114-A114</td>
+            <td>Lockbox</td>
+            <td>$462</td>
+            <td>$8.32</td>
+            <td>$453.68</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2515</td>
+            <td>#48115-A115</td>
+            <td>ACH</td>
+            <td>$465</td>
+            <td>$8.37</td>
+            <td>$456.63</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2516</td>
+            <td>#48116-A116</td>
+            <td>Card</td>
+            <td>$468</td>
+            <td>$8.42</td>
+            <td>$459.58</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2517</td>
+            <td>#48117-A117</td>
+            <td>IVR</td>
+            <td>$471</td>
+            <td>$8.48</td>
+            <td>$462.52</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2518</td>
+            <td>#48118-A118</td>
+            <td>Portal</td>
+            <td>$474</td>
+            <td>$8.53</td>
+            <td>$465.47</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2519</td>
+            <td>#48119-A119</td>
+            <td>Lockbox</td>
+            <td>$477</td>
+            <td>$8.59</td>
+            <td>$468.41</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2520</td>
+            <td>#48120-A120</td>
+            <td>ACH</td>
+            <td>$480</td>
+            <td>$8.64</td>
+            <td>$471.36</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2521</td>
+            <td>#48121-A121</td>
+            <td>Card</td>
+            <td>$483</td>
+            <td>$8.69</td>
+            <td>$474.31</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2522</td>
+            <td>#48122-A122</td>
+            <td>IVR</td>
+            <td>$486</td>
+            <td>$8.75</td>
+            <td>$477.25</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2523</td>
+            <td>#48123-A123</td>
+            <td>Portal</td>
+            <td>$489</td>
+            <td>$8.80</td>
+            <td>$480.20</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2524</td>
+            <td>#48124-A124</td>
+            <td>Lockbox</td>
+            <td>$492</td>
+            <td>$8.86</td>
+            <td>$483.14</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2525</td>
+            <td>#48125-A125</td>
+            <td>ACH</td>
+            <td>$495</td>
+            <td>$8.91</td>
+            <td>$486.09</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2526</td>
+            <td>#48126-A126</td>
+            <td>Card</td>
+            <td>$498</td>
+            <td>$8.96</td>
+            <td>$489.04</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2527</td>
+            <td>#48127-A127</td>
+            <td>IVR</td>
+            <td>$501</td>
+            <td>$9.02</td>
+            <td>$491.98</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2528</td>
+            <td>#48128-A128</td>
+            <td>Portal</td>
+            <td>$504</td>
+            <td>$9.07</td>
+            <td>$494.93</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2529</td>
+            <td>#48129-A129</td>
+            <td>Lockbox</td>
+            <td>$507</td>
+            <td>$9.13</td>
+            <td>$497.87</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2530</td>
+            <td>#48130-A130</td>
+            <td>ACH</td>
+            <td>$510</td>
+            <td>$9.18</td>
+            <td>$500.82</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2531</td>
+            <td>#48131-A131</td>
+            <td>Card</td>
+            <td>$513</td>
+            <td>$9.23</td>
+            <td>$503.77</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2532</td>
+            <td>#48132-A132</td>
+            <td>IVR</td>
+            <td>$516</td>
+            <td>$9.29</td>
+            <td>$506.71</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2533</td>
+            <td>#48133-A133</td>
+            <td>Portal</td>
+            <td>$519</td>
+            <td>$9.34</td>
+            <td>$509.66</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2534</td>
+            <td>#48134-A134</td>
+            <td>Lockbox</td>
+            <td>$522</td>
+            <td>$9.40</td>
+            <td>$512.60</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2535</td>
+            <td>#48135-A135</td>
+            <td>ACH</td>
+            <td>$525</td>
+            <td>$9.45</td>
+            <td>$515.55</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2536</td>
+            <td>#48136-A136</td>
+            <td>Card</td>
+            <td>$528</td>
+            <td>$9.50</td>
+            <td>$518.50</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2537</td>
+            <td>#48137-A137</td>
+            <td>IVR</td>
+            <td>$531</td>
+            <td>$9.56</td>
+            <td>$521.44</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2538</td>
+            <td>#48138-A138</td>
+            <td>Portal</td>
+            <td>$534</td>
+            <td>$9.61</td>
+            <td>$524.39</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2539</td>
+            <td>#48139-A139</td>
+            <td>Lockbox</td>
+            <td>$537</td>
+            <td>$9.67</td>
+            <td>$527.33</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2540</td>
+            <td>#48140-A140</td>
+            <td>ACH</td>
+            <td>$540</td>
+            <td>$9.72</td>
+            <td>$530.28</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2541</td>
+            <td>#48141-A141</td>
+            <td>Card</td>
+            <td>$543</td>
+            <td>$9.77</td>
+            <td>$533.23</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2542</td>
+            <td>#48142-A142</td>
+            <td>IVR</td>
+            <td>$546</td>
+            <td>$9.83</td>
+            <td>$536.17</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2543</td>
+            <td>#48143-A143</td>
+            <td>Portal</td>
+            <td>$549</td>
+            <td>$9.88</td>
+            <td>$539.12</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2544</td>
+            <td>#48144-A144</td>
+            <td>Lockbox</td>
+            <td>$552</td>
+            <td>$9.94</td>
+            <td>$542.06</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2545</td>
+            <td>#48145-A145</td>
+            <td>ACH</td>
+            <td>$555</td>
+            <td>$9.99</td>
+            <td>$545.01</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2546</td>
+            <td>#48146-A146</td>
+            <td>Card</td>
+            <td>$558</td>
+            <td>$10.04</td>
+            <td>$547.96</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2547</td>
+            <td>#48147-A147</td>
+            <td>IVR</td>
+            <td>$561</td>
+            <td>$10.10</td>
+            <td>$550.90</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2548</td>
+            <td>#48148-A148</td>
+            <td>Portal</td>
+            <td>$564</td>
+            <td>$10.15</td>
+            <td>$553.85</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2549</td>
+            <td>#48149-A149</td>
+            <td>Lockbox</td>
+            <td>$567</td>
+            <td>$10.21</td>
+            <td>$556.79</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2550</td>
+            <td>#48150-A150</td>
+            <td>ACH</td>
+            <td>$570</td>
+            <td>$10.26</td>
+            <td>$559.74</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2551</td>
+            <td>#48151-A151</td>
+            <td>Card</td>
+            <td>$573</td>
+            <td>$10.31</td>
+            <td>$562.69</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2552</td>
+            <td>#48152-A152</td>
+            <td>IVR</td>
+            <td>$576</td>
+            <td>$10.37</td>
+            <td>$565.63</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2553</td>
+            <td>#48153-A153</td>
+            <td>Portal</td>
+            <td>$579</td>
+            <td>$10.42</td>
+            <td>$568.58</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2554</td>
+            <td>#48154-A154</td>
+            <td>Lockbox</td>
+            <td>$582</td>
+            <td>$10.48</td>
+            <td>$571.52</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2555</td>
+            <td>#48155-A155</td>
+            <td>ACH</td>
+            <td>$585</td>
+            <td>$10.53</td>
+            <td>$574.47</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2556</td>
+            <td>#48156-A156</td>
+            <td>Card</td>
+            <td>$588</td>
+            <td>$10.58</td>
+            <td>$577.42</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2557</td>
+            <td>#48157-A157</td>
+            <td>IVR</td>
+            <td>$591</td>
+            <td>$10.64</td>
+            <td>$580.36</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2558</td>
+            <td>#48158-A158</td>
+            <td>Portal</td>
+            <td>$594</td>
+            <td>$10.69</td>
+            <td>$583.31</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2559</td>
+            <td>#48159-A159</td>
+            <td>Lockbox</td>
+            <td>$597</td>
+            <td>$10.75</td>
+            <td>$586.25</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2560</td>
+            <td>#48160-A160</td>
+            <td>ACH</td>
+            <td>$600</td>
+            <td>$10.80</td>
+            <td>$589.20</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2561</td>
+            <td>#48161-A161</td>
+            <td>Card</td>
+            <td>$603</td>
+            <td>$10.85</td>
+            <td>$592.15</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2562</td>
+            <td>#48162-A162</td>
+            <td>IVR</td>
+            <td>$606</td>
+            <td>$10.91</td>
+            <td>$595.09</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2563</td>
+            <td>#48163-A163</td>
+            <td>Portal</td>
+            <td>$609</td>
+            <td>$10.96</td>
+            <td>$598.04</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2564</td>
+            <td>#48164-A164</td>
+            <td>Lockbox</td>
+            <td>$612</td>
+            <td>$11.02</td>
+            <td>$600.98</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2565</td>
+            <td>#48165-A165</td>
+            <td>ACH</td>
+            <td>$615</td>
+            <td>$11.07</td>
+            <td>$603.93</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2566</td>
+            <td>#48166-A166</td>
+            <td>Card</td>
+            <td>$618</td>
+            <td>$11.12</td>
+            <td>$606.88</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2567</td>
+            <td>#48167-A167</td>
+            <td>IVR</td>
+            <td>$621</td>
+            <td>$11.18</td>
+            <td>$609.82</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2568</td>
+            <td>#48168-A168</td>
+            <td>Portal</td>
+            <td>$624</td>
+            <td>$11.23</td>
+            <td>$612.77</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2569</td>
+            <td>#48169-A169</td>
+            <td>Lockbox</td>
+            <td>$627</td>
+            <td>$11.29</td>
+            <td>$615.71</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2570</td>
+            <td>#48170-A170</td>
+            <td>ACH</td>
+            <td>$630</td>
+            <td>$11.34</td>
+            <td>$618.66</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2571</td>
+            <td>#48171-A171</td>
+            <td>Card</td>
+            <td>$633</td>
+            <td>$11.39</td>
+            <td>$621.61</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2572</td>
+            <td>#48172-A172</td>
+            <td>IVR</td>
+            <td>$636</td>
+            <td>$11.45</td>
+            <td>$624.55</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2573</td>
+            <td>#48173-A173</td>
+            <td>Portal</td>
+            <td>$639</td>
+            <td>$11.50</td>
+            <td>$627.50</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2574</td>
+            <td>#48174-A174</td>
+            <td>Lockbox</td>
+            <td>$642</td>
+            <td>$11.56</td>
+            <td>$630.44</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2575</td>
+            <td>#48175-A175</td>
+            <td>ACH</td>
+            <td>$645</td>
+            <td>$11.61</td>
+            <td>$633.39</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2576</td>
+            <td>#48176-A176</td>
+            <td>Card</td>
+            <td>$648</td>
+            <td>$11.66</td>
+            <td>$636.34</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2577</td>
+            <td>#48177-A177</td>
+            <td>IVR</td>
+            <td>$651</td>
+            <td>$11.72</td>
+            <td>$639.28</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2578</td>
+            <td>#48178-A178</td>
+            <td>Portal</td>
+            <td>$654</td>
+            <td>$11.77</td>
+            <td>$642.23</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2579</td>
+            <td>#48179-A179</td>
+            <td>Lockbox</td>
+            <td>$657</td>
+            <td>$11.83</td>
+            <td>$645.17</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2580</td>
+            <td>#48180-A180</td>
+            <td>ACH</td>
+            <td>$660</td>
+            <td>$11.88</td>
+            <td>$648.12</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2581</td>
+            <td>#48181-A181</td>
+            <td>Card</td>
+            <td>$663</td>
+            <td>$11.93</td>
+            <td>$651.07</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2582</td>
+            <td>#48182-A182</td>
+            <td>IVR</td>
+            <td>$666</td>
+            <td>$11.99</td>
+            <td>$654.01</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2583</td>
+            <td>#48183-A183</td>
+            <td>Portal</td>
+            <td>$669</td>
+            <td>$12.04</td>
+            <td>$656.96</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2584</td>
+            <td>#48184-A184</td>
+            <td>Lockbox</td>
+            <td>$672</td>
+            <td>$12.10</td>
+            <td>$659.90</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2585</td>
+            <td>#48185-A185</td>
+            <td>ACH</td>
+            <td>$675</td>
+            <td>$12.15</td>
+            <td>$662.85</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2586</td>
+            <td>#48186-A186</td>
+            <td>Card</td>
+            <td>$678</td>
+            <td>$12.20</td>
+            <td>$665.80</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2587</td>
+            <td>#48187-A187</td>
+            <td>IVR</td>
+            <td>$681</td>
+            <td>$12.26</td>
+            <td>$668.74</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2588</td>
+            <td>#48188-A188</td>
+            <td>Portal</td>
+            <td>$684</td>
+            <td>$12.31</td>
+            <td>$671.69</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2589</td>
+            <td>#48189-A189</td>
+            <td>Lockbox</td>
+            <td>$687</td>
+            <td>$12.37</td>
+            <td>$674.63</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2590</td>
+            <td>#48190-A190</td>
+            <td>ACH</td>
+            <td>$690</td>
+            <td>$12.42</td>
+            <td>$677.58</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2591</td>
+            <td>#48191-A191</td>
+            <td>Card</td>
+            <td>$693</td>
+            <td>$12.47</td>
+            <td>$680.53</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2592</td>
+            <td>#48192-A192</td>
+            <td>IVR</td>
+            <td>$696</td>
+            <td>$12.53</td>
+            <td>$683.47</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2593</td>
+            <td>#48193-A193</td>
+            <td>Portal</td>
+            <td>$699</td>
+            <td>$12.58</td>
+            <td>$686.42</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2594</td>
+            <td>#48194-A194</td>
+            <td>Lockbox</td>
+            <td>$702</td>
+            <td>$12.64</td>
+            <td>$689.36</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2595</td>
+            <td>#48195-A195</td>
+            <td>ACH</td>
+            <td>$705</td>
+            <td>$12.69</td>
+            <td>$692.31</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2596</td>
+            <td>#48196-A196</td>
+            <td>Card</td>
+            <td>$708</td>
+            <td>$12.74</td>
+            <td>$695.26</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2597</td>
+            <td>#48197-A197</td>
+            <td>IVR</td>
+            <td>$711</td>
+            <td>$12.80</td>
+            <td>$698.20</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2598</td>
+            <td>#48198-A198</td>
+            <td>Portal</td>
+            <td>$714</td>
+            <td>$12.85</td>
+            <td>$701.15</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2599</td>
+            <td>#48199-A199</td>
+            <td>Lockbox</td>
+            <td>$717</td>
+            <td>$12.91</td>
+            <td>$704.09</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2600</td>
+            <td>#48200-A200</td>
+            <td>ACH</td>
+            <td>$720</td>
+            <td>$12.96</td>
+            <td>$707.04</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2601</td>
+            <td>#48201-A201</td>
+            <td>Card</td>
+            <td>$723</td>
+            <td>$13.01</td>
+            <td>$709.99</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2602</td>
+            <td>#48202-A202</td>
+            <td>IVR</td>
+            <td>$726</td>
+            <td>$13.07</td>
+            <td>$712.93</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2603</td>
+            <td>#48203-A203</td>
+            <td>Portal</td>
+            <td>$729</td>
+            <td>$13.12</td>
+            <td>$715.88</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2604</td>
+            <td>#48204-A204</td>
+            <td>Lockbox</td>
+            <td>$732</td>
+            <td>$13.18</td>
+            <td>$718.82</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2605</td>
+            <td>#48205-A205</td>
+            <td>ACH</td>
+            <td>$735</td>
+            <td>$13.23</td>
+            <td>$721.77</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2606</td>
+            <td>#48206-A206</td>
+            <td>Card</td>
+            <td>$738</td>
+            <td>$13.28</td>
+            <td>$724.72</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2607</td>
+            <td>#48207-A207</td>
+            <td>IVR</td>
+            <td>$741</td>
+            <td>$13.34</td>
+            <td>$727.66</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2608</td>
+            <td>#48208-A208</td>
+            <td>Portal</td>
+            <td>$744</td>
+            <td>$13.39</td>
+            <td>$730.61</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2609</td>
+            <td>#48209-A209</td>
+            <td>Lockbox</td>
+            <td>$747</td>
+            <td>$13.45</td>
+            <td>$733.55</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2610</td>
+            <td>#48210-A210</td>
+            <td>ACH</td>
+            <td>$750</td>
+            <td>$13.50</td>
+            <td>$736.50</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2611</td>
+            <td>#48211-A211</td>
+            <td>Card</td>
+            <td>$753</td>
+            <td>$13.55</td>
+            <td>$739.45</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2612</td>
+            <td>#48212-A212</td>
+            <td>IVR</td>
+            <td>$756</td>
+            <td>$13.61</td>
+            <td>$742.39</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2613</td>
+            <td>#48213-A213</td>
+            <td>Portal</td>
+            <td>$759</td>
+            <td>$13.66</td>
+            <td>$745.34</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2614</td>
+            <td>#48214-A214</td>
+            <td>Lockbox</td>
+            <td>$762</td>
+            <td>$13.72</td>
+            <td>$748.28</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2615</td>
+            <td>#48215-A215</td>
+            <td>ACH</td>
+            <td>$765</td>
+            <td>$13.77</td>
+            <td>$751.23</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2616</td>
+            <td>#48216-A216</td>
+            <td>Card</td>
+            <td>$768</td>
+            <td>$13.82</td>
+            <td>$754.18</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2617</td>
+            <td>#48217-A217</td>
+            <td>IVR</td>
+            <td>$771</td>
+            <td>$13.88</td>
+            <td>$757.12</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2618</td>
+            <td>#48218-A218</td>
+            <td>Portal</td>
+            <td>$774</td>
+            <td>$13.93</td>
+            <td>$760.07</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2619</td>
+            <td>#48219-A219</td>
+            <td>Lockbox</td>
+            <td>$777</td>
+            <td>$13.99</td>
+            <td>$763.01</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2620</td>
+            <td>#48220-A220</td>
+            <td>ACH</td>
+            <td>$780</td>
+            <td>$14.04</td>
+            <td>$765.96</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2621</td>
+            <td>#48221-A221</td>
+            <td>Card</td>
+            <td>$783</td>
+            <td>$14.09</td>
+            <td>$768.91</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2622</td>
+            <td>#48222-A222</td>
+            <td>IVR</td>
+            <td>$786</td>
+            <td>$14.15</td>
+            <td>$771.85</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2623</td>
+            <td>#48223-A223</td>
+            <td>Portal</td>
+            <td>$789</td>
+            <td>$14.20</td>
+            <td>$774.80</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2624</td>
+            <td>#48224-A224</td>
+            <td>Lockbox</td>
+            <td>$792</td>
+            <td>$14.26</td>
+            <td>$777.74</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2625</td>
+            <td>#48225-A225</td>
+            <td>ACH</td>
+            <td>$795</td>
+            <td>$14.31</td>
+            <td>$780.69</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2626</td>
+            <td>#48226-A226</td>
+            <td>Card</td>
+            <td>$798</td>
+            <td>$14.36</td>
+            <td>$783.64</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2627</td>
+            <td>#48227-A227</td>
+            <td>IVR</td>
+            <td>$801</td>
+            <td>$14.42</td>
+            <td>$786.58</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2628</td>
+            <td>#48228-A228</td>
+            <td>Portal</td>
+            <td>$804</td>
+            <td>$14.47</td>
+            <td>$789.53</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2629</td>
+            <td>#48229-A229</td>
+            <td>Lockbox</td>
+            <td>$807</td>
+            <td>$14.53</td>
+            <td>$792.47</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2630</td>
+            <td>#48230-A230</td>
+            <td>ACH</td>
+            <td>$810</td>
+            <td>$14.58</td>
+            <td>$795.42</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2631</td>
+            <td>#48231-A231</td>
+            <td>Card</td>
+            <td>$813</td>
+            <td>$14.63</td>
+            <td>$798.37</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2632</td>
+            <td>#48232-A232</td>
+            <td>IVR</td>
+            <td>$816</td>
+            <td>$14.69</td>
+            <td>$801.31</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 26</td>
+          </tr>
+          <tr>
+            <td>LED-2633</td>
+            <td>#48233-A233</td>
+            <td>Portal</td>
+            <td>$819</td>
+            <td>$14.74</td>
+            <td>$804.26</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 27</td>
+          </tr>
+          <tr>
+            <td>LED-2634</td>
+            <td>#48234-A234</td>
+            <td>Lockbox</td>
+            <td>$822</td>
+            <td>$14.80</td>
+            <td>$807.20</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 10</td>
+          </tr>
+          <tr>
+            <td>LED-2635</td>
+            <td>#48235-A235</td>
+            <td>ACH</td>
+            <td>$825</td>
+            <td>$14.85</td>
+            <td>$810.15</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 11</td>
+          </tr>
+          <tr>
+            <td>LED-2636</td>
+            <td>#48236-A236</td>
+            <td>Card</td>
+            <td>$828</td>
+            <td>$14.90</td>
+            <td>$813.10</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>LED-2637</td>
+            <td>#48237-A237</td>
+            <td>IVR</td>
+            <td>$831</td>
+            <td>$14.96</td>
+            <td>$816.04</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 13</td>
+          </tr>
+          <tr>
+            <td>LED-2638</td>
+            <td>#48238-A238</td>
+            <td>Portal</td>
+            <td>$834</td>
+            <td>$15.01</td>
+            <td>$818.99</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 14</td>
+          </tr>
+          <tr>
+            <td>LED-2639</td>
+            <td>#48239-A239</td>
+            <td>Lockbox</td>
+            <td>$837</td>
+            <td>$15.07</td>
+            <td>$821.93</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 15</td>
+          </tr>
+          <tr>
+            <td>LED-2640</td>
+            <td>#48240-A240</td>
+            <td>ACH</td>
+            <td>$840</td>
+            <td>$15.12</td>
+            <td>$824.88</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 16</td>
+          </tr>
+          <tr>
+            <td>LED-2641</td>
+            <td>#48241-A241</td>
+            <td>Card</td>
+            <td>$843</td>
+            <td>$15.17</td>
+            <td>$827.83</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 17</td>
+          </tr>
+          <tr>
+            <td>LED-2642</td>
+            <td>#48242-A242</td>
+            <td>IVR</td>
+            <td>$846</td>
+            <td>$15.23</td>
+            <td>$830.77</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>LED-2643</td>
+            <td>#48243-A243</td>
+            <td>Portal</td>
+            <td>$849</td>
+            <td>$15.28</td>
+            <td>$833.72</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 19</td>
+          </tr>
+          <tr>
+            <td>LED-2644</td>
+            <td>#48244-A244</td>
+            <td>Lockbox</td>
+            <td>$852</td>
+            <td>$15.34</td>
+            <td>$836.66</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 20</td>
+          </tr>
+          <tr>
+            <td>LED-2645</td>
+            <td>#48245-A245</td>
+            <td>ACH</td>
+            <td>$855</td>
+            <td>$15.39</td>
+            <td>$839.61</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 21</td>
+          </tr>
+          <tr>
+            <td>LED-2646</td>
+            <td>#48246-A246</td>
+            <td>Card</td>
+            <td>$858</td>
+            <td>$15.44</td>
+            <td>$842.56</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 22</td>
+          </tr>
+          <tr>
+            <td>LED-2647</td>
+            <td>#48247-A247</td>
+            <td>IVR</td>
+            <td>$861</td>
+            <td>$15.50</td>
+            <td>$845.50</td>
+            <td><span class="badge success">Reconciled</span></td>
+            <td>Risk</td>
+            <td>Dec 23</td>
+          </tr>
+          <tr>
+            <td>LED-2648</td>
+            <td>#48248-A248</td>
+            <td>Portal</td>
+            <td>$864</td>
+            <td>$15.55</td>
+            <td>$848.45</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Ops East</td>
+            <td>Dec 24</td>
+          </tr>
+          <tr>
+            <td>LED-2649</td>
+            <td>#48249-A249</td>
+            <td>Lockbox</td>
+            <td>$867</td>
+            <td>$15.61</td>
+            <td>$851.39</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Ops West</td>
+            <td>Dec 25</td>
+          </tr>
+          <tr>
+            <td>LED-2650</td>
+            <td>#48250-A250</td>
+            <td>ACH</td>
+            <td>$870</td>
+            <td>$15.66</td>
+            <td>$854.34</td>
+            <td><span class="badge danger">Exception</span></td>
+            <td>Treasury</td>
+            <td>Dec 26</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
   </main>
 </body>
 </html>
