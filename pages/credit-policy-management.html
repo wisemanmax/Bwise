@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Policy Management | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Policy Management</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">Draft Policy</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Policy <strong>Governance</strong></h1>
+      <p class="hero__subtitle">
+        Control underwriting rules, pricing tiers, and exception handling with audit-ready approvals.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-layer-group"></i> Active policy sets: 8</div>
+        <div class="hero__meta-item"><i class="fas fa-shield-alt"></i> Compliance status: OK</div>
+        <div class="hero__meta-item"><i class="fas fa-code-branch"></i> Versions tracked: 24</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Policy <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Active Rules</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-meta"><i class="fas fa-check-circle"></i> Across 8 sets</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Exceptions</div>
+        <div class="kpi-value">18</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> Pending review</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Policy Updates</div>
+        <div class="kpi-value">6</div>
+        <div class="kpi-meta"><i class="fas fa-pen"></i> Last 30 days</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Audit Coverage</div>
+        <div class="kpi-value">98%</div>
+        <div class="kpi-meta"><i class="fas fa-clipboard-check"></i> Evidence logged</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Policy Sets</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Core Lending</span>
+            <span class="badge success">Active</span>
+          </li>
+          <li class="list-item">
+            <span>Starter Credit</span>
+            <span class="badge success">Active</span>
+          </li>
+          <li class="list-item">
+            <span>Small Business</span>
+            <span class="badge warning">Review</span>
+          </li>
+          <li class="list-item">
+            <span>High Value</span>
+            <span class="badge success">Active</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Recent Updates</div>
+        <p class="card-subtitle">Change log</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>DTI threshold adjustment</span>
+            <span class="pill">Dec 18</span>
+          </li>
+          <li class="list-item">
+            <span>Bankcard utilization cap</span>
+            <span class="pill">Dec 12</span>
+          </li>
+          <li class="list-item">
+            <span>Income verification tier</span>
+            <span class="pill">Dec 7</span>
+          </li>
+          <li class="list-item">
+            <span>Fraud gating update</span>
+            <span class="pill">Dec 3</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Approval Workflow</div>
+        <p class="card-subtitle">Stakeholders</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Risk leadership</span>
+            <span class="badge success">Approved</span>
+          </li>
+          <li class="list-item">
+            <span>Compliance review</span>
+            <span class="badge warning">Pending</span>
+          </li>
+          <li class="list-item">
+            <span>Legal sign-off</span>
+            <span class="badge warning">Pending</span>
+          </li>
+          <li class="list-item">
+            <span>Operations rollout</span>
+            <span class="badge success">Scheduled</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Rule Library</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Rule</th>
+            <th>Policy Set</th>
+            <th>Status</th>
+            <th>Owner</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Minimum FICO 640</td>
+            <td>Core Lending</td>
+            <td><span class="badge success">Active</span></td>
+            <td>Risk Ops</td>
+            <td>Dec 18</td>
+          </tr>
+          <tr>
+            <td>DTI &lt; 42%</td>
+            <td>Starter Credit</td>
+            <td><span class="badge success">Active</span></td>
+            <td>Credit Strategy</td>
+            <td>Dec 12</td>
+          </tr>
+          <tr>
+            <td>Max CL $1,500</td>
+            <td>Small Business</td>
+            <td><span class="badge warning">Review</span></td>
+            <td>Legal</td>
+            <td>Dec 7</td>
+          </tr>
+          <tr>
+            <td>Fraud gating level 3</td>
+            <td>High Value</td>
+            <td><span class="badge success">Active</span></td>
+            <td>Fraud</td>
+            <td>Dec 3</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

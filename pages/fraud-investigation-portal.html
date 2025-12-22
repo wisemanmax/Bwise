@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Investigation Portal | Fraud & Risk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/fraud-risk-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="fraud-risk.html">
+      <i class="fas fa-arrow-left"></i> Back to Fraud & Risk
+    </a>
+    <div class="header__title">Investigation Portal</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="fraud-risk.html">Tool Hub</a>
+      <a class="btn btn-primary" href="fraud-risk-new-case.html">New Case</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Case <strong>Command</strong></h1>
+      <p class="hero__subtitle">
+        Coordinate investigations, evidence capture, and collaboration workflows across fraud analysts.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-folder-open"></i> Active cases: 127</div>
+        <div class="hero__meta-item"><i class="fas fa-user-shield"></i> Lead investigator: Diana Torres</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> SLA: 4.2 hrs avg</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Case <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">New Alerts</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-meta"><i class="fas fa-bell"></i> Last 24h</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">In Review</div>
+        <div class="kpi-value">72</div>
+        <div class="kpi-meta"><i class="fas fa-search"></i> Multi-analyst</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Evidence Collected</div>
+        <div class="kpi-value">412</div>
+        <div class="kpi-meta"><i class="fas fa-paperclip"></i> Attachments</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">SLA Breaches</div>
+        <div class="kpi-value">3</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> Escalated</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Queue Breakdown</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Account takeover</span>
+            <span class="badge danger">24 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Synthetic identity</span>
+            <span class="badge warning">31 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Chargeback disputes</span>
+            <span class="badge warning">18 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Friendly fraud</span>
+            <span class="badge success">14 cases</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Investigator Load</div>
+        <p class="card-subtitle">Active assignments</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Marcus Chen</span>
+            <span class="pill">12 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Sarah Williams</span>
+            <span class="pill">11 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Jordan Blake</span>
+            <span class="pill">9 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Nia Patel</span>
+            <span class="pill">8 cases</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Workflow Automation</div>
+        <p class="card-subtitle">Case playbooks</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>ATO containment</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Chargeback response</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Document request</span>
+            <span class="badge warning">Review</span>
+          </li>
+          <li class="list-item">
+            <span>Escalation routing</span>
+            <span class="badge success">Enabled</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Active Cases</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Case ID</th>
+            <th>Type</th>
+            <th>Owner</th>
+            <th>Risk</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#INV-2847</td>
+            <td>Account takeover</td>
+            <td>Diana Torres</td>
+            <td><span class="badge danger">Critical</span></td>
+            <td>Account freeze pending</td>
+          </tr>
+          <tr>
+            <td>#INV-2843</td>
+            <td>Fraud ring</td>
+            <td>Marcus Chen</td>
+            <td><span class="badge danger">Critical</span></td>
+            <td>Network analysis</td>
+          </tr>
+          <tr>
+            <td>#INV-2841</td>
+            <td>Identity theft</td>
+            <td>Sarah Williams</td>
+            <td><span class="badge warning">High</span></td>
+            <td>Document verification</td>
+          </tr>
+          <tr>
+            <td>#INV-2836</td>
+            <td>Chargeback dispute</td>
+            <td>Nia Patel</td>
+            <td><span class="badge warning">High</span></td>
+            <td>Merchant outreach</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

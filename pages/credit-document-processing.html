@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document Processing | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Document Processing</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">Upload Docs</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Document <strong>Automation</strong></h1>
+      <p class="hero__subtitle">
+        Extract, validate, and classify applicant documents with OCR and AI-powered checks.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-file"></i> Docs processed: 2.4K/day</div>
+        <div class="hero__meta-item"><i class="fas fa-check-double"></i> Accuracy: 96%</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Avg process: 36 sec</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Processing <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Docs Ingested</div>
+        <div class="kpi-value">18,202</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +7% week over week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Auto-Validated</div>
+        <div class="kpi-value">92%</div>
+        <div class="kpi-meta"><i class="fas fa-robot"></i> Straight through</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Exceptions</div>
+        <div class="kpi-value">148</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> Manual review</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Fraud Flags</div>
+        <div class="kpi-value">18</div>
+        <div class="kpi-meta"><i class="fas fa-shield-alt"></i> Escalated</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Document Types</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Paystubs</span>
+            <span class="badge success">46%</span>
+          </li>
+          <li class="list-item">
+            <span>Bank statements</span>
+            <span class="badge success">32%</span>
+          </li>
+          <li class="list-item">
+            <span>Tax returns</span>
+            <span class="badge warning">12%</span>
+          </li>
+          <li class="list-item">
+            <span>ID verification</span>
+            <span class="badge warning">10%</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Validation Rules</div>
+        <p class="card-subtitle">Active checks</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Income consistency</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Tamper detection</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Employer match</span>
+            <span class="badge warning">Review</span>
+          </li>
+          <li class="list-item">
+            <span>Document expiry</span>
+            <span class="badge success">Enabled</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Exception Reasons</div>
+        <p class="card-subtitle">Top drivers</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Missing pages</span>
+            <span class="pill">42</span>
+          </li>
+          <li class="list-item">
+            <span>Low OCR confidence</span>
+            <span class="pill">31</span>
+          </li>
+          <li class="list-item">
+            <span>Signature mismatch</span>
+            <span class="pill">18</span>
+          </li>
+          <li class="list-item">
+            <span>Expired ID</span>
+            <span class="pill">11</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Documents</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th>Applicant</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Paystub_1204.pdf</td>
+            <td>#APP-1204</td>
+            <td>Paystub</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Proceed to decision</td>
+          </tr>
+          <tr>
+            <td>BankStmt_1198.pdf</td>
+            <td>#APP-1198</td>
+            <td>Bank statement</td>
+            <td><span class="badge warning">Manual</span></td>
+            <td>Analyst review</td>
+          </tr>
+          <tr>
+            <td>ID_1193.png</td>
+            <td>#APP-1193</td>
+            <td>Government ID</td>
+            <td><span class="badge danger">Flagged</span></td>
+            <td>Fraud review</td>
+          </tr>
+          <tr>
+            <td>TaxReturn_1189.pdf</td>
+            <td>#APP-1189</td>
+            <td>Tax return</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Proceed to decision</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

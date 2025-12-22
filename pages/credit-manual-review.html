@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual Review Queue | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Manual Review Queue</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">Assign Cases</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Manual <strong>Review</strong></h1>
+      <p class="hero__subtitle">
+        Prioritize and assign applications requiring underwriter review with SLA tracking.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-tasks"></i> Queue size: 234</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Avg handle time: 8.5 min</div>
+        <div class="hero__meta-item"><i class="fas fa-users"></i> Active reviewers: 12</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Queue <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">High Priority</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-meta"><i class="fas fa-flag"></i> SLA 2 hrs</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Awaiting Docs</div>
+        <div class="kpi-value">58</div>
+        <div class="kpi-meta"><i class="fas fa-file"></i> Applicant response</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Escalations</div>
+        <div class="kpi-value">16</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> Supervisor review</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Completed Today</div>
+        <div class="kpi-value">74</div>
+        <div class="kpi-meta"><i class="fas fa-check-circle"></i> +9% vs yesterday</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Queue Categories</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Income mismatch</span>
+            <span class="badge warning">64 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Thin file</span>
+            <span class="badge warning">52 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Fraud check</span>
+            <span class="badge danger">28 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Manual override</span>
+            <span class="badge success">18 cases</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Reviewer Load</div>
+        <p class="card-subtitle">Active assignments</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Alex Morgan</span>
+            <span class="pill">21 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Priya Singh</span>
+            <span class="pill">19 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Leo Carter</span>
+            <span class="pill">17 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Mina Lopez</span>
+            <span class="pill">15 cases</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">SLA Health</div>
+        <p class="card-subtitle">Queue performance</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Under 2 hrs</span>
+            <span class="badge success">78%</span>
+          </li>
+          <li class="list-item">
+            <span>2-4 hrs</span>
+            <span class="badge warning">17%</span>
+          </li>
+          <li class="list-item">
+            <span>4+ hrs</span>
+            <span class="badge warning">5%</span>
+          </li>
+          <li class="list-item">
+            <span>Breaches</span>
+            <span class="badge danger">3 cases</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Manual Review Queue</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Application</th>
+            <th>Reason</th>
+            <th>Owner</th>
+            <th>Priority</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#MR-892</td>
+            <td>Income mismatch</td>
+            <td>Alex Morgan</td>
+            <td><span class="badge warning">High</span></td>
+            <td>Request docs</td>
+          </tr>
+          <tr>
+            <td>#MR-887</td>
+            <td>Fraud review</td>
+            <td>Priya Singh</td>
+            <td><span class="badge danger">Critical</span></td>
+            <td>Call applicant</td>
+          </tr>
+          <tr>
+            <td>#MR-882</td>
+            <td>Thin file</td>
+            <td>Leo Carter</td>
+            <td><span class="badge warning">High</span></td>
+            <td>Manual decision</td>
+          </tr>
+          <tr>
+            <td>#MR-878</td>
+            <td>Override request</td>
+            <td>Mina Lopez</td>
+            <td><span class="badge success">Medium</span></td>
+            <td>Supervisor sign-off</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

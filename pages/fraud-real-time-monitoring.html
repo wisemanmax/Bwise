@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-Time Monitoring | Fraud & Risk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/fraud-risk-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="fraud-risk.html">
+      <i class="fas fa-arrow-left"></i> Back to Fraud & Risk
+    </a>
+    <div class="header__title">Real-Time Monitoring</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="fraud-risk.html">Tool Hub</a>
+      <a class="btn btn-primary" href="fraud-risk-new-case.html">Escalate Alert</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Live <strong>Threat Detection</strong></h1>
+      <p class="hero__subtitle">
+        Monitor live transactions, device signals, and behavioral anomalies with millisecond scoring.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-eye"></i> 24/7 stream coverage</div>
+        <div class="hero__meta-item"><i class="fas fa-bolt"></i> Median detection: 0.7s</div>
+        <div class="hero__meta-item"><i class="fas fa-sync-alt"></i> Last refresh: 2 mins ago</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Signal <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Transactions Scored</div>
+        <div class="kpi-value">182K</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +6% vs yesterday</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">High-Risk Flags</div>
+        <div class="kpi-value">312</div>
+        <div class="kpi-meta"><i class="fas fa-flag"></i> 44 escalated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">False Positive Rate</div>
+        <div class="kpi-value">5.8%</div>
+        <div class="kpi-meta"><i class="fas fa-chart-line"></i> Trending down</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Auto-Actioned</div>
+        <div class="kpi-value">71%</div>
+        <div class="kpi-meta"><i class="fas fa-robot"></i> Rules + ML</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Active Signals</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Velocity spikes</span>
+            <span class="badge danger">High</span>
+          </li>
+          <li class="list-item">
+            <span>Geo mismatch</span>
+            <span class="badge warning">Medium</span>
+          </li>
+          <li class="list-item">
+            <span>New device fingerprint</span>
+            <span class="badge warning">Medium</span>
+          </li>
+          <li class="list-item">
+            <span>Account age anomalies</span>
+            <span class="badge success">Low</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Automation Rules</div>
+        <p class="card-subtitle">Top triggers</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Block high-risk IP clusters</span>
+            <span class="pill">Rule #12</span>
+          </li>
+          <li class="list-item">
+            <span>Step-up auth for ATO</span>
+            <span class="pill">Rule #08</span>
+          </li>
+          <li class="list-item">
+            <span>Velocity lockout</span>
+            <span class="pill">Rule #03</span>
+          </li>
+          <li class="list-item">
+            <span>Manual review queue</span>
+            <span class="pill">Rule #15</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Streaming Health</div>
+        <p class="card-subtitle">System status</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Latency SLA</span>
+            <span class="badge success">Met</span>
+          </li>
+          <li class="list-item">
+            <span>Pipeline errors</span>
+            <span class="badge warning">3 warnings</span>
+          </li>
+          <li class="list-item">
+            <span>Signal coverage</span>
+            <span class="badge success">98%</span>
+          </li>
+          <li class="list-item">
+            <span>Model drift</span>
+            <span class="badge warning">Watch</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Alerts</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Alert ID</th>
+            <th>Signal</th>
+            <th>Risk Score</th>
+            <th>Account</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#RTM-2211</td>
+            <td>Velocity spike</td>
+            <td>92</td>
+            <td>****8941</td>
+            <td><span class="badge danger">Escalated</span></td>
+          </tr>
+          <tr>
+            <td>#RTM-2208</td>
+            <td>Device mismatch</td>
+            <td>81</td>
+            <td>****1124</td>
+            <td><span class="badge warning">Investigating</span></td>
+          </tr>
+          <tr>
+            <td>#RTM-2202</td>
+            <td>Geo anomaly</td>
+            <td>74</td>
+            <td>****4732</td>
+            <td><span class="badge warning">Review</span></td>
+          </tr>
+          <tr>
+            <td>#RTM-2197</td>
+            <td>Account age anomaly</td>
+            <td>61</td>
+            <td>****7781</td>
+            <td><span class="badge success">Resolved</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

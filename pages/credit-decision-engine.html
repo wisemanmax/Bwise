@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Decision Engine | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Decision Engine</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">New Application</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Decision <strong>Automation</strong></h1>
+      <p class="hero__subtitle">
+        Configure and monitor real-time credit decisioning powered by risk models and policy rules.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-robot"></i> Auto-decision rate: 82%</div>
+        <div class="hero__meta-item"><i class="fas fa-stopwatch"></i> Avg decision time: 2.1 min</div>
+        <div class="hero__meta-item"><i class="fas fa-layer-group"></i> Models active: 6</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Engine <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Applications Scored</div>
+        <div class="kpi-value">9,841</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +4.5% vs last week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Auto Approvals</div>
+        <div class="kpi-value">6,984</div>
+        <div class="kpi-meta"><i class="fas fa-check-circle"></i> 71% approval</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Manual Referrals</div>
+        <div class="kpi-value">1,487</div>
+        <div class="kpi-meta"><i class="fas fa-user-clock"></i> 15% review</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Declines</div>
+        <div class="kpi-value">1,370</div>
+        <div class="kpi-meta"><i class="fas fa-ban"></i> 14% decline</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Model Stack</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Prime scorecard</span>
+            <span class="badge success">Active</span>
+          </li>
+          <li class="list-item">
+            <span>Near-prime enhancer</span>
+            <span class="badge warning">Pilot</span>
+          </li>
+          <li class="list-item">
+            <span>Thin-file booster</span>
+            <span class="badge success">Active</span>
+          </li>
+          <li class="list-item">
+            <span>Fraud gating</span>
+            <span class="badge success">Active</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Decision Policies</div>
+        <p class="card-subtitle">Rule sets</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Policy Set A</span>
+            <span class="pill">Core lending</span>
+          </li>
+          <li class="list-item">
+            <span>Policy Set B</span>
+            <span class="pill">Starter credit</span>
+          </li>
+          <li class="list-item">
+            <span>Policy Set C</span>
+            <span class="pill">Small business</span>
+          </li>
+          <li class="list-item">
+            <span>Policy Set D</span>
+            <span class="pill">High-value</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Operational Health</div>
+        <p class="card-subtitle">Monitoring</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Decision latency</span>
+            <span class="badge success">Normal</span>
+          </li>
+          <li class="list-item">
+            <span>Model drift</span>
+            <span class="badge warning">Watch</span>
+          </li>
+          <li class="list-item">
+            <span>Policy exceptions</span>
+            <span class="badge warning">12 open</span>
+          </li>
+          <li class="list-item">
+            <span>API uptime</span>
+            <span class="badge success">99.98%</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Decisions</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Application</th>
+            <th>Decision</th>
+            <th>Score</th>
+            <th>Policy</th>
+            <th>Turnaround</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#CU-1204</td>
+            <td><span class="badge success">Approved</span></td>
+            <td>742</td>
+            <td>Policy Set A</td>
+            <td>2.0 min</td>
+          </tr>
+          <tr>
+            <td>#CU-1198</td>
+            <td><span class="badge warning">Manual</span></td>
+            <td>663</td>
+            <td>Policy Set B</td>
+            <td>7.8 min</td>
+          </tr>
+          <tr>
+            <td>#CU-1193</td>
+            <td><span class="badge danger">Declined</span></td>
+            <td>598</td>
+            <td>Policy Set C</td>
+            <td>2.6 min</td>
+          </tr>
+          <tr>
+            <td>#CU-1189</td>
+            <td><span class="badge success">Approved</span></td>
+            <td>705</td>
+            <td>Policy Set A</td>
+            <td>1.9 min</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Call Scripts & Dialer | Collections Toolkit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/collections-toolkit-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="collections-toolkit.html">
+      <i class="fas fa-arrow-left"></i> Back to Collections Toolkit
+    </a>
+    <div class="header__title">Call Scripts & Dialer</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="collections-toolkit.html">Tool Hub</a>
+      <a class="btn btn-primary" href="collections-toolkit-new-case.html">Start Campaign</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Dialer <strong>Control Room</strong></h1>
+      <p class="hero__subtitle">
+        Manage outbound campaigns, script compliance, and live dialer pacing for active collections queues.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-headset"></i> Active agents: 32</div>
+        <div class="hero__meta-item"><i class="fas fa-phone"></i> Dialer mode: Predictive</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Current call window: 9:00 AM - 8:00 PM</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Dialer <strong>Snapshot</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Calls Placed</div>
+        <div class="kpi-value">8,423</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +5.2% vs yesterday</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Connect Rate</div>
+        <div class="kpi-value">52.1%</div>
+        <div class="kpi-meta"><i class="fas fa-phone-volume"></i> 4,388 connects</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Talk Time</div>
+        <div class="kpi-value">4m 23s</div>
+        <div class="kpi-meta"><i class="fas fa-hourglass-half"></i> 1m 10s hold</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Script Adherence</div>
+        <div class="kpi-value">93.6%</div>
+        <div class="kpi-meta"><i class="fas fa-check-circle"></i> 28 flagged deviations</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Active Campaigns</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Early Stage - 1-30 DPD</span>
+            <span class="badge success">Running</span>
+          </li>
+          <li class="list-item">
+            <span>Hardship Outreach</span>
+            <span class="badge warning">Paused</span>
+          </li>
+          <li class="list-item">
+            <span>Charge-Off Prevention</span>
+            <span class="badge success">Running</span>
+          </li>
+          <li class="list-item">
+            <span>Legal Review Queue</span>
+            <span class="badge danger">Restricted</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Script Library</div>
+        <p class="card-subtitle">Most-used scripts</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Mini-Miranda Intro</span>
+            <span class="pill">1,984 uses</span>
+          </li>
+          <li class="list-item">
+            <span>Payment Plan Offer</span>
+            <span class="pill">1,214 uses</span>
+          </li>
+          <li class="list-item">
+            <span>Hardship Escalation</span>
+            <span class="pill">604 uses</span>
+          </li>
+          <li class="list-item">
+            <span>Promise-to-Pay Close</span>
+            <span class="pill">1,102 uses</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Dialer Health</div>
+        <p class="card-subtitle">System signals</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Abandonment rate</span>
+            <span class="badge success">2.1%</span>
+          </li>
+          <li class="list-item">
+            <span>Voicemail drops</span>
+            <span class="badge success">1,340</span>
+          </li>
+          <li class="list-item">
+            <span>Call transfer success</span>
+            <span class="badge warning">89.4%</span>
+          </li>
+          <li class="list-item">
+            <span>Telecom latency</span>
+            <span class="badge warning">320 ms</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Live Queue</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Queue</th>
+            <th>Accounts</th>
+            <th>Priority</th>
+            <th>Last Attempt</th>
+            <th>Next Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1-30 DPD</td>
+            <td>1,204</td>
+            <td><span class="badge success">Standard</span></td>
+            <td>12 min ago</td>
+            <td>Auto-dial at 11:15 AM</td>
+          </tr>
+          <tr>
+            <td>31-60 DPD</td>
+            <td>682</td>
+            <td><span class="badge warning">High</span></td>
+            <td>25 min ago</td>
+            <td>Manual review required</td>
+          </tr>
+          <tr>
+            <td>Hardship Program</td>
+            <td>219</td>
+            <td><span class="badge warning">High</span></td>
+            <td>45 min ago</td>
+            <td>Script update pending</td>
+          </tr>
+          <tr>
+            <td>Charge-Off Prevention</td>
+            <td>314</td>
+            <td><span class="badge danger">Critical</span></td>
+            <td>5 min ago</td>
+            <td>Supervisory call</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

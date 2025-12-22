@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Performance Analytics | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Performance Analytics</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">Create Report</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Portfolio <strong>Performance</strong></h1>
+      <p class="hero__subtitle">
+        Track approval rates, vintage performance, and portfolio health across credit tiers and channels.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-chart-bar"></i> Reports available: 32</div>
+        <div class="hero__meta-item"><i class="fas fa-sync-alt"></i> Real-time refresh</div>
+        <div class="hero__meta-item"><i class="fas fa-download"></i> Export: CSV + PDF</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Performance <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Approval Rate</div>
+        <div class="kpi-value">76%</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +2.1% MTD</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Loss Rate</div>
+        <div class="kpi-value">1.8%</div>
+        <div class="kpi-meta"><i class="fas fa-chart-line"></i> Stable</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Vintage 90+</div>
+        <div class="kpi-value">2.4%</div>
+        <div class="kpi-meta"><i class="fas fa-calendar"></i> Q4 cohort</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CL Utilization</div>
+        <div class="kpi-value">48%</div>
+        <div class="kpi-meta"><i class="fas fa-credit-card"></i> Portfolio average</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Top Dashboards</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Approval funnel</span>
+            <span class="badge success">Daily</span>
+          </li>
+          <li class="list-item">
+            <span>Vintage delinquency</span>
+            <span class="badge warning">Weekly</span>
+          </li>
+          <li class="list-item">
+            <span>Channel mix</span>
+            <span class="badge success">Daily</span>
+          </li>
+          <li class="list-item">
+            <span>Risk tier shifts</span>
+            <span class="badge warning">Weekly</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Insight Highlights</div>
+        <p class="card-subtitle">Analyst notes</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Prime approvals up 3%</span>
+            <span class="pill">Positive</span>
+          </li>
+          <li class="list-item">
+            <span>Near-prime risk rising</span>
+            <span class="pill">Watch</span>
+          </li>
+          <li class="list-item">
+            <span>Auto decisions improving</span>
+            <span class="pill">Positive</span>
+          </li>
+          <li class="list-item">
+            <span>Loss rate stable</span>
+            <span class="pill">Neutral</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Data Feeds</div>
+        <p class="card-subtitle">Refresh status</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Core ledger</span>
+            <span class="badge success">Synced</span>
+          </li>
+          <li class="list-item">
+            <span>Credit bureau feed</span>
+            <span class="badge success">Synced</span>
+          </li>
+          <li class="list-item">
+            <span>Chargeback data</span>
+            <span class="badge warning">Delayed</span>
+          </li>
+          <li class="list-item">
+            <span>Collections data</span>
+            <span class="badge success">Synced</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Portfolio Summary</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Applications</th>
+            <th>Approval Rate</th>
+            <th>Delinquency</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Prime</td>
+            <td>4,120</td>
+            <td>88%</td>
+            <td>0.9%</td>
+            <td><span class="badge success">Strong</span></td>
+          </tr>
+          <tr>
+            <td>Near Prime</td>
+            <td>3,210</td>
+            <td>72%</td>
+            <td>2.1%</td>
+            <td><span class="badge warning">Watch</span></td>
+          </tr>
+          <tr>
+            <td>Sub Prime</td>
+            <td>1,487</td>
+            <td>48%</td>
+            <td>4.4%</td>
+            <td><span class="badge warning">Elevated</span></td>
+          </tr>
+          <tr>
+            <td>Thin File</td>
+            <td>1,024</td>
+            <td>63%</td>
+            <td>1.6%</td>
+            <td><span class="badge success">Stable</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

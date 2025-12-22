@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Credit Scoring | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Credit Scoring</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">Pull Credit</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Score <strong>Intelligence</strong></h1>
+      <p class="hero__subtitle">
+        Evaluate applicants with bureau data, alternative signals, and custom scoring models.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-database"></i> Bureaus connected: 3</div>
+        <div class="hero__meta-item"><i class="fas fa-chart-line"></i> Score models: 5</div>
+        <div class="hero__meta-item"><i class="fas fa-sync-alt"></i> Refresh cadence: hourly</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Score <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Scores Pulled</div>
+        <div class="kpi-value">8,762</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +6% week over week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg FICO</div>
+        <div class="kpi-value">684</div>
+        <div class="kpi-meta"><i class="fas fa-chart-line"></i> Stable</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Thin File Rate</div>
+        <div class="kpi-value">12%</div>
+        <div class="kpi-meta"><i class="fas fa-user"></i> Alt data applied</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Score Disputes</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> Pending</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Model Coverage</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>FICO 9</span>
+            <span class="badge success">Primary</span>
+          </li>
+          <li class="list-item">
+            <span>VantageScore 4</span>
+            <span class="badge warning">Secondary</span>
+          </li>
+          <li class="list-item">
+            <span>Bankcard Score</span>
+            <span class="badge success">Active</span>
+          </li>
+          <li class="list-item">
+            <span>Alt-data score</span>
+            <span class="badge warning">Pilot</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Data Sources</div>
+        <p class="card-subtitle">Signals in use</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Bureau trade lines</span>
+            <span class="pill">Core</span>
+          </li>
+          <li class="list-item">
+            <span>Bank account cashflow</span>
+            <span class="pill">Alt-data</span>
+          </li>
+          <li class="list-item">
+            <span>Employment history</span>
+            <span class="pill">Verified</span>
+          </li>
+          <li class="list-item">
+            <span>Utility payments</span>
+            <span class="pill">Supplemental</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Model Monitoring</div>
+        <p class="card-subtitle">Governance</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Population stability</span>
+            <span class="badge success">Healthy</span>
+          </li>
+          <li class="list-item">
+            <span>Score drift</span>
+            <span class="badge warning">Watch</span>
+          </li>
+          <li class="list-item">
+            <span>Calibration check</span>
+            <span class="badge success">Pass</span>
+          </li>
+          <li class="list-item">
+            <span>Bias review</span>
+            <span class="badge success">Pass</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Credit Pulls</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Applicant</th>
+            <th>Score</th>
+            <th>Model</th>
+            <th>Decision Hint</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#CP-8841</td>
+            <td>742</td>
+            <td>FICO 9</td>
+            <td>Approve</td>
+            <td><span class="badge success">Complete</span></td>
+          </tr>
+          <tr>
+            <td>#CP-8826</td>
+            <td>661</td>
+            <td>VantageScore</td>
+            <td>Manual</td>
+            <td><span class="badge warning">Review</span></td>
+          </tr>
+          <tr>
+            <td>#CP-8819</td>
+            <td>598</td>
+            <td>Alt-data</td>
+            <td>Decline</td>
+            <td><span class="badge danger">Flagged</span></td>
+          </tr>
+          <tr>
+            <td>#CP-8807</td>
+            <td>713</td>
+            <td>FICO 9</td>
+            <td>Approve</td>
+            <td><span class="badge success">Complete</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

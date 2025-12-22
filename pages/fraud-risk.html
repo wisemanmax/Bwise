@@ -261,6 +261,11 @@
     .tool-card__title {
       font-size: 18px; font-weight: 700; margin-bottom: 10px;
     }
+    .tool-card__link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .tool-card__link:hover { color: var(--primary); }
     .tool-card__description {
       font-size: 14px; color: var(--text-light); line-height: 1.6;
       margin-bottom: 15px;
@@ -576,7 +581,9 @@
                 <div class="tool-card__icon"><i class="fas fa-shield-alt"></i></div>
                 <span class="tool-card__badge">AI-Powered</span>
               </div>
-              <h3 class="tool-card__title">Real-Time Monitoring</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="fraud-real-time-monitoring.html">Real-Time Monitoring</a>
+              </h3>
               <p class="tool-card__description">
                 AI-powered transaction monitoring with behavioral analytics and anomaly detection for instant threat identification.
               </p>
@@ -585,8 +592,8 @@
                 <div class="tool-stat"><i class="fas fa-bolt"></i> <1s Detection</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Dashboard</button>
-                <button class="tool-action">Configure</button>
+                <a class="tool-action" href="fraud-real-time-monitoring.html">View Dashboard</a>
+                <a class="tool-action" href="fraud-real-time-monitoring.html">Configure</a>
               </div>
             </div>
 
@@ -595,7 +602,9 @@
                 <div class="tool-card__icon"><i class="fas fa-search"></i></div>
                 <span class="tool-card__badge">Active</span>
               </div>
-              <h3 class="tool-card__title">Investigation Portal</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="fraud-investigation-portal.html">Investigation Portal</a>
+              </h3>
               <p class="tool-card__description">
                 Comprehensive case management system for fraud investigations with evidence tracking and collaborative workflows.
               </p>
@@ -604,7 +613,7 @@
                 <div class="tool-stat"><i class="fas fa-clock"></i> 4.2hrs Avg</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Open Portal</button>
+                <a class="tool-action" href="fraud-investigation-portal.html">Open Portal</a>
                 <a class="tool-action" href="fraud-risk-new-case.html">New Case</a>
                 <a class="tool-action" href="fraud-risk-mock-review.html">Create Mock Review</a>
               </div>
@@ -615,7 +624,9 @@
                 <div class="tool-card__icon"><i class="fas fa-fingerprint"></i></div>
                 <span class="tool-card__badge">Premium</span>
               </div>
-              <h3 class="tool-card__title">Identity Verification</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="fraud-identity-verification.html">Identity Verification</a>
+              </h3>
               <p class="tool-card__description">
                 Multi-factor authentication, device fingerprinting, biometric verification, and document validation tools.
               </p>
@@ -624,8 +635,8 @@
                 <div class="tool-stat"><i class="fas fa-users"></i> 5 Methods</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Verify ID</button>
-                <button class="tool-action">Methods</button>
+                <a class="tool-action" href="fraud-identity-verification.html">Verify ID</a>
+                <a class="tool-action" href="fraud-identity-verification.html">Methods</a>
               </div>
             </div>
 
@@ -634,7 +645,9 @@
                 <div class="tool-card__icon"><i class="fas fa-network-wired"></i></div>
                 <span class="tool-card__badge">Advanced</span>
               </div>
-              <h3 class="tool-card__title">Link Analysis</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="fraud-link-analysis.html">Link Analysis</a>
+              </h3>
               <p class="tool-card__description">
                 Network visualization to identify fraud rings and connected accounts using advanced graph algorithms.
               </p>
@@ -643,8 +656,8 @@
                 <div class="tool-stat"><i class="fas fa-users"></i> 4,234 Nodes</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Networks</button>
-                <button class="tool-action">Analyze</button>
+                <a class="tool-action" href="fraud-link-analysis.html">View Networks</a>
+                <a class="tool-action" href="fraud-link-analysis.html">Analyze</a>
               </div>
             </div>
 
@@ -653,7 +666,9 @@
                 <div class="tool-card__icon"><i class="fas fa-ban"></i></div>
                 <span class="tool-card__badge">Active</span>
               </div>
-              <h3 class="tool-card__title">Block Lists</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="fraud-block-lists.html">Block Lists</a>
+              </h3>
               <p class="tool-card__description">
                 Manage blocked accounts, devices, IPs, and email domains with automated rules and syncing across systems.
               </p>
@@ -662,8 +677,8 @@
                 <div class="tool-stat"><i class="fas fa-robot"></i> Auto-Sync</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Lists</button>
-                <button class="tool-action">Add Entry</button>
+                <a class="tool-action" href="fraud-block-lists.html">View Lists</a>
+                <a class="tool-action" href="fraud-block-lists.html">Add Entry</a>
               </div>
             </div>
 
@@ -672,7 +687,9 @@
                 <div class="tool-card__icon"><i class="fas fa-bell"></i></div>
                 <span class="tool-card__badge">Live</span>
               </div>
-              <h3 class="tool-card__title">Alert Management</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="fraud-alert-management.html">Alert Management</a>
+              </h3>
               <p class="tool-card__description">
                 Configurable fraud alerts with priority scoring and automated escalation workflows for rapid response.
               </p>
@@ -681,8 +698,8 @@
                 <div class="tool-stat"><i class="fas fa-clock"></i> Real-time</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Alerts</button>
-                <button class="tool-action">Configure</button>
+                <a class="tool-action" href="fraud-alert-management.html">View Alerts</a>
+                <a class="tool-action" href="fraud-alert-management.html">Configure</a>
               </div>
             </div>
           </div>
