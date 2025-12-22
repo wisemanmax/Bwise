@@ -125,6 +125,51 @@
       cursor: pointer;
     }
 
+    .header__actions {
+      margin-right: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .header__notification {
+      position: relative;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .header__notification-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cinnabar);
+      border: 2px solid var(--catskill-white);
+    }
+
+    .header__user {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 1px solid var(--mischka);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .header__user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--java), var(--amethyst));
+    }
+
     .header__icon-link {
       display: inline-flex;
       align-items: center;
@@ -141,6 +186,16 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .status-pill--warning {
+      background: rgba(230, 126, 34, 0.14);
+      color: var(--zest);
+    }
+
+    .status-pill--success {
+      background: rgba(39, 174, 96, 0.12);
+      color: var(--jungle-green);
     }
 
     .search {
@@ -308,6 +363,26 @@
       gap: 20px;
     }
 
+    .main-header__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .meta-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 1px solid var(--mischka);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fiord);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .main-header__welcome-title {
       font-size: 28px;
       margin-bottom: 5px;
@@ -373,6 +448,46 @@
       border-color: var(--java);
     }
 
+    .filters-panel {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--catskill-white);
+      border: 1px solid var(--mischka);
+      display: grid;
+      gap: 14px;
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-control {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 160px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .filter-select {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--mischka);
+      background: var(--white);
+      font-size: 13px;
+      color: var(--fiord);
+    }
+
+    .filter-summary {
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
     .main-overview {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -389,6 +504,50 @@
       border-radius: 14px;
       box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
       margin-top: 25px;
+    }
+
+    .executive-brief {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .brief-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(57, 66, 99, 0.08);
+      display: grid;
+      gap: 10px;
+    }
+
+    .brief-card__title {
+      font-weight: 700;
+    }
+
+    .brief-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--abbey);
+    }
+
+    .brief-card__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--fiord);
+    }
+
+    .brief-card__list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .status-card {
@@ -444,6 +603,27 @@
       align-items: center;
       gap: 10px;
     }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .card-tag {
+      background: rgba(57, 66, 99, 0.08);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .card-tag--critical { background: rgba(231, 76, 60, 0.18); color: var(--cinnabar); }
+    .card-tag--risk { background: rgba(230, 126, 34, 0.18); color: var(--zest); }
+    .card-tag--ops { background: rgba(27, 186, 225, 0.18); color: var(--java); }
+    .card-tag--success { background: rgba(39, 174, 96, 0.18); color: var(--jungle-green); }
 
     .action-card__meta {
       display: flex;
@@ -558,6 +738,12 @@
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
+    }
+
+    .btn-ghost.is-active {
+      background: var(--java);
+      color: var(--white);
+      border-color: var(--java);
     }
 
     .notification-panel {
@@ -794,6 +980,7 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      border: 1px solid rgba(57, 66, 99, 0.08);
     }
 
     .overviewCard::before {
@@ -1088,22 +1275,78 @@
         </div>
       </div>
 
-      <div style="margin-right: 20px; display: flex; gap: 15px; align-items: center;">
-        <div class="status-pill">
+      <div class="header__actions">
+        <div class="status-pill status-pill--success">
           <i class="fas fa-wave-square"></i>
           <span>All systems normal</span>
+        </div>
+        <div class="status-pill status-pill--warning">
+          <i class="fas fa-clock"></i>
+          <span>Next exec review 2:00 PM</span>
         </div>
         <button class="header__notification" type="button" aria-label="Open notifications" aria-expanded="false">
           <i class="far fa-bell header__icon"></i>
           <span class="header__notification-dot" aria-hidden="true"></span>
         </button>
-        <i class="far fa-bell header__icon"></i>
         <a class="header__icon-link" href="https://www.byheir.com/" aria-label="Home">
           <i class="fas fa-home header__icon"></i>
         </a>
-        <i class="fas fa-cog header__icon"></i>
+        <i class="fas fa-cog header__icon" aria-hidden="true"></i>
+        <div class="header__user">
+          <div class="header__user-avatar" aria-hidden="true"></div>
+          <span>Slime · Lead Ops Dev</span>
+        </div>
       </div>
     </header>
+
+    <div class="notification-panel" id="notification-panel" role="dialog" aria-label="Notifications">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Notifications</div>
+          <div class="text-light">Latest alerts across operations and risk.</div>
+        </div>
+        <button class="btn-ghost" type="button" id="clear-notifications">Clear all</button>
+      </div>
+      <div class="notification-filter" role="tablist" aria-label="Notification filters">
+        <button class="btn-ghost is-active" type="button" data-notification-filter="all" aria-pressed="true">All</button>
+        <button class="btn-ghost" type="button" data-notification-filter="critical" aria-pressed="false">Critical</button>
+        <button class="btn-ghost" type="button" data-notification-filter="attention" aria-pressed="false">Attention</button>
+        <button class="btn-ghost" type="button" data-notification-filter="info" aria-pressed="false">Info</button>
+      </div>
+      <div class="notification-item" data-notification="critical">
+        <div class="notification-item__title">Fraud velocity spike detected</div>
+        <div class="notification-item__meta">
+          <span>Atlas Squad</span>
+          <span>Escalate in 45 min</span>
+        </div>
+        <div class="notification-item__actions">
+          <button type="button">Open</button>
+          <button type="button" class="acknowledge-btn">Acknowledge</button>
+        </div>
+      </div>
+      <div class="notification-item" data-notification="attention">
+        <div class="notification-item__title">Collections SLA approaching breach</div>
+        <div class="notification-item__meta">
+          <span>Nova Squad</span>
+          <span>Due in 1 hr 20 min</span>
+        </div>
+        <div class="notification-item__actions">
+          <button type="button">Review</button>
+          <button type="button" class="acknowledge-btn">Acknowledge</button>
+        </div>
+      </div>
+      <div class="notification-item" data-notification="info">
+        <div class="notification-item__title">Data pipeline refresh completed</div>
+        <div class="notification-item__meta">
+          <span>Analytics</span>
+          <span>Latency 10 min</span>
+        </div>
+        <div class="notification-item__actions">
+          <button type="button">View</button>
+          <button type="button" class="acknowledge-btn">Acknowledge</button>
+        </div>
+      </div>
+    </div>
 
   <aside class="sidenav">
     <div class="sidenav__brand">
@@ -1203,6 +1446,11 @@
           <div class="main-header__welcome-subtitle text-light">
             Shipping code, data, and content on one board.
           </div>
+          <div class="main-header__meta">
+            <span class="meta-pill"><i class="fas fa-calendar-alt"></i>Reporting window: Week 32</span>
+            <span class="meta-pill"><i class="fas fa-shield-alt"></i>Risk posture: Guarded</span>
+            <span class="meta-pill"><i class="fas fa-sync-alt"></i>Data refreshed 9 min ago</span>
+          </div>
         </div>
 
         <div class="quickview">
@@ -1248,6 +1496,42 @@
         <button class="chip-pill" type="button" data-view="cx" aria-pressed="false">CX Focus</button>
         <button class="chip-pill" type="button" data-view="data" aria-pressed="false">Data Ops</button>
       </div>
+      <div class="filters-panel" aria-label="Dashboard filters">
+        <div class="filters-row">
+          <div class="filter-control">
+            <label for="filter-team">Team</label>
+            <select id="filter-team" class="filter-select" data-filter-control="team">
+              <option value="all">All teams</option>
+              <option value="atlas">Atlas Squad</option>
+              <option value="nova">Nova Squad</option>
+              <option value="pulse">Pulse Squad</option>
+              <option value="ledger">Ledger Squad</option>
+            </select>
+          </div>
+          <div class="filter-control">
+            <label for="filter-priority">Priority</label>
+            <select id="filter-priority" class="filter-select" data-filter-control="priority">
+              <option value="all">All priorities</option>
+              <option value="high">High risk</option>
+              <option value="medium">Medium risk</option>
+              <option value="low">Low risk</option>
+            </select>
+          </div>
+          <div class="filter-control">
+            <label for="filter-status">Status</label>
+            <select id="filter-status" class="filter-select" data-filter-control="status">
+              <option value="all">All statuses</option>
+              <option value="healthy">Healthy</option>
+              <option value="watch">Watchlist</option>
+              <option value="critical">Critical</option>
+            </select>
+          </div>
+          <button class="btn-ghost" type="button" id="reset-filters">Reset filters</button>
+        </div>
+        <div class="filter-summary" aria-live="polite">
+          Showing <strong id="filter-count">0</strong> of <span id="filter-total">0</span> dashboard cards
+        </div>
+      </div>
     </section>
 
     <section class="status-banner" aria-label="Operational pulse">
@@ -1273,9 +1557,41 @@
       </div>
     </section>
 
-    <div class="main-overview">
+    <section class="executive-brief" aria-label="Executive brief" data-filter-section>
+      <article class="brief-card" data-filterable="card" data-domain="risk data" data-team="atlas" data-status="watch" data-search="executive brief risk posture">
+        <div class="brief-card__title">Executive Brief</div>
+        <div class="brief-card__meta">
+          <span><i class="fas fa-user-tie"></i>Prepared for Ops leadership</span>
+          <span><i class="fas fa-clock"></i>Updated 9:45 AM</span>
+        </div>
+        <p class="text-light">Risk and compliance workloads are tracking above plan. Prioritize high-dollar exposure reviews and maintain customer experience SLAs during the noon surge window.</p>
+        <ul class="brief-card__list">
+          <li><i class="fas fa-check-circle" style="color: var(--jungle-green);"></i>Collections cash flow +6% WoW</li>
+          <li><i class="fas fa-exclamation-circle" style="color: var(--zest);"></i>Compliance disclosure queue +12% volume</li>
+          <li><i class="fas fa-arrow-up" style="color: var(--cinnabar);"></i>Fraud velocity alert in Midwest region</li>
+        </ul>
+      </article>
+      <article class="brief-card" data-filterable="card" data-domain="collections cx" data-team="pulse" data-status="healthy" data-search="executive highlights customer experience">
+        <div class="brief-card__title">Customer Experience Pulse</div>
+        <div class="brief-card__meta">
+          <span><i class="fas fa-headset"></i>Pulse Squad</span>
+          <span><i class="fas fa-star"></i>CSAT 94%</span>
+        </div>
+        <ul class="brief-card__list">
+          <li><i class="fas fa-bolt" style="color: var(--java);"></i>32 targeted survey sends ready</li>
+          <li><i class="fas fa-users" style="color: var(--amethyst);"></i>Priority cohorts stabilized</li>
+          <li><i class="fas fa-arrow-down" style="color: var(--jungle-green);"></i>Average handle time -8%</li>
+        </ul>
+        <div class="card-tags">
+          <span class="card-tag card-tag--success">CX</span>
+          <span class="card-tag card-tag--ops">Retention</span>
+        </div>
+      </article>
+    </section>
+
+    <div class="main-overview" data-filter-section>
       <a href="collections-toolkit.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard java" data-search="collections active collection accounts toolkit">
+        <article class="overviewCard java" data-filterable="card" data-domain="collections data" data-team="nova" data-status="healthy" data-search="collections active collection accounts toolkit">
           <div class="overviewCard__icon"><i class="fas fa-clipboard-check"></i></div>
           <div class="overviewCard__info">2,847</div>
           <div class="overviewCard__description">Active collection accounts</div>
@@ -1283,7 +1599,7 @@
       </a>
 
       <a href="credit-underwriting.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard jungle-green" data-search="credit underwriting applications risk score">
+        <article class="overviewCard jungle-green" data-filterable="card" data-domain="risk data" data-team="atlas" data-status="watch" data-search="credit underwriting applications risk score">
           <div class="overviewCard__icon"><i class="fas fa-balance-scale"></i></div>
           <div class="overviewCard__info">1,243</div>
           <div class="overviewCard__description">Credit applications today</div>
@@ -1291,7 +1607,7 @@
       </a>
 
       <a href="fraud-risk.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard cinnabar" data-search="fraud risk investigations cases">
+        <article class="overviewCard cinnabar" data-filterable="card" data-domain="risk" data-team="atlas" data-status="critical" data-search="fraud risk investigations cases">
           <div class="overviewCard__icon"><i class="fas fa-shield-alt"></i></div>
           <div class="overviewCard__info">127</div>
           <div class="overviewCard__description">Fraud cases under review</div>
@@ -1299,7 +1615,7 @@
       </a>
 
       <a href="servicing-cexp.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard amethyst" data-search="customer experience servicing satisfaction">
+        <article class="overviewCard amethyst" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy" data-search="customer experience servicing satisfaction">
           <div class="overviewCard__icon"><i class="fas fa-user-friends"></i></div>
           <div class="overviewCard__info">94%</div>
           <div class="overviewCard__description">Customer satisfaction score</div>
@@ -1307,7 +1623,7 @@
       </a>
 
       <a href="compliance-matrix.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard jungle-green" data-search="compliance matrix audit policy">
+        <article class="overviewCard jungle-green" data-filterable="card" data-domain="risk" data-team="ledger" data-status="watch" data-search="compliance matrix audit policy">
           <div class="overviewCard__icon"><i class="fas fa-clipboard-list"></i></div>
           <div class="overviewCard__info">96%</div>
           <div class="overviewCard__description">Organization compliance health</div>
@@ -1315,7 +1631,7 @@
       </a>
 
       <a href="data-analytics.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard zest" data-search="data analytics pipelines workflows">
+        <article class="overviewCard zest" data-filterable="card" data-domain="data" data-team="ledger" data-status="healthy" data-search="data analytics pipelines workflows">
           <div class="overviewCard__icon"><i class="fas fa-project-diagram"></i></div>
           <div class="overviewCard__info">42</div>
           <div class="overviewCard__description">Active data pipelines</div>
@@ -1323,7 +1639,7 @@
       </a>
 
       <a href="creative-house.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard java" data-search="creative house content video">
+        <article class="overviewCard java" data-filterable="card" data-domain="cx data" data-team="pulse" data-status="healthy" data-search="creative house content video">
           <div class="overviewCard__icon"><i class="fas fa-video"></i></div>
           <div class="overviewCard__info">8.4K</div>
           <div class="overviewCard__description">Monthly stream views</div>
@@ -1335,7 +1651,7 @@
       No results found. Try refining your search or clear the query.
     </div>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Priority Action Center</h2>
@@ -1344,8 +1660,12 @@
         <a class="snippet-link" href="compliance-matrix.html">View compliance queue</a>
       </div>
       <div class="action-grid">
-        <article class="action-card" data-search="collections escalation sla breach">
+        <article class="action-card" data-filterable="card" data-domain="collections" data-team="nova" data-priority="high" data-status="watch" data-search="collections escalation sla breach">
           <div class="action-card__title"><i class="fas fa-bolt"></i>Collections escalation</div>
+          <div class="card-tags">
+            <span class="card-tag card-tag--risk">SLA risk</span>
+            <span class="card-tag card-tag--ops">Collections</span>
+          </div>
           <div class="action-card__meta">
             <span><i class="fas fa-user"></i>Owner: Ava R.</span>
             <span><i class="fas fa-clock"></i>Due in 90 min</span>
@@ -1355,8 +1675,12 @@
             <a class="action-card__cta" href="collections-toolkit.html">Open queue</a>
           </div>
         </article>
-        <article class="action-card" data-search="fraud risk review alert">
+        <article class="action-card" data-filterable="card" data-domain="risk" data-team="atlas" data-priority="high" data-status="critical" data-search="fraud risk review alert">
           <div class="action-card__title"><i class="fas fa-shield-alt"></i>Fraud review backlog</div>
+          <div class="card-tags">
+            <span class="card-tag card-tag--critical">High risk</span>
+            <span class="card-tag card-tag--risk">Fraud</span>
+          </div>
           <div class="action-card__meta">
             <span><i class="fas fa-layer-group"></i>14 cases pending</span>
             <span><i class="fas fa-chart-line"></i>Risk +9% WoW</span>
@@ -1366,8 +1690,12 @@
             <a class="action-card__cta" href="fraud-risk.html">View cases</a>
           </div>
         </article>
-        <article class="action-card" data-search="servicing cexp survey">
+        <article class="action-card" data-filterable="card" data-domain="cx" data-team="pulse" data-priority="medium" data-status="healthy" data-search="servicing cexp survey">
           <div class="action-card__title"><i class="fas fa-headset"></i>CEXP outreach</div>
+          <div class="card-tags">
+            <span class="card-tag card-tag--success">CX</span>
+            <span class="card-tag card-tag--ops">Survey</span>
+          </div>
           <div class="action-card__meta">
             <span><i class="fas fa-inbox"></i>32 surveys awaiting send</span>
             <span><i class="fas fa-star"></i>CSAT goal 95%</span>
@@ -1380,7 +1708,7 @@
       </div>
     </section>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Team Workload & SLA</h2>
@@ -1389,7 +1717,7 @@
         <a class="snippet-link" href="power-bi-dashboards.html">Review staffing model</a>
       </div>
       <div class="workload-grid">
-        <div class="workload-card">
+        <div class="workload-card" data-filterable="card" data-domain="risk" data-team="atlas" data-status="critical" data-search="atlas workload fraud response">
           <div class="workload-header">
             <span>Atlas · Fraud response</span>
             <span>78%</span>
@@ -1400,7 +1728,7 @@
             <span>Avg SLA 3.4 hrs</span>
           </div>
         </div>
-        <div class="workload-card">
+        <div class="workload-card" data-filterable="card" data-domain="collections" data-team="nova" data-status="watch" data-search="nova workload collections">
           <div class="workload-header">
             <span>Nova · Collections</span>
             <span>62%</span>
@@ -1411,7 +1739,7 @@
             <span>Avg SLA 4.1 hrs</span>
           </div>
         </div>
-        <div class="workload-card">
+        <div class="workload-card" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy" data-search="pulse workload cx">
           <div class="workload-header">
             <span>Pulse · CX</span>
             <span>54%</span>
@@ -1422,7 +1750,7 @@
             <span>Avg SLA 2.2 hrs</span>
           </div>
         </div>
-        <div class="workload-card">
+        <div class="workload-card" data-filterable="card" data-domain="risk data" data-team="ledger" data-status="watch" data-search="ledger workload compliance">
           <div class="workload-header">
             <span>Ledger · Compliance</span>
             <span>41%</span>
@@ -1436,7 +1764,7 @@
       </div>
     </section>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Team Health Heatmap</h2>
@@ -1445,7 +1773,7 @@
         <a class="snippet-link" href="servicing-cexp.html">Open staffing details</a>
       </div>
       <div class="team-heatmap">
-        <div class="heatmap-card" data-search="team health atlas capacity">
+        <div class="heatmap-card" data-filterable="card" data-domain="risk" data-team="atlas" data-status="critical" data-search="team health atlas capacity">
           <div class="heatmap-card__title">Atlas Squad</div>
           <div class="heatmap-bar"><span style="width: 82%; background: var(--cinnabar);"></span></div>
           <div class="heatmap-meta">
@@ -1453,7 +1781,7 @@
             <span>Sentiment 3.6</span>
           </div>
         </div>
-        <div class="heatmap-card" data-search="team health nova capacity">
+        <div class="heatmap-card" data-filterable="card" data-domain="collections" data-team="nova" data-status="watch" data-search="team health nova capacity">
           <div class="heatmap-card__title">Nova Squad</div>
           <div class="heatmap-bar"><span style="width: 61%; background: var(--java);"></span></div>
           <div class="heatmap-meta">
@@ -1461,7 +1789,7 @@
             <span>Sentiment 4.1</span>
           </div>
         </div>
-        <div class="heatmap-card" data-search="team health pulse capacity">
+        <div class="heatmap-card" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy" data-search="team health pulse capacity">
           <div class="heatmap-card__title">Pulse Squad</div>
           <div class="heatmap-bar"><span style="width: 54%; background: var(--jungle-green);"></span></div>
           <div class="heatmap-meta">
@@ -1469,7 +1797,7 @@
             <span>Sentiment 4.4</span>
           </div>
         </div>
-        <div class="heatmap-card" data-search="team health ledger capacity">
+        <div class="heatmap-card" data-filterable="card" data-domain="risk data" data-team="ledger" data-status="watch" data-search="team health ledger capacity">
           <div class="heatmap-card__title">Ledger Squad</div>
           <div class="heatmap-bar"><span style="width: 47%; background: var(--zest);"></span></div>
           <div class="heatmap-meta">
@@ -1480,7 +1808,7 @@
       </div>
     </section>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Alerts & Escalations</h2>
@@ -1489,7 +1817,7 @@
         <a class="snippet-link" href="fraud-risk.html">Open alert queue</a>
       </div>
       <div class="alert-grid">
-        <article class="alert-card alert-card--high" data-search="alert escalation fraud velocity">
+        <article class="alert-card alert-card--high" data-filterable="card" data-domain="risk" data-team="atlas" data-priority="high" data-status="critical" data-search="alert escalation fraud velocity">
           <div class="alert-card__title"><i class="fas fa-exclamation-triangle"></i>Fraud velocity spike</div>
           <div class="alert-card__meta">
             <span><i class="fas fa-layer-group"></i>12 cases flagged</span>
@@ -1500,7 +1828,7 @@
             <a class="action-card__cta" href="fraud-risk.html">Review alerts</a>
           </div>
         </article>
-        <article class="alert-card alert-card--medium" data-search="alert compliance disclosure review">
+        <article class="alert-card alert-card--medium" data-filterable="card" data-domain="risk" data-team="ledger" data-priority="medium" data-status="watch" data-search="alert compliance disclosure review">
           <div class="alert-card__title"><i class="fas fa-clipboard-list"></i>Disclosure gap detected</div>
           <div class="alert-card__meta">
             <span><i class="fas fa-file-alt"></i>5 policy hits</span>
@@ -1511,7 +1839,7 @@
             <a class="action-card__cta" href="compliance-matrix.html">Open controls</a>
           </div>
         </article>
-        <article class="alert-card alert-card--low" data-search="alert cexp survey backlog">
+        <article class="alert-card alert-card--low" data-filterable="card" data-domain="cx" data-team="pulse" data-priority="low" data-status="healthy" data-search="alert cexp survey backlog">
           <div class="alert-card__title"><i class="fas fa-comment-dots"></i>CEXP survey backlog</div>
           <div class="alert-card__meta">
             <span><i class="fas fa-inbox"></i>32 surveys pending</span>
@@ -1525,7 +1853,7 @@
       </div>
     </section>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Ops Timeline</h2>
@@ -1568,7 +1896,7 @@
       </div>
     </section>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Quick Actions</h2>
@@ -1580,22 +1908,22 @@
         </div>
       </div>
       <div class="quick-actions">
-        <article class="quick-action" data-search="quick action collections export">
+        <article class="quick-action" data-filterable="card" data-domain="collections data" data-team="nova" data-status="healthy" data-search="quick action collections export">
           <div class="quick-action__title"><i class="fas fa-download"></i>Export collections snapshot</div>
           <div class="quick-action__meta"><i class="fas fa-file-export"></i>Last run 24 hrs ago</div>
           <a class="action-card__cta" href="../mock-exports/collections-snapshot.svg" download>Run export</a>
         </article>
-        <article class="quick-action" data-search="quick action underwriting review">
+        <article class="quick-action" data-filterable="card" data-domain="risk" data-team="atlas" data-status="watch" data-search="quick action underwriting review">
           <div class="quick-action__title"><i class="fas fa-balance-scale"></i>Review underwriting tier mix</div>
           <div class="quick-action__meta"><i class="fas fa-chart-pie"></i>Tier A trending +6%</div>
           <a class="action-card__cta" href="credit-underwriting.html">Open mix view</a>
         </article>
-        <article class="quick-action" data-search="quick action analytics pipeline status">
+        <article class="quick-action" data-filterable="card" data-domain="data" data-team="ledger" data-status="watch" data-search="quick action analytics pipeline status">
           <div class="quick-action__title"><i class="fas fa-project-diagram"></i>Check pipeline status</div>
           <div class="quick-action__meta"><i class="fas fa-satellite-dish"></i>3 pipelines in maintenance</div>
           <a class="action-card__cta" href="data-analytics.html">View pipelines</a>
         </article>
-        <article class="quick-action" data-search="quick action creative launch">
+        <article class="quick-action" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy" data-search="quick action creative launch">
           <div class="quick-action__title"><i class="fas fa-video"></i>Launch creative drop</div>
           <div class="quick-action__meta"><i class="fas fa-calendar"></i>Next release in 2 days</div>
           <a class="action-card__cta" href="creative-house.html">Open launch plan</a>
@@ -1603,7 +1931,7 @@
       </div>
     </section>
 
-    <section class="analytics-section">
+    <section class="analytics-section" data-filter-section>
       <div class="section-header">
         <div>
           <h2>Insights Snapshot</h2>
@@ -1617,7 +1945,7 @@
       </div>
 
       <div class="analytics-grid">
-        <article class="insight-card"
+        <article class="insight-card" data-filterable="card" data-domain="data" data-team="ledger" data-status="healthy"
           data-search="automation coverage ops insights"
           data-today-value="62%"
           data-week-value="74%"
@@ -1644,7 +1972,7 @@
           </div>
         </article>
 
-        <article class="insight-card"
+        <article class="insight-card" data-filterable="card" data-domain="risk" data-team="atlas" data-status="watch"
           data-search="case resolution time risk insights"
           data-today-value="31 min"
           data-week-value="28 min"
@@ -1671,7 +1999,7 @@
           </div>
         </article>
 
-        <article class="insight-card"
+        <article class="insight-card" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy"
           data-search="inbound interactions cexp insights"
           data-today-value="1,248"
           data-week-value="8,632"
@@ -1698,7 +2026,7 @@
           </div>
         </article>
 
-        <article class="insight-card"
+        <article class="insight-card" data-filterable="card" data-domain="collections" data-team="nova" data-status="healthy"
           data-search="recovered revenue collections insights"
           data-today-value="$1.9M"
           data-week-value="$12.4M"
@@ -1737,7 +2065,7 @@
       </div>
 
       <div class="snippet-grid">
-        <article class="snippet-card" data-search="collections pulse recovery">
+        <article class="snippet-card" data-filterable="card" data-domain="collections" data-team="nova" data-status="healthy" data-search="collections pulse recovery">
           <div class="snippet-title">Collections Pulse</div>
           <div class="snippet-meta">
             <span>Recovery rate</span>
@@ -1752,7 +2080,7 @@
           </div>
         </article>
 
-        <article class="snippet-card" data-search="underwriting mix credit">
+        <article class="snippet-card" data-filterable="card" data-domain="risk" data-team="atlas" data-status="watch" data-search="underwriting mix credit">
           <div class="snippet-title">Underwriting Mix</div>
           <div class="snippet-meta">
             <span>1,243 apps today</span>
@@ -1771,7 +2099,7 @@
           </div>
         </article>
 
-        <article class="snippet-card" data-search="fraud radar cases">
+        <article class="snippet-card" data-filterable="card" data-domain="risk" data-team="atlas" data-status="critical" data-search="fraud radar cases">
           <div class="snippet-title">Fraud Radar</div>
           <div class="snippet-meta">
             <span>127 open cases</span>
@@ -1786,7 +2114,7 @@
           </div>
         </article>
 
-        <article class="snippet-card" data-search="compliance matrix policy">
+        <article class="snippet-card" data-filterable="card" data-domain="risk data" data-team="ledger" data-status="watch" data-search="compliance matrix policy">
           <div class="snippet-title">Compliance Matrix</div>
           <div class="snippet-meta">
             <span>96% compliance score</span>
@@ -1801,7 +2129,7 @@
           </div>
         </article>
 
-        <article class="snippet-card" data-search="creative momentum content">
+        <article class="snippet-card" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy" data-search="creative momentum content">
           <div class="snippet-title">Creative Momentum</div>
           <div class="snippet-meta">
             <span>8.4K views</span>
@@ -1837,8 +2165,13 @@
     const tabButtons = document.querySelectorAll('.tab-button');
     const insightCards = document.querySelectorAll('.insight-card');
     const searchInput = document.querySelector('.search__input');
-    const searchableItems = document.querySelectorAll('[data-search]');
     const searchEmpty = document.getElementById('search-empty');
+    const filterControls = document.querySelectorAll('[data-filter-control]');
+    const filterableCards = document.querySelectorAll('[data-filterable="card"]');
+    const filterSections = document.querySelectorAll('[data-filter-section]');
+    const resetFilters = document.getElementById('reset-filters');
+    const filterCount = document.getElementById('filter-count');
+    const filterTotal = document.getElementById('filter-total');
     const notificationBtn = document.querySelector('.header__notification');
     const notificationPanel = document.getElementById('notification-panel');
     const notificationFilters = document.querySelectorAll('[data-notification-filter]');
@@ -1923,27 +2256,65 @@
       });
     });
 
-    const filterSearchResults = (query) => {
-      const normalized = query.trim().toLowerCase();
-      let matchCount = 0;
+    const filterState = {
+      search: '',
+      view: 'all',
+      team: 'all',
+      priority: 'all',
+      status: 'all'
+    };
 
-      searchableItems.forEach((item) => {
-        const haystack = item.dataset.search || '';
-        const isMatch = haystack.includes(normalized);
-        item.style.display = !normalized || isMatch ? '' : 'none';
-        if (!normalized || isMatch) {
-          matchCount += 1;
+    const hasMatch = (value, filter) => {
+      if (!filter || filter === 'all') return true;
+      if (!value) return false;
+      return value.split(' ').includes(filter);
+    };
+
+    const applyFilters = () => {
+      const normalized = filterState.search.trim().toLowerCase();
+      let visibleCount = 0;
+
+      filterableCards.forEach((item) => {
+        const haystack = (item.dataset.search || '').toLowerCase();
+        const matchesSearch = !normalized || haystack.includes(normalized);
+        const matchesView = hasMatch(item.dataset.domain, filterState.view);
+        const matchesTeam = hasMatch(item.dataset.team, filterState.team);
+        const matchesPriority = hasMatch(item.dataset.priority, filterState.priority);
+        const matchesStatus = hasMatch(item.dataset.status, filterState.status);
+        const isVisible = matchesSearch && matchesView && matchesTeam && matchesPriority && matchesStatus;
+
+        item.style.display = isVisible ? '' : 'none';
+        item.setAttribute('aria-hidden', String(!isVisible));
+        if (isVisible) {
+          visibleCount += 1;
         }
       });
 
+      filterSections.forEach((section) => {
+        const sectionCards = section.querySelectorAll('[data-filterable="card"]');
+        if (!sectionCards.length) {
+          section.style.display = '';
+          return;
+        }
+        const hasVisible = Array.from(sectionCards).some((card) => card.style.display !== 'none');
+        section.style.display = hasVisible ? '' : 'none';
+      });
+
+      if (filterCount) {
+        filterCount.textContent = String(visibleCount);
+      }
+      if (filterTotal) {
+        filterTotal.textContent = String(filterableCards.length);
+      }
       if (searchEmpty) {
-        searchEmpty.style.display = normalized && matchCount === 0 ? 'block' : 'none';
+        searchEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
       }
     };
 
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
-        filterSearchResults(e.target.value);
+        filterState.search = e.target.value;
+        applyFilters();
       });
     }
 
@@ -2007,17 +2378,42 @@
         btn.classList.add('is-active');
         btn.setAttribute('aria-pressed', 'true');
 
-        if (view === 'all') {
-          filterSearchResults('');
-          if (searchInput) searchInput.value = '';
-          return;
-        }
-        if (searchInput) {
-          searchInput.value = view;
-        }
-        filterSearchResults(view);
+        filterState.view = view;
+        applyFilters();
       });
     });
+
+    filterControls.forEach((control) => {
+      control.addEventListener('change', (event) => {
+        const key = event.target.dataset.filterControl;
+        filterState[key] = event.target.value;
+        applyFilters();
+      });
+    });
+
+    if (resetFilters) {
+      resetFilters.addEventListener('click', () => {
+        filterState.search = '';
+        filterState.view = 'all';
+        filterState.team = 'all';
+        filterState.priority = 'all';
+        filterState.status = 'all';
+        savedViewButtons.forEach((button) => {
+          const isAll = button.dataset.view === 'all';
+          button.classList.toggle('is-active', isAll);
+          button.setAttribute('aria-pressed', String(isAll));
+        });
+        filterControls.forEach((control) => {
+          control.value = 'all';
+        });
+        if (searchInput) {
+          searchInput.value = '';
+        }
+        applyFilters();
+      });
+    }
+
+    applyFilters();
   </script>
 </body>
 </html>
