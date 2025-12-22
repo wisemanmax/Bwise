@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alert Management | Fraud & Risk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/fraud-risk-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="fraud-risk.html">
+      <i class="fas fa-arrow-left"></i> Back to Fraud & Risk
+    </a>
+    <div class="header__title">Alert Management</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="fraud-risk.html">Tool Hub</a>
+      <a class="btn btn-primary" href="fraud-risk-new-case.html">Create Alert</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Alert <strong>Orchestration</strong></h1>
+      <p class="hero__subtitle">
+        Configure alert thresholds, routing rules, and escalation workflows for high-risk signals.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-bell"></i> Active alerts: 127</div>
+        <div class="hero__meta-item"><i class="fas fa-exclamation-triangle"></i> Critical alerts: 8</div>
+        <div class="hero__meta-item"><i class="fas fa-route"></i> Escalation rules: 14</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Alert <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">New Alerts</div>
+        <div class="kpi-value">48</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> Last 24h</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Auto-Closed</div>
+        <div class="kpi-value">61%</div>
+        <div class="kpi-meta"><i class="fas fa-robot"></i> Low risk</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Escalations</div>
+        <div class="kpi-value">14</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up-right-from-square"></i> Supervisor review</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Response</div>
+        <div class="kpi-value">12m</div>
+        <div class="kpi-meta"><i class="fas fa-clock"></i> SLA 15m</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Alert Types</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Account takeover</span>
+            <span class="badge danger">Critical</span>
+          </li>
+          <li class="list-item">
+            <span>Suspicious transaction</span>
+            <span class="badge warning">High</span>
+          </li>
+          <li class="list-item">
+            <span>Velocity check</span>
+            <span class="badge warning">High</span>
+          </li>
+          <li class="list-item">
+            <span>Payment mismatch</span>
+            <span class="badge success">Medium</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Escalation Routing</div>
+        <p class="card-subtitle">On-call schedule</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Critical alerts</span>
+            <span class="pill">Fraud Ops</span>
+          </li>
+          <li class="list-item">
+            <span>Chargeback disputes</span>
+            <span class="pill">Risk</span>
+          </li>
+          <li class="list-item">
+            <span>ATO incidents</span>
+            <span class="pill">Security</span>
+          </li>
+          <li class="list-item">
+            <span>Policy exceptions</span>
+            <span class="pill">Compliance</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Alert Rules</div>
+        <p class="card-subtitle">Top triggers</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Device mismatch + high amount</span>
+            <span class="badge danger">Rule #02</span>
+          </li>
+          <li class="list-item">
+            <span>Velocity + new account</span>
+            <span class="badge warning">Rule #06</span>
+          </li>
+          <li class="list-item">
+            <span>Multiple failed logins</span>
+            <span class="badge warning">Rule #11</span>
+          </li>
+          <li class="list-item">
+            <span>Chargeback trend</span>
+            <span class="badge success">Rule #14</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Priority Alert Queue</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Alert ID</th>
+            <th>Signal</th>
+            <th>Severity</th>
+            <th>Queue</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#FA-8423</td>
+            <td>Account takeover</td>
+            <td><span class="badge danger">Critical</span></td>
+            <td>Immediate</td>
+            <td>Diana Torres</td>
+          </tr>
+          <tr>
+            <td>#FA-8421</td>
+            <td>Suspicious transaction</td>
+            <td><span class="badge danger">Critical</span></td>
+            <td>Immediate</td>
+            <td>Marcus Chen</td>
+          </tr>
+          <tr>
+            <td>#FA-8415</td>
+            <td>Velocity check</td>
+            <td><span class="badge warning">High</span></td>
+            <td>High</td>
+            <td>Sarah Williams</td>
+          </tr>
+          <tr>
+            <td>#FA-8412</td>
+            <td>ID verification fail</td>
+            <td><span class="badge warning">High</span></td>
+            <td>High</td>
+            <td>Jordan Blake</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

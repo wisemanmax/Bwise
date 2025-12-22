@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QA Dashboard | Collections Toolkit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/collections-toolkit-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="collections-toolkit.html">
+      <i class="fas fa-arrow-left"></i> Back to Collections Toolkit
+    </a>
+    <div class="header__title">QA Dashboard</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="collections-toolkit.html">Tool Hub</a>
+      <a class="btn btn-primary" href="collections-toolkit-new-case.html">New Review</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Quality <strong>Assurance</strong> Overview</h1>
+      <p class="hero__subtitle">
+        Track call review performance, compliance adherence, and coaching opportunities across the collections team.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-calendar"></i> Review cycle: Dec 1 - Dec 19</div>
+        <div class="hero__meta-item"><i class="fas fa-user-shield"></i> Lead QA: Alicia Grant</div>
+        <div class="hero__meta-item"><i class="fas fa-shield-alt"></i> Compliance score: 96.8%</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">QA <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Reviews Completed</div>
+        <div class="kpi-value">342</div>
+        <div class="kpi-meta"><i class="fas fa-check-circle"></i> 86% of monthly goal</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Average QA Score</div>
+        <div class="kpi-value">87.4</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +2.1 vs last cycle</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Auto-Fail Flags</div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-meta"><i class="fas fa-flag"></i> 3 escalated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Coaching Sessions</div>
+        <div class="kpi-value">28</div>
+        <div class="kpi-meta"><i class="fas fa-users"></i> 18 agents scheduled</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Review Queue</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>High Risk: FDCPA pacing</span>
+            <span class="badge danger">6 pending</span>
+          </li>
+          <li class="list-item">
+            <span>Random weekly sample</span>
+            <span class="badge warning">14 pending</span>
+          </li>
+          <li class="list-item">
+            <span>Agent escalation requests</span>
+            <span class="badge warning">8 pending</span>
+          </li>
+          <li class="list-item">
+            <span>Customer dispute calls</span>
+            <span class="badge success">4 pending</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Coaching Focus</div>
+        <p class="card-subtitle">Top improvement areas</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Verification script adherence</span>
+            <span class="pill">12 agents</span>
+          </li>
+          <li class="list-item">
+            <span>Payment recap clarity</span>
+            <span class="pill">9 agents</span>
+          </li>
+          <li class="list-item">
+            <span>Empathy & tone</span>
+            <span class="pill">6 agents</span>
+          </li>
+          <li class="list-item">
+            <span>Wrap-up disposition accuracy</span>
+            <span class="pill">5 agents</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Compliance Highlights</div>
+        <p class="card-subtitle">Week-to-date</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Do-not-call adherence</span>
+            <span class="badge success">100%</span>
+          </li>
+          <li class="list-item">
+            <span>Mini-Miranda coverage</span>
+            <span class="badge success">98.4%</span>
+          </li>
+          <li class="list-item">
+            <span>Call time windows</span>
+            <span class="badge warning">96.2%</span>
+          </li>
+          <li class="list-item">
+            <span>Payment disclosure errors</span>
+            <span class="badge danger">3 events</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Agent Scorecards</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th>Reviews</th>
+            <th>Avg Score</th>
+            <th>Coaching</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jennifer Martinez</td>
+            <td>18</td>
+            <td>94.2</td>
+            <td>1 session</td>
+            <td><span class="badge success">Excellent</span></td>
+          </tr>
+          <tr>
+            <td>Michael Chen</td>
+            <td>16</td>
+            <td>91.8</td>
+            <td>0 sessions</td>
+            <td><span class="badge success">Excellent</span></td>
+          </tr>
+          <tr>
+            <td>Sarah Williams</td>
+            <td>20</td>
+            <td>88.6</td>
+            <td>2 sessions</td>
+            <td><span class="badge warning">On Track</span></td>
+          </tr>
+          <tr>
+            <td>David Thompson</td>
+            <td>14</td>
+            <td>84.3</td>
+            <td>3 sessions</td>
+            <td><span class="badge warning">Focus</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Processing | Collections Toolkit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/collections-toolkit-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="collections-toolkit.html">
+      <i class="fas fa-arrow-left"></i> Back to Collections Toolkit
+    </a>
+    <div class="header__title">Payment Processing</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="collections-toolkit.html">Tool Hub</a>
+      <a class="btn btn-primary" href="collections-toolkit-new-case.html">Post Payment</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Payment <strong>Operations</strong></h1>
+      <p class="hero__subtitle">
+        Manage daily payments, promise-to-pay commitments, and installment plans with automated reminders.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-dollar-sign"></i> Collected today: $61.2K</div>
+        <div class="hero__meta-item"><i class="fas fa-file-contract"></i> Active payment plans: 143</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Next settlement batch: 2:00 PM</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Payment <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Payments Posted</div>
+        <div class="kpi-value">412</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +8.7% vs yesterday</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Promise-to-Pay</div>
+        <div class="kpi-value">67.8%</div>
+        <div class="kpi-meta"><i class="fas fa-handshake"></i> 423 commitments</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Failed Transactions</div>
+        <div class="kpi-value">9</div>
+        <div class="kpi-meta"><i class="fas fa-exclamation-circle"></i> 2 escalated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Auto Reminders</div>
+        <div class="kpi-value">1,284</div>
+        <div class="kpi-meta"><i class="fas fa-bell"></i> Sent in 24h</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Settlement Queue</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>ACH Batch</span>
+            <span class="badge success">Ready</span>
+          </li>
+          <li class="list-item">
+            <span>Card Payments</span>
+            <span class="badge success">Processing</span>
+          </li>
+          <li class="list-item">
+            <span>Returned Payments</span>
+            <span class="badge warning">5 pending</span>
+          </li>
+          <li class="list-item">
+            <span>Disputed Transactions</span>
+            <span class="badge danger">2 active</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Plan Performance</div>
+        <p class="card-subtitle">Installment monitoring</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>On-time payments</span>
+            <span class="badge success">82.3%</span>
+          </li>
+          <li class="list-item">
+            <span>At-risk plans</span>
+            <span class="badge warning">21 plans</span>
+          </li>
+          <li class="list-item">
+            <span>Auto-drafts enabled</span>
+            <span class="badge success">69%</span>
+          </li>
+          <li class="list-item">
+            <span>Extensions approved</span>
+            <span class="badge warning">8 this week</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Remittance Breakdown</div>
+        <p class="card-subtitle">By channel</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Self-serve portal</span>
+            <span class="pill">$24.8K</span>
+          </li>
+          <li class="list-item">
+            <span>Agent assisted</span>
+            <span class="pill">$19.6K</span>
+          </li>
+          <li class="list-item">
+            <span>Payment plans</span>
+            <span class="pill">$12.4K</span>
+          </li>
+          <li class="list-item">
+            <span>One-time IVR</span>
+            <span class="pill">$4.4K</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Payments</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#4801-9231</td>
+            <td>$420</td>
+            <td>ACH</td>
+            <td><span class="badge success">Posted</span></td>
+            <td>Receipt sent</td>
+          </tr>
+          <tr>
+            <td>#5510-4472</td>
+            <td>$275</td>
+            <td>Card</td>
+            <td><span class="badge success">Processing</span></td>
+            <td>Settlement at 2:00 PM</td>
+          </tr>
+          <tr>
+            <td>#1179-2254</td>
+            <td>$680</td>
+            <td>Payment Plan</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Reminder scheduled</td>
+          </tr>
+          <tr>
+            <td>#3280-6612</td>
+            <td>$310</td>
+            <td>Card</td>
+            <td><span class="badge danger">Failed</span></td>
+            <td>Retry + agent call</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -230,6 +230,11 @@
     .tool-card__title {
       font-size: 18px; font-weight: 700; margin-bottom: 10px;
     }
+    .tool-card__link {
+      color: inherit;
+      text-decoration: none;
+    }
+    .tool-card__link:hover { color: var(--primary); }
     .tool-card__description {
       font-size: 14px; color: var(--text-light); line-height: 1.6;
       margin-bottom: 15px;
@@ -601,7 +606,9 @@
                 <div class="tool-card__icon"><i class="fas fa-brain"></i></div>
                 <span class="tool-card__badge">AI-Powered</span>
               </div>
-              <h3 class="tool-card__title">Decision Engine</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-decision-engine.html">Decision Engine</a>
+              </h3>
               <p class="tool-card__description">
                 AI-powered credit decisioning with customizable risk models, approval matrices, and real-time scoring.
               </p>
@@ -610,8 +617,8 @@
                 <div class="tool-stat"><i class="fas fa-clock"></i> 2.1min Avg</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Open Engine</button>
-                <button class="tool-action">Configure</button>
+                <a class="tool-action" href="credit-decision-engine.html">Open Engine</a>
+                <a class="tool-action" href="credit-decision-engine.html">Configure</a>
               </div>
             </div>
 
@@ -620,7 +627,9 @@
                 <div class="tool-card__icon"><i class="fas fa-calculator"></i></div>
                 <span class="tool-card__badge">Live</span>
               </div>
-              <h3 class="tool-card__title">Credit Scoring</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-scoring.html">Credit Scoring</a>
+              </h3>
               <p class="tool-card__description">
                 FICO, VantageScore, and custom scoring models with real-time bureau pulls and alternative data integration.
               </p>
@@ -629,8 +638,8 @@
                 <div class="tool-stat"><i class="fas fa-database"></i> 3 Bureaus</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Pull Credit</button>
-                <button class="tool-action">View Models</button>
+                <a class="tool-action" href="credit-scoring.html">Pull Credit</a>
+                <a class="tool-action" href="credit-scoring.html">View Models</a>
               </div>
             </div>
 
@@ -639,7 +648,9 @@
                 <div class="tool-card__icon"><i class="fas fa-file-signature"></i></div>
                 <span class="tool-card__badge">Updated</span>
               </div>
-              <h3 class="tool-card__title">Policy Management</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-policy-management.html">Policy Management</a>
+              </h3>
               <p class="tool-card__description">
                 Configure credit policies, pricing tiers, and underwriting rules by segment with version control.
               </p>
@@ -648,8 +659,8 @@
                 <div class="tool-stat"><i class="fas fa-shield-alt"></i> Compliance OK</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Policies</button>
-                <button class="tool-action">Edit Rules</button>
+                <a class="tool-action" href="credit-policy-management.html">View Policies</a>
+                <a class="tool-action" href="credit-policy-management.html">Edit Rules</a>
               </div>
             </div>
 
@@ -658,7 +669,9 @@
                 <div class="tool-card__icon"><i class="fas fa-shield-alt"></i></div>
                 <span class="tool-card__badge">Active</span>
               </div>
-              <h3 class="tool-card__title">Income Verification</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-income-verification.html">Income Verification</a>
+              </h3>
               <p class="tool-card__description">
                 Automated income and employment verification with third-party integrations and document analysis.
               </p>
@@ -667,8 +680,8 @@
                 <div class="tool-stat"><i class="fas fa-users"></i> 4 Providers</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Verify Income</button>
-                <button class="tool-action">Providers</button>
+                <a class="tool-action" href="credit-income-verification.html">Verify Income</a>
+                <a class="tool-action" href="credit-income-verification.html">Providers</a>
               </div>
             </div>
 
@@ -677,7 +690,9 @@
                 <div class="tool-card__icon"><i class="fas fa-chart-line"></i></div>
                 <span class="tool-card__badge">Live</span>
               </div>
-              <h3 class="tool-card__title">Performance Analytics</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-performance-analytics.html">Performance Analytics</a>
+              </h3>
               <p class="tool-card__description">
                 Track approval rates, vintage analysis, and portfolio performance by credit tier with predictive modeling.
               </p>
@@ -686,8 +701,8 @@
                 <div class="tool-stat"><i class="fas fa-sync"></i> Real-time</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Reports</button>
-                <button class="tool-action">Create Report</button>
+                <a class="tool-action" href="credit-performance-analytics.html">View Reports</a>
+                <a class="tool-action" href="credit-performance-analytics.html">Create Report</a>
               </div>
             </div>
 
@@ -696,7 +711,9 @@
                 <div class="tool-card__icon"><i class="fas fa-clipboard-check"></i></div>
                 <span class="tool-card__badge">Active</span>
               </div>
-              <h3 class="tool-card__title">Manual Review Queue</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-manual-review.html">Manual Review Queue</a>
+              </h3>
               <p class="tool-card__description">
                 Cases requiring manual underwriter review with workflow management and assignment optimization.
               </p>
@@ -705,8 +722,8 @@
                 <div class="tool-stat"><i class="fas fa-clock"></i> 8.5min Avg</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Queue</button>
-                <button class="tool-action">Assign Cases</button>
+                <a class="tool-action" href="credit-manual-review.html">View Queue</a>
+                <a class="tool-action" href="credit-manual-review.html">Assign Cases</a>
               </div>
             </div>
 
@@ -715,7 +732,9 @@
                 <div class="tool-card__icon"><i class="fas fa-file-alt"></i></div>
                 <span class="tool-card__badge">Automated</span>
               </div>
-              <h3 class="tool-card__title">Document Processing</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-document-processing.html">Document Processing</a>
+              </h3>
               <p class="tool-card__description">
                 AI-powered document extraction, validation, and classification with optical character recognition.
               </p>
@@ -724,8 +743,8 @@
                 <div class="tool-stat"><i class="fas fa-check-double"></i> 96% Accuracy</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Upload Docs</button>
-                <button class="tool-action">Review</button>
+                <a class="tool-action" href="credit-document-processing.html">Upload Docs</a>
+                <a class="tool-action" href="credit-document-processing.html">Review</a>
               </div>
             </div>
 
@@ -734,7 +753,9 @@
                 <div class="tool-card__icon"><i class="fas fa-handshake"></i></div>
                 <span class="tool-card__badge">New</span>
               </div>
-              <h3 class="tool-card__title">Pre-Qualification Engine</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-pre-qualification.html">Pre-Qualification Engine</a>
+              </h3>
               <p class="tool-card__description">
                 Soft pull pre-qualification system with personalized offer generation and conversion tracking.
               </p>
@@ -743,8 +764,8 @@
                 <div class="tool-stat"><i class="fas fa-users"></i> 842 Pre-Quals</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">Generate Offers</button>
-                <button class="tool-action">Track Conv</button>
+                <a class="tool-action" href="credit-pre-qualification.html">Generate Offers</a>
+                <a class="tool-action" href="credit-pre-qualification.html">Track Conv</a>
               </div>
             </div>
 
@@ -753,7 +774,9 @@
                 <div class="tool-card__icon"><i class="fas fa-balance-scale"></i></div>
                 <span class="tool-card__badge">Critical</span>
               </div>
-              <h3 class="tool-card__title">Adverse Action Letters</h3>
+              <h3 class="tool-card__title">
+                <a class="tool-card__link" href="credit-adverse-action.html">Adverse Action Letters</a>
+              </h3>
               <p class="tool-card__description">
                 Automated adverse action letter generation with FCRA compliance and multi-channel delivery.
               </p>
@@ -762,8 +785,8 @@
                 <div class="tool-stat"><i class="fas fa-shield-alt"></i> FCRA Compliant</div>
               </div>
               <div class="tool-card__actions">
-                <button class="tool-action">View Letters</button>
-                <button class="tool-action">Templates</button>
+                <a class="tool-action" href="credit-adverse-action.html">View Letters</a>
+                <a class="tool-action" href="credit-adverse-action.html">Templates</a>
               </div>
             </div>
           </div>

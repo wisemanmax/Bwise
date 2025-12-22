@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Identity Verification | Fraud & Risk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/fraud-risk-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="fraud-risk.html">
+      <i class="fas fa-arrow-left"></i> Back to Fraud & Risk
+    </a>
+    <div class="header__title">Identity Verification</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="fraud-risk.html">Tool Hub</a>
+      <a class="btn btn-primary" href="fraud-risk-new-case.html">Start Review</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Identity <strong>Confidence</strong></h1>
+      <p class="hero__subtitle">
+        Verify customer identity with multi-factor checks, document validation, and device intelligence.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-id-card"></i> Verification success: 98%</div>
+        <div class="hero__meta-item"><i class="fas fa-user-check"></i> Methods enabled: 5</div>
+        <div class="hero__meta-item"><i class="fas fa-shield-alt"></i> Compliance: KYC/AML</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Verification <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Checks Run</div>
+        <div class="kpi-value">14.2K</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +4% vs last week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Manual Reviews</div>
+        <div class="kpi-value">312</div>
+        <div class="kpi-meta"><i class="fas fa-user-shield"></i> 2.2% of total</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Doc Failures</div>
+        <div class="kpi-value">88</div>
+        <div class="kpi-meta"><i class="fas fa-file-circle-xmark"></i> Escalated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Biometric Match</div>
+        <div class="kpi-value">97.3%</div>
+        <div class="kpi-meta"><i class="fas fa-fingerprint"></i> Liveness checked</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Verification Methods</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Document + selfie</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Device fingerprinting</span>
+            <span class="badge success">Enabled</span>
+          </li>
+          <li class="list-item">
+            <span>Knowledge-based auth</span>
+            <span class="badge warning">Limited</span>
+          </li>
+          <li class="list-item">
+            <span>Watchlist screening</span>
+            <span class="badge success">Enabled</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Provider Health</div>
+        <p class="card-subtitle">Third-party status</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>DocVerify API</span>
+            <span class="badge success">Operational</span>
+          </li>
+          <li class="list-item">
+            <span>BioMatch SDK</span>
+            <span class="badge success">Operational</span>
+          </li>
+          <li class="list-item">
+            <span>Watchlist feed</span>
+            <span class="badge warning">Latency</span>
+          </li>
+          <li class="list-item">
+            <span>Address validation</span>
+            <span class="badge success">Operational</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Common Failure Reasons</div>
+        <p class="card-subtitle">Last 7 days</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Blurry document</span>
+            <span class="pill">32 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Name mismatch</span>
+            <span class="pill">24 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Expired ID</span>
+            <span class="pill">18 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Face mismatch</span>
+            <span class="pill">14 cases</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Verifications</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Applicant</th>
+            <th>Method</th>
+            <th>Result</th>
+            <th>Risk Score</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Case #ID-4421</td>
+            <td>Doc + selfie</td>
+            <td><span class="badge success">Pass</span></td>
+            <td>12</td>
+            <td>Auto-approve</td>
+          </tr>
+          <tr>
+            <td>Case #ID-4416</td>
+            <td>Biometric</td>
+            <td><span class="badge warning">Manual</span></td>
+            <td>58</td>
+            <td>Agent review</td>
+          </tr>
+          <tr>
+            <td>Case #ID-4408</td>
+            <td>Doc scan</td>
+            <td><span class="badge danger">Fail</span></td>
+            <td>84</td>
+            <td>Request resubmission</td>
+          </tr>
+          <tr>
+            <td>Case #ID-4401</td>
+            <td>Watchlist</td>
+            <td><span class="badge warning">Match</span></td>
+            <td>63</td>
+            <td>Compliance review</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Block Lists | Fraud & Risk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/fraud-risk-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="fraud-risk.html">
+      <i class="fas fa-arrow-left"></i> Back to Fraud & Risk
+    </a>
+    <div class="header__title">Block Lists</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="fraud-risk.html">Tool Hub</a>
+      <a class="btn btn-primary" href="fraud-risk-new-case.html">Add Entry</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Block <strong>Registry</strong></h1>
+      <p class="hero__subtitle">
+        Manage blocked accounts, devices, and IPs with automated syncing across fraud prevention systems.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-ban"></i> Total blocked: 342</div>
+        <div class="hero__meta-item"><i class="fas fa-robot"></i> Auto-sync: Enabled</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Last update: 12 mins ago</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Blocklist <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Accounts</div>
+        <div class="kpi-value">184</div>
+        <div class="kpi-meta"><i class="fas fa-user-slash"></i> +12 today</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Devices</div>
+        <div class="kpi-value">96</div>
+        <div class="kpi-meta"><i class="fas fa-laptop"></i> 4 flagged</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">IP Ranges</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-meta"><i class="fas fa-network-wired"></i> 3 new</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Email Domains</div>
+        <div class="kpi-value">20</div>
+        <div class="kpi-meta"><i class="fas fa-envelope"></i> Watchlist</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Block Sources</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Fraud investigations</span>
+            <span class="badge danger">High</span>
+          </li>
+          <li class="list-item">
+            <span>Chargeback disputes</span>
+            <span class="badge warning">Medium</span>
+          </li>
+          <li class="list-item">
+            <span>Partner watchlists</span>
+            <span class="badge warning">Medium</span>
+          </li>
+          <li class="list-item">
+            <span>Customer requests</span>
+            <span class="badge success">Low</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Auto Rules</div>
+        <p class="card-subtitle">Enforcement</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>ATO freeze</span>
+            <span class="pill">Rule #04</span>
+          </li>
+          <li class="list-item">
+            <span>Botnet IP scrub</span>
+            <span class="pill">Rule #11</span>
+          </li>
+          <li class="list-item">
+            <span>Device fingerprint lock</span>
+            <span class="pill">Rule #09</span>
+          </li>
+          <li class="list-item">
+            <span>Refund abuse block</span>
+            <span class="pill">Rule #17</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Sync Status</div>
+        <p class="card-subtitle">Connected systems</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Payment gateway</span>
+            <span class="badge success">Synced</span>
+          </li>
+          <li class="list-item">
+            <span>Customer portal</span>
+            <span class="badge success">Synced</span>
+          </li>
+          <li class="list-item">
+            <span>Call center</span>
+            <span class="badge warning">Pending</span>
+          </li>
+          <li class="list-item">
+            <span>Reporting warehouse</span>
+            <span class="badge success">Synced</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Block Entries</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Entry</th>
+            <th>Type</th>
+            <th>Reason</th>
+            <th>Added</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>****9821</td>
+            <td>Account</td>
+            <td>ATO confirmed</td>
+            <td>12 mins ago</td>
+            <td><span class="badge danger">Blocked</span></td>
+          </tr>
+          <tr>
+            <td>Device ID 44D-92A</td>
+            <td>Device</td>
+            <td>Fraud ring</td>
+            <td>1 hr ago</td>
+            <td><span class="badge danger">Blocked</span></td>
+          </tr>
+          <tr>
+            <td>183.22.14.0/24</td>
+            <td>IP Range</td>
+            <td>Bot traffic</td>
+            <td>3 hrs ago</td>
+            <td><span class="badge warning">Review</span></td>
+          </tr>
+          <tr>
+            <td>mailer99.example</td>
+            <td>Domain</td>
+            <td>Phishing</td>
+            <td>Yesterday</td>
+            <td><span class="badge danger">Blocked</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Income Verification | Credit & Underwriting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/credit-underwriting-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="credit-underwriting.html">
+      <i class="fas fa-arrow-left"></i> Back to Credit & Underwriting
+    </a>
+    <div class="header__title">Income Verification</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="credit-underwriting.html">Tool Hub</a>
+      <a class="btn btn-primary" href="credit-underwriting-new-application.html">Verify Income</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Income <strong>Verification</strong></h1>
+      <p class="hero__subtitle">
+        Validate income, employment, and bank data with automated verification and document analysis.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-check"></i> Auto-verified: 94%</div>
+        <div class="hero__meta-item"><i class="fas fa-users"></i> Providers: 4</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Avg turnaround: 2.4 min</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Verification <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Requests</div>
+        <div class="kpi-value">2,184</div>
+        <div class="kpi-meta"><i class="fas fa-arrow-up"></i> +5% this week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Manual Reviews</div>
+        <div class="kpi-value">128</div>
+        <div class="kpi-meta"><i class="fas fa-user-clock"></i> 5.8%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Document Errors</div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-meta"><i class="fas fa-file-circle-xmark"></i> Escalated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Income Delta</div>
+        <div class="kpi-value">+3.2%</div>
+        <div class="kpi-meta"><i class="fas fa-chart-line"></i> vs stated</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Provider Health</div>
+        <ul class="list">
+          <li class="list-item">
+            <span>Finicity</span>
+            <span class="badge success">Operational</span>
+          </li>
+          <li class="list-item">
+            <span>Argyle</span>
+            <span class="badge success">Operational</span>
+          </li>
+          <li class="list-item">
+            <span>Equifax W2</span>
+            <span class="badge warning">Latency</span>
+          </li>
+          <li class="list-item">
+            <span>Paystub OCR</span>
+            <span class="badge success">Operational</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Verification Mix</div>
+        <p class="card-subtitle">Channels</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Bank data</span>
+            <span class="pill">52%</span>
+          </li>
+          <li class="list-item">
+            <span>Employer API</span>
+            <span class="pill">28%</span>
+          </li>
+          <li class="list-item">
+            <span>Paystub upload</span>
+            <span class="pill">14%</span>
+          </li>
+          <li class="list-item">
+            <span>Manual review</span>
+            <span class="pill">6%</span>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Exception Reasons</div>
+        <p class="card-subtitle">Last 7 days</p>
+        <ul class="list">
+          <li class="list-item">
+            <span>Bank connection failed</span>
+            <span class="badge warning">42 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Inconsistent paystub</span>
+            <span class="badge warning">31 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Employer mismatch</span>
+            <span class="badge warning">19 cases</span>
+          </li>
+          <li class="list-item">
+            <span>Expired document</span>
+            <span class="badge warning">11 cases</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Verifications</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Applicant</th>
+            <th>Method</th>
+            <th>Income</th>
+            <th>Status</th>
+            <th>Next Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#IV-2301</td>
+            <td>Bank data</td>
+            <td>$68K</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Approve</td>
+          </tr>
+          <tr>
+            <td>#IV-2294</td>
+            <td>Paystub OCR</td>
+            <td>$54K</td>
+            <td><span class="badge warning">Manual</span></td>
+            <td>Analyst review</td>
+          </tr>
+          <tr>
+            <td>#IV-2288</td>
+            <td>Employer API</td>
+            <td>$72K</td>
+            <td><span class="badge success">Verified</span></td>
+            <td>Approve</td>
+          </tr>
+          <tr>
+            <td>#IV-2281</td>
+            <td>Bank data</td>
+            <td>$49K</td>
+            <td><span class="badge warning">Mismatch</span></td>
+            <td>Request docs</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

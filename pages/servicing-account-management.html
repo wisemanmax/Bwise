@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Account Management | Servicing & CEXP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/servicing-cexp-detail.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="header">
+    <a class="header__back" href="servicing-cexp.html">
+      <i class="fas fa-arrow-left"></i> Back to Servicing & CEXP
+    </a>
+    <div class="header__title">Account Management</div>
+    <div class="header__actions">
+      <a class="btn btn-secondary" href="servicing-cexp.html">Tool Hub</a>
+      <a class="btn btn-primary" href="servicing-cexp-new-case.html">Open Case</a>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="hero">
+      <h1 class="hero__title">Unified <strong>Account View</strong></h1>
+      <p class="hero__subtitle">360° customer profile with history, payment status, and relationship insights.</p>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><i class="fas fa-user"></i> Active accounts: 48,210</div>
+        <div class="hero__meta-item"><i class="fas fa-layer-group"></i> Relationship tiers: 4</div>
+        <div class="hero__meta-item"><i class="fas fa-clock"></i> Last sync: 6 mins ago</div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Account <strong>Pulse</strong></h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Profiles Viewed</div>
+        <div class="kpi-value">1,284</div>
+        <div class="kpi-meta"><i class="fas fa-eye"></i> Today</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Notes Added</div>
+        <div class="kpi-value">342</div>
+        <div class="kpi-meta"><i class="fas fa-sticky-note"></i> Last 24h</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">At-Risk Flags</div>
+        <div class="kpi-value">72</div>
+        <div class="kpi-meta"><i class="fas fa-flag"></i> Escalated</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">VIP Accounts</div>
+        <div class="kpi-value">118</div>
+        <div class="kpi-meta"><i class="fas fa-crown"></i> Priority handling</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-title">Profile Sections</div>
+        <ul class="list">
+          <li class="list-item"><span>Account summary</span><span class="badge success">Available</span></li>
+          <li class="list-item"><span>Payment history</span><span class="badge success">Available</span></li>
+          <li class="list-item"><span>Recent interactions</span><span class="badge warning">Review</span></li>
+          <li class="list-item"><span>Collections status</span><span class="badge warning">Watch</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Recent Notes</div>
+        <p class="card-subtitle">Top themes</p>
+        <ul class="list">
+          <li class="list-item"><span>Billing clarification</span><span class="pill">48 notes</span></li>
+          <li class="list-item"><span>Payment plan updates</span><span class="pill">32 notes</span></li>
+          <li class="list-item"><span>Hardship assistance</span><span class="pill">18 notes</span></li>
+          <li class="list-item"><span>Address updates</span><span class="pill">12 notes</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Relationship Health</div>
+        <p class="card-subtitle">Engagement status</p>
+        <ul class="list">
+          <li class="list-item"><span>Positive sentiment</span><span class="badge success">72%</span></li>
+          <li class="list-item"><span>Neutral sentiment</span><span class="badge info">21%</span></li>
+          <li class="list-item"><span>At-risk sentiment</span><span class="badge warning">7%</span></li>
+          <li class="list-item"><span>Escalations</span><span class="badge danger">14</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <div class="card-title">Recent Account Activity</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Event</th>
+            <th>Channel</th>
+            <th>Status</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#AC-8821</td>
+            <td>Payment plan updated</td>
+            <td>Phone</td>
+            <td><span class="badge success">Complete</span></td>
+            <td>Jordan Blake</td>
+          </tr>
+          <tr>
+            <td>#AC-8815</td>
+            <td>Address change request</td>
+            <td>Self-serve</td>
+            <td><span class="badge warning">Pending</span></td>
+            <td>Portal</td>
+          </tr>
+          <tr>
+            <td>#AC-8804</td>
+            <td>Hardship inquiry</td>
+            <td>Chat</td>
+            <td><span class="badge warning">In review</span></td>
+            <td>Priya Singh</td>
+          </tr>
+          <tr>
+            <td>#AC-8799</td>
+            <td>Account escalation</td>
+            <td>Email</td>
+            <td><span class="badge danger">Escalated</span></td>
+            <td>Maya R.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
