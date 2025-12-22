@@ -299,6 +299,86 @@
       font-weight: 700;
     }
 
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .filter-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(175, 100, 204, 0.12);
+      color: var(--amethyst);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .stat-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--mischka);
+      background: var(--catskill-white);
+    }
+
+    .stat-card__label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--abbey);
+    }
+
+    .stat-card__value {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 6px;
+      color: var(--fiord);
+    }
+
+    .stat-card__note {
+      font-size: 12px;
+      color: var(--abbey);
+      margin-top: 6px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--mischka);
+    }
+
+    .data-table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--abbey);
+    }
+
     .footer-actions {
       display: flex;
       justify-content: space-between;
@@ -427,6 +507,128 @@
         </section>
 
         <form id="servicing-case-form">
+          <section class="section">
+            <h2 class="section-title">Operational Filters</h2>
+            <div class="card">
+              <div class="card-title">Routing & Segmentation</div>
+              <div class="filter-grid">
+                <div class="form-group">
+                  <label for="region-filter">Region</label>
+                  <select id="region-filter">
+                    <option>West Coast</option>
+                    <option>Midwest</option>
+                    <option>Northeast</option>
+                    <option>Southeast</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="journey-filter">Journey Stage</label>
+                  <select id="journey-filter">
+                    <option>Resolution Pending</option>
+                    <option>Onboarding</option>
+                    <option>Maintenance</option>
+                    <option>Retention</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="channel-filter">Contact Channel</label>
+                  <select id="channel-filter">
+                    <option>Phone + SMS</option>
+                    <option>Email</option>
+                    <option>Branch</option>
+                    <option>Digital Chat</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="impact-filter">CX Impact</label>
+                  <select id="impact-filter">
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="intent-filter">Customer Intent</label>
+                  <select id="intent-filter">
+                    <option>Billing Correction</option>
+                    <option>Payment Relief</option>
+                    <option>Account Update</option>
+                    <option>Escalation</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-summary">
+                <span class="filter-pill"><i class="fas fa-filter"></i> Tier 2 Escalations</span>
+                <span class="filter-pill"><i class="fas fa-wave-square"></i> 4.8 Avg Effort</span>
+                <span class="filter-pill"><i class="fas fa-headset"></i> 92% CSAT Goal</span>
+                <span class="filter-pill"><i class="fas fa-clock"></i> 12h SLA Coverage</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Service Intelligence</h2>
+            <div class="card">
+              <div class="card-title">Experience Pulse</div>
+              <div class="stat-grid">
+                <div class="stat-card">
+                  <div class="stat-card__label">Open Escalations</div>
+                  <div class="stat-card__value">42</div>
+                  <div class="stat-card__note">28 within SLA window</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-card__label">Repeat Contact Rate</div>
+                  <div class="stat-card__value">18%</div>
+                  <div class="stat-card__note">Down 3% week-over-week</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-card__label">Refund Pipeline</div>
+                  <div class="stat-card__value">$284k</div>
+                  <div class="stat-card__note">7 approvals awaiting finance</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-card__label">Sentiment Heat</div>
+                  <div class="stat-card__value">Moderate</div>
+                  <div class="stat-card__note">Primary driver: billing errors</div>
+                </div>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Case</th>
+                    <th>Theme</th>
+                    <th>Owner</th>
+                    <th>Last Touch</th>
+                    <th>Next Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SVC-2025-0148</td>
+                    <td>Duplicate Payment</td>
+                    <td>Tasha Green</td>
+                    <td>11/01 • Call recap</td>
+                    <td>Refund confirmation</td>
+                  </tr>
+                  <tr>
+                    <td>SVC-2025-0152</td>
+                    <td>Auto Pay Failure</td>
+                    <td>Jamie Fox</td>
+                    <td>10/31 • SMS</td>
+                    <td>Restart enrollment</td>
+                  </tr>
+                  <tr>
+                    <td>SVC-2025-0159</td>
+                    <td>Fee Dispute</td>
+                    <td>Amira Lawson</td>
+                    <td>10/30 • Email</td>
+                    <td>Manager approval</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <section class="section">
             <h2 class="section-title">Case Overview</h2>
             <div class="card">
