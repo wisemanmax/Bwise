@@ -5,6 +5,7 @@
   <title>Account Updates | Servicing & CEXP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/servicing-cexp-detail.css">
 </head>
 <body>
@@ -21,9 +22,9 @@
   </header>
 
   <main id="main" class="container">
-    <section class="hero">
+    <section class="hero" style="--hero-gradient: linear-gradient(135deg, #1bbae1 0%, #e67e22 100%);">
       <h1 class="hero__title">Account <strong>Maintenance</strong></h1>
-      <p class="hero__subtitle">Process address changes, payment updates, and profile modifications with audit trails.</p>
+      <p class="hero__subtitle">Process address changes, payment updates, and profile modifications with audit trails and approvals.</p>
       <div class="hero__meta">
         <div class="hero__meta-item"><i class="fas fa-exchange-alt"></i> Updates today: 184</div>
         <div class="hero__meta-item"><i class="fas fa-check-circle"></i> Auto-approved: 82%</div>
@@ -31,26 +32,65 @@
       </div>
     </section>
 
+    <section class="toolbar">
+      <div class="toolbar__left">
+        <div class="filter-group">
+          <label>Type</label>
+          <select>
+            <option>All updates</option>
+            <option>Address</option>
+            <option>Payment</option>
+            <option>Profile</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select>
+            <option>All statuses</option>
+            <option>Pending</option>
+            <option>Approved</option>
+            <option>Escalated</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Channel</label>
+          <select>
+            <option>All channels</option>
+            <option>Self-serve</option>
+            <option>Agent</option>
+            <option>Phone</option>
+          </select>
+        </div>
+      </div>
+      <div class="toolbar__right">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search request or account">
+        </div>
+        <a class="btn btn-ghost" href="#">Export audit</a>
+      </div>
+    </section>
+
     <h2 class="section-title">Update <strong>Pulse</strong></h2>
     <section class="kpi-grid">
-      <div class="kpi-card">
+      <div class="kpi-card info">
         <div class="kpi-label">Address Changes</div>
-        <div class="kpi-value">78</div>
+        <div class="kpi-value info">78</div>
         <div class="kpi-meta"><i class="fas fa-map-pin"></i> 12 pending</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card warning">
         <div class="kpi-label">Payment Updates</div>
-        <div class="kpi-value">64</div>
+        <div class="kpi-value warning">64</div>
         <div class="kpi-meta"><i class="fas fa-credit-card"></i> 8 flagged</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card success">
         <div class="kpi-label">Profile Edits</div>
-        <div class="kpi-value">42</div>
+        <div class="kpi-value success">42</div>
         <div class="kpi-meta"><i class="fas fa-user"></i> Auto-verified</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card danger">
         <div class="kpi-label">Audit Holds</div>
-        <div class="kpi-value">6</div>
+        <div class="kpi-value danger">6</div>
         <div class="kpi-meta"><i class="fas fa-shield-alt"></i> Compliance review</div>
       </div>
     </section>
@@ -85,52 +125,1635 @@
           <li class="list-item"><span>Manual review</span><span class="badge warning">6 cases</span></li>
         </ul>
       </div>
+      <div class="card">
+        <div class="card-title">Service Impact</div>
+        <p class="card-subtitle">Customer comms</p>
+        <ul class="list">
+          <li class="list-item"><span>Notifications sent</span><span class="badge success">214</span></li>
+          <li class="list-item"><span>Pending confirmations</span><span class="badge warning">18</span></li>
+          <li class="list-item"><span>Agent callbacks</span><span class="badge info">9 scheduled</span></li>
+          <li class="list-item"><span>Exceptions escalated</span><span class="badge danger">4</span></li>
+        </ul>
+      </div>
     </section>
 
-    <section class="card" style="margin-top: 24px;">
-      <div class="card-title">Recent Update Requests</div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Request</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Owner</th>
-            <th>Next Step</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>#AU-1184</td>
-            <td>Address change</td>
-            <td><span class="badge warning">Pending</span></td>
-            <td>Portal</td>
-            <td>Verify documents</td>
-          </tr>
-          <tr>
-            <td>#AU-1179</td>
-            <td>Payment method</td>
-            <td><span class="badge success">Approved</span></td>
-            <td>Maya R.</td>
-            <td>Notify customer</td>
-          </tr>
-          <tr>
-            <td>#AU-1172</td>
-            <td>Contact update</td>
-            <td><span class="badge success">Complete</span></td>
-            <td>Self-serve</td>
-            <td>Audit log</td>
-          </tr>
-          <tr>
-            <td>#AU-1168</td>
-            <td>Authorized user</td>
-            <td><span class="badge danger">Escalated</span></td>
-            <td>Compliance</td>
-            <td>Manual review</td>
-          </tr>
-        </tbody>
-      </table>
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Recent Update Requests</div>
+          <div class="card-subtitle">Latest verification activity</div>
+        </div>
+        <div class="card-meta">Updated 4 mins ago</div>
+      </div>
+      <div class="table-container" style="--table-accent: linear-gradient(135deg, #1bbae1, #e67e22);">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Request</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Owner</th>
+              <th>Next Step</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#AU-1184</td>
+              <td>Address change</td>
+              <td><span class="badge warning">Pending</span></td>
+              <td>Portal</td>
+              <td>Verify documents</td>
+            </tr>
+            <tr>
+              <td>#AU-1179</td>
+              <td>Payment method</td>
+              <td><span class="badge success">Approved</span></td>
+              <td>Maya R.</td>
+              <td>Notify customer</td>
+            </tr>
+            <tr>
+              <td>#AU-1172</td>
+              <td>Contact update</td>
+              <td><span class="badge success">Complete</span></td>
+              <td>Self-serve</td>
+              <td>Audit log</td>
+            </tr>
+            <tr>
+              <td>#AU-1168</td>
+              <td>Authorized user</td>
+              <td><span class="badge danger">Escalated</span></td>
+              <td>Compliance</td>
+              <td>Manual review</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
-  </main>
+  
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Operational Deep Dive</div>
+          <div class="card-subtitle">Expanded mock dataset for analytics validation</div>
+        </div>
+        <div class="card-meta">Mock rows: 220</div>
+      </div>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Segment</th>
+              <th>Owner</th>
+              <th>Priority</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>MOCK-SER-0001</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0002</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0003</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0004</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0005</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0006</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0007</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0008</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0009</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0010</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0011</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0012</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0013</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0014</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0015</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0016</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0017</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0018</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0019</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0020</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0021</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0022</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0023</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0024</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0025</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0026</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0027</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0028</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0029</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0030</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0031</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0032</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0033</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0034</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0035</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0036</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0037</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0038</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0039</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0040</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0041</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0042</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0043</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0044</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0045</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0046</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0047</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0048</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0049</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0050</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0051</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0052</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0053</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0054</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0055</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0056</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0057</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0058</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0059</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0060</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0061</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0062</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0063</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0064</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0065</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0066</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0067</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0068</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0069</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0070</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0071</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0072</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0073</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0074</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0075</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0076</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0077</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0078</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0079</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0080</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0081</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0082</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0083</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0084</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0085</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0086</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0087</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0088</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0089</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0090</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0091</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0092</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0093</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0094</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0095</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0096</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0097</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0098</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0099</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0100</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0101</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0102</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0103</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0104</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0105</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0106</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0107</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0108</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0109</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0110</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0111</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0112</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0113</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0114</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0115</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0116</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0117</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0118</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0119</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0120</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0121</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0122</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0123</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0124</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0125</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0126</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0127</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0128</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0129</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0130</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0131</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0132</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0133</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0134</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0135</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0136</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0137</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0138</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0139</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0140</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0141</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0142</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0143</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0144</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0145</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0146</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0147</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0148</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0149</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0150</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0151</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0152</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0153</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0154</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0155</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0156</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0157</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0158</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0159</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0160</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0161</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0162</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0163</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0164</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0165</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0166</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0167</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0168</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0169</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0170</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0171</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0172</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0173</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0174</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0175</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0176</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0177</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0178</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0179</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0180</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0181</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0182</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0183</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0184</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0185</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0186</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0187</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0188</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0189</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0190</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0191</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0192</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0193</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0194</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0195</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0196</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0197</td>
+            <td>Queue segment 5</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0198</td>
+            <td>Queue segment 6</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0199</td>
+            <td>Queue segment 7</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0200</td>
+            <td>Queue segment 8</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0201</td>
+            <td>Queue segment 1</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0202</td>
+            <td>Queue segment 2</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0203</td>
+            <td>Queue segment 3</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0204</td>
+            <td>Queue segment 4</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0205</td>
+            <td>Queue segment 5</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0206</td>
+            <td>Queue segment 6</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0207</td>
+            <td>Queue segment 7</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0208</td>
+            <td>Queue segment 8</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0209</td>
+            <td>Queue segment 1</td>
+            <td>Owner 5</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0210</td>
+            <td>Queue segment 2</td>
+            <td>Owner 6</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0211</td>
+            <td>Queue segment 3</td>
+            <td>Owner 7</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0212</td>
+            <td>Queue segment 4</td>
+            <td>Owner 8</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0213</td>
+            <td>Queue segment 5</td>
+            <td>Owner 9</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0214</td>
+            <td>Queue segment 6</td>
+            <td>Owner 10</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0215</td>
+            <td>Queue segment 7</td>
+            <td>Owner 11</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0216</td>
+            <td>Queue segment 8</td>
+            <td>Owner 12</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0217</td>
+            <td>Queue segment 1</td>
+            <td>Owner 1</td>
+            <td>Medium</td>
+            <td>In progress</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0218</td>
+            <td>Queue segment 2</td>
+            <td>Owner 2</td>
+            <td>High</td>
+            <td>Blocked</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0219</td>
+            <td>Queue segment 3</td>
+            <td>Owner 3</td>
+            <td>Critical</td>
+            <td>Review</td>
+          </tr>
+          <tr>
+            <td>MOCK-SER-0220</td>
+            <td>Queue segment 4</td>
+            <td>Owner 4</td>
+            <td>Low</td>
+            <td>Ready</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+</main>
 </body>
 </html>
