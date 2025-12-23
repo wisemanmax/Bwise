@@ -1,0 +1,195 @@
+{
+  "statusBanner": [
+    {
+      "title": "System health",
+      "value": "Stable",
+      "meta": "2 minor incidents",
+      "icon": "fas fa-check-circle"
+    },
+    {
+      "title": "Data freshness",
+      "value": "11 min",
+      "meta": "Last sync 09:12",
+      "icon": "fas fa-sync-alt"
+    },
+    {
+      "title": "SLA risk",
+      "value": "4 items",
+      "meta": "Escalations due in 2 hrs",
+      "icon": "fas fa-exclamation-circle"
+    },
+    {
+      "title": "On-call",
+      "value": "Team Atlas",
+      "meta": "Rotation ends 6:00 PM",
+      "icon": "fas fa-user-shield"
+    }
+  ],
+  "overviewCards": [
+    {
+      "href": "collections-toolkit.html",
+      "colorClass": "java",
+      "icon": "fas fa-clipboard-check",
+      "value": "2,847",
+      "description": "Active collection accounts",
+      "filters": {
+        "domain": "collections data",
+        "team": "nova",
+        "status": "healthy",
+        "search": "collections active collection accounts toolkit"
+      }
+    },
+    {
+      "href": "credit-underwriting.html",
+      "colorClass": "jungle-green",
+      "icon": "fas fa-balance-scale",
+      "value": "1,243",
+      "description": "Credit applications today",
+      "filters": {
+        "domain": "risk data",
+        "team": "atlas",
+        "status": "watch",
+        "search": "credit underwriting applications risk score"
+      }
+    },
+    {
+      "href": "fraud-risk.html",
+      "colorClass": "cinnabar",
+      "icon": "fas fa-shield-alt",
+      "value": "127",
+      "description": "Fraud cases under review",
+      "filters": {
+        "domain": "risk",
+        "team": "atlas",
+        "status": "critical",
+        "search": "fraud risk investigations cases"
+      }
+    },
+    {
+      "href": "servicing-cexp.html",
+      "colorClass": "amethyst",
+      "icon": "fas fa-user-friends",
+      "value": "94%",
+      "description": "Customer satisfaction score",
+      "filters": {
+        "domain": "cx",
+        "team": "pulse",
+        "status": "healthy",
+        "search": "customer experience servicing satisfaction"
+      }
+    },
+    {
+      "href": "compliance-matrix.html",
+      "colorClass": "jungle-green",
+      "icon": "fas fa-clipboard-list",
+      "value": "96%",
+      "description": "Organization compliance health",
+      "filters": {
+        "domain": "risk",
+        "team": "ledger",
+        "status": "watch",
+        "search": "compliance matrix audit policy"
+      }
+    },
+    {
+      "href": "data-analytics.html",
+      "colorClass": "zest",
+      "icon": "fas fa-project-diagram",
+      "value": "42",
+      "description": "Active data pipelines",
+      "filters": {
+        "domain": "data",
+        "team": "ledger",
+        "status": "healthy",
+        "search": "data analytics pipelines workflows"
+      }
+    },
+    {
+      "href": "creative-house.html",
+      "colorClass": "java",
+      "icon": "fas fa-video",
+      "value": "8.4K",
+      "description": "Monthly stream views",
+      "filters": {
+        "domain": "cx data",
+        "team": "pulse",
+        "status": "healthy",
+        "search": "creative house content video"
+      }
+    }
+  ],
+  "actionCards": [
+    {
+      "title": "Collections escalation",
+      "icon": "fas fa-bolt",
+      "tags": [
+        { "label": "SLA risk", "className": "card-tag--risk" },
+        { "label": "Collections", "className": "card-tag--ops" }
+      ],
+      "meta": [
+        { "label": "Owner: Ava R.", "icon": "fas fa-user" },
+        { "label": "Due in 90 min", "icon": "fas fa-clock" }
+      ],
+      "footer": {
+        "text": "8 accounts need approval",
+        "cta": "Open queue",
+        "href": "collections-toolkit.html"
+      },
+      "filters": {
+        "domain": "collections",
+        "team": "nova",
+        "priority": "high",
+        "status": "watch",
+        "search": "collections escalation sla breach"
+      }
+    },
+    {
+      "title": "Fraud review backlog",
+      "icon": "fas fa-shield-alt",
+      "tags": [
+        { "label": "High risk", "className": "card-tag--critical" },
+        { "label": "Fraud", "className": "card-tag--risk" }
+      ],
+      "meta": [
+        { "label": "14 cases pending", "icon": "fas fa-layer-group" },
+        { "label": "Risk +9% WoW", "icon": "fas fa-chart-line" }
+      ],
+      "footer": {
+        "text": "Auto-triage running",
+        "cta": "View cases",
+        "href": "fraud-risk.html"
+      },
+      "filters": {
+        "domain": "risk",
+        "team": "atlas",
+        "priority": "high",
+        "status": "critical",
+        "search": "fraud risk review alert"
+      }
+    },
+    {
+      "title": "CEXP outreach",
+      "icon": "fas fa-headset",
+      "tags": [
+        { "label": "CX", "className": "card-tag--success" },
+        { "label": "Survey", "className": "card-tag--ops" }
+      ],
+      "meta": [
+        { "label": "32 surveys awaiting send", "icon": "fas fa-inbox" },
+        { "label": "CSAT goal 95%", "icon": "fas fa-star" }
+      ],
+      "footer": {
+        "text": "Targeted segment ready",
+        "cta": "Launch wave",
+        "href": "servicing-cexp.html"
+      },
+      "filters": {
+        "domain": "cx",
+        "team": "pulse",
+        "priority": "medium",
+        "status": "healthy",
+        "search": "servicing cexp survey"
+      }
+    }
+  ]
+}

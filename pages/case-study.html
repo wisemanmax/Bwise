@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations Case Study · Byheir Wise</title>
+  <meta name="description" content="Case study detailing the operational challenge, dashboard design, and KPI definitions behind the operations command center dashboard.">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <nav class="top-nav" aria-label="Main navigation">
+      <div class="logo">Byheir Wise</div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
+        ☰
+      </button>
+      <ul class="nav-menu" id="primary-navigation">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="dashboard.html">Operations Dashboard</a></li>
+        <li><a href="case-study.html" aria-current="page">Case Study</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero-section" aria-labelledby="case-study-hero">
+      <div class="hero-inner">
+        <div class="hero-label">Operations story</div>
+        <h1 id="case-study-hero" class="hero-title">Operations Command Center Case Study</h1>
+        <p class="hero-subtitle">Turning fragmented, high-risk workflows into a data-led daily briefing.</p>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="problem-title">
+      <div class="section-header">
+        <h2 id="problem-title" class="section-title">The operational problem</h2>
+        <p class="section-subtitle">
+          Leadership teams were tracking collections, credit, fraud, and servicing workstreams across disconnected tools. Each day started with manual exports and ad-hoc status calls, creating lag between risk signals and action.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Pain points observed</div>
+            <div class="card-date">Ops leadership + frontline leads</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Teams needed a single view of SLA risk and emerging incidents.</li>
+              <li>Critical queues were hidden behind multiple reporting layers.</li>
+              <li>Stakeholders lacked a shared definition of “healthy” vs. “at risk.”</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Target outcomes</div>
+            <div class="card-date">Week-over-week impact goals</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Reduce manual reporting time by 60% with automated metrics.</li>
+              <li>Surface SLA risk within minutes, not hours.</li>
+              <li>Enable fast triage across collections, fraud, and servicing.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="design-title">
+      <div class="section-header">
+        <h2 id="design-title" class="section-title">Dashboard design choices</h2>
+        <p class="section-subtitle">
+          The dashboard is structured as a command center that starts with a quick status pulse, then drills into actions, workload, and insight cards. Every section is aligned to how an ops leader runs a daily stand-up.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Information hierarchy</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Status banner surfaces system health and SLA risk upfront.</li>
+              <li>Overview KPIs anchor attention with the highest-volume queues.</li>
+              <li>Action center ranks work by risk and escalation timing.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Interaction model</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Filter chips mirror how squads (Atlas, Nova, Pulse, Ledger) operate.</li>
+              <li>Search lets leaders jump directly to a workflow, not a report.</li>
+              <li>Consistent visual language ties alerts, workload, and insights together.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="kpi-title">
+      <div class="section-header">
+        <h2 id="kpi-title" class="section-title">KPI definitions and why they matter</h2>
+        <p class="section-subtitle">
+          These metrics were chosen to reflect operational readiness, customer impact, and compliance exposure.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Operational readiness</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>System health:</strong> Ensures upstream platforms are stable before volume spikes.</li>
+              <li><strong>Data freshness:</strong> Confirms metrics reflect near real-time workloads.</li>
+              <li><strong>On-call rotation:</strong> Makes escalation ownership visible to every stakeholder.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Risk + customer impact</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>SLA risk items:</strong> Predicts compliance exposure before breaches occur.</li>
+              <li><strong>Fraud cases under review:</strong> Tracks high-risk volume and triage throughput.</li>
+              <li><strong>Customer satisfaction score:</strong> Links operational changes to customer outcomes.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Case study aligned to operational dashboard portfolio.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>

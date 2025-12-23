@@ -1534,26 +1534,11 @@
       </div>
     </section>
 
-    <section class="status-banner" aria-label="Operational pulse">
+    <section class="status-banner" aria-label="Operational pulse" id="status-banner">
       <div class="status-card">
-        <div class="status-card__title">System health</div>
-        <div class="status-card__value">Stable</div>
-        <div class="status-card__meta"><i class="fas fa-check-circle"></i>2 minor incidents</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card__title">Data freshness</div>
-        <div class="status-card__value">11 min</div>
-        <div class="status-card__meta"><i class="fas fa-sync-alt"></i>Last sync 09:12</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card__title">SLA risk</div>
-        <div class="status-card__value">4 items</div>
-        <div class="status-card__meta"><i class="fas fa-exclamation-circle"></i>Escalations due in 2 hrs</div>
-      </div>
-      <div class="status-card">
-        <div class="status-card__title">On-call</div>
-        <div class="status-card__value">Team Atlas</div>
-        <div class="status-card__meta"><i class="fas fa-user-shield"></i>Rotation ends 6:00 PM</div>
+        <div class="status-card__title">Loading status</div>
+        <div class="status-card__value">Fetching metrics</div>
+        <div class="status-card__meta"><i class="fas fa-sync-alt"></i>Syncing dashboard data</div>
       </div>
     </section>
 
@@ -1589,63 +1574,7 @@
       </article>
     </section>
 
-    <div class="main-overview" data-filter-section>
-      <a href="collections-toolkit.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard java" data-filterable="card" data-domain="collections data" data-team="nova" data-status="healthy" data-search="collections active collection accounts toolkit">
-          <div class="overviewCard__icon"><i class="fas fa-clipboard-check"></i></div>
-          <div class="overviewCard__info">2,847</div>
-          <div class="overviewCard__description">Active collection accounts</div>
-        </article>
-      </a>
-
-      <a href="credit-underwriting.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard jungle-green" data-filterable="card" data-domain="risk data" data-team="atlas" data-status="watch" data-search="credit underwriting applications risk score">
-          <div class="overviewCard__icon"><i class="fas fa-balance-scale"></i></div>
-          <div class="overviewCard__info">1,243</div>
-          <div class="overviewCard__description">Credit applications today</div>
-        </article>
-      </a>
-
-      <a href="fraud-risk.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard cinnabar" data-filterable="card" data-domain="risk" data-team="atlas" data-status="critical" data-search="fraud risk investigations cases">
-          <div class="overviewCard__icon"><i class="fas fa-shield-alt"></i></div>
-          <div class="overviewCard__info">127</div>
-          <div class="overviewCard__description">Fraud cases under review</div>
-        </article>
-      </a>
-
-      <a href="servicing-cexp.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard amethyst" data-filterable="card" data-domain="cx" data-team="pulse" data-status="healthy" data-search="customer experience servicing satisfaction">
-          <div class="overviewCard__icon"><i class="fas fa-user-friends"></i></div>
-          <div class="overviewCard__info">94%</div>
-          <div class="overviewCard__description">Customer satisfaction score</div>
-        </article>
-      </a>
-
-      <a href="compliance-matrix.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard jungle-green" data-filterable="card" data-domain="risk" data-team="ledger" data-status="watch" data-search="compliance matrix audit policy">
-          <div class="overviewCard__icon"><i class="fas fa-clipboard-list"></i></div>
-          <div class="overviewCard__info">96%</div>
-          <div class="overviewCard__description">Organization compliance health</div>
-        </article>
-      </a>
-
-      <a href="data-analytics.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard zest" data-filterable="card" data-domain="data" data-team="ledger" data-status="healthy" data-search="data analytics pipelines workflows">
-          <div class="overviewCard__icon"><i class="fas fa-project-diagram"></i></div>
-          <div class="overviewCard__info">42</div>
-          <div class="overviewCard__description">Active data pipelines</div>
-        </article>
-      </a>
-
-      <a href="creative-house.html" style="text-decoration: none; color: inherit;">
-        <article class="overviewCard java" data-filterable="card" data-domain="cx data" data-team="pulse" data-status="healthy" data-search="creative house content video">
-          <div class="overviewCard__icon"><i class="fas fa-video"></i></div>
-          <div class="overviewCard__info">8.4K</div>
-          <div class="overviewCard__description">Monthly stream views</div>
-        </article>
-      </a>
-    </div>
+    <div class="main-overview" data-filter-section id="overview-cards"></div>
 
     <div class="search-empty" id="search-empty">
       No results found. Try refining your search or clear the query.
@@ -1659,53 +1588,7 @@
         </div>
         <a class="snippet-link" href="compliance-matrix.html">View compliance queue</a>
       </div>
-      <div class="action-grid">
-        <article class="action-card" data-filterable="card" data-domain="collections" data-team="nova" data-priority="high" data-status="watch" data-search="collections escalation sla breach">
-          <div class="action-card__title"><i class="fas fa-bolt"></i>Collections escalation</div>
-          <div class="card-tags">
-            <span class="card-tag card-tag--risk">SLA risk</span>
-            <span class="card-tag card-tag--ops">Collections</span>
-          </div>
-          <div class="action-card__meta">
-            <span><i class="fas fa-user"></i>Owner: Ava R.</span>
-            <span><i class="fas fa-clock"></i>Due in 90 min</span>
-          </div>
-          <div class="action-card__footer">
-            <span>8 accounts need approval</span>
-            <a class="action-card__cta" href="collections-toolkit.html">Open queue</a>
-          </div>
-        </article>
-        <article class="action-card" data-filterable="card" data-domain="risk" data-team="atlas" data-priority="high" data-status="critical" data-search="fraud risk review alert">
-          <div class="action-card__title"><i class="fas fa-shield-alt"></i>Fraud review backlog</div>
-          <div class="card-tags">
-            <span class="card-tag card-tag--critical">High risk</span>
-            <span class="card-tag card-tag--risk">Fraud</span>
-          </div>
-          <div class="action-card__meta">
-            <span><i class="fas fa-layer-group"></i>14 cases pending</span>
-            <span><i class="fas fa-chart-line"></i>Risk +9% WoW</span>
-          </div>
-          <div class="action-card__footer">
-            <span>Auto-triage running</span>
-            <a class="action-card__cta" href="fraud-risk.html">View cases</a>
-          </div>
-        </article>
-        <article class="action-card" data-filterable="card" data-domain="cx" data-team="pulse" data-priority="medium" data-status="healthy" data-search="servicing cexp survey">
-          <div class="action-card__title"><i class="fas fa-headset"></i>CEXP outreach</div>
-          <div class="card-tags">
-            <span class="card-tag card-tag--success">CX</span>
-            <span class="card-tag card-tag--ops">Survey</span>
-          </div>
-          <div class="action-card__meta">
-            <span><i class="fas fa-inbox"></i>32 surveys awaiting send</span>
-            <span><i class="fas fa-star"></i>CSAT goal 95%</span>
-          </div>
-          <div class="action-card__footer">
-            <span>Targeted segment ready</span>
-            <a class="action-card__cta" href="servicing-cexp.html">Launch wave</a>
-          </div>
-        </article>
-      </div>
+      <div class="action-grid" id="action-cards"></div>
     </section>
 
     <section class="analytics-section" data-filter-section>
@@ -2167,7 +2050,7 @@
     const searchInput = document.querySelector('.search__input');
     const searchEmpty = document.getElementById('search-empty');
     const filterControls = document.querySelectorAll('[data-filter-control]');
-    const filterableCards = document.querySelectorAll('[data-filterable="card"]');
+    let filterableCards = document.querySelectorAll('[data-filterable="card"]');
     const filterSections = document.querySelectorAll('[data-filter-section]');
     const resetFilters = document.getElementById('reset-filters');
     const filterCount = document.getElementById('filter-count');
@@ -2179,6 +2062,139 @@
     const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
     const clearNotifications = document.getElementById('clear-notifications');
     const savedViewButtons = document.querySelectorAll('.chip-pill[data-view]');
+    const statusBanner = document.getElementById('status-banner');
+    const overviewCardsContainer = document.getElementById('overview-cards');
+    const actionCardsContainer = document.getElementById('action-cards');
+
+    const createStatusCard = (card) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'status-card';
+
+      const title = document.createElement('div');
+      title.className = 'status-card__title';
+      title.textContent = card.title;
+
+      const value = document.createElement('div');
+      value.className = 'status-card__value';
+      value.textContent = card.value;
+
+      const meta = document.createElement('div');
+      meta.className = 'status-card__meta';
+      meta.innerHTML = `<i class="${card.icon}"></i>${card.meta}`;
+
+      wrapper.append(title, value, meta);
+      return wrapper;
+    };
+
+    const createOverviewCard = (card) => {
+      const link = document.createElement('a');
+      link.href = card.href;
+      link.style.textDecoration = 'none';
+      link.style.color = 'inherit';
+
+      const article = document.createElement('article');
+      article.className = `overviewCard ${card.colorClass}`;
+      article.dataset.filterable = 'card';
+      article.dataset.domain = card.filters.domain;
+      article.dataset.team = card.filters.team;
+      article.dataset.status = card.filters.status;
+      article.dataset.search = card.filters.search;
+
+      const icon = document.createElement('div');
+      icon.className = 'overviewCard__icon';
+      icon.innerHTML = `<i class="${card.icon}"></i>`;
+
+      const info = document.createElement('div');
+      info.className = 'overviewCard__info';
+      info.textContent = card.value;
+
+      const description = document.createElement('div');
+      description.className = 'overviewCard__description';
+      description.textContent = card.description;
+
+      article.append(icon, info, description);
+      link.appendChild(article);
+      return link;
+    };
+
+    const createActionCard = (card) => {
+      const article = document.createElement('article');
+      article.className = 'action-card';
+      article.dataset.filterable = 'card';
+      article.dataset.domain = card.filters.domain;
+      article.dataset.team = card.filters.team;
+      article.dataset.priority = card.filters.priority;
+      article.dataset.status = card.filters.status;
+      article.dataset.search = card.filters.search;
+
+      const title = document.createElement('div');
+      title.className = 'action-card__title';
+      title.innerHTML = `<i class="${card.icon}"></i>${card.title}`;
+
+      const tags = document.createElement('div');
+      tags.className = 'card-tags';
+      tags.innerHTML = card.tags
+        .map((tag) => `<span class="card-tag ${tag.className}">${tag.label}</span>`)
+        .join('');
+
+      const meta = document.createElement('div');
+      meta.className = 'action-card__meta';
+      meta.innerHTML = card.meta
+        .map((item) => `<span><i class="${item.icon}"></i>${item.label}</span>`)
+        .join('');
+
+      const footer = document.createElement('div');
+      footer.className = 'action-card__footer';
+      footer.innerHTML = `
+        <span>${card.footer.text}</span>
+        <a class="action-card__cta" href="${card.footer.href}">${card.footer.cta}</a>
+      `;
+
+      article.append(title, tags, meta, footer);
+      return article;
+    };
+
+    const loadDashboardData = async () => {
+      if (!statusBanner || !overviewCardsContainer || !actionCardsContainer) {
+        return;
+      }
+
+      try {
+        const response = await fetch('../assets/data/dashboard-data.json');
+        if (!response.ok) {
+          throw new Error('Unable to load dashboard data.');
+        }
+        const data = await response.json();
+
+        statusBanner.innerHTML = '';
+        data.statusBanner.forEach((card) => {
+          statusBanner.appendChild(createStatusCard(card));
+        });
+
+        overviewCardsContainer.innerHTML = '';
+        data.overviewCards.forEach((card) => {
+          overviewCardsContainer.appendChild(createOverviewCard(card));
+        });
+
+        actionCardsContainer.innerHTML = '';
+        data.actionCards.forEach((card) => {
+          actionCardsContainer.appendChild(createActionCard(card));
+        });
+
+        filterableCards = document.querySelectorAll('[data-filterable="card"]');
+        applyFilters();
+      } catch (error) {
+        statusBanner.innerHTML = '';
+        const fallback = document.createElement('div');
+        fallback.className = 'status-card';
+        fallback.innerHTML = `
+          <div class="status-card__title">Dashboard data unavailable</div>
+          <div class="status-card__value">Offline</div>
+          <div class="status-card__meta"><i class="fas fa-exclamation-circle"></i>Using cached layout</div>
+        `;
+        statusBanner.appendChild(fallback);
+      }
+    };
 
     menuBtn.addEventListener('click', () => {
       sidenav.classList.add('sidenav--show');
@@ -2413,6 +2429,7 @@
       });
     }
 
+    loadDashboardData();
     applyFilters();
   </script>
 </body>
