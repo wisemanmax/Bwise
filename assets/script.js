@@ -1020,6 +1020,144 @@ class PlatformLab {
 }
 
 // ============================================================================
+// LEARNING LIBRARY
+// ============================================================================
+
+class LearningLibrary {
+  constructor(section) {
+    this.section = section;
+    this.track = section.dataset.libraryTrack;
+    this.source = section.dataset.librarySource || '../assets/data/learning-library.json';
+    this.searchInput = safeQuery('[data-library-search]', section);
+    this.levelFilter = safeQuery('[data-library-filter]', section);
+    this.grid = safeQuery('[data-library-grid]', section);
+    this.countLabel = safeQuery('[data-library-count]', section);
+    this.loadMoreButton = safeQuery('[data-library-more]', section);
+    this.visibleCount = 12;
+    this.items = [];
+    this.filteredItems = [];
+  }
+
+  async init() {
+    if (!this.track || !this.grid) return;
+
+    try {
+      this.items = await LearningLibrary.loadData(this.source);
+      this.filteredItems = this.items.filter(item => item.track === this.track);
+      this.applyFilters();
+      this.bindEvents();
+    } catch (error) {
+      console.error('Learning library failed to load', error);
+      if (this.grid) {
+        this.grid.innerHTML = '<p class="library-empty">Unable to load library data.</p>';
+      }
+    }
+  }
+
+  static async loadData(source) {
+    if (!LearningLibrary.cache) {
+      LearningLibrary.cache = {};
+    }
+    if (LearningLibrary.cache[source]) {
+      return LearningLibrary.cache[source];
+    }
+    const response = await fetch(source);
+    if (!response.ok) {
+      throw new Error(`Library fetch failed: ${response.status}`);
+    }
+    const data = await response.json();
+    LearningLibrary.cache[source] = data;
+    return data;
+  }
+
+  bindEvents() {
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', debounce(() => {
+        this.visibleCount = 12;
+        this.applyFilters();
+      }, 200));
+    }
+
+    if (this.levelFilter) {
+      this.levelFilter.addEventListener('change', () => {
+        this.visibleCount = 12;
+        this.applyFilters();
+      });
+    }
+
+    if (this.loadMoreButton) {
+      this.loadMoreButton.addEventListener('click', () => {
+        this.visibleCount += 12;
+        this.render();
+      });
+    }
+  }
+
+  applyFilters() {
+    const query = this.searchInput ? this.searchInput.value.trim().toLowerCase() : '';
+    const level = this.levelFilter ? this.levelFilter.value : 'all';
+    this.filteredItems = this.items.filter(item => {
+      if (item.track !== this.track) return false;
+      const matchesLevel = level === 'all' || item.level === level;
+      const haystack = `${item.title} ${item.summary} ${item.focus} ${(item.tags || []).join(' ')}`.toLowerCase();
+      const matchesQuery = !query || haystack.includes(query);
+      return matchesLevel && matchesQuery;
+    });
+
+    this.render();
+  }
+
+  render() {
+    if (!this.grid) return;
+    this.grid.innerHTML = '';
+
+    const fragment = document.createDocumentFragment();
+    const visibleItems = this.filteredItems.slice(0, this.visibleCount);
+
+    visibleItems.forEach(item => {
+      const card = document.createElement('article');
+      card.className = 'library-card';
+      card.innerHTML = `
+        <div class="library-card__header">
+          <span class="library-card__track">${item.track.toUpperCase()}</span>
+          <span class="library-card__level">${item.level}</span>
+        </div>
+        <h3 class="library-card__title">${item.title}</h3>
+        <p class="library-card__summary">${item.summary}</p>
+        <div class="library-card__meta">
+          <span>${item.duration}</span>
+          <span>${item.focus}</span>
+        </div>
+        <div class="library-card__tags">
+          ${(item.tags || []).map(tag => `<span class="library-tag">${tag}</span>`).join('')}
+        </div>
+      `;
+      fragment.appendChild(card);
+    });
+
+    if (visibleItems.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'library-empty';
+      empty.textContent = 'No modules match your filters yet.';
+      fragment.appendChild(empty);
+    }
+
+    this.grid.appendChild(fragment);
+
+    if (this.countLabel) {
+      this.countLabel.textContent = `${this.filteredItems.length.toLocaleString()} modules available`;
+    }
+
+    if (this.loadMoreButton) {
+      this.loadMoreButton.disabled = this.visibleCount >= this.filteredItems.length;
+      this.loadMoreButton.textContent = this.loadMoreButton.disabled ? 'All modules loaded' : 'Load more modules';
+    }
+  }
+}
+
+LearningLibrary.cache = null;
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -1042,6 +1180,12 @@ function init() {
 
     // Initialize platform lab interactions
     new PlatformLab();
+
+    // Initialize learning library sections
+    safeQueryAll('[data-library-track]').forEach(section => {
+      const library = new LearningLibrary(section);
+      library.init();
+    });
 
     // Monitor performance (development only)
     if (window.location.hostname === 'localhost') {
