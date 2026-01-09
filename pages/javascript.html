@@ -234,6 +234,36 @@ form.addEventListener("submit", event =&gt; {
             </div>
         </section>
 
+        <section aria-labelledby="js-library-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="js-library-title" class="section-title">JavaScript delivery library</h2>
+                <p class="section-subtitle">
+                    Browse a curated library of interaction playbooks, QA-ready checklists, and delivery templates.
+                </p>
+            </div>
+
+            <div class="learning-library" data-library-track="javascript" data-library-source="../assets/data/learning-library.json">
+                <div class="library-controls">
+                    <label class="library-search">
+                        <span class="sr-only">Search JavaScript modules</span>
+                        <input type="search" placeholder="Search interactions, state patterns, and UI logic" data-library-search />
+                    </label>
+                    <label class="library-filter">
+                        <span class="sr-only">Filter by level</span>
+                        <select data-library-filter>
+                            <option value="all">All levels</option>
+                            <option value="Foundations">Foundations</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="library-meta" data-library-count>Loading modules...</div>
+                <div class="library-grid" data-library-grid></div>
+                <button class="library-more" type="button" data-library-more>Load more modules</button>
+            </div>
+        </section>
+
     </main>
     <footer>
         <p>Byheir Wise · Lead Business Execution Consultant</p>
