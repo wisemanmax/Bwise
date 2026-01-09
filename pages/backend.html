@@ -4,15 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backend and APIs · Byheir Wise</title>
-    <meta name="description" content="Backend and APIs from Byheir Wise, highlighting workflows, metrics, and operational insights in a fully static showcase.">
-    <meta property="og:title" content="Backend and APIs · Byheir Wise">
-    <meta property="og:description" content="Backend and APIs from Byheir Wise, highlighting workflows, metrics, and operational insights in a fully static showcase.">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Backend and APIs · Byheir Wise">
-    <meta name="twitter:description" content="Backend and APIs from Byheir Wise, highlighting workflows, metrics, and operational insights in a fully static showcase.">
     <link rel="stylesheet" href="../assets/style.css">
-    <link rel="stylesheet" href="../assets/fontawesome-fallback.css">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -70,30 +62,31 @@
                 <div class="dashboard-grid">
                     <div class="metric-card" data-showcase-kpi data-kpi-key="services">
                         <div class="metric-label">Active services</div>
-                        <div class="metric-value">—</div>
-                        <div class="metric-change">Loading updates from live data.</div>
+                        <div class="metric-value">12</div>
+                        <div class="metric-change">Versioned APIs, jobs, and reporting endpoints</div>
                     </div>
                     <div class="metric-card" data-showcase-kpi data-kpi-key="coverage">
                         <div class="metric-label">Test coverage</div>
-                        <div class="metric-value">—</div>
-                        <div class="metric-change">Loading updates from live data.</div>
+                        <div class="metric-value">92%</div>
+                        <div class="metric-change">Unit + integration suites with quality gates</div>
                     </div>
                     <div class="metric-card" data-showcase-kpi data-kpi-key="latency">
                         <div class="metric-label">API p95 latency</div>
-                        <div class="metric-value">—</div>
-                        <div class="metric-change">Loading updates from live data.</div>
+                        <div class="metric-value">180ms</div>
+                        <div class="metric-change">Optimized queries + caching strategy</div>
                     </div>
                     <div class="metric-card" data-showcase-kpi data-kpi-key="compliance">
                         <div class="metric-label">Audit readiness</div>
-                        <div class="metric-value">—</div>
-                        <div class="metric-change">Loading updates from live data.</div>
+                        <div class="metric-value">99%</div>
+                        <div class="metric-change">Secure logging, masking, and evidence trails</div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h3 class="card-title">Current focus</h3>
                     <p data-showcase-summary>
-                        Loading the latest system summary.
+                        Multi-system view: backend APIs, analytics pipelines, admin tooling, and compliance controls
+                        aligned to internal SLAs and regulatory audit expectations.
                     </p>
                     <ul class="achievement-list">
                         <li>Versioned APIs with role-based authorization, input validation, and structured logging.</li>
@@ -106,7 +99,11 @@
 
                 <div class="card">
                     <h3 class="card-title">Real-time log stream (simulated)</h3>
-                    <pre class="code-block" data-log-stream><code>Loading log stream...</code></pre>
+                    <pre class="code-block" data-log-stream><code>[2025-01-08 10:11:32Z] api.v1.qa-scores POST 201 (Auth=Required, Trace=8f3a...)
+[2025-01-08 10:11:33Z] jobs.qa-score-rollup SUCCESS duration=842ms
+[2025-01-08 10:11:34Z] sql.reporting VIEW REFRESHED (QaScoresDaily)
+[2025-01-08 10:11:36Z] audit.user-role UPDATE user=ops_admin role=ComplianceLead
+[2025-01-08 10:11:40Z] security.masking PII redaction applied fields=SSN,DOB</code></pre>
                 </div>
             </div>
         </section>
@@ -447,7 +444,10 @@ public async Task&lt;IActionResult&gt; UpdateRoles(string userId, RoleUpdateRequ
 VALUES (
     'QaScoreForm', 'qa-scorecard-v4', 'UPDATE', @userId, SYSUTCDATETIME(), @detailJson);</code></pre>
                     <p>Recent audit trail entries:</p>
-                    <pre class="code-block"><code data-audit-log>Loading audit log...</code></pre>
+                    <pre class="code-block"><code data-audit-log>
+[2025-01-08 09:02] jlee updated form qa-scorecard-v4 (sections=2, questions=6)
+[2025-01-08 09:11] kpatel updated role compliance_lead (added audit.write)
+[2025-01-08 09:21] mrobinson toggled feature flag new-qa-dashboard ON</code></pre>
                 </article>
 
                 <article class="card" data-showcase-tag="enterprise,devops">
