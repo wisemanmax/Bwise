@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Sign In · Byheir Wise</title>
+    <meta name="description" content="Secure login portal for the Byheir Wise operations dashboard.">
+    <meta property="og:title" content="Secure Sign In · Byheir Wise">
+    <meta property="og:description" content="Secure login portal for the Byheir Wise operations dashboard.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Secure Sign In · Byheir Wise">
+    <meta name="twitter:description" content="Secure login portal for the Byheir Wise operations dashboard.">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/fontawesome-fallback.css">
+</head>
+<body class="login-body">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <nav class="top-nav" aria-label="Main navigation">
+            <div class="logo">Byheir Wise</div>
+            <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
+                ☰
+            </button>
+            <ul class="nav-menu" id="primary-navigation">
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#experience">Experience</a></li>
+                <li><a href="../index.html#skills">Skills</a></li>
+                <li><a href="../index.html#demo">Portfolio</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+                <li><a href="html.html">HTML</a></li>
+                <li><a href="css.html">CSS</a></li>
+                <li><a href="javascript.html">JavaScript</a></li>
+                <li><a href="backend.html">Backend</a></li>
+                <li><a href="cicd.html">CI/CD</a></li>
+                <li><a href="login.html" aria-current="page">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main" class="login-main">
+        <section class="login-card" aria-labelledby="login-title">
+            <div class="login-header">
+                <div class="login-eyebrow">Secure access portal</div>
+                <h1 id="login-title">Operations Dashboard Login</h1>
+                <p class="login-subtitle">
+                    Authenticate to reach the live operations command center. All credentials are accepted in this static demo.
+                </p>
+            </div>
+
+            <form class="login-form" id="login-form">
+                <div class="login-field">
+                    <label for="login-email">Work email</label>
+                    <input id="login-email" name="email" type="email" placeholder="you@company.com" autocomplete="username" required>
+                </div>
+                <div class="login-field">
+                    <label for="login-password">Password</label>
+                    <input id="login-password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" aria-describedby="login-hint" required>
+                    <p class="login-hint" id="login-hint">Static login: any username and password works.</p>
+                </div>
+                <button class="login-button" type="submit">Sign in to dashboard</button>
+
+                <div class="login-meta">
+                    <div>
+                        <span class="login-meta__label">Security</span>
+                        <span>End-to-end encryption enabled</span>
+                    </div>
+                    <div>
+                        <span class="login-meta__label">Session</span>
+                        <span>Token refresh every 15 minutes</span>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <div class="login-overlay" id="login-overlay" aria-hidden="true">
+        <div class="login-overlay__card" role="status" aria-live="polite">
+            <div class="login-spinner" aria-hidden="true"></div>
+            <div class="login-success-icon" aria-hidden="true">✓</div>
+            <div class="login-overlay__title" id="login-overlay-title">Sending credentials...</div>
+            <div class="login-overlay__message" id="login-overlay-message">
+                Pushing your credentials through the secure gateway.
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/script.js"></script>
+    <script>
+        const loginForm = document.querySelector('#login-form');
+        const loginOverlay = document.querySelector('#login-overlay');
+        const overlayTitle = document.querySelector('#login-overlay-title');
+        const overlayMessage = document.querySelector('#login-overlay-message');
+
+        if (loginForm && loginOverlay && overlayTitle && overlayMessage) {
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                loginOverlay.classList.add('is-visible');
+                loginOverlay.setAttribute('aria-hidden', 'false');
+
+                const inputs = loginForm.querySelectorAll('input, button');
+                inputs.forEach((input) => {
+                    input.disabled = true;
+                });
+
+                overlayTitle.textContent = 'Sending credentials...';
+                overlayMessage.textContent = 'Pushing your credentials through the secure gateway.';
+
+                setTimeout(() => {
+                    overlayTitle.textContent = 'Validating access';
+                    overlayMessage.textContent = 'Checking identity provider, device posture, and MFA status.';
+                }, 900);
+
+                setTimeout(() => {
+                    overlayTitle.textContent = 'Establishing session';
+                    overlayMessage.textContent = 'Provisioning dashboard access tokens and workspace roles.';
+                }, 1800);
+
+                setTimeout(() => {
+                    loginOverlay.classList.add('is-success');
+                    overlayTitle.textContent = 'Log in successful';
+                    overlayMessage.textContent = 'Redirecting you to the operations dashboard.';
+                }, 2700);
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 3600);
+            });
+        }
+    </script>
+</body>
+</html>
