@@ -750,10 +750,10 @@
                     <div class="login-divider">or continue with</div>
 
                     <div class="sso-buttons">
-                        <button type="button" class="sso-btn" onclick="document.getElementById('login-form').requestSubmit()">
+                        <button type="button" class="sso-btn" data-provider="SSO">
                             <span>🏢</span> SSO
                         </button>
-                        <button type="button" class="sso-btn" onclick="document.getElementById('login-form').requestSubmit()">
+                        <button type="button" class="sso-btn" data-provider="Okta">
                             <span>🔐</span> Okta
                         </button>
                     </div>
@@ -826,6 +826,53 @@
         const overlayTitle = document.getElementById('login-overlay-title');
         const overlayMessage = document.getElementById('login-overlay-message');
         const progressDots = document.querySelectorAll('.progress-dot');
+        const ssoButtons = document.querySelectorAll('.sso-btn');
+        let loginInProgress = false;
+
+        function startLoginFlow(options = {}) {
+            if (loginInProgress || !loginForm || !loginOverlay) return;
+            loginInProgress = true;
+
+            const provider = options.provider;
+            const headerPrefix = provider ? `Connecting to ${provider}...` : 'Sending credentials...';
+            const messagePrefix = provider
+                ? `Redirecting you to ${provider} for secure sign-in.`
+                : 'Establishing secure connection to authentication gateway.';
+
+            loginOverlay.classList.remove('is-success');
+            loginOverlay.classList.add('is-visible');
+            loginOverlay.setAttribute('aria-hidden', 'false');
+
+            const inputs = loginForm.querySelectorAll('input, button');
+            inputs.forEach((input) => input.disabled = true);
+
+            overlayTitle.textContent = headerPrefix;
+            overlayMessage.textContent = messagePrefix;
+            updateProgress(1);
+
+            setTimeout(() => {
+                overlayTitle.textContent = 'Validating access...';
+                overlayMessage.textContent = 'Checking identity provider, device posture, and MFA status.';
+                updateProgress(2);
+            }, 1000);
+
+            setTimeout(() => {
+                overlayTitle.textContent = 'Establishing session...';
+                overlayMessage.textContent = 'Provisioning dashboard tokens and workspace permissions.';
+                updateProgress(3);
+            }, 2000);
+
+            setTimeout(() => {
+                loginOverlay.classList.add('is-success');
+                overlayTitle.textContent = 'Authentication successful!';
+                overlayMessage.textContent = 'Redirecting you to the operations dashboard...';
+                updateProgress(4);
+            }, 3000);
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 4000);
+        }
 
         function updateProgress(step) {
             progressDots.forEach((dot, index) => {
@@ -841,46 +888,20 @@
         if (loginForm && loginOverlay && overlayTitle && overlayMessage) {
             loginForm.addEventListener('submit', (event) => {
                 event.preventDefault();
-                
-                // Show overlay
-                loginOverlay.classList.add('is-visible');
-                loginOverlay.setAttribute('aria-hidden', 'false');
 
-                // Disable form
-                const inputs = loginForm.querySelectorAll('input, button');
-                inputs.forEach((input) => input.disabled = true);
+                if (!loginForm.checkValidity()) {
+                    loginForm.reportValidity();
+                    return;
+                }
 
-                // Step 1: Sending
-                overlayTitle.textContent = 'Sending credentials...';
-                overlayMessage.textContent = 'Establishing secure connection to authentication gateway.';
-                updateProgress(1);
+                startLoginFlow();
+            });
 
-                // Step 2: Validating
-                setTimeout(() => {
-                    overlayTitle.textContent = 'Validating access...';
-                    overlayMessage.textContent = 'Checking identity provider, device posture, and MFA status.';
-                    updateProgress(2);
-                }, 1000);
-
-                // Step 3: Provisioning
-                setTimeout(() => {
-                    overlayTitle.textContent = 'Establishing session...';
-                    overlayMessage.textContent = 'Provisioning dashboard tokens and workspace permissions.';
-                    updateProgress(3);
-                }, 2000);
-
-                // Step 4: Success
-                setTimeout(() => {
-                    loginOverlay.classList.add('is-success');
-                    overlayTitle.textContent = 'Authentication successful!';
-                    overlayMessage.textContent = 'Redirecting you to the operations dashboard...';
-                    updateProgress(4);
-                }, 3000);
-
-                // Redirect
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 4000);
+            ssoButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const provider = button.dataset.provider || 'SSO';
+                    startLoginFlow({ provider });
+                });
             });
         }
 
