@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../assets/style.css">
     <style>
         /* ============================================================================
-           ENHANCED LOGIN PAGE STYLES
+           ENHANCED WIDE LOGIN PAGE STYLES
            ============================================================================ */
         
         .login-body {
@@ -140,12 +140,13 @@
             justify-content: center;
             flex: 1;
             min-height: 0;
-            padding: var(--space-2xl) var(--pad-x);
+            padding: var(--space-xl) var(--pad-x);
         }
 
-        /* Login Card */
+        /* Login Card - Now Much Wider */
         .login-card {
-            width: min(480px, 100%);
+            width: min(1200px, 95%);
+            max-width: 1200px;
             position: relative;
         }
 
@@ -153,13 +154,17 @@
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(24px);
             border-radius: 24px;
-            padding: clamp(28px, 5vw, 44px);
+            padding: clamp(32px, 4vw, 56px);
             border: 1px solid rgba(102, 126, 234, 0.2);
             box-shadow: 
                 0 0 0 1px rgba(255, 255, 255, 0.05) inset,
                 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(32px, 5vw, 64px);
+            align-items: center;
         }
 
         /* Card Glow Effect */
@@ -194,7 +199,7 @@
         .corner-line-tl {
             top: -1px;
             left: 20px;
-            width: 60px;
+            width: 80px;
             height: 2px;
             border-radius: 0 0 2px 2px;
         }
@@ -205,7 +210,7 @@
             top: 0;
             left: 0;
             width: 2px;
-            height: 60px;
+            height: 80px;
             background: inherit;
             border-radius: 0 2px 2px 0;
         }
@@ -213,7 +218,7 @@
         .corner-line-br {
             bottom: -1px;
             right: 20px;
-            width: 60px;
+            width: 80px;
             height: 2px;
             border-radius: 2px 2px 0 0;
         }
@@ -224,82 +229,117 @@
             bottom: 0;
             right: 0;
             width: 2px;
-            height: 60px;
+            height: 80px;
             background: inherit;
             border-radius: 2px 0 0 2px;
         }
 
-        /* Header Section */
-        .login-header {
-            text-align: center;
-            margin-bottom: var(--space-xl);
+        /* Left Column - Branding */
+        .login-branding {
             position: relative;
             z-index: 1;
+            padding-right: var(--space-xl);
         }
 
         .login-icon {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto var(--space-lg);
+            width: 96px;
+            height: 96px;
+            margin-bottom: var(--space-xl);
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
             border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 20px;
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             animation: iconPulse 2s ease-in-out infinite;
         }
 
         @keyframes iconPulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
-            50% { box-shadow: 0 0 0 12px rgba(102, 126, 234, 0); }
+            50% { box-shadow: 0 0 0 16px rgba(102, 126, 234, 0); }
         }
 
         .login-eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 50px;
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid rgba(56, 189, 248, 0.2);
             color: #7dd3fc;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space-lg);
         }
 
         .login-eyebrow::before {
             content: '🔐';
-            font-size: 0.875rem;
+            font-size: 1rem;
         }
 
-        .login-header h1 {
+        .login-branding h1 {
             color: #f8fafc;
-            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
             font-weight: 700;
-            margin-bottom: var(--space-sm);
+            margin-bottom: var(--space-md);
             background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.2;
         }
 
         .login-subtitle {
             color: #94a3b8;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: var(--space-xl);
+        }
+
+        /* Stats in Branding Column */
+        .login-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .login-stat {
+            text-align: left;
+        }
+
+        .login-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .login-stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Right Column - Form */
+        .login-form-wrapper {
+            position: relative;
+            z-index: 1;
         }
 
         /* Form Styles */
         .login-form {
             display: grid;
             gap: var(--space-lg);
-            position: relative;
-            z-index: 1;
         }
 
         .login-field {
@@ -325,7 +365,7 @@
 
         .login-field input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 16px 18px;
             border-radius: 12px;
             border: 1px solid rgba(148, 163, 184, 0.2);
             background: rgba(15, 23, 42, 0.6);
@@ -364,11 +404,11 @@
         /* Submit Button */
         .login-button {
             position: relative;
-            padding: 16px 24px;
+            padding: 18px 28px;
             border-radius: 12px;
             border: none;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: #0f172a;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #a855f7 100%);
             background-size: 200% 200%;
@@ -376,6 +416,7 @@
             overflow: hidden;
             transition: all 0.3s ease;
             animation: gradientShift 4s ease infinite;
+            margin-top: var(--space-sm);
         }
 
         @keyframes gradientShift {
@@ -413,47 +454,6 @@
             transform: none;
         }
 
-        /* Security Info */
-        .login-security {
-            display: grid;
-            gap: var(--space-sm);
-            padding: var(--space-md);
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            border-radius: 12px;
-            margin-top: var(--space-sm);
-        }
-
-        .security-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }
-
-        .security-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.875rem;
-            flex-shrink: 0;
-        }
-
-        .security-item strong {
-            color: #e2e8f0;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            display: block;
-            margin-bottom: 2px;
-        }
-
         /* Divider */
         .login-divider {
             display: flex;
@@ -461,7 +461,7 @@
             gap: var(--space-md);
             color: #475569;
             font-size: 0.8rem;
-            margin: var(--space-sm) 0;
+            margin: var(--space-md) 0;
         }
 
         .login-divider::before,
@@ -476,20 +476,20 @@
         .sso-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: var(--space-sm);
+            gap: var(--space-md);
         }
 
         .sso-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 12px 16px;
+            gap: 10px;
+            padding: 14px 20px;
             border-radius: 10px;
             border: 1px solid rgba(148, 163, 184, 0.2);
             background: rgba(15, 23, 42, 0.4);
             color: #e2e8f0;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
@@ -502,36 +502,48 @@
         }
 
         .sso-btn span {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
-        /* Stats Bar */
-        .login-stats {
+        /* Security Info */
+        .login-security {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
             gap: var(--space-sm);
-            margin-top: var(--space-xl);
-            padding-top: var(--space-lg);
-            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            padding: var(--space-lg);
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 12px;
+            margin-top: var(--space-lg);
         }
 
-        .login-stat {
-            text-align: center;
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: #94a3b8;
         }
 
-        .login-stat-value {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #667eea;
-            font-family: "SFMono-Regular", Consolas, monospace;
+        .security-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
         }
 
-        .login-stat-label {
-            font-size: 0.7rem;
-            color: #64748b;
+        .security-item strong {
+            color: #e2e8f0;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: 4px;
+            display: block;
+            margin-bottom: 2px;
         }
 
         /* Loading Overlay */
@@ -641,6 +653,31 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .login-card-inner {
+                grid-template-columns: 1fr;
+                gap: var(--space-2xl);
+            }
+
+            .login-branding {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .login-icon {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .login-stats {
+                text-align: center;
+            }
+
+            .login-stat {
+                text-align: center;
+            }
+        }
+
         @media (max-width: 600px) {
             .login-main {
                 padding: var(--space-lg) var(--space-md);
@@ -709,97 +746,102 @@
                 <div class="corner-line corner-line-tl"></div>
                 <div class="corner-line corner-line-br"></div>
 
-                <div class="login-header">
+                <!-- Left Column: Branding -->
+                <div class="login-branding">
                     <div class="login-icon">🛡️</div>
                     <div class="login-eyebrow">Secure Access Portal</div>
                     <h1 id="login-title">Operations Dashboard</h1>
                     <p class="login-subtitle">
                         Authenticate to access the live operations command center. 
-                        All credentials are accepted in this demo environment.
+                        All credentials are accepted in this demo environment for 
+                        exploration and testing purposes.
                     </p>
-                </div>
-
-                <form class="login-form" id="login-form">
-                    <div class="login-field">
-                        <label for="login-email">Work Email</label>
-                        <input 
-                            id="login-email" 
-                            name="email" 
-                            type="email" 
-                            placeholder="you@company.com" 
-                            autocomplete="username" 
-                            required
-                        >
-                    </div>
-                    
-                    <div class="login-field">
-                        <label for="login-password">Password</label>
-                        <input 
-                            id="login-password" 
-                            name="password" 
-                            type="password" 
-                            placeholder="Enter your password" 
-                            autocomplete="current-password" 
-                            aria-describedby="login-hint" 
-                            required
-                        >
-                        <p class="login-hint" id="login-hint">Demo mode: any credentials will work</p>
-                    </div>
-
-                    <button class="login-button" type="submit">
-                        Sign in to Dashboard
-                    </button>
-
-                    <div class="login-divider">or continue with</div>
-
-                    <div class="sso-buttons">
-                        <button type="button" class="sso-btn" data-provider="SSO">
-                            <span>🏢</span> SSO
-                        </button>
-                        <button type="button" class="sso-btn" data-provider="Okta">
-                            <span>🔐</span> Okta
-                        </button>
-                    </div>
-
-                    <div class="login-security">
-                        <div class="security-item">
-                            <div class="security-icon">🔒</div>
-                            <div>
-                                <strong>Encryption</strong>
-                                End-to-end TLS 1.3 secured
-                            </div>
-                        </div>
-                        <div class="security-item">
-                            <div class="security-icon">⏱️</div>
-                            <div>
-                                <strong>Session</strong>
-                                Auto-refresh every 15 minutes
-                            </div>
-                        </div>
-                        <div class="security-item">
-                            <div class="security-icon">✅</div>
-                            <div>
-                                <strong>Compliance</strong>
-                                SOC 2 Type II certified
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="login-stats">
                         <div class="login-stat">
-                            <div class="login-stat-value">99.9%</div>
-                            <div class="login-stat-label">Uptime</div>
+                            <span class="login-stat-value">99.9%</span>
+                            <span class="login-stat-label">Uptime</span>
                         </div>
                         <div class="login-stat">
-                            <div class="login-stat-value">&lt;50ms</div>
-                            <div class="login-stat-label">Latency</div>
+                            <span class="login-stat-value">&lt;50ms</span>
+                            <span class="login-stat-label">Latency</span>
                         </div>
                         <div class="login-stat">
-                            <div class="login-stat-value">24/7</div>
-                            <div class="login-stat-label">Support</div>
+                            <span class="login-stat-value">24/7</span>
+                            <span class="login-stat-label">Support</span>
                         </div>
                     </div>
-                </form>
+                </div>
+
+                <!-- Right Column: Form -->
+                <div class="login-form-wrapper">
+                    <form class="login-form" id="login-form">
+                        <div class="login-field">
+                            <label for="login-email">Work Email</label>
+                            <input 
+                                id="login-email" 
+                                name="email" 
+                                type="email" 
+                                placeholder="you@company.com" 
+                                autocomplete="username" 
+                                required
+                            >
+                        </div>
+                        
+                        <div class="login-field">
+                            <label for="login-password">Password</label>
+                            <input 
+                                id="login-password" 
+                                name="password" 
+                                type="password" 
+                                placeholder="Enter your password" 
+                                autocomplete="current-password" 
+                                aria-describedby="login-hint" 
+                                required
+                            >
+                            <p class="login-hint" id="login-hint">Demo mode: any credentials will work</p>
+                        </div>
+
+                        <button class="login-button" type="submit">
+                            Sign in to Dashboard
+                        </button>
+
+                        <div class="login-divider">or continue with</div>
+
+                        <div class="sso-buttons">
+                            <button type="button" class="sso-btn" data-provider="SSO">
+                                <span>🏢</span> SSO
+                            </button>
+                            <button type="button" class="sso-btn" data-provider="Okta">
+                                <span>🔐</span> Okta
+                            </button>
+                        </div>
+
+                        <div class="login-security">
+                            <div class="security-item">
+                                <div class="security-icon">🔒</div>
+                                <div>
+                                    <strong>Encryption</strong>
+                                    End-to-end TLS 1.3 secured
+                                </div>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-icon">⏱️</div>
+                                <div>
+                                    <strong>Session</strong>
+                                    Auto-refresh every 15 minutes
+                                </div>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-icon">✅</div>
+                                <div>
+                                    <strong>Compliance</strong>
+                                    SOC 2 Type II certified
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
