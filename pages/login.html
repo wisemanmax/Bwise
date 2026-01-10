@@ -19,6 +19,8 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Animated Grid Background */
@@ -136,7 +138,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: calc(100vh - 80px);
+            flex: 1;
+            min-height: 0;
             padding: var(--space-2xl) var(--pad-x);
         }
 
