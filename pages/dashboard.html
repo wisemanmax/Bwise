@@ -778,6 +778,9 @@
       display: grid;
       gap: 6px;
       margin-bottom: 10px;
+      max-height: 160px;
+      overflow: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.35s ease, margin 0.35s ease, padding 0.35s ease, border-color 0.35s ease;
     }
 
     .notification-item__title {
@@ -798,7 +801,8 @@
       gap: 8px;
     }
 
-    .notification-item__actions button {
+    .notification-item__actions button,
+    .notification-item__actions a {
       border: none;
       border-radius: 8px;
       padding: 6px 10px;
@@ -806,10 +810,25 @@
       cursor: pointer;
       background: var(--white);
       border: 1px solid var(--mischka);
+      text-decoration: none;
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .notification-item.is-ack {
       opacity: 0.7;
+    }
+
+    .notification-item.is-removing {
+      opacity: 0;
+      transform: translateX(16px);
+      max-height: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-color: transparent;
     }
 
     .team-heatmap {
@@ -1320,7 +1339,7 @@
           <span>Escalate in 45 min</span>
         </div>
         <div class="notification-item__actions">
-          <button type="button">Open</button>
+          <a href="fraud-risk.html">Open</a>
           <button type="button" class="acknowledge-btn">Acknowledge</button>
         </div>
       </div>
@@ -1331,7 +1350,7 @@
           <span>Due in 1 hr 20 min</span>
         </div>
         <div class="notification-item__actions">
-          <button type="button">Review</button>
+          <a href="collections-toolkit.html">Review</a>
           <button type="button" class="acknowledge-btn">Acknowledge</button>
         </div>
       </div>
@@ -1342,7 +1361,7 @@
           <span>Latency 10 min</span>
         </div>
         <div class="notification-item__actions">
-          <button type="button">View</button>
+          <a href="data-analytics.html">View</a>
           <button type="button" class="acknowledge-btn">Acknowledge</button>
         </div>
       </div>
@@ -2060,7 +2079,6 @@
     const notificationBtn = document.querySelector('.header__notification');
     const notificationPanel = document.getElementById('notification-panel');
     const notificationFilters = document.querySelectorAll('[data-notification-filter]');
-    const notificationItems = document.querySelectorAll('[data-notification]');
     const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
     const clearNotifications = document.getElementById('clear-notifications');
     const savedViewButtons = document.querySelectorAll('.chip-pill[data-view]');
@@ -2352,6 +2370,8 @@
       });
     }
 
+    const getNotificationItems = () => Array.from(document.querySelectorAll('[data-notification]'));
+
     notificationFilters.forEach((filterBtn) => {
       filterBtn.addEventListener('click', () => {
         const filter = filterBtn.dataset.notificationFilter;
@@ -2362,7 +2382,7 @@
         filterBtn.classList.add('is-active');
         filterBtn.setAttribute('aria-pressed', 'true');
 
-        notificationItems.forEach((item) => {
+        getNotificationItems().forEach((item) => {
           const level = item.dataset.notification;
           item.style.display = filter === 'all' || level === filter ? '' : 'none';
         });
@@ -2374,13 +2394,17 @@
         const item = btn.closest('.notification-item');
         if (item) {
           item.classList.add('is-ack');
+          item.classList.add('is-removing');
+          item.addEventListener('transitionend', () => {
+            item.remove();
+          }, { once: true });
         }
       });
     });
 
     if (clearNotifications) {
       clearNotifications.addEventListener('click', () => {
-        notificationItems.forEach((item) => {
+        getNotificationItems().forEach((item) => {
           item.remove();
         });
       });
