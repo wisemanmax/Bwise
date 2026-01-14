@@ -126,6 +126,107 @@
       cursor: pointer;
     }
 
+    .settings-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .settings-toggle {
+      border: none;
+      background: transparent;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .settings-menu {
+      position: absolute;
+      top: calc(100% + 16px);
+      right: 0;
+      min-width: 240px;
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--mischka);
+      box-shadow: 0 18px 30px rgba(57, 66, 99, 0.18);
+      padding: 16px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 6;
+    }
+
+    .settings-menu.is-open {
+      display: flex;
+    }
+
+    .settings-menu__section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .settings-menu__title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--abbey);
+    }
+
+    .settings-menu__options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .settings-option {
+      border: 1px solid var(--mischka);
+      background: var(--catskill-white);
+      color: var(--fiord);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .settings-option.is-active {
+      border-color: var(--java);
+      background: rgba(27, 186, 225, 0.12);
+      color: var(--java);
+    }
+
+    .settings-option--swatch::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      background: currentColor;
+    }
+
+    .settings-logout {
+      border: none;
+      background: var(--cinnabar);
+      color: var(--white);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .settings-logout:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(231, 76, 60, 0.25);
+    }
+
     .header__actions {
       margin-right: 20px;
       display: flex;
@@ -197,6 +298,35 @@
     .status-pill--success {
       background: rgba(39, 174, 96, 0.12);
       color: var(--jungle-green);
+    }
+
+    body.theme-dark {
+      --athens-gray: #0f172a;
+      --catskill-white: #1f2937;
+      --white: #1b2433;
+      --fiord: #e2e8f0;
+      --mischka: #334155;
+      --abbey: #94a3b8;
+      --alto: #475569;
+      --mine-shaft: #e2e8f0;
+      background-color: var(--athens-gray);
+      color: var(--fiord);
+    }
+
+    body.accent-green {
+      --java: #6fcf97;
+      --jungle-green: #4fbf8f;
+    }
+
+    body.accent-orange {
+      --java: #f2994a;
+      --zest: #f2994a;
+    }
+
+    body.accent-blue {
+      --java: #1bbae1;
+      --zest: #e67e22;
+      --jungle-green: #27ae60;
     }
 
     .search {
@@ -1632,7 +1762,29 @@
         <a class="header__icon-link" href="https://www.byheir.com/" aria-label="Home">
           <i class="fas fa-home header__icon"></i>
         </a>
-        <i class="fas fa-cog header__icon" aria-hidden="true"></i>
+        <div class="settings-dropdown">
+          <button class="settings-toggle" type="button" aria-label="Open settings" aria-expanded="false">
+            <i class="fas fa-cog header__icon" aria-hidden="true"></i>
+          </button>
+          <div class="settings-menu" role="menu" aria-label="Dashboard appearance settings">
+            <div class="settings-menu__section">
+              <span class="settings-menu__title">Theme mode</span>
+              <div class="settings-menu__options">
+                <button class="settings-option is-active" type="button" data-theme-mode="light" aria-pressed="true">Light</button>
+                <button class="settings-option" type="button" data-theme-mode="dark" aria-pressed="false">Dark</button>
+              </div>
+            </div>
+            <div class="settings-menu__section">
+              <span class="settings-menu__title">Accent color</span>
+              <div class="settings-menu__options">
+                <button class="settings-option settings-option--swatch" type="button" data-accent="green" aria-pressed="false" style="color:#6fcf97;">Light green</button>
+                <button class="settings-option settings-option--swatch" type="button" data-accent="orange" aria-pressed="false" style="color:#f2994a;">Orange</button>
+                <button class="settings-option settings-option--swatch is-active" type="button" data-accent="blue" aria-pressed="true" style="color:#1bbae1;">Blue</button>
+              </div>
+            </div>
+            <a class="settings-logout" href="../index.html" role="menuitem">Log out to homepage</a>
+          </div>
+        </div>
         <div class="header__user">
           <div class="header__user-avatar" aria-hidden="true"></div>
           <span>Edu Ops · Learning Lead</span>
@@ -2227,6 +2379,11 @@
     const acknowledgeButtons = document.querySelectorAll('.acknowledge-btn');
     const clearNotifications = document.getElementById('clear-notifications');
     const savedViewButtons = document.querySelectorAll('.chip-pill[data-view]');
+    const settingsToggle = document.querySelector('.settings-toggle');
+    const settingsMenu = document.querySelector('.settings-menu');
+    const themeButtons = document.querySelectorAll('[data-theme-mode]');
+    const accentButtons = document.querySelectorAll('[data-accent]');
+    const pageBody = document.body;
 
     const learningData = {
       modules: [
@@ -2361,8 +2518,65 @@
         if (notificationBtn) {
           notificationBtn.setAttribute('aria-expanded', 'false');
         }
+        if (settingsMenu && settingsToggle) {
+          settingsMenu.classList.remove('is-open');
+          settingsToggle.setAttribute('aria-expanded', 'false');
+        }
       }
     });
+
+    const setThemeMode = (mode) => {
+      if (!pageBody) return;
+      const isDark = mode === 'dark';
+      pageBody.classList.toggle('theme-dark', isDark);
+      themeButtons.forEach((btn) => {
+        const isActive = btn.dataset.themeMode === mode;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+      });
+    };
+
+    const setAccent = (accent) => {
+      if (!pageBody) return;
+      pageBody.classList.remove('accent-green', 'accent-orange', 'accent-blue');
+      pageBody.classList.add(`accent-${accent}`);
+      accentButtons.forEach((btn) => {
+        const isActive = btn.dataset.accent === accent;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
+      });
+    };
+
+    if (settingsToggle && settingsMenu) {
+      settingsToggle.addEventListener('click', () => {
+        const isOpen = settingsMenu.classList.toggle('is-open');
+        settingsToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+
+    if (settingsMenu && settingsToggle) {
+      document.addEventListener('click', (event) => {
+        if (!settingsMenu.contains(event.target) && !settingsToggle.contains(event.target)) {
+          settingsMenu.classList.remove('is-open');
+          settingsToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    themeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setThemeMode(btn.dataset.themeMode);
+      });
+    });
+
+    accentButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setAccent(btn.dataset.accent);
+      });
+    });
+
+    setThemeMode('light');
+    setAccent('blue');
 
     const updateInsights = (range) => {
       insightCards.forEach((card) => {
