@@ -4,6 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050b16">
 <title>GradBridge — Analytics Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,13 +13,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --ink:     #050b16;
-  --ink2:    #090f1d;
-  --ink3:    #0d1628;
-  --ink4:    #111e35;
-  --line:    #182844;
-  --line2:   #1f3255;
-  --line3:   #27406b;
+  color-scheme: dark;
+
+–ink:     #050b16;
+–ink2:    #090f1d;
+–ink3:    #0d1628;
+–ink4:    #111e35;
+–line:    #182844;
+–line2:   #1f3255;
+–line3:   #27406b;
 
 –blue:    #2055d4;
 –blue2:   #3b7af5;
@@ -57,8 +61,14 @@
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:14px}
-body{font-family:‘Outfit’,sans-serif;background:var(–ink);color:var(–smoke);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+html{font-size:14px;background:#050b16;color-scheme:dark}
+body{font-family:‘Outfit’,sans-serif;background:#050b16;background:var(–ink);color:#e8eef7;color:var(–smoke);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ── FORCE DARK — prevents GitHub Pages / browser light-mode override ── */
+@media (prefers-color-scheme: light) {
+html { background: #050b16 !important; }
+body { background: #050b16 !important; color: #e8eef7 !important; }
+}
 
 /* ── BG ── */
 .bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -70,7 +80,7 @@ body{font-family:‘Outfit’,sans-serif;background:var(–ink);color:var(–smo
 .page{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:0 22px 100px}
 
 /* ── NAV ── */
-.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(–line);background:rgba(5,11,22,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);gap:14px}
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #182844;border-bottom:1px solid var(–line);background:#050b16;background:rgba(5,11,22,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);gap:14px}
 .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
 .logo{width:34px;height:34px;background:linear-gradient(135deg,#1a46c0,#3b7af5);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:‘Fraunces’,serif;font-weight:700;font-size:15px;color:#fff;box-shadow:0 0 20px rgba(32,85,212,.4);flex-shrink:0}
 .wm{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;color:var(–smoke);letter-spacing:-.3px}
@@ -109,7 +119,7 @@ h1 em{font-style:italic;font-weight:400;color:var(–blue3)}
 /* ── STAT CARDS ── */
 .stats5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
 .stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.scard{background:var(–ink2);border:1px solid var(–line);border-radius:var(–r);padding:18px 16px 14px;position:relative;overflow:hidden;cursor:default;transition:border-color .25s,box-shadow .25s,transform .2s;box-shadow:var(–sh)}
+.scard{background:#090f1d;background:var(–ink2);border:1px solid #182844;border:1px solid var(–line);border-radius:var(–r);padding:18px 16px 14px;position:relative;overflow:hidden;cursor:default;transition:border-color .25s,box-shadow .25s,transform .2s;box-shadow:var(–sh)}
 .scard::after{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.025) 0%,transparent 55%);pointer-events:none}
 .scard:hover{border-color:var(–line3);box-shadow:var(–sh-h);transform:translateY(-2px)}
 .se{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
@@ -128,7 +138,7 @@ h1 em{font-style:italic;font-weight:400;color:var(–blue3)}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
 
 /* ── CARD ── */
-.card{background:var(–ink2);border:1px solid var(–line);border-radius:var(–r);overflow:hidden;box-shadow:var(–sh);transition:border-color .2s}
+.card{background:#090f1d;background:var(–ink2);border:1px solid #182844;border:1px solid var(–line);border-radius:var(–r);overflow:hidden;box-shadow:var(–sh);transition:border-color .2s}
 .card:hover{border-color:var(–line2)}
 .ch{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(–line);gap:10px}
 .ch-l{display:flex;align-items:center;gap:9px}
@@ -320,8 +330,8 @@ table th:nth-child(4),table td:nth-child(4){display:none}
 }
 
 /* ── EXEC SUMMARY ── */
-.exec-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(–line);border:1px solid var(–line);border-radius:var(–r);overflow:hidden;margin-bottom:20px}
-.es-col{background:var(–ink2);padding:20px 18px}
+.exec-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#182844;background:var(–line);border:1px solid #182844;border:1px solid var(–line);border-radius:var(–r);overflow:hidden;margin-bottom:20px}
+.es-col{background:#090f1d;background:var(–ink2);padding:20px 18px}
 /* colored top-accent per column — desktop */
 .es-col:nth-child(1){border-top:2px solid var(–red2)}
 .es-col:nth-child(2){border-top:2px solid var(–gold2)}
