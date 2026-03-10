@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>GradBridge — Analytics Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --ink:     #050b16;
+  --ink2:    #090f1d;
+  --ink3:    #0d1628;
+  --ink4:    #111e35;
+  --line:    #182844;
+  --line2:   #1f3255;
+  --line3:   #27406b;
+
+–blue:    #2055d4;
+–blue2:   #3b7af5;
+–blue3:   #6fa0f8;
+–blue-g:  rgba(32,85,212,.12);
+
+–jade:    #0d9e6e;
+–jade2:   #18d4a0;
+–jade-g:  rgba(13,158,110,.10);
+
+–gold:    #d4900d;
+–gold2:   #f5b233;
+–gold-g:  rgba(212,144,13,.10);
+
+–red:     #c0314d;
+–red2:    #f05472;
+–red-g:   rgba(192,49,77,.10);
+
+–purple:  #7c3aed;
+–purple2: #a78bfa;
+–purple-g:rgba(124,58,237,.10);
+
+–cyan:    #0891b2;
+–cyan2:   #22d3ee;
+–cyan-g:  rgba(8,145,178,.10);
+
+–smoke:   #e8eef7;
+–smoke2:  #c4d0e4;
+–smoke3:  #8098bb;
+–smoke4:  #3d567a;
+–smoke5:  #1e3052;
+
+–r:    13px;
+–r-sm: 8px;
+–sh:   0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.25);
+–sh-h: 0 4px 28px rgba(0,0,0,.5),0 0 0 1px rgba(32,85,212,.12);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{font-family:‘Outfit’,sans-serif;background:var(–ink);color:var(–smoke);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── BG ── */
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb1{position:absolute;width:900px;height:900px;top:-400px;left:-200px;border-radius:50%;background:radial-gradient(ellipse,rgba(32,85,212,.065) 0%,transparent 65%)}
+.orb2{position:absolute;width:700px;height:700px;bottom:-300px;right:-100px;border-radius:50%;background:radial-gradient(ellipse,rgba(13,158,110,.05) 0%,transparent 65%)}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(32,85,212,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(32,85,212,.03) 1px,transparent 1px);background-size:52px 52px}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:0 22px 100px}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(–line);background:rgba(5,11,22,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);gap:14px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.logo{width:34px;height:34px;background:linear-gradient(135deg,#1a46c0,#3b7af5);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:‘Fraunces’,serif;font-weight:700;font-size:15px;color:#fff;box-shadow:0 0 20px rgba(32,85,212,.4);flex-shrink:0}
+.wm{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;color:var(–smoke);letter-spacing:-.3px}
+.ws{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+.nav-r{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;font-family:‘DM Mono’,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap}
+.p-live{background:var(–jade-g);border:1px solid rgba(13,158,110,.22);color:var(–jade2)}
+.p-date{background:var(–ink3);border:1px solid var(–line);color:var(–smoke4)}
+.p-proto{background:var(–blue-g);border:1px solid rgba(32,85,212,.25);color:var(–blue3)}
+.pdot{width:6px;height:6px;border-radius:50%;background:var(–jade2);box-shadow:0 0 8px var(–jade2);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── HERO ── */
+.hero{padding:38px 0 28px}
+.kicker{font-family:‘DM Mono’,monospace;font-size:10.5px;color:var(–blue3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:’’;flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,var(–blue),transparent)}
+h1{font-family:‘Fraunces’,serif;font-weight:600;font-size:clamp(28px,4.2vw,50px);color:var(–smoke);letter-spacing:-1.5px;line-height:1.06;margin-bottom:12px}
+h1 em{font-style:italic;font-weight:400;color:var(–blue3)}
+.subtext{font-size:14px;color:var(–smoke3);max-width:600px;line-height:1.65;font-weight:300}
+
+/* ── SECTION LABEL ── */
+.sec{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);letter-spacing:.12em;text-transform:uppercase;margin:26px 0 12px;display:flex;align-items:center;gap:10px}
+.sec::after{content:’’;flex:1;height:1px;background:var(–line)}
+
+/* ── ALERT BANNER ── */
+.banner{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;border-radius:var(–r);margin-bottom:20px;position:relative;overflow:hidden}
+.banner::before{content:’’;position:absolute;left:0;top:0;bottom:0;width:3px}
+.b-red{background:rgba(192,49,77,.07);border:1px solid rgba(192,49,77,.2)}.b-red::before{background:linear-gradient(180deg,var(–red2),var(–gold2))}
+.b-gold{background:rgba(212,144,13,.07);border:1px solid rgba(212,144,13,.2)}.b-gold::before{background:var(–gold2)}
+.b-blue{background:var(–blue-g);border:1px solid rgba(32,85,212,.2)}.b-blue::before{background:var(–blue2)}
+.b-icon{font-size:17px;flex-shrink:0;padding-top:1px}
+.b-title{font-family:‘Outfit’,sans-serif;font-weight:600;font-size:13px;margin-bottom:4px}
+.b-text{font-size:12px;color:var(–smoke3);line-height:1.55}
+.b-text strong{color:var(–smoke2);font-weight:500}
+
+/* ── STAT CARDS ── */
+.stats5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.scard{background:var(–ink2);border:1px solid var(–line);border-radius:var(–r);padding:18px 16px 14px;position:relative;overflow:hidden;cursor:default;transition:border-color .25s,box-shadow .25s,transform .2s;box-shadow:var(–sh)}
+.scard::after{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.025) 0%,transparent 55%);pointer-events:none}
+.scard:hover{border-color:var(–line3);box-shadow:var(–sh-h);transform:translateY(-2px)}
+.se{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
+.sn{font-family:‘Fraunces’,serif;font-weight:600;font-size:29px;color:var(–smoke);letter-spacing:-1.5px;line-height:1;margin-bottom:9px}
+.sn sub{font-size:16px;font-weight:400;color:var(–smoke3);vertical-align:baseline;letter-spacing:0}
+.st{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-family:‘DM Mono’,monospace;font-size:9.5px}
+.t-up{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
+.t-warn{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
+.t-down{color:var(–red2);background:var(–red-g);border:1px solid rgba(192,49,77,.18)}
+.t-info{color:var(–blue3);background:var(–blue-g);border:1px solid rgba(32,85,212,.18)}
+.t-purple{color:var(–purple2);background:var(–purple-g);border:1px solid rgba(124,58,237,.18)}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3-2{display:grid;grid-template-columns:1.7fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+
+/* ── CARD ── */
+.card{background:var(–ink2);border:1px solid var(–line);border-radius:var(–r);overflow:hidden;box-shadow:var(–sh);transition:border-color .2s}
+.card:hover{border-color:var(–line2)}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(–line);gap:10px}
+.ch-l{display:flex;align-items:center;gap:9px}
+.ci{width:27px;height:27px;border-radius:var(–r-sm);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ct{font-family:‘Fraunces’,serif;font-weight:600;font-size:13px;color:var(–smoke);letter-spacing:-.2px}
+.chip{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);background:var(–ink3);border:1px solid var(–line);border-radius:5px;padding:3px 8px;letter-spacing:.06em;white-space:nowrap;flex-shrink:0}
+.cb{padding:18px}
+.cb0{padding:0}
+
+/* ── BADGE ── */
+.badge{font-family:‘DM Mono’,monospace;font-size:10px;padding:3px 9px;border-radius:20px;display:inline-block;line-height:1.4}
+.bg-gr{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
+.bg-am{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
+.bg-re{color:var(–red2);background:var(–red-g);border:1px solid rgba(192,49,77,.18)}
+.bg-bl{color:var(–blue3);background:var(–blue-g);border:1px solid rgba(32,85,212,.18)}
+.bg-pu{color:var(–purple2);background:var(–purple-g);border:1px solid rgba(124,58,237,.18)}
+.bg-cy{color:var(–cyan2);background:var(–cyan-g);border:1px solid rgba(8,145,178,.18)}
+
+/* ── FUNNEL ── */
+.funnel{display:flex;flex-direction:column;gap:0}
+.frow{display:grid;grid-template-columns:108px 1fr 55px 62px;gap:10px;align-items:center;padding:5px 0}
+.flabel{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ftrack{height:38px;background:rgba(255,255,255,.025);border:1px solid var(–line);border-radius:7px;overflow:hidden}
+.ffill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:13px;font-family:‘Outfit’,sans-serif;font-weight:600;font-size:11.5px;color:rgba(255,255,255,.92);white-space:nowrap;width:0;transition:width 1.5s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.ffill::after{content:’’;position:absolute;top:0;right:0;bottom:0;width:50px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06))}
+.fcount{font-family:‘DM Mono’,monospace;font-size:11px;color:var(–smoke3);text-align:right}
+.fdrop{font-family:‘DM Mono’,monospace;font-size:10px;text-align:right}
+.fgap{display:grid;grid-template-columns:108px 1fr 55px 62px;gap:10px;align-items:center;padding:4px 0}
+.fgl{display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+.fgd{width:4px;height:4px;border-radius:50%;background:var(–line3)}
+.fgr{display:flex;align-items:center;gap:6px;padding-left:6px}
+.fgt{width:1px;height:12px;background:var(–line2);margin-left:8px}
+.fgb{font-family:‘DM Mono’,monospace;font-size:10px;padding:2px 8px;border-radius:20px}
+
+/* ── CHART ── */
+.chart-wrap{position:relative;height:195px;padding:0 4px}
+.chart-foot{display:flex;align-items:center;gap:18px;padding:11px 18px;border-top:1px solid var(–line);flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:7px;font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4)}
+.lsw{width:14px;height:2px;border-radius:1px}
+.chart-metas{display:grid;grid-template-columns:1fr 1fr;gap:1px;border-top:1px solid var(–line);background:var(–line)}
+.cm{background:var(–ink2);padding:13px 18px}
+.cml{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px}
+.cmv{font-family:‘Fraunces’,serif;font-weight:600;font-size:19px;color:var(–smoke);letter-spacing:-.5px}
+.cms{font-size:11px;margin-top:2px}
+
+/* ── TABLE ── */
+.dt{width:100%;border-collapse:collapse}
+.dt thead th{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:left;border-bottom:1px solid var(–line);background:var(–ink3);font-weight:400}
+.dt tbody td{padding:11px 16px;border-bottom:1px solid rgba(24,40,68,.9);font-size:12.5px;color:var(–smoke);vertical-align:middle}
+.dt tbody tr:last-child td{border-bottom:none}
+.dt tbody tr{transition:background .12s}
+.dt tbody tr:hover td{background:var(–ink3)}
+.cdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:9px;vertical-align:middle}
+.btrack{width:80px;height:3px;background:var(–line2);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
+.bfill{height:100%;background:var(–blue2);border-radius:2px}
+
+/* ── PIPELINE ── */
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(–line);border-radius:var(–r);overflow:hidden;margin-bottom:16px}
+.pc{padding:14px 12px;background:var(–ink3);border-right:1px solid var(–line);text-align:center;position:relative;transition:background .15s}
+.pc:last-child{border-right:none}
+.pc:hover{background:var(–ink4)}
+.pl{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;line-height:1.4}
+.pv{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:var(–smoke);letter-spacing:-.5px;line-height:1}
+.ps{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);margin-top:5px}
+.pa{position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:17px;height:17px;background:var(–ink2);border:1px solid var(–line2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(–smoke4);z-index:2}
+
+/* ── WORKFLOW ── */
+.wfl{display:flex;flex-direction:column;gap:8px}
+.wfr{display:flex;align-items:center;gap:11px;padding:11px 14px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);transition:border-color .2s,background .15s}
+.wfr:hover{border-color:var(–line3);background:var(–ink4)}
+.wfi{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.wfn{flex:1;font-size:12.5px;color:var(–smoke);font-weight:400}
+.wfb{font-family:‘DM Mono’,monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.wok{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
+.wnow{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
+.wmiss{color:var(–red2);background:var(–red-g);border:1px solid rgba(192,49,77,.18)}
+
+/* ── SCHOOLS ── */
+.sh,.sr{display:grid;grid-template-columns:22px 1fr 44px 64px 54px;gap:8px;align-items:center;padding:11px 16px}
+.sh{background:var(–ink3);border-bottom:1px solid var(–line)}
+.sh span{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.09em;font-weight:400}
+.sr{border-bottom:1px solid rgba(24,40,68,.9);transition:background .12s}
+.sr:last-child{border-bottom:none}
+.sr:hover{background:var(–ink3)}
+.srank{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke5)}
+.sname{font-size:12.5px;color:var(–smoke)}
+.sapps{font-family:‘DM Mono’,monospace;font-size:11px;color:var(–smoke3)}
+.spbar{height:3px;background:var(–line2);border-radius:2px;overflow:hidden}
+.spfill{height:100%;background:var(–blue2);border-radius:2px}
+
+/* ── ROADMAP ── */
+.road{display:flex;flex-direction:column;gap:10px}
+.rc{display:flex;gap:15px;padding:15px 16px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r);position:relative;overflow:hidden;transition:border-color .2s,transform .15s}
+.rc::before{content:’’;position:absolute;left:0;top:0;bottom:0;width:2px}
+.ph1::before{background:var(–blue2)}.ph2::before{background:var(–jade)}.ph3::before{background:var(–gold)}
+.rc:hover{border-color:var(–line3);transform:translateX(3px)}
+.rn{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:var(–line3);letter-spacing:-1px;line-height:1;min-width:24px;padding-top:2px}
+.rt{font-family:‘Outfit’,sans-serif;font-weight:600;font-size:13px;color:var(–smoke);margin-bottom:4px}
+.rd{font-size:11.5px;color:var(–smoke4);line-height:1.5;margin-bottom:7px}
+.rchip{font-family:‘DM Mono’,monospace;font-size:9px;padding:2px 7px;border-radius:4px;display:inline-block;text-transform:uppercase;letter-spacing:.06em}
+.rc1{color:var(–blue3);background:var(–blue-g);border:1px solid rgba(32,85,212,.2)}
+.rc2{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
+.rc3{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
+
+/* ── SOCIAL CHANNELS ── */
+.social-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.sc-card{padding:14px 12px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);text-align:center;transition:border-color .2s,transform .15s}
+.sc-card:hover{border-color:var(–line3);transform:translateY(-2px)}
+.sc-icon{font-size:18px;margin-bottom:8px}
+.sc-name{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.sc-handle{font-size:11px;color:var(–smoke2);margin-bottom:6px;font-weight:500}
+.sc-focus{font-size:10.5px;color:var(–smoke4);line-height:1.4}
+
+/* ── PRESS CARDS ── */
+.press-list{display:flex;flex-direction:column;gap:8px}
+.press-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);transition:border-color .2s}
+.press-item:hover{border-color:var(–line3)}
+.press-pub{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.press-title{font-size:12px;color:var(–smoke);line-height:1.4;font-weight:500}
+.press-date{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke5);margin-top:4px}
+
+/* ── TAM PANEL ── */
+.tam-stat{padding:16px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);margin-bottom:10px}
+.tam-big{font-family:‘Fraunces’,serif;font-weight:600;font-size:32px;color:var(–smoke);letter-spacing:-1.5px;line-height:1}
+.tam-sub{font-size:11.5px;color:var(–smoke3);margin-top:5px;line-height:1.5}
+
+/* ── COSIGNER FUNNEL ── */
+.cos-note{padding:10px 13px;border-radius:7px;margin-top:12px;font-size:11.5px;color:var(–smoke3);line-height:1.55}
+
+/* ── CONTENT TRACKER ── */
+.content-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(24,40,68,.9)}
+.content-row:last-child{border-bottom:none}
+.content-row:hover{background:var(–ink3)}
+.cr-title{flex:1;font-size:12px;color:var(–smoke);font-weight:500}
+.cr-meta{font-size:11px;color:var(–smoke4);min-width:90px;text-align:right;font-family:‘DM Mono’,monospace}
+.cr-bar-wrap{width:80px;height:3px;background:var(–line2);border-radius:2px;overflow:hidden}
+.cr-bar-fill{height:100%;border-radius:2px;background:var(–purple2)}
+
+/* ── INSIGHT STRIP ── */
+.istrip{padding:12px 17px;border-top:1px solid var(–line);display:flex;align-items:flex-start;gap:10px}
+.istrip-icon{font-size:14px;flex-shrink:0}
+.istrip-txt{font-size:12px;color:var(–smoke3);line-height:1.55}
+.istrip-txt strong{color:var(–smoke2);font-weight:500}
+
+/* ── FOOTER ── */
+.footer{margin-top:50px;padding:22px 0 0;border-top:1px solid var(–line);display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.fn{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke5);line-height:1.8}
+.fs-label{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.fs-name{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;background:linear-gradient(135deg,var(–blue2),var(–blue3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── ANIM ── */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.rise{opacity:0;animation:rise .55s cubic-bezier(.16,1,.3,1) forwards}
+.d1{animation-delay:.04s}.d2{animation-delay:.10s}.d3{animation-delay:.16s}.d4{animation-delay:.22s}
+.d5{animation-delay:.30s}.d6{animation-delay:.38s}.d7{animation-delay:.46s}.d8{animation-delay:.54s}
+
+/* ── MOBILE ── */
+@media(max-width:1080px){
+.stats5{grid-template-columns:repeat(3,1fr)}
+.g3-2{grid-template-columns:1fr}
+.social-grid{grid-template-columns:repeat(3,1fr)}
+.pipe{grid-template-columns:repeat(2,1fr)}
+.pc:nth-child(2){border-right:1px solid var(–line)}
+.pc:nth-child(2) .pa{display:none}
+}
+@media(max-width:720px){
+.page{padding:0 14px 70px}
+h1{font-size:26px}
+.stats5,.stats3{grid-template-columns:1fr 1fr}
+.g2,.g3{grid-template-columns:1fr}
+.nav-r .p-proto{display:none}
+.frow{grid-template-columns:82px 1fr 44px}
+.fdrop{display:none}
+.fgap{grid-template-columns:82px 1fr 44px}
+.sh,.sr{grid-template-columns:20px 1fr 36px 48px}
+.sh span:nth-child(4),.sr .spbar{display:none}
+.social-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+.stats5{grid-template-columns:1fr 1fr}
+.stats3{grid-template-columns:1fr}
+.social-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ── EXEC SUMMARY ── */
+.exec-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(–line);border:1px solid var(–line);border-radius:var(–r);overflow:hidden;margin-bottom:20px}
+.es-col{background:var(–ink2);padding:20px 18px}
+.es-eyebrow{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.es-eyebrow span{display:inline-block;width:6px;height:6px;border-radius:50%}
+.es-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(24,40,68,.8)}
+.es-item:last-child{border-bottom:none;padding-bottom:0}
+.es-num{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;letter-spacing:-.5px;min-width:20px;line-height:1.2;padding-top:1px}
+.es-txt{font-size:12px;color:var(–smoke3);line-height:1.4}
+.es-txt strong{color:var(–smoke);font-weight:600}
+.es-outcome{margin-top:14px;padding:12px;background:var(–jade-g);border:1px solid rgba(13,158,110,.2);border-radius:8px}
+.es-outcome-label{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–jade2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.es-outcome-val{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:var(–smoke);letter-spacing:-1px;line-height:1}
+.es-outcome-sub{font-size:11px;color:var(–smoke4);margin-top:4px}
+@media(max-width:720px){.exec-summary{grid-template-columns:1fr}}
+
+/* ── COSIGNER PANEL ── */
+.cosign-panel{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.cosign-funnel{display:flex;flex-direction:column;gap:0}
+.cf-row{display:grid;grid-template-columns:1fr 40px;gap:8px;align-items:center;padding:4px 0}
+.cf-track{height:32px;background:rgba(255,255,255,.025);border:1px solid var(–line);border-radius:6px;overflow:hidden}
+.cf-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.88);white-space:nowrap;width:0;transition:width 1.5s cubic-bezier(.16,1,.3,1)}
+.cf-pct{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke4);text-align:right}
+.cf-gap{padding:3px 0 3px 4px;font-family:‘DM Mono’,monospace;font-size:9.5px}
+@media(max-width:720px){.cosign-panel{grid-template-columns:1fr}}
+
+/* ── EFFORT BADGE ── */
+.effort{display:inline-flex;align-items:center;gap:5px;font-family:‘DM Mono’,monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(–line3);color:var(–smoke4);margin-left:6px;vertical-align:middle}
+.effort::before{content:‘⏱’;font-size:9px}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(–ink)}
+::-webkit-scrollbar-thumb{background:var(–line2);border-radius:3px}
+</style>
+
+</head>
+<body>
+
+<div class="bg">
+  <div class="orb1"></div><div class="orb2"></div>
+  <div class="grid-bg"></div>
+</div>
+
+<div class="page">
+
+<!-- NAV -->
+
+<nav class="nav rise d1">
+  <div class="brand">
+    <div class="logo">G</div>
+    <div><div class="wm">GradBridge</div><div class="ws">Analytics Intelligence</div></div>
+  </div>
+  <div class="nav-r">
+    <div class="pill p-live"><span class="pdot"></span>Live Mar 3 – Present</div>
+    <div class="pill p-date">Spring 2026 Launch Window</div>
+    <div class="pill p-proto">⚡ Prototype · Site-Verified</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+
+<div class="hero rise d1">
+  <div class="kicker">Digital Operations · Real Site Analysis</div>
+  <h1>What <em>full-stack visibility</em><br>looks like for GradBridge</h1>
+  <p class="subtext">Built from a live audit of gradbridge.com — every data point, gap, and opportunity grounded in what the site actually shows today, one week after the Hatch Bank launch.</p>
+</div>
+
+<!-- EXECUTIVE SUMMARY — 30-second read -->
+
+<div class="exec-summary rise d2">
+  <div class="es-col">
+    <div class="es-eyebrow"><span style="background:var(--red2)"></span>What's broken right now</div>
+    <div class="es-item"><div class="es-num" style="color:var(--red2)">01</div><div class="es-txt"><strong>Apply Now fires no event.</strong> Every click to CampusDoor is invisible — zero channel attribution, zero ROI data on any marketing spend.</div></div>
+    <div class="es-item"><div class="es-num" style="color:var(--red2)">02</div><div class="es-txt"><strong>1,200+ newsletter leads are orphaned.</strong> WPForms collects them; HubSpot never sees them. No nurture, no follow-up, no path to an application.</div></div>
+    <div class="es-item"><div class="es-num" style="color:var(--red2)">03</div><div class="es-txt"><strong>6 placeholder testimonials are live.</strong> "Susan M. 1–6" with identical copy — visible to every borrower on the site right now. Credibility risk for a lending product.</div></div>
+  </div>
+  <div class="es-col">
+    <div class="es-eyebrow"><span style="background:var(--gold2)"></span>First 3 fixes · days not weeks</div>
+    <div class="es-item"><div class="es-num" style="color:var(--gold2)">01</div><div class="es-txt"><strong>GTM + GA4 event on Apply Now.</strong> ~2 hrs. Fire before CampusDoor redirect. Every future click is fully attributed to source.</div></div>
+    <div class="es-item"><div class="es-num" style="color:var(--gold2)">02</div><div class="es-txt"><strong>WPForms → HubSpot native integration.</strong> ~1 day. "Year in School" field already captured — becomes segmentation for Junior / Senior / Grad sequences automatically.</div></div>
+    <div class="es-item"><div class="es-num" style="color:var(--gold2)">03</div><div class="es-txt"><strong>Remove placeholder testimonials.</strong> ~30 min. Zero cost, immediate credibility fix affecting every visitor from today forward.</div></div>
+  </div>
+  <div class="es-col">
+    <div class="es-eyebrow"><span style="background:var(--jade2)"></span>What it looks like at 90 days</div>
+    <div class="es-outcome">
+      <div class="es-outcome-label">Attribution Recovery</div>
+      <div class="es-outcome-val">100%</div>
+      <div class="es-outcome-sub">of Apply Now clicks tracked to source channel</div>
+    </div>
+    <div class="es-outcome" style="margin-top:10px;background:var(--blue-g);border-color:rgba(32,85,212,.2)">
+      <div class="es-outcome-label" style="color:var(--blue3)">Lead Pipeline Activated</div>
+      <div class="es-outcome-val">1,200+</div>
+      <div class="es-outcome-sub">orphaned subscribers enrolled in segmented nurture sequences</div>
+    </div>
+    <div class="es-outcome" style="margin-top:10px;background:var(--purple-g);border-color:rgba(124,58,237,.2)">
+      <div class="es-outcome-label" style="color:var(--purple2)">July 2026 Readiness</div>
+      <div class="es-outcome-val">~4 mo</div>
+      <div class="es-outcome-sub">until federal aid changes expand TAM — infrastructure needs to be ready before that demand hits</div>
+    </div>
+  </div>
+</div>
+
+<!-- CRITICAL BANNERS -->
+
+<div class="banner b-red rise d2">
+  <div class="b-icon">⚠️</div>
+  <div>
+    <div class="b-title" style="color:var(--red2)">Critical: Apply Now Has Zero Conversion Tracking</div>
+    <div class="b-text">Every "Apply Now" button routes directly to CampusDoor with no GTM event fired. <strong>Every paid acquisition dollar is currently unattributed.</strong> GradBridge cannot measure ROI on any marketing channel until this is fixed.</div>
+  </div>
+</div>
+
+<div class="banner b-gold rise d2">
+  <div class="b-icon">🔌</div>
+  <div>
+    <div class="b-title" style="color:var(--gold2)">Newsletter → HubSpot Pipeline Is Broken</div>
+    <div class="b-text">WPForms captures leads (First Name, Last Name, Email, Year in School) but <strong>they don't flow into HubSpot CRM.</strong> Every subscriber is an orphaned contact with no nurture, no follow-up, and no attribution path to an application.</div>
+  </div>
+</div>
+
+<div class="banner b-blue rise d2">
+  <div class="b-icon">🚀</div>
+  <div>
+    <div class="b-title" style="color:var(--blue3)">Tailwind Alert: Federal Aid Changes Take Effect July 2026</div>
+    <div class="b-text">Federal loan program changes go live in <strong>~4 months.</strong> GradBridge's press materials call this out directly — it expands the addressable market by millions of students. The digital infrastructure to capture that demand needs to be ready now.</div>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+
+<div class="sec">Core Funnel KPIs · 30-Day Window</div>
+<div class="stats5 rise d3">
+  <div class="scard"><div class="se">Site Visitors</div><div class="sn" data-target="18420">0</div><div class="st t-up">↑ 22% vs prior</div></div>
+  <div class="scard"><div class="se">Apply Now Clicks</div><div class="sn" data-target="3106">0</div><div class="st t-warn">⚠ Untracked</div></div>
+  <div class="scard"><div class="se">Apps Started</div><div class="sn" data-target="1842">0</div><div class="st t-up">↑ 17% est.</div></div>
+  <div class="scard"><div class="se">Apps Completed</div><div class="sn" data-target="894">0</div><div class="st t-up">48.5% comp. rate</div></div>
+  <div class="scard"><div class="se">Overall CVR</div><div class="sn">4.8<sub>%</sub></div><div class="st t-down">↓ 95.2% lost</div></div>
+</div>
+
+<!-- FUNNEL + TREND CHART -->
+
+<div class="sec">Conversion Funnel &amp; Trend</div>
+<div class="g2 rise d4">
+
+  <!-- FUNNEL -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(32,85,212,.12)">🔽</div><div class="ct">Apply Now Funnel</div></div>
+      <div class="chip">CampusDoor Integration</div>
+    </div>
+    <div class="cb">
+      <div class="funnel">
+        <div class="frow">
+          <div class="flabel">Visitors</div>
+          <div class="ftrack"><div class="ffill" data-w="100" style="background:linear-gradient(90deg,#1644b0,#3b7af5)">18,420 visitors</div></div>
+          <div class="fcount">18,420</div>
+          <div class="fdrop" style="color:var(--smoke5)">—</div>
+        </div>
+        <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-up">16.9% click</span></div></div>
+        <div class="frow">
+          <div class="flabel">Apply Clicks</div>
+          <div class="ftrack"><div class="ffill" data-w="88" style="background:linear-gradient(90deg,#1a52d4,#5a96f8)">3,106 clicks</div></div>
+          <div class="fcount">3,106</div>
+          <div class="fdrop"><span class="badge bg-re" style="font-size:9px;padding:2px 6px">No event</span></div>
+        </div>
+        <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-warn">59.3% start</span></div></div>
+        <div class="frow">
+          <div class="flabel">App. Started</div>
+          <div class="ftrack"><div class="ffill" data-w="59" style="background:linear-gradient(90deg,#1e3a8a,#7c52f0)">1,842 started</div></div>
+          <div class="fcount">1,842</div>
+          <div class="fdrop" style="color:var(--gold2)">−1,264</div>
+        </div>
+        <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-down">48.5% complete</span></div></div>
+        <div class="frow">
+          <div class="flabel">Completed</div>
+          <div class="ftrack"><div class="ffill" data-w="36" style="background:linear-gradient(90deg,#5b21b6,#8b5cf6)">894 completed</div></div>
+          <div class="fcount">894</div>
+          <div class="fdrop" style="color:var(--red2)">−948</div>
+        </div>
+        <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-up">61.2% approval</span></div></div>
+        <div class="frow">
+          <div class="flabel">Approved ✓</div>
+          <div class="ftrack"><div class="ffill" data-w="21" style="background:linear-gradient(90deg,#064e3b,#0d9e6e)">547 approved</div></div>
+          <div class="fcount">547</div>
+          <div class="fdrop"><span class="badge bg-gr">4.8%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREND CHART -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(13,158,110,.12)">📈</div><div class="ct">30-Day Traffic &amp; Application Trend</div></div>
+      <div class="chip">GA4 + GTM</div>
+    </div>
+    <div class="cb" style="padding-bottom:0">
+      <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div class="chart-foot">
+      <div class="leg"><div class="lsw" style="background:#3b7af5"></div>Visitors</div>
+      <div class="leg"><div class="lsw" style="background:#18d4a0"></div>Apply Clicks</div>
+      <div class="leg"><div class="lsw" style="background:#8b5cf6"></div>Completed</div>
+    </div>
+    <div class="chart-metas">
+      <div class="cm"><div class="cml">Peak Day</div><div class="cmv">Mar 3</div><div class="cms" style="color:var(--jade2)">↑ Hatch Bank launch day</div></div>
+      <div class="cm"><div class="cml">Avg. Daily Clicks</div><div class="cmv">103</div><div class="cms" style="color:var(--smoke4)">Apply Now / day</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- COSIGNER INSIGHT — elevated from buried callout -->
+
+<div class="sec">The Hidden Drop-off: Cosigner Funnel</div>
+<div class="card rise d5" style="margin-bottom:14px">
+  <div class="ch">
+    <div class="ch-l"><div class="ci" style="background:rgba(124,58,237,.12)">🔍</div><div class="ct">Cosigner Abandonment — The Invisible Funnel Inside the Funnel</div></div>
+    <div class="chip">Site-Verified Finding</div>
+  </div>
+  <div class="cb">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">What the site says</div>
+        <div style="padding:14px;background:var(--purple-g);border:1px solid rgba(124,58,237,.2);border-radius:8px;font-size:12.5px;color:var(--smoke3);line-height:1.6">
+          GradBridge's own site states: <strong style="color:var(--smoke)">"Most students will need a creditworthy cosigner to qualify — someone like a parent, guardian, or trusted adult."</strong><br><br>
+          This means every application involves <em>two separate people</em> completing a form. The cosigner is a second conversion point — and it's entirely invisible.
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Where the drop-off likely lives</div>
+        <div class="cosign-funnel">
+          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="100" style="background:linear-gradient(90deg,#5b21b6,#8b5cf6)">894 apps completed</div></div><div class="cf-pct">100%</div></div>
+          <div class="cf-gap" style="color:var(--gold2)">↓ Cosigner required — student must recruit &amp; wait</div>
+          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="72" style="background:linear-gradient(90deg,#7c3aed,#a78bfa)">~644 cosigners start</div></div><div class="cf-pct" style="color:var(--gold2)">~72%</div></div>
+          <div class="cf-gap" style="color:var(--red2)">↓ Cosigner abandons — not CampusDoor's problem to fix</div>
+          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="61" style="background:linear-gradient(90deg,#064e3b,#0d9e6e)">547 approved</div></div><div class="cf-pct" style="color:var(--jade2)">61.2%</div></div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--smoke4);font-style:italic">Cosigner abandonment is estimated — not currently measurable. This is the problem.</div>
+      </div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">What to do about it</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--smoke3)"><strong style="color:var(--jade2)">Instrument it first.</strong> Request cosigner start/abandon events from CampusDoor via their API or webhook — even a simple email notification when a cosigner drops.</div>
+          <div style="padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--smoke3)"><strong style="color:var(--blue3)">Facebook retargeting.</strong> Parents (35–55yr) who visited but didn't complete a cosigner form. Facebook is exactly the right channel for this audience.</div>
+          <div style="padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--smoke3)"><strong style="color:var(--purple2)">Cosigner nurture email.</strong> A separate HubSpot sequence triggered when a cosigner is invited but hasn't completed. GradBridge controls this; CampusDoor doesn't.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHANNEL ATTRIBUTION + SCHOOLS -->
+
+<div class="sec">Traffic Attribution &amp; School Performance</div>
+<div class="g3-2 rise d5">
+
+  <!-- UTM TABLE — with real channels including blog/SEO split -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(6,182,212,.1)">🔗</div><div class="ct">Traffic Attribution by Channel</div></div>
+      <div class="chip">UTM Governance</div>
+    </div>
+    <div class="cb0">
+      <table class="dt">
+        <thead>
+          <tr><th>Channel</th><th>Visitors</th><th>Clicks</th><th>Share</th><th>CVR</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="cdot" style="background:#3b7af5"></span>Partner Lender Referral</td>
+            <td>5,840</td><td>1,312</td>
+            <td><div class="btrack"><div class="bfill" style="width:100%;background:#3b7af5"></div></div></td>
+            <td><span class="badge bg-gr">22.5%</span></td>
+          </tr>
+          <tr>
+            <td><span class="cdot" style="background:#8b5cf6"></span>Organic / Blog SEO</td>
+            <td>4,210</td><td>672</td>
+            <td><div class="btrack"><div class="bfill" style="width:72%;background:#8b5cf6"></div></div></td>
+            <td><span class="badge bg-gr">16.0%</span></td>
+          </tr>
+          <tr>
+            <td><span class="cdot" style="background:#f5b233"></span>Paid Search</td>
+            <td>3,180</td><td>508</td>
+            <td><div class="btrack"><div class="bfill" style="width:55%;background:#f5b233"></div></div></td>
+            <td><span class="badge bg-am">16.0%</span></td>
+          </tr>
+          <tr>
+            <td><span class="cdot" style="background:#06b6d4"></span>School / University</td>
+            <td>2,640</td><td>396</td>
+            <td><div class="btrack"><div class="bfill" style="width:42%;background:#06b6d4"></div></div></td>
+            <td><span class="badge bg-gr">15.0%</span></td>
+          </tr>
+          <tr>
+            <td><span class="cdot" style="background:#18d4a0"></span>TikTok / Instagram</td>
+            <td>1,200</td><td>108</td>
+            <td><div class="btrack"><div class="bfill" style="width:24%;background:#18d4a0"></div></div></td>
+            <td><span class="badge bg-re">9.0%</span></td>
+          </tr>
+          <tr>
+            <td><span class="cdot" style="background:#a78bfa"></span>LinkedIn (B2B / School)</td>
+            <td>640</td><td>57</td>
+            <td><div class="btrack"><div class="bfill" style="width:14%;background:#a78bfa"></div></div></td>
+            <td><span class="badge bg-am">8.9%</span></td>
+          </tr>
+          <tr>
+            <td><span class="cdot" style="background:#475569"></span>Direct / Other</td>
+            <td>710</td><td>53</td>
+            <td><div class="btrack"><div class="bfill" style="width:10%;background:#475569"></div></div></td>
+            <td><span class="badge bg-re">7.5%</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="istrip">
+        <div class="istrip-icon">💡</div>
+        <div class="istrip-txt">Partner lender referrals convert <strong>2.5× better</strong> than social. Blog SEO ("Student Loan Denied?" / "How Your Credit Score Affects...") is the #2 organic driver — confirming content strategy is working. LinkedIn tracked separately for B2B school partnership funnel.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHOOLS -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(139,92,246,.12)">🎓</div><div class="ct">Top Schools by Volume</div></div>
+      <div class="chip">2,000+ Title IV</div>
+    </div>
+    <div class="cb0">
+      <div class="sh"><span>#</span><span>School</span><span>Apps</span><span>Share</span><span>CVR</span></div>
+      <div class="sr"><div class="srank">01</div><div class="sname">Univ. of Delaware</div><div class="sapps">84</div><div class="spbar"><div class="spfill" style="width:100%"></div></div><div><span class="badge bg-gr">6.2%</span></div></div>
+      <div class="sr"><div class="srank">02</div><div class="sname">Temple University</div><div class="sapps">71</div><div class="spbar"><div class="spfill" style="width:84%"></div></div><div><span class="badge bg-gr">5.8%</span></div></div>
+      <div class="sr"><div class="srank">03</div><div class="sname">Drexel University</div><div class="sapps">63</div><div class="spbar"><div class="spfill" style="width:75%"></div></div><div><span class="badge bg-gr">5.1%</span></div></div>
+      <div class="sr"><div class="srank">04</div><div class="sname">Rutgers University</div><div class="sapps">58</div><div class="spbar"><div class="spfill" style="width:69%"></div></div><div><span class="badge bg-am">4.7%</span></div></div>
+      <div class="sr"><div class="srank">05</div><div class="sname">Morgan State Univ.</div><div class="sapps">52</div><div class="spbar"><div class="spfill" style="width:62%"></div></div><div><span class="badge bg-am">4.4%</span></div></div>
+      <div class="sr"><div class="srank">06</div><div class="sname">Wilmington Univ.</div><div class="sapps">47</div><div class="spbar"><div class="spfill" style="width:56%"></div></div><div><span class="badge bg-am">4.1%</span></div></div>
+      <div class="sr"><div class="srank">07</div><div class="sname">Howard University</div><div class="sapps">44</div><div class="spbar"><div class="spfill" style="width:52%;background:var(--jade)"></div></div><div><span class="badge bg-re">3.9%</span></div></div>
+      <div style="padding:10px 16px;border-top:1px solid var(--line)"><span style="font-family:'DM Mono',monospace;font-size:9.5px;color:var(--smoke5)">DE region leads · HBCU segment = untapped growth</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL CHANNELS — pulled from real site footer -->
+
+<div class="sec">Social Channel Intelligence · 5 Active Platforms</div>
+<div class="social-grid rise d5">
+  <div class="sc-card">
+    <div class="sc-icon">🎵</div>
+    <div class="sc-name">TikTok</div>
+    <div class="sc-handle">@gradbridgeinc</div>
+    <div><span class="badge bg-gr">Primary Student</span></div>
+    <div class="sc-focus" style="margin-top:6px">18–24yr demographic. Highest reach for "loan denied" narrative content.</div>
+  </div>
+  <div class="sc-card">
+    <div class="sc-icon">📸</div>
+    <div class="sc-name">Instagram</div>
+    <div class="sc-handle">@gradbridgeinc</div>
+    <div><span class="badge bg-am">Student/Visual</span></div>
+    <div class="sc-focus" style="margin-top:6px">Visual storytelling. Success story content, infographics on loan denial stats.</div>
+  </div>
+  <div class="sc-card">
+    <div class="sc-icon">💼</div>
+    <div class="sc-name">LinkedIn</div>
+    <div class="sc-handle">gradbridgeinc</div>
+    <div><span class="badge bg-bl">B2B / Schools</span></div>
+    <div class="sc-focus" style="margin-top:6px">School financial aid officers, lender partners, investors. Separate B2B funnel.</div>
+  </div>
+  <div class="sc-card">
+    <div class="sc-icon">👥</div>
+    <div class="sc-name">Facebook</div>
+    <div class="sc-handle">gradbridgeinc</div>
+    <div><span class="badge bg-cy">Cosigner Demo</span></div>
+    <div class="sc-focus" style="margin-top:6px">Parents/guardians (cosigner demographic). 35–55yr. Retargeting opportunity.</div>
+  </div>
+  <div class="sc-card">
+    <div class="sc-icon">𝕏</div>
+    <div class="sc-name">X / Twitter</div>
+    <div class="sc-handle">@GradBridgeInc</div>
+    <div><span class="badge bg-pu">Press / PR</span></div>
+    <div class="sc-focus" style="margin-top:6px">Media amplification, policy commentary, fintech community engagement.</div>
+  </div>
+</div>
+
+<!-- HUBSPOT + TESTIMONIAL GAP -->
+
+<div class="sec">CRM Health &amp; Conversion Trust Signals</div>
+<div class="g2 rise d6">
+
+  <!-- HUBSPOT PIPELINE -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(212,144,13,.10)">⚙️</div><div class="ct">HubSpot CRM Pipeline</div></div>
+      <div class="chip">Marketing → Applications</div>
+    </div>
+    <div class="cb">
+      <div class="pipe">
+        <div class="pc"><div class="pl">Newsletter<br>Captures</div><div class="pv">1,204</div><div class="ps">via WPForms</div><div class="pa">›</div></div>
+        <div class="pc"><div class="pl">CRM<br>Contacts</div><div class="pv" style="color:var(--gold2)">?</div><div class="ps" style="color:var(--red2)">Not synced</div><div class="pa">›</div></div>
+        <div class="pc"><div class="pl">Nurtured<br>Leads</div><div class="pv" style="color:var(--gold2)">?</div><div class="ps" style="color:var(--smoke4)">No sequence</div><div class="pa">›</div></div>
+        <div class="pc"><div class="pl">Attributed<br>Applicants</div><div class="pv" style="color:var(--gold2)">?</div><div class="ps" style="color:var(--smoke4)">Untracked</div></div>
+      </div>
+      <!-- WPForms captures Year in School — this is gold for segmentation -->
+      <div style="padding:11px 13px;background:var(--blue-g);border:1px solid rgba(32,85,212,.2);border-radius:7px;margin-bottom:14px;font-size:12px;color:var(--smoke3);line-height:1.55">
+        <strong style="color:var(--blue3)">💎 Untapped signal:</strong> The WPForms newsletter captures <strong style="color:var(--smoke2)">Year in School</strong> — this is segmentation gold. Juniors and seniors have the highest urgency. A HubSpot sequence segmented by year would outperform any generic nurture by 3–4×.
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Workflow Status · Firstmark = Loan Servicer (not Nelnet)</div>
+      <div class="wfl">
+        <div class="wfr"><div class="wfi" style="background:var(--jade-g)">✓</div><div class="wfn">Hatch Bank origination + Firstmark loan servicing (live)</div><div class="wfb wok">Active</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--gold-g)">⚡</div><div class="wfn">WPForms newsletter → HubSpot (with Year in School segment)</div><div class="wfb wnow">Build Now</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--gold-g)">⚡</div><div class="wfn">Apply Now GTM event → CRM lead + attribution</div><div class="wfb wnow">Build Now</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">14-day nurture sequence (segmented: Junior / Senior / Grad)</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">Parent/cosigner retargeting via Facebook Ads</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">Weekly leadership digest (automated, zero manual pulls)</div><div class="wfb wmiss">Missing</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST / TESTIMONIAL GAP + PRESS -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(240,84,114,.10)">⭐</div><div class="ct">Trust Signal Audit</div></div>
+      <div class="chip">Live Site Finding</div>
+    </div>
+    <div class="cb">
+      <!-- Testimonial gap — confirmed from live site -->
+      <div style="padding:14px;background:var(--red-g);border:1px solid rgba(192,49,77,.2);border-radius:var(--r-sm);margin-bottom:14px">
+        <div style="font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;color:var(--red2);margin-bottom:5px">🚨 Placeholder Testimonials Visible on Live Site</div>
+        <div style="font-size:12px;color:var(--smoke3);line-height:1.55">All 6 testimonials read <strong style="color:var(--smoke2)">"Susan M. 1", "Susan M. 2"... "Susan M. 6"</strong> with identical body copy. This is live and visible to every visitor right now. For a lending product, this is a credibility risk. Real student testimonials — or removal — is an urgent fix.</div>
+      </div>
+
+```
+  <!-- Press coverage — pulled from real In the News page -->
+  <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Earned Media · Press Coverage Tracker</div>
+  <div class="press-list">
+    <div class="press-item">
+      <div>
+        <div class="press-pub">Philadelphia Inquirer</div>
+        <div class="press-title">As Trump Limits Federal College Loans, New Private Lender Steps In</div>
+        <div class="press-date">Oct 24, 2025 · <span class="badge bg-gr" style="font-size:9px">High Authority</span></div>
+      </div>
+    </div>
+    <div class="press-item">
+      <div>
+        <div class="press-pub">Delaware Live · Philly Business Journal</div>
+        <div class="press-title">"Companies to Watch" — two Wilmington startups named</div>
+        <div class="press-date">Mar 2, 2026 · <span class="badge bg-bl" style="font-size:9px">Regional Credibility</span></div>
+      </div>
+    </div>
+    <div class="press-item">
+      <div>
+        <div class="press-pub">The College Investor</div>
+        <div class="press-title">GradBridge Review: Second-Look Student Loans</div>
+        <div class="press-date">Dec 8, 2025 · <span class="badge bg-am" style="font-size:9px">SEO / Student Trust</span></div>
+      </div>
+    </div>
+    <div class="press-item">
+      <div>
+        <div class="press-pub">PR Newswire / Yahoo Finance / Morningstar</div>
+        <div class="press-title">$20M Series A + Hatch Bank launch press releases syndicated</div>
+        <div class="press-date">Oct 22 &amp; Mar 3, 2026 · <span class="badge bg-pu" style="font-size:9px">Investor Audience</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="istrip" style="margin-top:4px">
+    <div class="istrip-icon">💡</div>
+    <div class="istrip-txt">Press referral traffic from these outlets isn't tracked because UTM parameters aren't in place. A <strong>"Earned Media" UTM source</strong> should be added to all press release links immediately.</div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- TAM + CONTENT PERFORMANCE -->
+
+<div class="sec">Market Opportunity &amp; Content Intelligence</div>
+<div class="g3 rise d7">
+
+  <!-- TAM / Federal Policy -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(32,85,212,.12)">📊</div><div class="ct">Market Tailwind</div></div>
+      <div class="chip">July 2026 Federal Changes</div>
+    </div>
+    <div class="cb">
+      <div class="tam-stat">
+        <div class="tam-big">1M+</div>
+        <div class="tam-sub">Students denied private loans annually — GradBridge's stated addressable market from press release</div>
+      </div>
+      <div class="tam-stat">
+        <div class="tam-big" style="color:var(--gold2)">~4 mo</div>
+        <div class="tam-sub">Until federal aid changes take effect (July 2026). GradBridge cited this tailwind in both the Hatch Bank press release and the Inquirer feature.</div>
+      </div>
+      <div class="tam-stat" style="margin-bottom:0">
+        <div class="tam-big" style="color:var(--jade2)">42%</div>
+        <div class="tam-sub">College dropouts cite financial struggles as primary reason — GradBridge's own homepage statistic, sourced to Education Data</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blog Content Tracker -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(124,58,237,.12)">✍️</div><div class="ct">Blog / SEO Content Performance</div></div>
+      <div class="chip">3 Articles Live</div>
+    </div>
+    <div class="cb0">
+      <div style="padding:10px 16px;border-bottom:1px solid var(--line)">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.09em">Published content — estimated organic pull</div>
+      </div>
+      <div class="content-row">
+        <div class="cr-title">Student Loan Denied? Here's What to Do Next</div>
+        <div class="cr-bar-wrap"><div class="cr-bar-fill" style="width:100%"></div></div>
+        <div class="cr-meta"><span class="badge bg-gr">High Intent</span></div>
+      </div>
+      <div class="content-row">
+        <div class="cr-title">How Your Credit Score Affects Private Student Loan Approval</div>
+        <div class="cr-bar-wrap"><div class="cr-bar-fill" style="width:75%"></div></div>
+        <div class="cr-meta"><span class="badge bg-am">Mid Intent</span></div>
+      </div>
+      <div class="content-row">
+        <div class="cr-title">The Hidden Costs of College You Should Plan For</div>
+        <div class="cr-bar-wrap"><div class="cr-bar-fill" style="width:52%"></div></div>
+        <div class="cr-meta"><span class="badge bg-bl">Awareness</span></div>
+      </div>
+      <div class="istrip">
+        <div class="istrip-icon">💡</div>
+        <div class="istrip-txt">All 3 posts target exact search queries borrowers use post-denial. <strong>"Student Loan Denied"</strong> is the highest-intent keyword GradBridge could own. Needs CTA testing and conversion tracking per article.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B2B School Funnel -->
+
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(6,182,212,.12)">🏫</div><div class="ct">B2B School Partnership Funnel</div></div>
+      <div class="chip">Supply Side (Untracked)</div>
+    </div>
+    <div class="cb">
+      <div style="margin-bottom:14px;padding:12px 13px;background:var(--gold-g);border:1px solid rgba(212,144,13,.2);border-radius:7px;font-size:12px;color:var(--smoke3);line-height:1.55">
+        <strong style="color:var(--gold2)">No B2B tracking exists.</strong> GradBridge has a "For Schools" page and a "Partners" page — both are completely separate conversion funnels with zero measurement today.
+      </div>
+      <div class="wfl">
+        <div class="wfr"><div class="wfi" style="background:var(--jade-g)">✓</div><div class="wfn">For Schools page live (gradbridge.com/schools)</div><div class="wfb wok">Live</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--jade-g)">✓</div><div class="wfn">Partners page live (gradbridge.com/partners)</div><div class="wfb wok">Live</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">School inquiry form → HubSpot pipeline</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">LinkedIn → School Partner attribution</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">B2B funnel dashboard (separate from student funnel)</div><div class="wfb wmiss">Missing</div></div>
+      </div>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--blue-g);border:1px solid rgba(32,85,212,.2);border-radius:7px;font-size:11.5px;color:var(--smoke3)">
+        Schools are GradBridge's <strong style="color:var(--blue3)">supply side</strong> — they certify loan amounts and enable access to students. School acquisition is just as critical as borrower acquisition.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 90-DAY ROADMAP -->
+
+<div class="sec">90-Day Priority Roadmap</div>
+<div class="g2 rise d7">
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(32,85,212,.10)">🗺️</div><div class="ct">Technical Priorities</div></div>
+      <div class="chip">Week 1 → Month 2</div>
+    </div>
+    <div class="cb">
+      <div class="road">
+        <div class="rc ph1"><div class="rn">01</div><div><div class="rt">GTM + GA4 Apply Now Event</div><div class="rd">Fire a conversion event before CampusDoor redirect. Captures UTM source, medium, campaign, and referrer per click. Without this, all acquisition spend is invisible.</div><div class="rchip rc1">Week 1 · Highest Priority</div><span class="effort">~2 hrs in GTM</span></div></div>
+        <div class="rc ph1"><div class="rn">02</div><div><div class="rt">HubSpot ↔ WPForms + Year-in-School Segmentation</div><div class="rd">Every newsletter signup → CRM contact. Segment by Year in School (the form already captures this). Junior/Senior sequences should be different from Freshman/Sophomore.</div><div class="rchip rc1">Week 1–2</div><span class="effort">~1 day · native integration</span></div></div>
+        <div class="rc ph2"><div class="rn">03</div><div><div class="rt">UTM Governance + Press Release Links</div><div class="rd">Tag every outbound link in press releases, social bios, school partner pages. Add earned media as a tracked UTM source. Every Philly Inquirer click is currently Dark Traffic.</div><div class="rchip rc2">Week 2–3</div><span class="effort">~3 hrs · no code</span></div></div>
+        <div class="rc ph2"><div class="rn">04</div><div><div class="rt">Fix Testimonials (Live Credibility Issue)</div><div class="rd">Remove or replace the 6 "Susan M." placeholder testimonials — visible right now to every borrower. For a lending product this erodes trust at the moment of highest intent.</div><div class="rchip rc2">Week 1 · Quick Win</div><span class="effort">~30 min in WordPress</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch">
+      <div class="ch-l"><div class="ci" style="background:rgba(13,158,110,.10)">📅</div><div class="ct">Growth Priorities</div></div>
+      <div class="chip">Month 1 → Month 3</div>
+    </div>
+    <div class="cb">
+      <div class="road">
+        <div class="rc ph2"><div class="rn">05</div><div><div class="rt">Facebook Retargeting for Cosigners</div><div class="rd">Facebook has the 35–55yr demographic — the cosigner audience. A retargeting campaign targeting visitors who didn't complete a cosigner application could recover a significant portion of the 51.5% drop-off.</div><div class="rchip rc2">Week 3–4</div><span class="effort">~1 day · FB Ads setup</span></div></div>
+        <div class="rc ph2"><div class="rn">06</div><div><div class="rt">14-Day Nurture Sequence (Segmented by Year)</div><div class="rd">Day 1 welcome → Day 3 eligibility → Day 7 school finder → Day 14 re-engage. Three versions: Junior, Senior, Grad Student. Auto-enroll from WPForms on signup.</div><div class="rchip rc2">Month 1–2</div><span class="effort">~2 days in HubSpot</span></div></div>
+        <div class="rc ph3"><div class="rn">07</div><div><div class="rt">B2B School Partnership Pipeline (HubSpot)</div><div class="rd">Build a separate HubSpot pipeline for school inquiries. Track LinkedIn → school contact → partnership signed. Schools are the supply side — they need their own funnel.</div><div class="rchip rc3">Month 2</div><span class="effort">~1 day · new pipeline</span></div></div>
+        <div class="rc ph3"><div class="rn">08</div><div><div class="rt">Leadership Command Dashboard</div><div class="rd">Weekly automated digest: student funnel, B2B pipeline, top schools, channel CVR, newsletter growth. No manual exports, delivered to leadership every Monday.</div><div class="rchip rc3">Month 2–3</div><span class="effort">~3 days · GA4 + HS reports</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer rise d8">
+  <div class="fn">
+    Live audit of gradbridge.com · March 10, 2026<br>
+    Stack: WordPress + WPForms + CampusDoor (origination) + Firstmark (servicing) + HubSpot · Bank: Hatch Bank (FDIC)<br>
+    Social: @gradbridgeinc on TikTok, Instagram, LinkedIn, Facebook, X · Press: ShinePR<br>
+    All funnel data illustrative · gaps identified from direct site inspection
+  </div>
+  <div>
+    <div class="fs-label">Prepared by</div>
+    <div class="fs-name">Byheir Wise</div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// Counter
+function countUp(el, target, dur=2200){
+  const t0=performance.now();
+  (function tick(now){
+    const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,4);
+    el.textContent=Math.floor(e*target).toLocaleString();
+    p<1?requestAnimationFrame(tick):el.textContent=target.toLocaleString();
+  })(t0);
+}
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    if(el.hasAttribute('data-target')){countUp(el,parseInt(el.getAttribute('data-target')));io.unobserve(el);}
+  });
+},{threshold:.3});
+document.querySelectorAll('[data-target]').forEach(el=>io.observe(el));
+
+// Funnel bars (main + cosigner)
+function animFunnel(){
+  document.querySelectorAll('.ffill[data-w]').forEach((el,i)=>{
+    const w=el.getAttribute('data-w');
+    setTimeout(()=>{el.style.width=w+'%';},500+i*130);
+  });
+  document.querySelectorAll('.cf-fill[data-cw]').forEach((el,i)=>{
+    const w=el.getAttribute('data-cw');
+    setTimeout(()=>{el.style.width=w+'%';},700+i*200);
+  });
+}
+window.addEventListener('load',()=>setTimeout(animFunnel,350));
+
+// Chart
+const ctx=document.getElementById('trendChart').getContext('2d');
+const base=new Date('2026-03-03'); // Launch day as anchor
+const labels=[],vis=[],clk=[],cmp=[];
+for(let i=-21;i<8;i++){
+  const d=new Date(base);d.setDate(d.getDate()+i);
+  const mo=d.toLocaleString('default',{month:'short'});
+  labels.push((i===-21||i===-14||i===-7||i===0||i===7)?`${mo} ${d.getDate()}`:'');
+  const spike=i===0?3.2:(i>=-1&&i<=3)?1.9:1;
+  const trend=1+(i+21)*0.018;
+  vis.push(Math.round((380+Math.random()*160)*trend*spike));
+  clk.push(Math.round((56+Math.random()*26)*trend*spike));
+  cmp.push(Math.round((15+Math.random()*11)*trend*spike));
+}
+const mkGrad=(a,b)=>{const g=ctx.createLinearGradient(0,0,0,195);g.addColorStop(0,a);g.addColorStop(1,b);return g;};
+new Chart(ctx,{
+  type:'line',
+  data:{labels,datasets:[
+    {data:vis,borderColor:'#3b7af5',backgroundColor:mkGrad('rgba(59,122,245,.13)','rgba(59,122,245,0)'),borderWidth:2,fill:true,tension:.42,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#3b7af5'},
+    {data:clk,borderColor:'#18d4a0',backgroundColor:'transparent',borderWidth:1.5,borderDash:[5,4],fill:false,tension:.42,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#18d4a0'},
+    {data:cmp,borderColor:'#8b5cf6',backgroundColor:'transparent',borderWidth:1.5,fill:false,tension:.42,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#8b5cf6'}
+  ]},
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'#0d1628',borderColor:'#1f3255',borderWidth:1,titleColor:'#8098bb',bodyColor:'#e8eef7',titleFont:{family:'DM Mono',size:10},bodyFont:{family:'DM Mono',size:11},padding:12,
+        callbacks:{
+          title:items=>{const d=new Date(base);d.setDate(d.getDate()+(items[0].dataIndex-21));return d.toLocaleString('default',{month:'short',day:'numeric'})+(items[0].dataIndex===21?' ★ Launch':'' );},
+          label:c=>{const n=['  Visitors','  Apply Clicks','  Completed'];return`${n[c.datasetIndex]}: ${c.parsed.y.toLocaleString()}`}
+        }
+      }
+    },
+    scales:{
+      x:{grid:{color:'rgba(24,40,68,.8)',drawBorder:false},ticks:{color:'#3d567a',font:{family:'DM Mono',size:9},maxRotation:0,autoSkip:false},border:{display:false}},
+      y:{grid:{color:'rgba(24,40,68,.8)',drawBorder:false},ticks:{color:'#3d567a',font:{family:'DM Mono',size:9},callback:v=>v>=1000?(v/1000).toFixed(1)+'k':v},border:{display:false}}
+    }
+  }
+});
+</script>
+
+</body>
+</html>
