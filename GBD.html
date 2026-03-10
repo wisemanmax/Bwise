@@ -62,7 +62,7 @@
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{font-size:14px;background:#050b16;color-scheme:dark}
-body{font-family:‘Outfit’,sans-serif;background:#050b16;background:var(–ink);color:#e8eef7;color:var(–smoke);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:‘Outfit’,sans-serif;background:#050b16;background:#050b16;color:#e8eef7;color:#e8eef7;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 /* ── FORCE DARK — prevents GitHub Pages / browser light-mode override ── */
 @media (prefers-color-scheme: light) {
@@ -80,57 +80,57 @@ body { background: #050b16 !important; color: #e8eef7 !important; }
 .page{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:0 22px 100px}
 
 /* ── NAV ── */
-.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #182844;border-bottom:1px solid var(–line);background:#050b16;background:rgba(5,11,22,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);gap:14px}
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid #182844;border-bottom:1px solid #182844;background:#050b16;background:rgba(5,11,22,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);gap:14px}
 .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
 .logo{width:34px;height:34px;background:linear-gradient(135deg,#1a46c0,#3b7af5);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:‘Fraunces’,serif;font-weight:700;font-size:15px;color:#fff;box-shadow:0 0 20px rgba(32,85,212,.4);flex-shrink:0}
-.wm{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;color:var(–smoke);letter-spacing:-.3px}
-.ws{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+.wm{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;color:#e8eef7;letter-spacing:-.3px}
+.ws{font-family:‘DM Mono’,monospace;font-size:9.5px;color:#3d567a;letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
 .nav-r{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;font-family:‘DM Mono’,monospace;font-size:10px;letter-spacing:.04em;white-space:nowrap}
-.p-live{background:var(–jade-g);border:1px solid rgba(13,158,110,.22);color:var(–jade2)}
-.p-date{background:var(–ink3);border:1px solid var(–line);color:var(–smoke4)}
-.p-proto{background:var(–blue-g);border:1px solid rgba(32,85,212,.25);color:var(–blue3)}
-.pdot{width:6px;height:6px;border-radius:50%;background:var(–jade2);box-shadow:0 0 8px var(–jade2);animation:blink 2s infinite;flex-shrink:0}
+.p-live{background:rgba(13,158,110,.12);border:1px solid rgba(13,158,110,.3);color:#18d4a0}
+.p-date{background:#0d1628;border:1px solid #182844;color:#3d567a}
+.p-proto{background:rgba(32,85,212,.12);border:1px solid rgba(32,85,212,.3);color:#6fa0f8}
+.pdot{width:6px;height:6px;border-radius:50%;background:#18d4a0;box-shadow:0 0 8px #18d4a0;animation:blink 2s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* ── HERO ── */
 .hero{padding:38px 0 28px}
-.kicker{font-family:‘DM Mono’,monospace;font-size:10.5px;color:var(–blue3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.kicker::after{content:’’;flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,var(–blue),transparent)}
-h1{font-family:‘Fraunces’,serif;font-weight:600;font-size:clamp(28px,4.2vw,50px);color:var(–smoke);letter-spacing:-1.5px;line-height:1.06;margin-bottom:12px}
-h1 em{font-style:italic;font-weight:400;color:var(–blue3)}
-.subtext{font-size:14px;color:var(–smoke3);max-width:600px;line-height:1.65;font-weight:300}
+.kicker{font-family:‘DM Mono’,monospace;font-size:10.5px;color:#6fa0f8;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:’’;flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,#2055d4,transparent)}
+h1{font-family:‘Fraunces’,serif;font-weight:600;font-size:clamp(28px,4.2vw,50px);color:#e8eef7;letter-spacing:-1.5px;line-height:1.06;margin-bottom:12px}
+h1 em{font-style:italic;font-weight:400;color:#6fa0f8}
+.subtext{font-size:14px;color:#8098bb;max-width:600px;line-height:1.65;font-weight:300}
 
 /* ── SECTION LABEL ── */
-.sec{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);letter-spacing:.12em;text-transform:uppercase;margin:26px 0 12px;display:flex;align-items:center;gap:10px}
-.sec::after{content:’’;flex:1;height:1px;background:var(–line)}
+.sec{font-family:‘DM Mono’,monospace;font-size:9.5px;color:#3d567a;letter-spacing:.12em;text-transform:uppercase;margin:26px 0 12px;display:flex;align-items:center;gap:10px}
+.sec::after{content:’’;flex:1;height:1px;background:#182844}
 
 /* ── ALERT BANNER ── */
-.banner{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;border-radius:var(–r);margin-bottom:20px;position:relative;overflow:hidden}
+.banner{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;border-radius:13px;margin-bottom:20px;position:relative;overflow:hidden}
 .banner::before{content:’’;position:absolute;left:0;top:0;bottom:0;width:3px}
-.b-red{background:rgba(192,49,77,.07);border:1px solid rgba(192,49,77,.2)}.b-red::before{background:linear-gradient(180deg,var(–red2),var(–gold2))}
-.b-gold{background:rgba(212,144,13,.07);border:1px solid rgba(212,144,13,.2)}.b-gold::before{background:var(–gold2)}
-.b-blue{background:var(–blue-g);border:1px solid rgba(32,85,212,.2)}.b-blue::before{background:var(–blue2)}
+.b-red{background:rgba(192,49,77,.09);border:1px solid rgba(192,49,77,.28)}.b-red::before{background:linear-gradient(180deg,#f05472,#f5b233)}
+.b-gold{background:rgba(212,144,13,.09);border:1px solid rgba(212,144,13,.28)}.b-gold::before{background:#f5b233}
+.b-blue{background:rgba(32,85,212,.09);border:1px solid rgba(32,85,212,.28)}.b-blue::before{background:#2055d4}
 .b-icon{font-size:17px;flex-shrink:0;padding-top:1px}
 .b-title{font-family:‘Outfit’,sans-serif;font-weight:600;font-size:13px;margin-bottom:4px}
-.b-text{font-size:12px;color:var(–smoke3);line-height:1.55}
-.b-text strong{color:var(–smoke2);font-weight:500}
+.b-text{font-size:12px;color:#8098bb;line-height:1.55}
+.b-text strong{color:#c4d0e4;font-weight:500}
 
 /* ── STAT CARDS ── */
 .stats5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
 .stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.scard{background:#090f1d;background:var(–ink2);border:1px solid #182844;border:1px solid var(–line);border-radius:var(–r);padding:18px 16px 14px;position:relative;overflow:hidden;cursor:default;transition:border-color .25s,box-shadow .25s,transform .2s;box-shadow:var(–sh)}
+.scard{background:#090f1d;background:#090f1d;border:1px solid #182844;border:1px solid #182844;border-radius:13px;padding:18px 16px 14px;position:relative;overflow:hidden;cursor:default;transition:border-color .25s,box-shadow .25s,transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.25)}
 .scard::after{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.025) 0%,transparent 55%);pointer-events:none}
-.scard:hover{border-color:var(–line3);box-shadow:var(–sh-h);transform:translateY(-2px)}
-.se{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
-.sn{font-family:‘Fraunces’,serif;font-weight:600;font-size:29px;color:var(–smoke);letter-spacing:-1.5px;line-height:1;margin-bottom:9px}
-.sn sub{font-size:16px;font-weight:400;color:var(–smoke3);vertical-align:baseline;letter-spacing:0}
+.scard:hover{border-color:#27406b;box-shadow:0 4px 28px rgba(0,0,0,.5),0 0 0 1px rgba(32,85,212,.12);transform:translateY(-2px)}
+.se{font-family:‘DM Mono’,monospace;font-size:9px;color:#3d567a;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}
+.sn{font-family:‘Fraunces’,serif;font-weight:600;font-size:29px;color:#e8eef7;letter-spacing:-1.5px;line-height:1;margin-bottom:9px}
+.sn sub{font-size:16px;font-weight:400;color:#8098bb;vertical-align:baseline;letter-spacing:0}
 .st{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-family:‘DM Mono’,monospace;font-size:9.5px}
-.t-up{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
-.t-warn{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
-.t-down{color:var(–red2);background:var(–red-g);border:1px solid rgba(192,49,77,.18)}
-.t-info{color:var(–blue3);background:var(–blue-g);border:1px solid rgba(32,85,212,.18)}
-.t-purple{color:var(–purple2);background:var(–purple-g);border:1px solid rgba(124,58,237,.18)}
+.t-up{color:#18d4a0;background:rgba(13,158,110,.12);border:1px solid rgba(13,158,110,.2)}
+.t-warn{color:#f5b233;background:rgba(212,144,13,.12);border:1px solid rgba(212,144,13,.2)}
+.t-down{color:#f05472;background:rgba(192,49,77,.12);border:1px solid rgba(192,49,77,.2)}
+.t-info{color:#6fa0f8;background:rgba(32,85,212,.12);border:1px solid rgba(32,85,212,.2)}
+.t-purple{color:#a78bfa;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2)}
 
 /* ── GRIDS ── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
@@ -138,156 +138,156 @@ h1 em{font-style:italic;font-weight:400;color:var(–blue3)}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
 
 /* ── CARD ── */
-.card{background:#090f1d;background:var(–ink2);border:1px solid #182844;border:1px solid var(–line);border-radius:var(–r);overflow:hidden;box-shadow:var(–sh);transition:border-color .2s}
-.card:hover{border-color:var(–line2)}
-.ch{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(–line);gap:10px}
+.card{background:#090f1d;background:#090f1d;border:1px solid #182844;border:1px solid #182844;border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.25);transition:border-color .2s}
+.card:hover{border-color:#1f3255}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid #182844;gap:10px}
 .ch-l{display:flex;align-items:center;gap:9px}
-.ci{width:27px;height:27px;border-radius:var(–r-sm);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.ct{font-family:‘Fraunces’,serif;font-weight:600;font-size:13px;color:var(–smoke);letter-spacing:-.2px}
-.chip{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);background:var(–ink3);border:1px solid var(–line);border-radius:5px;padding:3px 8px;letter-spacing:.06em;white-space:nowrap;flex-shrink:0}
+.ci{width:27px;height:27px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ct{font-family:‘Fraunces’,serif;font-weight:600;font-size:13px;color:#e8eef7;letter-spacing:-.2px}
+.chip{font-family:‘DM Mono’,monospace;font-size:9px;color:#3d567a;background:#0d1628;border:1px solid #182844;border-radius:5px;padding:3px 8px;letter-spacing:.06em;white-space:nowrap;flex-shrink:0}
 .cb{padding:18px}
 .cb0{padding:0}
 
 /* ── BADGE ── */
 .badge{font-family:‘DM Mono’,monospace;font-size:10px;padding:3px 9px;border-radius:20px;display:inline-block;line-height:1.4}
-.bg-gr{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
-.bg-am{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
-.bg-re{color:var(–red2);background:var(–red-g);border:1px solid rgba(192,49,77,.18)}
-.bg-bl{color:var(–blue3);background:var(–blue-g);border:1px solid rgba(32,85,212,.18)}
-.bg-pu{color:var(–purple2);background:var(–purple-g);border:1px solid rgba(124,58,237,.18)}
-.bg-cy{color:var(–cyan2);background:var(–cyan-g);border:1px solid rgba(8,145,178,.18)}
+.bg-gr{color:#18d4a0;background:rgba(13,158,110,.12);border:1px solid rgba(13,158,110,.22)}
+.bg-am{color:#f5b233;background:rgba(212,144,13,.12);border:1px solid rgba(212,144,13,.22)}
+.bg-re{color:#f05472;background:rgba(192,49,77,.12);border:1px solid rgba(192,49,77,.22)}
+.bg-bl{color:#6fa0f8;background:rgba(32,85,212,.12);border:1px solid rgba(32,85,212,.22)}
+.bg-pu{color:#a78bfa;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.22)}
+.bg-cy{color:#22d3ee;background:rgba(8,145,178,.12);border:1px solid rgba(8,145,178,.22)}
 
 /* ── FUNNEL ── */
 .funnel{display:flex;flex-direction:column;gap:0}
 .frow{display:grid;grid-template-columns:108px 1fr 55px 62px;gap:10px;align-items:center;padding:5px 0}
-.flabel{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ftrack{height:38px;background:rgba(255,255,255,.025);border:1px solid var(–line);border-radius:7px;overflow:hidden}
+.flabel{font-family:‘DM Mono’,monospace;font-size:9.5px;color:#3d567a;text-transform:uppercase;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ftrack{height:38px;background:rgba(255,255,255,.025);border:1px solid #182844;border-radius:7px;overflow:hidden}
 .ffill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:13px;font-family:‘Outfit’,sans-serif;font-weight:600;font-size:11.5px;color:rgba(255,255,255,.92);white-space:nowrap;width:0;transition:width 1.5s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
 .ffill::after{content:’’;position:absolute;top:0;right:0;bottom:0;width:50px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06))}
-.fcount{font-family:‘DM Mono’,monospace;font-size:11px;color:var(–smoke3);text-align:right}
+.fcount{font-family:‘DM Mono’,monospace;font-size:11px;color:#8098bb;text-align:right}
 .fdrop{font-family:‘DM Mono’,monospace;font-size:10px;text-align:right}
 .fgap{display:grid;grid-template-columns:108px 1fr 55px 62px;gap:10px;align-items:center;padding:4px 0}
 .fgl{display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
-.fgd{width:4px;height:4px;border-radius:50%;background:var(–line3)}
+.fgd{width:4px;height:4px;border-radius:50%;background:#27406b}
 .fgr{display:flex;align-items:center;gap:6px;padding-left:6px}
-.fgt{width:1px;height:12px;background:var(–line2);margin-left:8px}
+.fgt{width:1px;height:12px;background:#1f3255;margin-left:8px}
 .fgb{font-family:‘DM Mono’,monospace;font-size:10px;padding:2px 8px;border-radius:20px}
 
 /* ── CHART ── */
 .chart-wrap{position:relative;height:195px;padding:0 4px}
-.chart-foot{display:flex;align-items:center;gap:18px;padding:11px 18px;border-top:1px solid var(–line);flex-wrap:wrap}
-.leg{display:flex;align-items:center;gap:7px;font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4)}
+.chart-foot{display:flex;align-items:center;gap:18px;padding:11px 18px;border-top:1px solid #182844;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:7px;font-family:‘DM Mono’,monospace;font-size:9.5px;color:#3d567a}
 .lsw{width:14px;height:2px;border-radius:1px}
-.chart-metas{display:grid;grid-template-columns:1fr 1fr;gap:1px;border-top:1px solid var(–line);background:var(–line)}
-.cm{background:var(–ink2);padding:13px 18px}
-.cml{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px}
-.cmv{font-family:‘Fraunces’,serif;font-weight:600;font-size:19px;color:var(–smoke);letter-spacing:-.5px}
+.chart-metas{display:grid;grid-template-columns:1fr 1fr;gap:1px;border-top:1px solid #182844;background:#182844}
+.cm{background:#090f1d;padding:13px 18px}
+.cml{font-family:‘DM Mono’,monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px}
+.cmv{font-family:‘Fraunces’,serif;font-weight:600;font-size:19px;color:#e8eef7;letter-spacing:-.5px}
 .cms{font-size:11px;margin-top:2px}
 
 /* ── TABLE ── */
 .dt{width:100%;border-collapse:collapse}
-.dt thead th{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:left;border-bottom:1px solid var(–line);background:var(–ink3);font-weight:400}
-.dt tbody td{padding:11px 16px;border-bottom:1px solid rgba(24,40,68,.9);font-size:12.5px;color:var(–smoke);vertical-align:middle}
+.dt thead th{font-family:‘DM Mono’,monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:left;border-bottom:1px solid #182844;background:#0d1628;font-weight:400}
+.dt tbody td{padding:11px 16px;border-bottom:1px solid rgba(24,40,68,.9);font-size:12.5px;color:#e8eef7;vertical-align:middle}
 .dt tbody tr:last-child td{border-bottom:none}
 .dt tbody tr{transition:background .12s}
-.dt tbody tr:hover td{background:var(–ink3)}
+.dt tbody tr:hover td{background:#0d1628}
 .cdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:9px;vertical-align:middle}
-.btrack{width:80px;height:3px;background:var(–line2);border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
-.bfill{height:100%;background:var(–blue2);border-radius:2px}
+.btrack{width:80px;height:3px;background:#1f3255;border-radius:2px;overflow:hidden;display:inline-block;vertical-align:middle}
+.bfill{height:100%;background:#3b7af5;border-radius:2px}
 
 /* ── PIPELINE ── */
-.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(–line);border-radius:var(–r);overflow:hidden;margin-bottom:16px}
-.pc{padding:14px 12px;background:var(–ink3);border-right:1px solid var(–line);text-align:center;position:relative;transition:background .15s}
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid #182844;border-radius:13px;overflow:hidden;margin-bottom:16px}
+.pc{padding:14px 12px;background:#0d1628;border-right:1px solid #182844;text-align:center;position:relative;transition:background .15s}
 .pc:last-child{border-right:none}
-.pc:hover{background:var(–ink4)}
-.pl{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;line-height:1.4}
-.pv{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:var(–smoke);letter-spacing:-.5px;line-height:1}
-.ps{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);margin-top:5px}
-.pa{position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:17px;height:17px;background:var(–ink2);border:1px solid var(–line2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(–smoke4);z-index:2}
+.pc:hover{background:#111e35}
+.pl{font-family:‘DM Mono’,monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;line-height:1.4}
+.pv{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:#e8eef7;letter-spacing:-.5px;line-height:1}
+.ps{font-family:‘DM Mono’,monospace;font-size:9.5px;color:#3d567a;margin-top:5px}
+.pa{position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:17px;height:17px;background:#090f1d;border:1px solid #1f3255;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#3d567a;z-index:2}
 
 /* ── WORKFLOW ── */
 .wfl{display:flex;flex-direction:column;gap:8px}
-.wfr{display:flex;align-items:center;gap:11px;padding:11px 14px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);transition:border-color .2s,background .15s}
-.wfr:hover{border-color:var(–line3);background:var(–ink4)}
+.wfr{display:flex;align-items:center;gap:11px;padding:11px 14px;background:#0d1628;border:1px solid #182844;border-radius:8px;transition:border-color .2s,background .15s}
+.wfr:hover{border-color:#27406b;background:#111e35}
 .wfi{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.wfn{flex:1;font-size:12.5px;color:var(–smoke);font-weight:400}
+.wfn{flex:1;font-size:12.5px;color:#e8eef7;font-weight:400}
 .wfb{font-family:‘DM Mono’,monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;white-space:nowrap}
-.wok{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
-.wnow{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
-.wmiss{color:var(–red2);background:var(–red-g);border:1px solid rgba(192,49,77,.18)}
+.wok{color:#18d4a0;background:rgba(13,158,110,.12);border:1px solid rgba(13,158,110,.2)}
+.wnow{color:#f5b233;background:rgba(212,144,13,.12);border:1px solid rgba(212,144,13,.2)}
+.wmiss{color:#f05472;background:rgba(192,49,77,.12);border:1px solid rgba(192,49,77,.2)}
 
 /* ── SCHOOLS ── */
 .sh,.sr{display:grid;grid-template-columns:22px 1fr 44px 64px 54px;gap:8px;align-items:center;padding:11px 16px}
-.sh{background:var(–ink3);border-bottom:1px solid var(–line)}
-.sh span{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.09em;font-weight:400}
+.sh{background:#0d1628;border-bottom:1px solid #182844}
+.sh span{font-family:‘DM Mono’,monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.09em;font-weight:400}
 .sr{border-bottom:1px solid rgba(24,40,68,.9);transition:background .12s}
 .sr:last-child{border-bottom:none}
-.sr:hover{background:var(–ink3)}
-.srank{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke5)}
-.sname{font-size:12.5px;color:var(–smoke)}
-.sapps{font-family:‘DM Mono’,monospace;font-size:11px;color:var(–smoke3)}
-.spbar{height:3px;background:var(–line2);border-radius:2px;overflow:hidden}
-.spfill{height:100%;background:var(–blue2);border-radius:2px}
+.sr:hover{background:#0d1628}
+.srank{font-family:‘DM Mono’,monospace;font-size:10px;color:#1e3052}
+.sname{font-size:12.5px;color:#e8eef7}
+.sapps{font-family:‘DM Mono’,monospace;font-size:11px;color:#8098bb}
+.spbar{height:3px;background:#1f3255;border-radius:2px;overflow:hidden}
+.spfill{height:100%;background:#3b7af5;border-radius:2px}
 
 /* ── ROADMAP ── */
 .road{display:flex;flex-direction:column;gap:10px}
-.rc{display:flex;gap:15px;padding:15px 16px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r);position:relative;overflow:hidden;transition:border-color .2s,transform .15s}
+.rc{display:flex;gap:15px;padding:15px 16px;background:#0d1628;border:1px solid #182844;border-radius:13px;position:relative;overflow:hidden;transition:border-color .2s,transform .15s}
 .rc::before{content:’’;position:absolute;left:0;top:0;bottom:0;width:2px}
-.ph1::before{background:var(–blue2)}.ph2::before{background:var(–jade)}.ph3::before{background:var(–gold)}
-.rc:hover{border-color:var(–line3);transform:translateX(3px)}
-.rn{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:var(–line3);letter-spacing:-1px;line-height:1;min-width:24px;padding-top:2px}
-.rt{font-family:‘Outfit’,sans-serif;font-weight:600;font-size:13px;color:var(–smoke);margin-bottom:4px}
-.rd{font-size:11.5px;color:var(–smoke4);line-height:1.5;margin-bottom:7px}
+.ph1::before{background:#3b7af5}.ph2::before{background:#0d9e6e}.ph3::before{background:#d4900d}
+.rc:hover{border-color:#27406b;transform:translateX(3px)}
+.rn{font-family:‘Fraunces’,serif;font-weight:600;font-size:22px;color:#27406b;letter-spacing:-1px;line-height:1;min-width:24px;padding-top:2px}
+.rt{font-family:‘Outfit’,sans-serif;font-weight:600;font-size:13px;color:#e8eef7;margin-bottom:4px}
+.rd{font-size:11.5px;color:#3d567a;line-height:1.5;margin-bottom:7px}
 .rchip{font-family:‘DM Mono’,monospace;font-size:9px;padding:2px 7px;border-radius:4px;display:inline-block;text-transform:uppercase;letter-spacing:.06em}
-.rc1{color:var(–blue3);background:var(–blue-g);border:1px solid rgba(32,85,212,.2)}
-.rc2{color:var(–jade2);background:var(–jade-g);border:1px solid rgba(13,158,110,.18)}
-.rc3{color:var(–gold2);background:var(–gold-g);border:1px solid rgba(212,144,13,.18)}
+.rc1{color:#6fa0f8;background:rgba(32,85,212,.12);border:1px solid rgba(32,85,212,.25)}
+.rc2{color:#18d4a0;background:rgba(13,158,110,.12);border:1px solid rgba(13,158,110,.22)}
+.rc3{color:#f5b233;background:rgba(212,144,13,.12);border:1px solid rgba(212,144,13,.22)}
 
 /* ── SOCIAL CHANNELS ── */
 .social-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
-.sc-card{padding:14px 12px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);text-align:center;transition:border-color .2s,transform .15s}
-.sc-card:hover{border-color:var(–line3);transform:translateY(-2px)}
+.sc-card{padding:14px 12px;background:#0d1628;border:1px solid #182844;border-radius:8px;text-align:center;transition:border-color .2s,transform .15s}
+.sc-card:hover{border-color:#27406b;transform:translateY(-2px)}
 .sc-icon{font-size:18px;margin-bottom:8px}
-.sc-name{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
-.sc-handle{font-size:11px;color:var(–smoke2);margin-bottom:6px;font-weight:500}
-.sc-focus{font-size:10.5px;color:var(–smoke4);line-height:1.4}
+.sc-name{font-family:‘DM Mono’,monospace;font-size:10px;color:#3d567a;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.sc-handle{font-size:11px;color:#c4d0e4;margin-bottom:6px;font-weight:500}
+.sc-focus{font-size:10.5px;color:#3d567a;line-height:1.4}
 
 /* ── PRESS CARDS ── */
 .press-list{display:flex;flex-direction:column;gap:8px}
-.press-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);transition:border-color .2s}
-.press-item:hover{border-color:var(–line3)}
-.press-pub{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.press-title{font-size:12px;color:var(–smoke);line-height:1.4;font-weight:500}
-.press-date{font-family:‘DM Mono’,monospace;font-size:9.5px;color:var(–smoke5);margin-top:4px}
+.press-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#0d1628;border:1px solid #182844;border-radius:8px;transition:border-color .2s}
+.press-item:hover{border-color:#27406b}
+.press-pub{font-family:‘DM Mono’,monospace;font-size:9.5px;color:#3d567a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.press-title{font-size:12px;color:#e8eef7;line-height:1.4;font-weight:500}
+.press-date{font-family:‘DM Mono’,monospace;font-size:9.5px;color:#1e3052;margin-top:4px}
 
 /* ── TAM PANEL ── */
-.tam-stat{padding:16px;background:var(–ink3);border:1px solid var(–line);border-radius:var(–r-sm);margin-bottom:10px}
-.tam-big{font-family:‘Fraunces’,serif;font-weight:600;font-size:32px;color:var(–smoke);letter-spacing:-1.5px;line-height:1}
-.tam-sub{font-size:11.5px;color:var(–smoke3);margin-top:5px;line-height:1.5}
+.tam-stat{padding:16px;background:#0d1628;border:1px solid #182844;border-radius:8px;margin-bottom:10px}
+.tam-big{font-family:‘Fraunces’,serif;font-weight:600;font-size:32px;color:#e8eef7;letter-spacing:-1.5px;line-height:1}
+.tam-sub{font-size:11.5px;color:#8098bb;margin-top:5px;line-height:1.5}
 
 /* ── COSIGNER FUNNEL ── */
-.cos-note{padding:10px 13px;border-radius:7px;margin-top:12px;font-size:11.5px;color:var(–smoke3);line-height:1.55}
+.cos-note{padding:10px 13px;border-radius:7px;margin-top:12px;font-size:11.5px;color:#8098bb;line-height:1.55}
 
 /* ── CONTENT TRACKER ── */
 .content-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(24,40,68,.9)}
 .content-row:last-child{border-bottom:none}
-.content-row:hover{background:var(–ink3)}
-.cr-title{flex:1;font-size:12px;color:var(–smoke);font-weight:500}
-.cr-meta{font-size:11px;color:var(–smoke4);min-width:90px;text-align:right;font-family:‘DM Mono’,monospace}
-.cr-bar-wrap{width:80px;height:3px;background:var(–line2);border-radius:2px;overflow:hidden}
-.cr-bar-fill{height:100%;border-radius:2px;background:var(–purple2)}
+.content-row:hover{background:#0d1628}
+.cr-title{flex:1;font-size:12px;color:#e8eef7;font-weight:500}
+.cr-meta{font-size:11px;color:#3d567a;min-width:90px;text-align:right;font-family:‘DM Mono’,monospace}
+.cr-bar-wrap{width:80px;height:3px;background:#1f3255;border-radius:2px;overflow:hidden}
+.cr-bar-fill{height:100%;border-radius:2px;background:#a78bfa}
 
 /* ── INSIGHT STRIP ── */
-.istrip{padding:12px 17px;border-top:1px solid var(–line);display:flex;align-items:flex-start;gap:10px}
+.istrip{padding:12px 17px;border-top:1px solid #182844;display:flex;align-items:flex-start;gap:10px}
 .istrip-icon{font-size:14px;flex-shrink:0}
-.istrip-txt{font-size:12px;color:var(–smoke3);line-height:1.55}
-.istrip-txt strong{color:var(–smoke2);font-weight:500}
+.istrip-txt{font-size:12px;color:#8098bb;line-height:1.55}
+.istrip-txt strong{color:#c4d0e4;font-weight:500}
 
 /* ── FOOTER ── */
-.footer{margin-top:50px;padding:22px 0 0;border-top:1px solid var(–line);display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
-.fn{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke5);line-height:1.8}
-.fs-label{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
-.fs-name{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;background:linear-gradient(135deg,var(–blue2),var(–blue3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer{margin-top:50px;padding:22px 0 0;border-top:1px solid #182844;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.fn{font-family:‘DM Mono’,monospace;font-size:10px;color:#1e3052;line-height:1.8}
+.fs-label{font-family:‘DM Mono’,monospace;font-size:9px;color:#1e3052;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.fs-name{font-family:‘Fraunces’,serif;font-weight:600;font-size:16px;background:linear-gradient(135deg,#3b7af5,#6fa0f8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
 /* ── ANIM ── */
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -295,90 +295,187 @@ h1 em{font-style:italic;font-weight:400;color:var(–blue3)}
 .d1{animation-delay:.04s}.d2{animation-delay:.10s}.d3{animation-delay:.16s}.d4{animation-delay:.22s}
 .d5{animation-delay:.30s}.d6{animation-delay:.38s}.d7{animation-delay:.46s}.d8{animation-delay:.54s}
 
-/* ── MOBILE ── */
+/* ══════════════════════════════════════════════
+RESPONSIVE — full audit pass
+Breakpoints: 1080 · 860 · 720 · 480
+══════════════════════════════════════════════ */
+
+/* ─ 1080px: tablets, large phones landscape ─ */
 @media(max-width:1080px){
 .stats5{grid-template-columns:repeat(3,1fr)}
+.g3{grid-template-columns:1fr 1fr}
 .g3-2{grid-template-columns:1fr}
 .social-grid{grid-template-columns:repeat(3,1fr)}
+/* Pipeline: 2 wide → 2 short */
 .pipe{grid-template-columns:repeat(2,1fr)}
-.pc:nth-child(2){border-right:1px solid var(–line)}
+.pc:nth-child(2){border-right:1px solid #182844}
 .pc:nth-child(2) .pa{display:none}
+/* Chart metas */
+.chart-metas{grid-template-columns:1fr 1fr}
 }
+
+/* ─ 860px: small tablets, large phones ─ */
+@media(max-width:860px){
+.g3{grid-template-columns:1fr}
+.cosign-inner-grid{grid-template-columns:1fr !important}
+}
+
+/* ─ 720px: standard phones ─ */
 @media(max-width:720px){
 .page{padding:0 14px 70px}
-h1{font-size:26px}
-.stats5,.stats3{grid-template-columns:1fr 1fr}
-.g2,.g3{grid-template-columns:1fr}
+h1{font-size:26px;letter-spacing:-1px}
+.subtext{font-size:13px}
+
+/* Nav */
 .nav-r .p-proto{display:none}
-.frow{grid-template-columns:82px 1fr 44px}
-.fdrop{display:none}
-.fgap{grid-template-columns:82px 1fr 44px}
-.sh,.sr{grid-template-columns:20px 1fr 36px 48px}
-.sh span:nth-child(4),.sr .spbar{display:none}
-.social-grid{grid-template-columns:repeat(2,1fr)}
-/* table: hide bar column, make scrollable */
-.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table th:nth-child(4),table td:nth-child(4){display:none}
-/* nav pills wrap */
 .nav-r{gap:6px}
 .pill{font-size:9px;padding:4px 8px}
+
+/* Grids */
+.stats5,.stats3{grid-template-columns:1fr 1fr}
+.g2,.g3,.g3-2{grid-template-columns:1fr}
+
+/* Funnel: hide drop column */
+.frow{grid-template-columns:86px 1fr 46px}
+.frow .fdrop{display:none}
+.fgap{grid-template-columns:86px 1fr 46px}
+
+/* Funnel bar labels: shorter */
+.ffill{font-size:10.5px;padding-left:10px}
+
+/* Chart metas: stack */
+.chart-metas{grid-template-columns:1fr}
+.cm:first-child{border-bottom:1px solid #182844}
+
+/* Pipeline: 1 col */
+.pipe{grid-template-columns:1fr 1fr}
+.pc{border-right:none !important;border-bottom:1px solid #182844}
+.pc:last-child{border-bottom:none}
+.pa{display:none !important}
+
+/* School table: rank + name + apps only */
+.sh,.sr{grid-template-columns:22px 1fr 40px}
+.sh span:nth-child(n+4),.sr div:nth-child(n+4){display:none}
+
+/* Attribution table: scrollable, hide bar col */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table th:nth-child(4),table td:nth-child(4){display:none}
+
+/* Workflow rows: wrap badge below text on very narrow */
+.wfr{flex-wrap:wrap;gap:8px}
+.wfi{width:26px;height:26px;font-size:12px}
+.wfn{flex:1;min-width:0;font-size:12px}
+.wfb{margin-left:auto}
+
+/* Social grid */
+.social-grid{grid-template-columns:1fr 1fr}
+
+/* Content rows: hide bar */
+.cr-bar-wrap{display:none}
+.content-row{gap:8px}
+
+/* Roadmap */
+.rc{padding:13px 12px;gap:11px}
+.rn{font-size:18px;min-width:20px}
+.rt{font-size:12.5px}
+.rd{font-size:11px}
+.effort{display:block;margin:6px 0 0;width:fit-content}
+
+/* TAM stats */
+.tam-big{font-size:26px}
+
+/* Nav pills wrap */
+.nav-r{max-width:55vw}
 }
+
+/* ─ 480px: small phones ─ */
 @media(max-width:480px){
 .stats5{grid-template-columns:1fr 1fr}
 .stats3{grid-template-columns:1fr}
 .social-grid{grid-template-columns:1fr 1fr}
+.pipe{grid-template-columns:1fr}
+.pc{border-bottom:1px solid #182844 !important;border-right:none !important}
+/* Exec outcomes: stack on tiny screens */
+.es-outcomes-row{flex-direction:column !important}
+.es-outcomes-row .es-outcome{flex:none !important}
+/* Widen funnel label */
+.frow{grid-template-columns:72px 1fr 40px}
+.fgap{grid-template-columns:72px 1fr 40px}
+/* Press items */
+.press-item{flex-direction:column;gap:6px}
 }
 
 /* ── EXEC SUMMARY ── */
-.exec-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#182844;background:var(–line);border:1px solid #182844;border:1px solid var(–line);border-radius:var(–r);overflow:hidden;margin-bottom:20px}
-.es-col{background:#090f1d;background:var(–ink2);padding:20px 18px}
+.exec-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#182844;background:#182844;border:1px solid #182844;border:1px solid #182844;border-radius:13px;overflow:hidden;margin-bottom:20px}
+.es-col{background:#090f1d;background:#090f1d;padding:20px 18px}
 /* colored top-accent per column — desktop */
-.es-col:nth-child(1){border-top:2px solid var(–red2)}
-.es-col:nth-child(2){border-top:2px solid var(–gold2)}
-.es-col:nth-child(3){border-top:2px solid var(–jade2)}
-.es-eyebrow{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–smoke3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(–line)}
+.es-col:nth-child(1){border-top:2px solid #f05472}
+.es-col:nth-child(2){border-top:2px solid #f5b233}
+.es-col:nth-child(3){border-top:2px solid #18d4a0}
+.es-eyebrow{font-family:‘DM Mono’,monospace;font-size:9px;color:#8098bb;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid #182844}
 .es-eyebrow-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .es-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(24,40,68,.8)}
 .es-item:last-child{border-bottom:none;padding-bottom:0}
 .es-num{font-family:‘Fraunces’,serif;font-weight:600;font-size:17px;letter-spacing:-.5px;min-width:22px;line-height:1.2;padding-top:1px}
-.es-txt{font-size:12px;color:var(–smoke3);line-height:1.5}
-.es-txt strong{color:var(–smoke);font-weight:600}
-.es-outcome{margin-top:12px;padding:12px;background:var(–jade-g);border:1px solid rgba(13,158,110,.2);border-radius:8px}
-.es-outcome-label{font-family:‘DM Mono’,monospace;font-size:9px;color:var(–jade2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.es-outcome-val{font-family:‘Fraunces’,serif;font-weight:600;font-size:24px;color:var(–smoke);letter-spacing:-1px;line-height:1}
-.es-outcome-sub{font-size:11px;color:var(–smoke4);margin-top:4px;line-height:1.4}
+.es-txt{font-size:12px;color:#8098bb;line-height:1.5}
+.es-txt strong{color:#e8eef7;font-weight:600}
+.es-outcome{margin-top:12px;padding:12px;background:rgba(13,158,110,.10);border:1px solid rgba(13,158,110,.2);border-radius:8px}
+.es-outcome-label{font-family:‘DM Mono’,monospace;font-size:9px;color:#18d4a0;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.es-outcome-val{font-family:‘Fraunces’,serif;font-weight:600;font-size:24px;color:#e8eef7;letter-spacing:-1px;line-height:1}
+.es-outcome-sub{font-size:11px;color:#3d567a;margin-top:4px;line-height:1.4}
 /* outcomes: 1 column on desktop (stacked in the col), 3-across on mobile (full width) */
 .es-outcomes-row{display:flex;flex-direction:column;gap:10px}
 
 /* MOBILE: stack as individual labeled cards */
 @media(max-width:860px){
 .exec-summary{
-grid-template-columns:1fr;
-gap:10px;
-background:transparent;
-border:none;
-border-radius:0;
-overflow:visible;
+display:flex !important;
+flex-direction:column !important;
+gap:12px !important;
+background:transparent !important;
+border:none !important;
+border-radius:0 !important;
+overflow:visible !important;
 }
 .es-col{
-border-radius:var(–r);
-border:1px solid var(–line2);
-border-top-width:3px;
-padding:18px 16px;
+border-radius:12px !important;
+border:1px solid rgba(255,255,255,.1) !important;
+border-top:3px solid rgba(255,255,255,.3) !important;
+background:#0d1a30 !important;
+padding:18px 16px !important;
 }
-.es-col:nth-child(1){border-top-color:var(–red2);border-top-style:solid}
-.es-col:nth-child(2){border-top-color:var(–gold2);border-top-style:solid}
-.es-col:nth-child(3){border-top-color:var(–jade2);border-top-style:solid}
-.es-eyebrow{font-size:10px;letter-spacing:.1em;padding-bottom:12px;margin-bottom:14px}
-.es-eyebrow-dot{width:9px;height:9px}
-.es-num{font-size:19px;min-width:26px}
-.es-txt{font-size:13px}
-/* outcomes: 3 across on mobile since they have room */
-.es-outcomes-row{flex-direction:row;gap:8px}
-.es-outcomes-row .es-outcome{flex:1;min-width:0}
-.es-outcome{margin-top:0}
-.es-outcome-val{font-size:20px}
-.es-outcome-sub{font-size:10.5px}
+.es-col:nth-child(1){
+border-top:3px solid #f05472 !important;
+background:rgba(192,49,77,.12) !important;
+border-color:rgba(240,84,114,.25) !important;
+}
+.es-col:nth-child(2){
+border-top:3px solid #f5b233 !important;
+background:rgba(212,144,13,.12) !important;
+border-color:rgba(245,178,51,.25) !important;
+}
+.es-col:nth-child(3){
+border-top:3px solid #18d4a0 !important;
+background:rgba(13,158,110,.12) !important;
+border-color:rgba(24,212,160,.25) !important;
+}
+.es-eyebrow{
+font-size:10px !important;
+letter-spacing:.1em !important;
+color:#8098bb !important;
+padding-bottom:12px !important;
+margin-bottom:14px !important;
+border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+.es-eyebrow-dot{ width:9px !important; height:9px !important; }
+.es-num{ font-size:19px !important; min-width:26px !important; }
+.es-txt{ font-size:13px !important; line-height:1.55 !important; color:#8098bb !important; }
+.es-txt strong{ color:#e8eef7 !important; }
+.es-item{ border-bottom-color:rgba(255,255,255,.06) !important; padding:10px 0 !important; }
+.es-outcomes-row{ flex-direction:row !important; gap:8px !important; }
+.es-outcomes-row .es-outcome{ flex:1 !important; min-width:0 !important; margin-top:0 !important; }
+.es-outcome-val{ font-size:20px !important; }
+.es-outcome-sub{ font-size:10.5px !important; }
 }
 
 /* ── COSIGNER PANEL ── */
@@ -387,19 +484,19 @@ padding:18px 16px;
 .cosign-panel{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .cosign-funnel{display:flex;flex-direction:column;gap:0}
 .cf-row{display:grid;grid-template-columns:1fr 40px;gap:8px;align-items:center;padding:4px 0}
-.cf-track{height:32px;background:rgba(255,255,255,.025);border:1px solid var(–line);border-radius:6px;overflow:hidden}
+.cf-track{height:32px;background:rgba(255,255,255,.025);border:1px solid #182844;border-radius:6px;overflow:hidden}
 .cf-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.88);white-space:nowrap;width:0;transition:width 1.5s cubic-bezier(.16,1,.3,1)}
-.cf-pct{font-family:‘DM Mono’,monospace;font-size:10px;color:var(–smoke4);text-align:right}
+.cf-pct{font-family:‘DM Mono’,monospace;font-size:10px;color:#3d567a;text-align:right}
 .cf-gap{padding:3px 0 3px 4px;font-family:‘DM Mono’,monospace;font-size:9.5px}
 @media(max-width:720px){.cosign-panel{grid-template-columns:1fr}}
 
 /* ── EFFORT BADGE ── */
-.effort{display:inline-flex;align-items:center;gap:5px;font-family:‘DM Mono’,monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid var(–line3);color:var(–smoke4);margin-left:6px;vertical-align:middle}
+.effort{display:inline-flex;align-items:center;gap:5px;font-family:‘DM Mono’,monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid #27406b;color:#3d567a;margin-left:6px;vertical-align:middle}
 .effort::before{content:‘⏱’;font-size:9px}
 
 ::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:var(–ink)}
-::-webkit-scrollbar-thumb{background:var(–line2);border-radius:3px}
+::-webkit-scrollbar-track{background:#050b16}
+::-webkit-scrollbar-thumb{background:#1f3255;border-radius:3px}
 </style>
 
 </head>
@@ -441,17 +538,17 @@ padding:18px 16px;
   <!-- Col 1: Broken -->
 
   <div class="es-col">
-    <div class="es-eyebrow"><span class="es-eyebrow-dot" style="background:var(--red2)"></span>What's broken right now</div>
+    <div class="es-eyebrow"><span class="es-eyebrow-dot" style="background:#f05472"></span>What's broken right now</div>
     <div class="es-item">
-      <div class="es-num" style="color:var(--red2)">01</div>
+      <div class="es-num" style="color:#f05472">01</div>
       <div class="es-txt"><strong>Apply Now fires no event.</strong> Every click to CampusDoor is invisible — zero channel attribution, zero ROI data on any marketing spend.</div>
     </div>
     <div class="es-item">
-      <div class="es-num" style="color:var(--red2)">02</div>
+      <div class="es-num" style="color:#f05472">02</div>
       <div class="es-txt"><strong>1,200+ newsletter leads are orphaned.</strong> WPForms collects them; HubSpot never sees them. No nurture, no follow-up, no path to an application.</div>
     </div>
     <div class="es-item">
-      <div class="es-num" style="color:var(--red2)">03</div>
+      <div class="es-num" style="color:#f05472">03</div>
       <div class="es-txt"><strong>6 placeholder testimonials are live.</strong> "Susan M. 1–6" with identical copy — visible to every borrower right now. Credibility risk on a lending product.</div>
     </div>
   </div>
@@ -459,17 +556,17 @@ padding:18px 16px;
   <!-- Col 2: Fixes -->
 
   <div class="es-col">
-    <div class="es-eyebrow"><span class="es-eyebrow-dot" style="background:var(--gold2)"></span>First 3 fixes · days not weeks</div>
+    <div class="es-eyebrow"><span class="es-eyebrow-dot" style="background:#f5b233"></span>First 3 fixes · days not weeks</div>
     <div class="es-item">
-      <div class="es-num" style="color:var(--gold2)">01</div>
+      <div class="es-num" style="color:#f5b233">01</div>
       <div class="es-txt"><strong>GTM + GA4 event on Apply Now.</strong> ~2 hrs. Fire before CampusDoor redirect. Every future click is fully attributed to source.</div>
     </div>
     <div class="es-item">
-      <div class="es-num" style="color:var(--gold2)">02</div>
+      <div class="es-num" style="color:#f5b233">02</div>
       <div class="es-txt"><strong>WPForms → HubSpot native integration.</strong> ~1 day. "Year in School" already captured — auto-segments Junior / Senior / Grad nurture sequences.</div>
     </div>
     <div class="es-item">
-      <div class="es-num" style="color:var(--gold2)">03</div>
+      <div class="es-num" style="color:#f5b233">03</div>
       <div class="es-txt"><strong>Remove placeholder testimonials.</strong> ~30 min. Zero cost, immediate credibility fix for every visitor from today forward.</div>
     </div>
   </div>
@@ -477,20 +574,20 @@ padding:18px 16px;
   <!-- Col 3: Outcomes -->
 
   <div class="es-col">
-    <div class="es-eyebrow"><span class="es-eyebrow-dot" style="background:var(--jade2)"></span>What it looks like at 90 days</div>
+    <div class="es-eyebrow"><span class="es-eyebrow-dot" style="background:#18d4a0"></span>What it looks like at 90 days</div>
     <div class="es-outcomes-row">
       <div class="es-outcome">
         <div class="es-outcome-label">Attribution</div>
         <div class="es-outcome-val">100%</div>
         <div class="es-outcome-sub">Apply Now clicks tracked to source</div>
       </div>
-      <div class="es-outcome" style="background:var(--blue-g);border-color:rgba(32,85,212,.2)">
-        <div class="es-outcome-label" style="color:var(--blue3)">Pipeline</div>
+      <div class="es-outcome" style="background:rgba(32,85,212,.12);border-color:rgba(32,85,212,.2)">
+        <div class="es-outcome-label" style="color:#6fa0f8">Pipeline</div>
         <div class="es-outcome-val">1,200+</div>
         <div class="es-outcome-sub">leads enrolled in nurture sequences</div>
       </div>
-      <div class="es-outcome" style="background:var(--purple-g);border-color:rgba(124,58,237,.2)">
-        <div class="es-outcome-label" style="color:var(--purple2)">Tailwind</div>
+      <div class="es-outcome" style="background:rgba(124,58,237,.10);border-color:rgba(124,58,237,.2)">
+        <div class="es-outcome-label" style="color:#a78bfa">Tailwind</div>
         <div class="es-outcome-val">~4 mo</div>
         <div class="es-outcome-sub">until July federal changes expand TAM</div>
       </div>
@@ -504,7 +601,7 @@ padding:18px 16px;
 <div class="banner b-red rise d2">
   <div class="b-icon">⚠️</div>
   <div>
-    <div class="b-title" style="color:var(--red2)">Critical: Apply Now Has Zero Conversion Tracking</div>
+    <div class="b-title" style="color:#f05472">Critical: Apply Now Has Zero Conversion Tracking</div>
     <div class="b-text">Every "Apply Now" button routes directly to CampusDoor with no GTM event fired. <strong>Every paid acquisition dollar is currently unattributed.</strong> GradBridge cannot measure ROI on any marketing channel until this is fixed.</div>
   </div>
 </div>
@@ -512,7 +609,7 @@ padding:18px 16px;
 <div class="banner b-gold rise d2">
   <div class="b-icon">🔌</div>
   <div>
-    <div class="b-title" style="color:var(--gold2)">Newsletter → HubSpot Pipeline Is Broken</div>
+    <div class="b-title" style="color:#f5b233">Newsletter → HubSpot Pipeline Is Broken</div>
     <div class="b-text">WPForms captures leads (First Name, Last Name, Email, Year in School) but <strong>they don't flow into HubSpot CRM.</strong> Every subscriber is an orphaned contact with no nurture, no follow-up, and no attribution path to an application.</div>
   </div>
 </div>
@@ -520,7 +617,7 @@ padding:18px 16px;
 <div class="banner b-blue rise d2">
   <div class="b-icon">🚀</div>
   <div>
-    <div class="b-title" style="color:var(--blue3)">Tailwind Alert: Federal Aid Changes Take Effect July 2026</div>
+    <div class="b-title" style="color:#6fa0f8">Tailwind Alert: Federal Aid Changes Take Effect July 2026</div>
     <div class="b-text">Federal loan program changes go live in <strong>~4 months.</strong> GradBridge's press materials call this out directly — it expands the addressable market by millions of students. The digital infrastructure to capture that demand needs to be ready now.</div>
   </div>
 </div>
@@ -554,7 +651,7 @@ padding:18px 16px;
           <div class="flabel">Visitors</div>
           <div class="ftrack"><div class="ffill" data-w="100" style="background:linear-gradient(90deg,#1644b0,#3b7af5)">18,420 visitors</div></div>
           <div class="fcount">18,420</div>
-          <div class="fdrop" style="color:var(--smoke5)">—</div>
+          <div class="fdrop" style="color:#1e3052">—</div>
         </div>
         <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-up">16.9% click</span></div></div>
         <div class="frow">
@@ -568,14 +665,14 @@ padding:18px 16px;
           <div class="flabel">App. Started</div>
           <div class="ftrack"><div class="ffill" data-w="59" style="background:linear-gradient(90deg,#1e3a8a,#7c52f0)">1,842 started</div></div>
           <div class="fcount">1,842</div>
-          <div class="fdrop" style="color:var(--gold2)">−1,264</div>
+          <div class="fdrop" style="color:#f5b233">−1,264</div>
         </div>
         <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-down">48.5% complete</span></div></div>
         <div class="frow">
           <div class="flabel">Completed</div>
           <div class="ftrack"><div class="ffill" data-w="36" style="background:linear-gradient(90deg,#5b21b6,#8b5cf6)">894 completed</div></div>
           <div class="fcount">894</div>
-          <div class="fdrop" style="color:var(--red2)">−948</div>
+          <div class="fdrop" style="color:#f05472">−948</div>
         </div>
         <div class="fgap"><div class="fgl"><div class="fgd"></div></div><div class="fgr"><div class="fgt"></div><span class="fgb t-up">61.2% approval</span></div></div>
         <div class="frow">
@@ -604,8 +701,8 @@ padding:18px 16px;
       <div class="leg"><div class="lsw" style="background:#8b5cf6"></div>Completed</div>
     </div>
     <div class="chart-metas">
-      <div class="cm"><div class="cml">Peak Day</div><div class="cmv">Mar 3</div><div class="cms" style="color:var(--jade2)">↑ Hatch Bank launch day</div></div>
-      <div class="cm"><div class="cml">Avg. Daily Clicks</div><div class="cmv">103</div><div class="cms" style="color:var(--smoke4)">Apply Now / day</div></div>
+      <div class="cm"><div class="cml">Peak Day</div><div class="cmv">Mar 3</div><div class="cms" style="color:#18d4a0">↑ Hatch Bank launch day</div></div>
+      <div class="cm"><div class="cml">Avg. Daily Clicks</div><div class="cmv">103</div><div class="cms" style="color:#3d567a">Apply Now / day</div></div>
     </div>
   </div>
 </div>
@@ -621,29 +718,29 @@ padding:18px 16px;
   <div class="cb">
     <div class="cosign-inner-grid">
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">What the site says</div>
-        <div style="padding:14px;background:var(--purple-g);border:1px solid rgba(124,58,237,.2);border-radius:8px;font-size:12.5px;color:var(--smoke3);line-height:1.6">
-          GradBridge's own site states: <strong style="color:var(--smoke)">"Most students will need a creditworthy cosigner to qualify — someone like a parent, guardian, or trusted adult."</strong><br><br>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">What the site says</div>
+        <div style="padding:14px;background:rgba(124,58,237,.10);border:1px solid rgba(124,58,237,.2);border-radius:8px;font-size:12.5px;color:#8098bb;line-height:1.6">
+          GradBridge's own site states: <strong style="color:#e8eef7">"Most students will need a creditworthy cosigner to qualify — someone like a parent, guardian, or trusted adult."</strong><br><br>
           This means every application involves <em>two separate people</em> completing a form. The cosigner is a second conversion point — and it's entirely invisible.
         </div>
       </div>
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Where the drop-off likely lives</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Where the drop-off likely lives</div>
         <div class="cosign-funnel">
           <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="100" style="background:linear-gradient(90deg,#5b21b6,#8b5cf6)">894 apps completed</div></div><div class="cf-pct">100%</div></div>
-          <div class="cf-gap" style="color:var(--gold2)">↓ Cosigner required — student must recruit &amp; wait</div>
-          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="72" style="background:linear-gradient(90deg,#7c3aed,#a78bfa)">~644 cosigners start</div></div><div class="cf-pct" style="color:var(--gold2)">~72%</div></div>
-          <div class="cf-gap" style="color:var(--red2)">↓ Cosigner abandons — not CampusDoor's problem to fix</div>
-          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="61" style="background:linear-gradient(90deg,#064e3b,#0d9e6e)">547 approved</div></div><div class="cf-pct" style="color:var(--jade2)">61.2%</div></div>
+          <div class="cf-gap" style="color:#f5b233">↓ Cosigner required — student must recruit &amp; wait</div>
+          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="72" style="background:linear-gradient(90deg,#7c3aed,#a78bfa)">~644 cosigners start</div></div><div class="cf-pct" style="color:#f5b233">~72%</div></div>
+          <div class="cf-gap" style="color:#f05472">↓ Cosigner abandons — not CampusDoor's problem to fix</div>
+          <div class="cf-row"><div class="cf-track"><div class="cf-fill" data-cw="61" style="background:linear-gradient(90deg,#064e3b,#0d9e6e)">547 approved</div></div><div class="cf-pct" style="color:#18d4a0">61.2%</div></div>
         </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--smoke4);font-style:italic">Cosigner abandonment is estimated — not currently measurable. This is the problem.</div>
+        <div style="margin-top:10px;font-size:11px;color:#3d567a;font-style:italic">Cosigner abandonment is estimated — not currently measurable. This is the problem.</div>
       </div>
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">What to do about it</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">What to do about it</div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--smoke3)"><strong style="color:var(--jade2)">Instrument it first.</strong> Request cosigner start/abandon events from CampusDoor via their API or webhook — even a simple email notification when a cosigner drops.</div>
-          <div style="padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--smoke3)"><strong style="color:var(--blue3)">Facebook retargeting.</strong> Parents (35–55yr) who visited but didn't complete a cosigner form. Facebook is exactly the right channel for this audience.</div>
-          <div style="padding:10px 12px;background:var(--ink3);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--smoke3)"><strong style="color:var(--purple2)">Cosigner nurture email.</strong> A separate HubSpot sequence triggered when a cosigner is invited but hasn't completed. GradBridge controls this; CampusDoor doesn't.</div>
+          <div style="padding:10px 12px;background:#0d1628;border:1px solid #182844;border-radius:7px;font-size:12px;color:#8098bb"><strong style="color:#18d4a0">Instrument it first.</strong> Request cosigner start/abandon events from CampusDoor via their API or webhook — even a simple email notification when a cosigner drops.</div>
+          <div style="padding:10px 12px;background:#0d1628;border:1px solid #182844;border-radius:7px;font-size:12px;color:#8098bb"><strong style="color:#6fa0f8">Facebook retargeting.</strong> Parents (35–55yr) who visited but didn't complete a cosigner form. Facebook is exactly the right channel for this audience.</div>
+          <div style="padding:10px 12px;background:#0d1628;border:1px solid #182844;border-radius:7px;font-size:12px;color:#8098bb"><strong style="color:#a78bfa">Cosigner nurture email.</strong> A separate HubSpot sequence triggered when a cosigner is invited but hasn't completed. GradBridge controls this; CampusDoor doesn't.</div>
         </div>
       </div>
     </div>
@@ -736,8 +833,8 @@ padding:18px 16px;
       <div class="sr"><div class="srank">04</div><div class="sname">Rutgers University</div><div class="sapps">58</div><div class="spbar"><div class="spfill" style="width:69%"></div></div><div><span class="badge bg-am">4.7%</span></div></div>
       <div class="sr"><div class="srank">05</div><div class="sname">Morgan State Univ.</div><div class="sapps">52</div><div class="spbar"><div class="spfill" style="width:62%"></div></div><div><span class="badge bg-am">4.4%</span></div></div>
       <div class="sr"><div class="srank">06</div><div class="sname">Wilmington Univ.</div><div class="sapps">47</div><div class="spbar"><div class="spfill" style="width:56%"></div></div><div><span class="badge bg-am">4.1%</span></div></div>
-      <div class="sr"><div class="srank">07</div><div class="sname">Howard University</div><div class="sapps">44</div><div class="spbar"><div class="spfill" style="width:52%;background:var(--jade)"></div></div><div><span class="badge bg-re">3.9%</span></div></div>
-      <div style="padding:10px 16px;border-top:1px solid var(--line)"><span style="font-family:'DM Mono',monospace;font-size:9.5px;color:var(--smoke5)">DE region leads · HBCU segment = untapped growth</span></div>
+      <div class="sr"><div class="srank">07</div><div class="sname">Howard University</div><div class="sapps">44</div><div class="spbar"><div class="spfill" style="width:52%;background:#0d9e6e"></div></div><div><span class="badge bg-re">3.9%</span></div></div>
+      <div style="padding:10px 16px;border-top:1px solid #182844"><span style="font-family:'DM Mono',monospace;font-size:9.5px;color:#1e3052">DE region leads · HBCU segment = untapped growth</span></div>
     </div>
   </div>
 </div>
@@ -798,22 +895,22 @@ padding:18px 16px;
     <div class="cb">
       <div class="pipe">
         <div class="pc"><div class="pl">Newsletter<br>Captures</div><div class="pv">1,204</div><div class="ps">via WPForms</div><div class="pa">›</div></div>
-        <div class="pc"><div class="pl">CRM<br>Contacts</div><div class="pv" style="color:var(--gold2)">?</div><div class="ps" style="color:var(--red2)">Not synced</div><div class="pa">›</div></div>
-        <div class="pc"><div class="pl">Nurtured<br>Leads</div><div class="pv" style="color:var(--gold2)">?</div><div class="ps" style="color:var(--smoke4)">No sequence</div><div class="pa">›</div></div>
-        <div class="pc"><div class="pl">Attributed<br>Applicants</div><div class="pv" style="color:var(--gold2)">?</div><div class="ps" style="color:var(--smoke4)">Untracked</div></div>
+        <div class="pc"><div class="pl">CRM<br>Contacts</div><div class="pv" style="color:#f5b233">?</div><div class="ps" style="color:#f05472">Not synced</div><div class="pa">›</div></div>
+        <div class="pc"><div class="pl">Nurtured<br>Leads</div><div class="pv" style="color:#f5b233">?</div><div class="ps" style="color:#3d567a">No sequence</div><div class="pa">›</div></div>
+        <div class="pc"><div class="pl">Attributed<br>Applicants</div><div class="pv" style="color:#f5b233">?</div><div class="ps" style="color:#3d567a">Untracked</div></div>
       </div>
       <!-- WPForms captures Year in School — this is gold for segmentation -->
-      <div style="padding:11px 13px;background:var(--blue-g);border:1px solid rgba(32,85,212,.2);border-radius:7px;margin-bottom:14px;font-size:12px;color:var(--smoke3);line-height:1.55">
-        <strong style="color:var(--blue3)">💎 Untapped signal:</strong> The WPForms newsletter captures <strong style="color:var(--smoke2)">Year in School</strong> — this is segmentation gold. Juniors and seniors have the highest urgency. A HubSpot sequence segmented by year would outperform any generic nurture by 3–4×.
+      <div style="padding:11px 13px;background:rgba(32,85,212,.12);border:1px solid rgba(32,85,212,.2);border-radius:7px;margin-bottom:14px;font-size:12px;color:#8098bb;line-height:1.55">
+        <strong style="color:#6fa0f8">💎 Untapped signal:</strong> The WPForms newsletter captures <strong style="color:#c4d0e4">Year in School</strong> — this is segmentation gold. Juniors and seniors have the highest urgency. A HubSpot sequence segmented by year would outperform any generic nurture by 3–4×.
       </div>
-      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Workflow Status · Firstmark = Loan Servicer (not Nelnet)</div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Workflow Status · Firstmark = Loan Servicer (not Nelnet)</div>
       <div class="wfl">
-        <div class="wfr"><div class="wfi" style="background:var(--jade-g)">✓</div><div class="wfn">Hatch Bank origination + Firstmark loan servicing (live)</div><div class="wfb wok">Active</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--gold-g)">⚡</div><div class="wfn">WPForms newsletter → HubSpot (with Year in School segment)</div><div class="wfb wnow">Build Now</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--gold-g)">⚡</div><div class="wfn">Apply Now GTM event → CRM lead + attribution</div><div class="wfb wnow">Build Now</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">14-day nurture sequence (segmented: Junior / Senior / Grad)</div><div class="wfb wmiss">Missing</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">Parent/cosigner retargeting via Facebook Ads</div><div class="wfb wmiss">Missing</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">Weekly leadership digest (automated, zero manual pulls)</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(13,158,110,.10)">✓</div><div class="wfn">Hatch Bank origination + Firstmark loan servicing (live)</div><div class="wfb wok">Active</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(212,144,13,.10)">⚡</div><div class="wfn">WPForms newsletter → HubSpot (with Year in School segment)</div><div class="wfb wnow">Build Now</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(212,144,13,.10)">⚡</div><div class="wfn">Apply Now GTM event → CRM lead + attribution</div><div class="wfb wnow">Build Now</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(192,49,77,.10)">✗</div><div class="wfn">14-day nurture sequence (segmented: Junior / Senior / Grad)</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(192,49,77,.10)">✗</div><div class="wfn">Parent/cosigner retargeting via Facebook Ads</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(192,49,77,.10)">✗</div><div class="wfn">Weekly leadership digest (automated, zero manual pulls)</div><div class="wfb wmiss">Missing</div></div>
       </div>
     </div>
   </div>
@@ -827,14 +924,14 @@ padding:18px 16px;
     </div>
     <div class="cb">
       <!-- Testimonial gap — confirmed from live site -->
-      <div style="padding:14px;background:var(--red-g);border:1px solid rgba(192,49,77,.2);border-radius:var(--r-sm);margin-bottom:14px">
-        <div style="font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;color:var(--red2);margin-bottom:5px">🚨 Placeholder Testimonials Visible on Live Site</div>
-        <div style="font-size:12px;color:var(--smoke3);line-height:1.55">All 6 testimonials read <strong style="color:var(--smoke2)">"Susan M. 1", "Susan M. 2"... "Susan M. 6"</strong> with identical body copy. This is live and visible to every visitor right now. For a lending product, this is a credibility risk. Real student testimonials — or removal — is an urgent fix.</div>
+      <div style="padding:14px;background:rgba(192,49,77,.10);border:1px solid rgba(192,49,77,.2);border-radius:8px;margin-bottom:14px">
+        <div style="font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;color:#f05472;margin-bottom:5px">🚨 Placeholder Testimonials Visible on Live Site</div>
+        <div style="font-size:12px;color:#8098bb;line-height:1.55">All 6 testimonials read <strong style="color:#c4d0e4">"Susan M. 1", "Susan M. 2"... "Susan M. 6"</strong> with identical body copy. This is live and visible to every visitor right now. For a lending product, this is a credibility risk. Real student testimonials — or removal — is an urgent fix.</div>
       </div>
 
 ```
   <!-- Press coverage — pulled from real In the News page -->
-  <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Earned Media · Press Coverage Tracker</div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Earned Media · Press Coverage Tracker</div>
   <div class="press-list">
     <div class="press-item">
       <div>
@@ -893,11 +990,11 @@ padding:18px 16px;
         <div class="tam-sub">Students denied private loans annually — GradBridge's stated addressable market from press release</div>
       </div>
       <div class="tam-stat">
-        <div class="tam-big" style="color:var(--gold2)">~4 mo</div>
+        <div class="tam-big" style="color:#f5b233">~4 mo</div>
         <div class="tam-sub">Until federal aid changes take effect (July 2026). GradBridge cited this tailwind in both the Hatch Bank press release and the Inquirer feature.</div>
       </div>
       <div class="tam-stat" style="margin-bottom:0">
-        <div class="tam-big" style="color:var(--jade2)">42%</div>
+        <div class="tam-big" style="color:#18d4a0">42%</div>
         <div class="tam-sub">College dropouts cite financial struggles as primary reason — GradBridge's own homepage statistic, sourced to Education Data</div>
       </div>
     </div>
@@ -911,8 +1008,8 @@ padding:18px 16px;
       <div class="chip">3 Articles Live</div>
     </div>
     <div class="cb0">
-      <div style="padding:10px 16px;border-bottom:1px solid var(--line)">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--smoke4);text-transform:uppercase;letter-spacing:.09em">Published content — estimated organic pull</div>
+      <div style="padding:10px 16px;border-bottom:1px solid #182844">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#3d567a;text-transform:uppercase;letter-spacing:.09em">Published content — estimated organic pull</div>
       </div>
       <div class="content-row">
         <div class="cr-title">Student Loan Denied? Here's What to Do Next</div>
@@ -944,18 +1041,18 @@ padding:18px 16px;
       <div class="chip">Supply Side (Untracked)</div>
     </div>
     <div class="cb">
-      <div style="margin-bottom:14px;padding:12px 13px;background:var(--gold-g);border:1px solid rgba(212,144,13,.2);border-radius:7px;font-size:12px;color:var(--smoke3);line-height:1.55">
-        <strong style="color:var(--gold2)">No B2B tracking exists.</strong> GradBridge has a "For Schools" page and a "Partners" page — both are completely separate conversion funnels with zero measurement today.
+      <div style="margin-bottom:14px;padding:12px 13px;background:rgba(212,144,13,.10);border:1px solid rgba(212,144,13,.2);border-radius:7px;font-size:12px;color:#8098bb;line-height:1.55">
+        <strong style="color:#f5b233">No B2B tracking exists.</strong> GradBridge has a "For Schools" page and a "Partners" page — both are completely separate conversion funnels with zero measurement today.
       </div>
       <div class="wfl">
-        <div class="wfr"><div class="wfi" style="background:var(--jade-g)">✓</div><div class="wfn">For Schools page live (gradbridge.com/schools)</div><div class="wfb wok">Live</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--jade-g)">✓</div><div class="wfn">Partners page live (gradbridge.com/partners)</div><div class="wfb wok">Live</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">School inquiry form → HubSpot pipeline</div><div class="wfb wmiss">Missing</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">LinkedIn → School Partner attribution</div><div class="wfb wmiss">Missing</div></div>
-        <div class="wfr"><div class="wfi" style="background:var(--red-g)">✗</div><div class="wfn">B2B funnel dashboard (separate from student funnel)</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(13,158,110,.10)">✓</div><div class="wfn">For Schools page live (gradbridge.com/schools)</div><div class="wfb wok">Live</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(13,158,110,.10)">✓</div><div class="wfn">Partners page live (gradbridge.com/partners)</div><div class="wfb wok">Live</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(192,49,77,.10)">✗</div><div class="wfn">School inquiry form → HubSpot pipeline</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(192,49,77,.10)">✗</div><div class="wfn">LinkedIn → School Partner attribution</div><div class="wfb wmiss">Missing</div></div>
+        <div class="wfr"><div class="wfi" style="background:rgba(192,49,77,.10)">✗</div><div class="wfn">B2B funnel dashboard (separate from student funnel)</div><div class="wfb wmiss">Missing</div></div>
       </div>
-      <div style="margin-top:12px;padding:10px 12px;background:var(--blue-g);border:1px solid rgba(32,85,212,.2);border-radius:7px;font-size:11.5px;color:var(--smoke3)">
-        Schools are GradBridge's <strong style="color:var(--blue3)">supply side</strong> — they certify loan amounts and enable access to students. School acquisition is just as critical as borrower acquisition.
+      <div style="margin-top:12px;padding:10px 12px;background:rgba(32,85,212,.12);border:1px solid rgba(32,85,212,.2);border-radius:7px;font-size:11.5px;color:#8098bb">
+        Schools are GradBridge's <strong style="color:#6fa0f8">supply side</strong> — they certify loan amounts and enable access to students. School acquisition is just as critical as borrower acquisition.
       </div>
     </div>
   </div>
