@@ -9,6 +9,10 @@
     <meta property="og:description" content="Secure login portal for the Byheir Wise operations dashboard.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="../assets/style.css">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" type="image/svg+xml" href="../assets/icon-192.svg">
+    <meta name="theme-color" content="#050816">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <style>
         /* ============================================================================
            ENHANCED WIDE LOGIN PAGE STYLES
@@ -64,12 +68,17 @@
         }
 
         /* Floating Orbs */
+        :root {
+            --parallax-x: 0px;
+            --parallax-y: 0px;
+        }
         .orb {
             position: absolute;
             border-radius: 50%;
             filter: blur(60px);
             opacity: 0.5;
             animation: orbFloat 15s ease-in-out infinite;
+            translate: var(--parallax-x) var(--parallax-y);
         }
 
         .orb-1 {
@@ -727,7 +736,7 @@
                 <li><a href="../index.html#about">About</a></li>
                 <li><a href="../index.html#experience">Experience</a></li>
                 <li><a href="../index.html#skills">Skills</a></li>
-                <li><a href="../index.html#demo">Portfolio</a></li>
+                <li><a href="../index.html#experience">Portfolio</a></li>
                 <li><a href="../index.html#contact">Contact</a></li>
                 <li><a href="html.html">HTML</a></li>
                 <li><a href="css.html">CSS</a></li>
@@ -961,16 +970,12 @@
             });
         });
 
-        // Parallax effect on orbs
+        // Parallax effect on orbs using CSS custom properties to preserve animation
         document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.orb');
             const x = (e.clientX / window.innerWidth - 0.5) * 20;
             const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            
-            orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.5;
-                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-            });
+            document.documentElement.style.setProperty('--parallax-x', x + 'px');
+            document.documentElement.style.setProperty('--parallax-y', y + 'px');
         });
 
         console.log('✓ Login page initialized');

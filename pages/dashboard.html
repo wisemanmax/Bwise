@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <title>Operations Dashboard · Byheir Wise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Operations dashboard for Byheir Wise portfolio.">
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="icon" type="image/svg+xml" href="../assets/icon-192.svg">
+  <meta name="theme-color" content="#394263">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
     :root {
       --fiord: #394263;
@@ -2268,14 +2273,14 @@
       link.href = card.href;
       link.style.textDecoration = 'none';
       link.style.color = 'inherit';
+      link.dataset.filterable = 'card';
+      link.dataset.domain = card.filters.domain;
+      link.dataset.team = card.filters.team;
+      link.dataset.status = card.filters.status;
+      link.dataset.search = card.filters.search;
 
       const article = document.createElement('article');
       article.className = `overviewCard ${card.colorClass}`;
-      article.dataset.filterable = 'card';
-      article.dataset.domain = card.filters.domain;
-      article.dataset.team = card.filters.team;
-      article.dataset.status = card.filters.status;
-      article.dataset.search = card.filters.search;
 
       const icon = document.createElement('div');
       icon.className = 'overviewCard__icon';
@@ -2373,32 +2378,36 @@
       }
     };
 
-    menuBtn.addEventListener('click', () => {
-      sidenav.classList.add('sidenav--show');
-      grid.classList.add('grid--noscroll');
-      menuBtn.setAttribute('aria-expanded', 'true');
-    });
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+        if (sidenav) sidenav.classList.add('sidenav--show');
+        if (grid) grid.classList.add('grid--noscroll');
+        menuBtn.setAttribute('aria-expanded', 'true');
+      });
+    }
 
-    closeBtn.addEventListener('click', () => {
-      sidenav.classList.remove('sidenav--show');
-      grid.classList.remove('grid--noscroll');
-      menuBtn.setAttribute('aria-expanded', 'false');
-    });
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        if (sidenav) sidenav.classList.remove('sidenav--show');
+        if (grid) grid.classList.remove('grid--noscroll');
+        if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    }
 
     // Close sidenav when clicking outside
     document.addEventListener('click', (e) => {
-      if (!sidenav.contains(e.target) && !menuBtn.contains(e.target)) {
+      if (sidenav && menuBtn && !sidenav.contains(e.target) && !menuBtn.contains(e.target)) {
         sidenav.classList.remove('sidenav--show');
-        grid.classList.remove('grid--noscroll');
+        if (grid) grid.classList.remove('grid--noscroll');
         menuBtn.setAttribute('aria-expanded', 'false');
       }
     });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        sidenav.classList.remove('sidenav--show');
-        grid.classList.remove('grid--noscroll');
-        menuBtn.setAttribute('aria-expanded', 'false');
+        if (sidenav) sidenav.classList.remove('sidenav--show');
+        if (grid) grid.classList.remove('grid--noscroll');
+        if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
         if (notificationPanel) {
           notificationPanel.classList.remove('is-open');
         }
