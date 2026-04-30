@@ -687,6 +687,78 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 .tx-c-4{background:linear-gradient(135deg,#2d5d3f,#184028)}
 .tx-c-5{background:linear-gradient(135deg,#5e3a8c,#3a2356)}
 .tx-c-6{background:linear-gradient(135deg,#8a6a2c,#5a4419)}
+
+/* ============ LOCK SCREEN ============ */
+#lock{
+  background:radial-gradient(120% 80% at 50% 0%, var(--navy-3) 0%, var(--navy-2) 60%, #060f19 100%);
+  color:#fff;display:flex;flex-direction:column;
+}
+[data-theme="dark"] #lock{background:radial-gradient(120% 80% at 50% 0%, #1a2a3a 0%, #0d1620 60%, #050a10 100%)}
+.lock-top{padding:calc(28px + env(safe-area-inset-top)) 22px 0;display:flex;justify-content:space-between;align-items:center}
+.lock-time{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.04em;opacity:.85}
+.lock-status{display:flex;gap:6px;align-items:center;font-size:11px;font-weight:600;opacity:.85;letter-spacing:.06em}
+.lock-status .dot{width:6px;height:6px;border-radius:50%;background:#5cd99a;box-shadow:0 0 8px #5cd99a}
+.lock-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 28px 8px;text-align:center;position:relative}
+.lock-mark{
+  width:74px;height:74px;border-radius:20px;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  display:grid;place-items:center;position:relative;overflow:hidden;
+  box-shadow:0 14px 40px -8px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08) inset;
+  margin-bottom:18px;
+}
+.lock-mark::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg, transparent 50%, var(--red) 50%, var(--red) 60%, transparent 60%);
+  opacity:.85;
+}
+.lock-mark svg{position:relative;z-index:1;width:38px;height:38px}
+.lock-name{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.02em;margin:0}
+.lock-greet{font-size:13.5px;opacity:.78;font-weight:500;margin-top:6px;letter-spacing:.01em}
+.lock-prompt{font-size:14px;font-weight:600;margin-top:24px;letter-spacing:.01em;opacity:.95}
+.pin-dots{display:flex;gap:14px;justify-content:center;margin-top:14px;height:18px;align-items:center}
+.pin-dots i{
+  width:14px;height:14px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.45);
+  background:transparent;transition:all .15s ease;
+}
+.pin-dots i.filled{background:#fff;border-color:#fff}
+.pin-dots.shake{animation:pinShake .42s cubic-bezier(.36,.07,.19,.97)}
+@keyframes pinShake{
+  10%,90%{transform:translateX(-2px)}
+  20%,80%{transform:translateX(3px)}
+  30%,50%,70%{transform:translateX(-6px)}
+  40%,60%{transform:translateX(6px)}
+}
+.pin-error{height:16px;margin-top:10px;font-size:12.5px;color:#ff9b96;font-weight:600;letter-spacing:.02em;opacity:0;transition:opacity .15s ease}
+.pin-error.show{opacity:1}
+.lock-pad{padding:8px 28px calc(20px + env(safe-area-inset-bottom));}
+.pin-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px 22px;max-width:300px;margin:0 auto}
+.pin-key{
+  height:64px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.06);
+  color:#fff;font-family:var(--serif);font-weight:500;font-size:28px;
+  display:grid;place-items:center;cursor:pointer;
+  transition:transform .08s ease, background .15s ease;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.pin-key:active{background:rgba(255,255,255,.18);transform:scale(.94)}
+.pin-key.action{background:transparent;border:0;font-family:var(--sans);font-weight:600;font-size:13px;color:rgba(255,255,255,.85);letter-spacing:.04em}
+.pin-key.action:active{background:transparent;transform:scale(.94)}
+.pin-key.action svg{width:24px;height:24px}
+.pin-key.bio{color:#fff}
+.pin-key.bio svg{width:30px;height:30px}
+.pin-key sub{display:block;font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:.16em;margin-top:2px;opacity:.55}
+.lock-foot{padding:12px 28px calc(18px + env(safe-area-inset-bottom));text-align:center;font-size:12.5px;font-weight:600}
+.lock-foot a{color:rgba(255,255,255,.85);text-decoration:none;cursor:pointer;letter-spacing:.02em}
+.lock-foot .sep{margin:0 10px;opacity:.4}
+.lock-not-you{margin-top:10px;font-size:11.5px;opacity:.6}
+.lock-not-you a{color:rgba(255,255,255,.85);text-decoration:underline;text-underline-offset:2px}
+
+/* PIN setup variant */
+#lock.setup{background:radial-gradient(120% 80% at 50% 0%, var(--navy-3) 0%, var(--navy-2) 60%, #060f19 100%)}
+.setup-step{font-size:11px;letter-spacing:.16em;font-weight:700;opacity:.65;text-transform:uppercase;margin-bottom:10px}
 </style>
 
 </head>
@@ -719,6 +791,59 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
       <button class="btn btn-primary" id="onbNext">Continue</button>
       <button class="btn btn-ghost" id="onbSkip">Skip intro</button>
     </div>
+  </div>
+</section>
+
+<!-- ============ LOCK / PIN ============ -->
+
+<section class="screen enter-right" id="lock">
+  <div class="lock-top">
+    <div class="lock-time" id="lockTime">9:41</div>
+    <div class="lock-status"><span class="dot"></span><span>SECURE</span></div>
+  </div>
+  <div class="lock-hero">
+    <div class="lock-mark">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M10 34 L10 14 L24 28 L38 14 L38 34" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="setup-step" id="lockStep" style="display:none">Step 1 of 2</div>
+    <h1 class="lock-name" id="lockName">Welcome back, B. Wise</h1>
+    <div class="lock-greet" id="lockGreet">Enter passcode to continue</div>
+    <div class="lock-prompt" id="lockPrompt"></div>
+    <div class="pin-dots" id="pinDots">
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="pin-error" id="pinError">Incorrect passcode. Try again.</div>
+  </div>
+  <div class="lock-pad">
+    <div class="pin-grid" id="pinGrid">
+      <button class="pin-key" data-k="1">1</button>
+      <button class="pin-key" data-k="2">2<sub>ABC</sub></button>
+      <button class="pin-key" data-k="3">3<sub>DEF</sub></button>
+      <button class="pin-key" data-k="4">4<sub>GHI</sub></button>
+      <button class="pin-key" data-k="5">5<sub>JKL</sub></button>
+      <button class="pin-key" data-k="6">6<sub>MNO</sub></button>
+      <button class="pin-key" data-k="7">7<sub>PQRS</sub></button>
+      <button class="pin-key" data-k="8">8<sub>TUV</sub></button>
+      <button class="pin-key" data-k="9">9<sub>WXYZ</sub></button>
+      <button class="pin-key action bio" id="pinBio" data-k="bio" aria-label="Use Face ID">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 8 V6 a2 2 0 0 1 2 -2 H9 M15 4 H17 a2 2 0 0 1 2 2 V8 M19 16 V18 a2 2 0 0 1 -2 2 H15 M9 20 H7 a2 2 0 0 1 -2 -2 V16"/>
+          <path d="M9 10 V11 M15 10 V11 M12 10 V14 M10 17 c1 .8 3 .8 4 0"/>
+        </svg>
+      </button>
+      <button class="pin-key" data-k="0">0</button>
+      <button class="pin-key action" data-k="del" aria-label="Delete">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 5 H9 L3 12 L9 19 H22 a1 1 0 0 0 1 -1 V6 a1 1 0 0 0 -1 -1 z"/><path d="M18 9 L12 15 M12 9 L18 15"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="lock-foot">
+    <a id="lockForgot">Forgot passcode?</a>
+    <span class="sep">·</span>
+    <a onclick="toast('Calling 1-800-MERIDIAN')">Get help</a>
+    <div class="lock-not-you" id="lockNotYou">Not you? <a onclick="signOutHard()">Use a different account</a></div>
   </div>
 </section>
 
@@ -1202,10 +1327,13 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
    ============================================================ */
 const STORAGE_KEY = 'meridian.v1';
 const defaultState = {
-  user: { name: 'Bwise', avatar: 'B' },
+  user: { name: 'B. Wise', avatar: 'B' },
   theme: 'light',
   hideBalances: false,
   hasOnboarded: false,
+  pin: null,           /* 6-digit string, null until user sets one */
+  bioEnabled: true,    /* Face ID mock */
+  signedIn: false,     /* gate for the lock screen */
   freezeOn: false,
   notifications: [
     { id:'n1', unread:true,  title:'Direct deposit received',    body:'$2,150.00 from Sallie Mae Bank deposited to Everyday Checking.', time:'2h ago' },
@@ -1298,7 +1426,7 @@ function maskAmt(s){ return s.replace(/[0-9]/g,'•') }
 /* ============================================================
    SCREEN ROUTER
    ============================================================ */
-const screens = ['splash','onboarding','home','detail','transfer','cards','statements','notifications','help','profile'];
+const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile'];
 let current = 'splash';
 
 function go(toId){
@@ -1409,7 +1537,7 @@ document.getElementById('onbNext').addEventListener('click', ()=>{
 document.getElementById('onbSkip').addEventListener('click', finishOnboard);
 function finishOnboard(){
   state.hasOnboarded = true; saveState();
-  go('home');
+  lockShow();
 }
 
 /* ============================================================
@@ -1761,14 +1889,205 @@ function readNotif(id){
 function markAllRead(){ state.notifications.forEach(n => n.unread = false); saveState(); renderNotifications(); renderHome(); }
 
 /* ============================================================
-   PROFILE / SIGN OUT
+   PROFILE / SIGN OUT (signOut() defined alongside lock logic)
    ============================================================ */
+
+/* ============================================================
+   LOCK SCREEN / PIN
+   ============================================================ */
+const LOCK = {
+  mode: 'verify',     /* 'verify' | 'setup' | 'confirm' */
+  buffer: '',
+  firstPin: '',
+  attempts: 0,
+  onSuccess: null,    /* callback after verify */
+};
+
+function lockClock(){
+  const t = new Date();
+  const hh = t.getHours();
+  const h12 = ((hh + 11) % 12) + 1;
+  const mm = String(t.getMinutes()).padStart(2,'0');
+  const el = document.getElementById('lockTime');
+  if(el) el.textContent = `${h12}:${mm}`;
+}
+setInterval(lockClock, 30000);
+
+function lockShowDots(){
+  const dots = document.querySelectorAll('#pinDots i');
+  dots.forEach((d,i) => d.classList.toggle('filled', i < LOCK.buffer.length));
+}
+function lockShake(msg){
+  const dots = document.getElementById('pinDots');
+  const err = document.getElementById('pinError');
+  dots.classList.remove('shake'); void dots.offsetWidth; dots.classList.add('shake');
+  if(msg){ err.textContent = msg; err.classList.add('show'); }
+  setTimeout(()=> err.classList.remove('show'), 1800);
+  if(navigator.vibrate) navigator.vibrate([30, 60, 30]);
+}
+function lockReset(){ LOCK.buffer = ''; lockShowDots(); }
+
+function lockSetMode(mode, opts){
+  opts = opts || {};
+  LOCK.mode = mode; LOCK.buffer = ''; LOCK.firstPin = '';
+  const name  = document.getElementById('lockName');
+  const greet = document.getElementById('lockGreet');
+  const step  = document.getElementById('lockStep');
+  const bio   = document.getElementById('pinBio');
+  const notYou= document.getElementById('lockNotYou');
+  const forgot= document.getElementById('lockForgot');
+  const lockEl= document.getElementById('lock');
+  lockEl.classList.toggle('setup', mode !== 'verify');
+  step.style.display = mode === 'verify' ? 'none' : 'block';
+  if(mode === 'verify'){
+    name.textContent  = `Welcome back, ${state.user.name}`;
+    greet.textContent = state.bioEnabled ? 'Use Face ID or enter passcode' : 'Enter your 6-digit passcode';
+    bio.style.visibility = state.bioEnabled ? 'visible' : 'hidden';
+    notYou.style.display = 'block';
+    forgot.style.display = '';
+  } else if(mode === 'setup'){
+    step.textContent = 'Step 1 of 2';
+    name.textContent  = 'Set a passcode';
+    greet.textContent = 'You’ll use this 6-digit passcode to sign in';
+    bio.style.visibility = 'hidden';
+    notYou.style.display = 'none';
+    forgot.style.display = 'none';
+  } else if(mode === 'confirm'){
+    step.textContent = 'Step 2 of 2';
+    name.textContent  = 'Confirm passcode';
+    greet.textContent = 'Re-enter the same 6 digits';
+    bio.style.visibility = 'hidden';
+    notYou.style.display = 'none';
+    forgot.style.display = 'none';
+  }
+  lockShowDots();
+}
+
+function pinPress(k){
+  const err = document.getElementById('pinError');
+  err.classList.remove('show');
+  if(k === 'bio'){
+    if(LOCK.mode !== 'verify' || !state.bioEnabled) return;
+    return faceIdMock();
+  }
+  if(k === 'del'){
+    LOCK.buffer = LOCK.buffer.slice(0,-1);
+    lockShowDots();
+    return;
+  }
+  if(LOCK.buffer.length >= 6) return;
+  LOCK.buffer += k;
+  lockShowDots();
+  if(navigator.vibrate) navigator.vibrate(8);
+  if(LOCK.buffer.length === 6) setTimeout(pinSubmit, 140);
+}
+
+function pinSubmit(){
+  if(LOCK.mode === 'verify'){
+    if(LOCK.buffer === state.pin){
+      LOCK.attempts = 0;
+      pinUnlocked();
+    } else {
+      LOCK.attempts++;
+      const left = Math.max(0, 5 - LOCK.attempts);
+      lockShake(left > 0 ? `Incorrect passcode. ${left} attempt${left===1?'':'s'} remaining.` : 'Account locked. Contact support.');
+      LOCK.buffer = ''; lockShowDots();
+    }
+  } else if(LOCK.mode === 'setup'){
+    LOCK.firstPin = LOCK.buffer;
+    lockSetMode('confirm');
+  } else if(LOCK.mode === 'confirm'){
+    if(LOCK.buffer === LOCK.firstPin){
+      state.pin = LOCK.buffer;
+      state.signedIn = true;
+      saveState();
+      pinUnlocked();
+    } else {
+      lockShake('Passcodes don’t match. Start over.');
+      lockSetMode('setup');
+    }
+  }
+}
+
+function pinUnlocked(){
+  state.signedIn = true; saveState();
+  // small success cue
+  const dots = document.querySelectorAll('#pinDots i');
+  dots.forEach((d,i) => setTimeout(()=> d.style.background = '#5cd99a', i*40));
+  setTimeout(()=>{
+    dots.forEach(d => d.style.background = '');
+    LOCK.buffer = ''; lockShowDots();
+    const cb = LOCK.onSuccess; LOCK.onSuccess = null;
+    if(cb) cb();
+    else go('home');
+  }, 280);
+}
+
+function faceIdMock(){
+  toast('Looking for your face…');
+  setTimeout(()=>{
+    if(Math.random() < 0.92){
+      LOCK.buffer = state.pin || '';
+      lockShowDots();
+      setTimeout(pinUnlocked, 200);
+    } else {
+      lockShake('Face not recognized. Try again or use passcode.');
+    }
+  }, 700);
+}
+
+function lockShow(opts){
+  opts = opts || {};
+  LOCK.onSuccess = opts.onSuccess || null;
+  if(!state.pin){
+    lockSetMode('setup');
+  } else {
+    lockSetMode('verify');
+  }
+  lockClock();
+  go('lock');
+}
+
 function signOut(){
   if(!confirm('Sign out of Meridian?')) return;
-  // soft reset (keep state, just go to splash)
+  state.signedIn = false; saveState();
   toast('Signed out');
-  go('home');
+  closeSheet();
+  lockShow();
 }
+
+function signOutHard(){
+  if(!confirm('Forget this device? You’ll need to sign in again with your full credentials.')) return;
+  state.pin = null; state.signedIn = false; state.bioEnabled = true; saveState();
+  toast('Device signed out');
+  closeSheet();
+  lockShow();
+}
+
+function forgotPin(){
+  if(!confirm('Reset your passcode? For this demo, we’ll let you choose a new one.')) return;
+  state.pin = null; saveState();
+  lockSetMode('setup');
+}
+
+/* keyboard support on lock screen */
+document.addEventListener('keydown', e => {
+  if(current !== 'lock') return;
+  if(/^[0-9]$/.test(e.key)) pinPress(e.key);
+  else if(e.key === 'Backspace') pinPress('del');
+  else if(e.key === 'Enter' && LOCK.buffer.length === 6) pinSubmit();
+});
+
+/* delegated taps */
+document.addEventListener('click', e => {
+  const k = e.target.closest('.pin-key'); if(!k) return;
+  pinPress(k.dataset.k);
+});
+
+/* forgot link */
+document.addEventListener('click', e => {
+  if(e.target.id === 'lockForgot') forgotPin();
+});
 
 /* ============================================================
    TOAST
@@ -1802,10 +2121,16 @@ setTimeout(()=>{
   document.getElementById('splash').classList.add('fade-out');
   setTimeout(()=>{
     document.getElementById('splash').style.display='none';
-    const next = state.hasOnboarded ? 'home' : 'onboarding';
+    let next;
+    if(!state.hasOnboarded){ next = 'onboarding'; }
+    else { next = 'lock'; }
     document.getElementById(next).classList.remove('enter-right');
     document.getElementById(next).classList.add('active');
     current = next;
+    if(next === 'lock'){
+      lockClock();
+      if(!state.pin) lockSetMode('setup'); else lockSetMode('verify');
+    }
   }, 320);
 }, 1500);
 </script>
