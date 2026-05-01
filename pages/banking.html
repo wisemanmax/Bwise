@@ -1261,6 +1261,201 @@ html.standalone .screen.has-back::before{
   content:"";position:absolute;top:0;bottom:0;left:0;width:18px;z-index:5;
 }
 
+/* ============ SEGMENTED TABS ============ */
+.segmented{
+  display:flex;gap:4px;background:var(--bg-2);border:1px solid var(--line-2);
+  border-radius:12px;padding:4px;margin:0 18px 14px;
+}
+.segmented .seg{
+  flex:1;text-align:center;padding:9px 8px;border-radius:9px;
+  font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;
+  transition:background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.segmented .seg.active{background:var(--bg);color:var(--ink);box-shadow:0 1px 3px rgba(15,30,45,.06)}
+[data-theme="dark"] .segmented .seg.active{background:var(--bg-3)}
+
+/* ============ WIRE TRANSFER ============ */
+.wire-fee-card{
+  margin:0 18px 14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;
+  background:linear-gradient(135deg, rgba(11,51,88,.04) 0%, rgba(11,51,88,.01) 100%);
+}
+[data-theme="dark"] .wire-fee-card{background:linear-gradient(135deg, rgba(74,143,209,.06) 0%, rgba(74,143,209,.02) 100%)}
+.wire-fee-card .row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:6px 0;color:var(--ink-2)}
+.wire-fee-card .row b{font-family:var(--mono);font-weight:600;color:var(--ink)}
+.wire-fee-card .row.total{margin-top:6px;padding-top:10px;border-top:1px solid var(--line);font-size:14.5px;font-weight:700;color:var(--ink)}
+.wire-cutoff{
+  margin:0 18px 14px;padding:11px 14px;border-radius:12px;
+  background:rgba(200,155,60,.10);border:1px solid rgba(200,155,60,.4);
+  display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink);font-weight:500;line-height:1.4;
+}
+[data-theme="dark"] .wire-cutoff{background:rgba(200,155,60,.18)}
+.wire-cutoff svg{width:18px;height:18px;color:#a37e2a;flex-shrink:0}
+
+/* ============ ADD TO WALLET ============ */
+.wallet-stage{padding:24px 18px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.wallet-card-anim{
+  width:280px;max-width:90%;aspect-ratio:1.586/1;border-radius:18px;
+  background:linear-gradient(135deg, var(--navy-3) 0%, var(--navy-2) 100%);
+  color:#fff;padding:20px;position:relative;overflow:hidden;
+  box-shadow:0 24px 50px -10px rgba(0,0,0,.35);
+  transform:perspective(800px) rotateX(8deg) rotateY(-6deg);
+  transition:transform 1s cubic-bezier(.2,.7,.2,1), opacity .5s ease;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.wallet-card-anim::before{
+  content:"";position:absolute;top:-30%;right:-15%;width:60%;height:90%;
+  background:linear-gradient(135deg, transparent 45%, var(--red) 50%, transparent 65%);
+  border-radius:50%;opacity:.85;
+}
+.wallet-card-anim .row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.wallet-card-anim .num{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:.12em;text-align:center;position:relative;z-index:1}
+.wallet-card-anim.added{transform:perspective(800px) rotateX(0) rotateY(0) translateY(-8px) scale(.94);opacity:.85}
+.wallet-pass-frame{
+  width:280px;max-width:90%;border-radius:18px;
+  background:#fff;color:#1a2632;border:1px solid #cbd5e0;
+  margin-top:14px;padding:14px;font-family:var(--sans);
+  box-shadow:0 8px 20px -6px rgba(0,0,0,.18);
+  display:none;
+}
+.wallet-pass-frame.show{display:block;animation:rise .5s cubic-bezier(.2,.7,.2,1)}
+.wallet-pass-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid #f0f3f6;font-size:12px}
+.wallet-pass-row:first-of-type{border-top:0}
+.wallet-pass-row b{font-weight:600;color:#0e1924}
+.wallet-pass-row span{color:#6b7a87}
+.wallet-action{
+  margin-top:18px;padding:14px 22px;border-radius:14px;
+  background:#000;color:#fff;border:0;font-weight:600;font-size:15px;
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+}
+.wallet-action.google{background:#fff;color:#000;border:1px solid var(--line)}
+.wallet-action svg{width:20px;height:20px}
+.wallet-passes-empty{
+  width:100%;display:flex;align-items:center;justify-content:center;
+  padding:20px;font-size:13.5px;color:var(--muted);font-weight:500;
+  border:1.5px dashed var(--line);border-radius:14px;margin-top:20px;
+}
+
+/* ============ CARD TRACKER ============ */
+.tracker-hero{
+  margin:14px 18px 8px;padding:18px 20px;border-radius:18px;color:#fff;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  position:relative;overflow:hidden;
+}
+.tracker-hero::before{
+  content:"";position:absolute;top:-30%;right:-20%;width:60%;height:100%;
+  background:radial-gradient(circle, rgba(200,155,60,.25) 0%, transparent 70%);
+}
+.tracker-hero .lbl{font-size:11px;font-weight:700;opacity:.7;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+.tracker-hero h2{margin:4px 0 0;font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.02em;position:relative;z-index:1}
+.tracker-hero .eta{font-size:13px;opacity:.9;margin-top:8px;font-weight:500;position:relative;z-index:1}
+.tracker-hero .num{
+  position:relative;z-index:1;margin-top:14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
+  background:rgba(255,255,255,.15);padding:6px 12px;border-radius:99px;display:inline-flex;align-items:center;gap:6px
+}
+
+.timeline{margin:14px 18px 22px;padding:18px 18px 6px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}
+.tl-step{display:flex;gap:14px;padding-bottom:18px;position:relative}
+.tl-step:last-child{padding-bottom:0}
+.tl-step::before{
+  content:"";position:absolute;left:11px;top:24px;bottom:-6px;width:2px;background:var(--line);
+}
+.tl-step:last-child::before{display:none}
+.tl-step.done::before{background:var(--pos)}
+.tl-dot{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  background:var(--bg-2);border:2px solid var(--line);
+  display:grid;place-items:center;color:var(--muted);position:relative;z-index:1;
+}
+.tl-step.done .tl-dot{background:var(--pos);border-color:var(--pos);color:#fff}
+.tl-step.current .tl-dot{
+  background:#fff;border-color:var(--navy);
+  box-shadow:0 0 0 4px rgba(11,51,88,.15);
+}
+[data-theme="dark"] .tl-step.current .tl-dot{background:var(--bg-2)}
+.tl-step.current .tl-dot::after{
+  content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--navy);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+.tl-dot svg{width:12px;height:12px}
+.tl-meta{flex:1;padding-top:1px;min-width:0}
+.tl-meta b{font-size:14px;font-weight:700;color:var(--ink);display:block}
+.tl-step.todo .tl-meta b{color:var(--muted)}
+.tl-meta span{font-size:12px;color:var(--muted);font-weight:500;display:block;margin-top:2px}
+
+.tracker-banner{
+  margin:14px 18px 0;padding:12px 14px;border-radius:12px;
+  background:rgba(11,51,88,.06);border:1px solid rgba(11,51,88,.2);
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+}
+[data-theme="dark"] .tracker-banner{background:rgba(74,143,209,.10)}
+.tracker-banner .ico{width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;display:grid;place-items:center;flex-shrink:0}
+.tracker-banner .ico svg{width:16px;height:16px}
+.tracker-banner .meta{flex:1;min-width:0}
+.tracker-banner .meta b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+.tracker-banner .meta span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+
+/* ============ STEP-UP / FACE ID SHEET ============ */
+.stepup-stage{padding:18px 22px 6px;text-align:center}
+.stepup-icon{
+  width:78px;height:78px;border-radius:50%;
+  background:radial-gradient(circle, rgba(11,51,88,.1) 0%, transparent 70%);
+  display:grid;place-items:center;margin:0 auto 10px;color:var(--navy);
+}
+.stepup-icon svg{width:42px;height:42px}
+.stepup-icon.scanning svg{animation:pulse 1s ease infinite}
+.stepup-title{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.02em;color:var(--ink);margin:0}
+.stepup-reason{font-size:13.5px;color:var(--muted);font-weight:500;margin:6px 0 0;line-height:1.45;max-width:280px;margin-left:auto;margin-right:auto}
+.stepup-state{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--muted);min-height:18px}
+.stepup-state.success{color:var(--pos)}
+.stepup-state.fail{color:var(--red-2)}
+.stepup-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px;padding:0 4px}
+.stepup-pin{display:none;margin-top:14px}
+.stepup-pin.show{display:block}
+.stepup-pin .pin-dots{margin:8px 0 4px}
+.stepup-pin .pin-dots i{border-color:var(--line);background:var(--bg-2)}
+.stepup-pin .pin-dots i.filled{background:var(--navy);border-color:var(--navy)}
+.stepup-pin .pin-grid{max-width:260px;gap:6px 14px}
+.stepup-pin .pin-key{height:54px;background:var(--bg-2);color:var(--ink);font-size:24px;border:0}
+.stepup-pin .pin-key:active{background:var(--bg-3)}
+.stepup-pin .pin-key.action{color:var(--navy);background:transparent}
+.stepup-pin .pin-key sub{display:none}
+
+/* ============ ABOUT ============ */
+.about-hero{
+  padding:30px 22px 12px;text-align:center;
+  background:linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+  border-bottom:1px solid var(--line-2);
+}
+.about-mark{
+  width:74px;height:74px;border-radius:20px;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  display:grid;place-items:center;position:relative;overflow:hidden;
+  box-shadow:var(--shadow-md);margin:0 auto 12px;
+}
+.about-mark::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg, transparent 50%, var(--red) 50%, var(--red) 60%, transparent 60%);
+  opacity:.85;
+}
+.about-mark svg{position:relative;z-index:1;width:38px;height:38px}
+.about-name{font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:-.02em;color:var(--ink);margin:0}
+.about-tag{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:4px;letter-spacing:.04em}
+.about-version{
+  display:inline-flex;gap:8px;margin-top:12px;padding:5px 12px;border-radius:99px;
+  background:var(--bg-3);font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink-2);
+}
+
+.fdic-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line-2);margin:14px 18px}
+.fdic-badge{
+  width:42px;height:42px;border-radius:8px;background:#005a9c;color:#fff;
+  display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:11px;letter-spacing:.06em;flex-shrink:0;
+}
+.fdic-row .meta b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+.fdic-row .meta span{display:block;font-size:11.5px;color:var(--muted);font-weight:500;margin-top:1px}
+
+.about-disclaimer{margin:14px 18px 30px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:11.5px;color:var(--muted);line-height:1.6}
+.about-disclaimer b{color:var(--ink-2)}
+
 /* ============ DEVICE STATUS BAR ============ */
 .status-bar{
   position:absolute;top:0;left:0;right:0;height:30px;z-index:80;
@@ -1789,6 +1984,7 @@ html.standalone .screen.has-back::before{
       <h2>Your cards</h2>
     </header>
     <div class="card-stage">
+      <div id="trackerBannerSlot"></div>
       <div class="credit-card" id="creditCard">
         <div class="cc-front">
           <div class="cc-row">
@@ -1824,7 +2020,7 @@ html.standalone .screen.has-back::before{
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15 H4 a2 2 0 0 1 -2 -2 V4 a2 2 0 0 1 2 -2 h9 a2 2 0 0 1 2 2 v1"/></svg>
       Copy
     </button>
-    <button class="btn btn-ghost" onclick="toast('Apple Wallet')">
+    <button class="btn btn-ghost" onclick="startAddToWallet()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10 H22"/></svg>
       Wallet
     </button>
@@ -1925,7 +2121,8 @@ html.standalone .screen.has-back::before{
     </div>
     <div class="section-h">Popular topics</div>
     <div class="list">
-      <div class="li" onclick="startZelle()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg></span><div class="li-meta"><b>Send & receive money</b><span>Transfers, Zelle, wires</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="startZelle()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg></span><div class="li-meta"><b>Zelle</b><span>Send to people you trust</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="startWire()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/><circle cx="12" cy="12" r="10"/></svg></span><div class="li-meta"><b>Wire transfer</b><span>Domestic or international</span></div><span class="li-trail">›</span></div>
       <div class="li" onclick="go('cards');setTab('cards')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/></svg></span><div class="li-meta"><b>Card management</b><span>Freeze, replace, report</span></div><span class="li-trail">›</span></div>
       <div class="li" onclick="openArticle('disputes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8 V12 M12 16 V16.01"/></svg></span><div class="li-meta"><b>Disputes & fraud</b><span>Report unauthorized activity</span></div><span class="li-trail">›</span></div>
       <div class="li" onclick="openArticle('taxes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 H16 L20 7 V21 H6 Z"/></svg></span><div class="li-meta"><b>Statements & taxes</b><span>Tax docs, paperless</span></div><span class="li-trail">›</span></div>
@@ -1975,6 +2172,13 @@ html.standalone .screen.has-back::before{
   <div class="li"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79 A9 9 0 1 1 11.21 3 a7 7 0 0 0 9.79 9.79 z"/></svg></span><div class="li-meta"><b>Dark mode</b><span id="darkLabel">Off</span></div><div class="switch" id="darkSwitch" onclick="toggleTheme(); this.classList.toggle('on')"></div></div>
   <div class="li" onclick="openNotifPrefs()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/></svg></span><div class="li-meta"><b>Notifications</b><span id="notifPrefSummary">Customize alerts</span></div><span class="li-trail">›</span></div>
   <div class="li" onclick="openLanguage()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/></svg></span><div class="li-meta"><b>Language</b><span id="langLabel">English (US)</span></div><span class="li-trail">›</span></div>
+</div>
+
+<div class="section-h">App</div>
+<div class="list">
+  <div class="li" onclick="openAbout()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16 V12 M12 8 V8.01"/></svg></span><div class="li-meta"><b>About Meridian</b><span id="aboutSummary">Version, FDIC, legal</span></div><span class="li-trail">›</span></div>
+  <div class="li" onclick="toast('Sending feedback…')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5 a8.38 8.38 0 0 1 -.9 3.8 a8.5 8.5 0 0 1 -7.6 4.7 a8.38 8.38 0 0 1 -3.8 -.9 L3 21 l1.9 -5.7 a8.38 8.38 0 0 1 -.9 -3.8 a8.5 8.5 0 0 1 4.7 -7.6 a8.38 8.38 0 0 1 3.8 -.9 h.5 a8.48 8.48 0 0 1 8 8 v.5 z"/></svg></span><div class="li-meta"><b>Send feedback</b><span>Tell us how we're doing</span></div><span class="li-trail">›</span></div>
+  <div class="li" onclick="toast('Refer a friend')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21 v-2 a4 4 0 0 1 4 -4 H11 a4 4 0 0 1 4 4 v2"/><path d="M19 8 V14 M16 11 H22"/></svg></span><div class="li-meta"><b>Refer a friend</b><span>You both get $50</span></div><span class="li-trail">›</span></div>
 </div>
 
 <div style="padding:8px 18px 36px"><button class="btn btn-ghost" style="color:var(--red)" onclick="signOut()">Sign out</button></div>
@@ -2363,6 +2567,175 @@ html.standalone .screen.has-back::before{
   </div>
 </section>
 
+<!-- ============ WIRE TRANSFER ============ -->
+
+<section class="screen enter-right" id="wire">
+  <div class="scroll" id="wireScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('wire','home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Send a wire</h2>
+    </header>
+
+    <div class="segmented" id="wireTabs" role="tablist">
+      <div class="seg active" data-mode="dom" role="tab">Domestic</div>
+      <div class="seg" data-mode="intl" role="tab">International</div>
+    </div>
+
+    <div id="wireBody"></div>
+  </div>
+
+  <div class="btn-foot">
+    <button class="btn btn-primary" id="wireReview" onclick="reviewWire()" disabled>Review wire</button>
+  </div>
+</section>
+
+<!-- ============ ADD TO WALLET ============ -->
+
+<section class="screen enter-right" id="wallet">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('wallet','cards')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Add to wallet</h2>
+    </header>
+
+    <div class="wallet-stage">
+      <div class="wallet-card-anim" id="walletCard">
+        <div class="row">
+          <div style="font-family:var(--serif);font-weight:600;font-size:16px;letter-spacing:-.01em">Meridian</div>
+          <div class="cc-chip" style="width:32px;height:25px;border-radius:5px;background:linear-gradient(135deg, #d4af6a, #8a6a2c)"></div>
+        </div>
+        <div class="num">•••• •••• •••• 4827</div>
+        <div class="row">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase">Cardholder<div style="font-family:var(--serif);font-style:italic;font-weight:600;font-size:13px;letter-spacing:.02em;text-transform:none;margin-top:2px" id="walletName">B. Wise</div></div>
+          <div style="font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em">09/29</div>
+        </div>
+      </div>
+
+      <div class="wallet-pass-frame" id="walletPass">
+        <div style="display:flex;align-items:center;gap:10px;border-bottom:1px dashed #e6eaee;padding-bottom:10px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:8px;background:#0b3358;color:#fff;display:grid;place-items:center;position:relative;overflow:hidden">
+            <svg viewBox="0 0 48 48" fill="none" style="width:18px;height:18px"><path d="M10 34 L10 14 L24 28 L38 14 L38 34" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-family:'Fraunces',serif;font-weight:600;font-size:13px;color:#0b3358">Meridian Reserve</div>
+            <div style="font-size:10.5px;color:#6b7a87">Apple Pay-ready</div>
+          </div>
+          <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:#6b7a87">DPAN</div>
+        </div>
+        <div class="wallet-pass-row"><span>Card</span><b>•• 4827</b></div>
+        <div class="wallet-pass-row"><span>Network</span><b>Meridian</b></div>
+        <div class="wallet-pass-row"><span>Device</span><b id="walletDevice">iPhone</b></div>
+      </div>
+
+      <div id="walletButtons" style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:10px">
+        <button class="wallet-action" onclick="addToAppleWallet()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 1c-.5 0-1.7.5-2.5 1.4-.7.8-1.3 2-1.1 3.1.6.05 1.7-.5 2.5-1.4.7-.8 1.2-2 1.1-3.1zM21 17.5c-.6 1.4-1 2-1.7 3.2-1 1.6-2.4 3.7-4.2 3.7-1.6 0-2-1-4.2-1-2.1 0-2.6 1-4.2 1-1.7 0-3-1.9-4-3.5-2.7-4.4-3-9.6-1.3-12.4 1.2-1.9 3.1-3.1 4.9-3.1 1.7 0 2.9 1 4.4 1 1.5 0 2.4-1 4.4-1 1.6 0 3.3.9 4.4 2.4-3.9 2-3.3 7.5-2.5 9.7z"/></svg>
+          Add to Apple Wallet
+        </button>
+        <button class="wallet-action google" onclick="addToGoogleWallet()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 9 H3 a1 1 0 0 0 -1 1 v8 a1 1 0 0 0 1 1 H21 a1 1 0 0 0 1 -1 v-8 a1 1 0 0 0 -1 -1 z" stroke="#000" stroke-width="2"/><circle cx="9" cy="14" r="3" fill="#fbbc04"/><circle cx="14" cy="14" r="3" fill="#34a853" fill-opacity=".8"/><path d="M3 9 V6 a3 3 0 0 1 3 -3 H18 a3 3 0 0 1 3 3 v3" stroke="#000" stroke-width="2"/></svg>
+          Add to Google Pay
+        </button>
+      </div>
+
+      <div id="walletDevices" style="margin-top:22px;width:100%"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARD TRACKER ============ -->
+
+<section class="screen enter-right" id="cardTracker">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('cardTracker','cards')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Replacement card</h2>
+      <button class="back-btn" onclick="toast('Tracking refreshed')" aria-label="Refresh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12 a9 9 0 1 1 -3 -7"/><path d="M21 4 V11 H14"/></svg>
+      </button>
+    </header>
+
+    <div id="trackerBody"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+
+<section class="screen enter-right" id="about">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('about','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>About</h2>
+    </header>
+
+    <div class="about-hero">
+      <div class="about-mark">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10 34 L10 14 L24 28 L38 14 L38 34" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="about-name">Meridian</h1>
+      <div class="about-tag">Banking, redrawn.</div>
+      <div class="about-version" id="aboutVersion">v2.4.1 (build 4827) · iOS</div>
+    </div>
+
+    <div class="fdic-row">
+      <div class="fdic-badge">FDIC</div>
+      <div class="meta">
+        <b>Member FDIC</b>
+        <span>Insured to at least $250,000 per depositor, per ownership category.</span>
+      </div>
+    </div>
+    <div class="fdic-row" style="margin-top:0">
+      <div class="fdic-badge" style="background:#0b3358;font-size:9px;line-height:1.1;padding:4px;text-align:center">EQUAL<br/>HOUSING</div>
+      <div class="meta">
+        <b>Equal Housing Lender</b>
+        <span>We do not discriminate. NMLS ID #487012.</span>
+      </div>
+    </div>
+
+    <div class="section-h">Bank info</div>
+    <div class="list" style="margin:8px 18px 14px">
+      <div class="kv-row" style="padding:14px 16px"><span class="lbl">Legal entity</span><span class="val">Meridian Bank, N.A.</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Headquarters</span><span class="val" style="text-align:right">100 W 10th St, Suite 800<br/>Wilmington, DE 19801</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Customer service</span><span class="val">1-800-MERIDIAN</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Routing (ACH)</span><span class="val">031176110</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">SWIFT/BIC</span><span class="val">MRDNUS33</span></div>
+    </div>
+
+    <div class="section-h">Legal</div>
+    <div class="list" style="margin:8px 18px 14px">
+      <div class="li" onclick="openArticle('disputes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2 H6 a2 2 0 0 0 -2 2 v16 a2 2 0 0 0 2 2 H18 a2 2 0 0 0 2 -2 V8 z"/><path d="M14 2 V8 H20"/></svg></span><div class="li-meta"><b>Privacy notice</b><span>Updated Jan 2026</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="toast('Opening Terms')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2 H6 a2 2 0 0 0 -2 2 v16 a2 2 0 0 0 2 2 H18 a2 2 0 0 0 2 -2 V8 z"/><path d="M14 2 V8 H20"/></svg></span><div class="li-meta"><b>Deposit account agreement</b><span>Disclosures, fees, account terms</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="toast('Opening E-Sign consent')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4 H4 V20 H20 V13"/><path d="M18.5 2.5 a2.12 2.12 0 0 1 3 3 L12 15 L8 16 L9 12 z"/></svg></span><div class="li-meta"><b>E-Sign consent</b><span>Electronic communications</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="toast('Open-source licenses')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18 L22 12 L16 6 M8 6 L2 12 L8 18"/></svg></span><div class="li-meta"><b>Open-source licenses</b><span>Acknowledgments</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="toast('Accessibility statement')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="7" r="1.5" fill="currentColor"/><path d="M5 11 H19 M9 21 L12 14 L15 21"/></svg></span><div class="li-meta"><b>Accessibility statement</b><span>WCAG 2.1 AA</span></div><span class="li-trail">›</span></div>
+    </div>
+
+    <div class="section-h">Diagnostics</div>
+    <div class="list" style="margin:8px 18px 14px">
+      <div class="kv-row" style="padding:14px 16px"><span class="lbl">Device</span><span class="val" id="diagDevice">—</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Install method</span><span class="val" id="diagInstall">—</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Locale</span><span class="val" id="diagLocale">—</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Service worker</span><span class="val" id="diagSW">—</span></div>
+      <div class="li" onclick="copyDiagnostics()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15 H4 a2 2 0 0 1 -2 -2 V4 a2 2 0 0 1 2 -2 h9 a2 2 0 0 1 2 2 v1"/></svg></span><div class="li-meta"><b>Copy diagnostic info</b><span>For support</span></div><span class="li-trail">›</span></div>
+    </div>
+
+    <div class="about-disclaimer">
+      <b>Investments are not FDIC insured</b>, are not guaranteed by Meridian Bank, and may lose value. Securities offered through Meridian Securities, member FINRA/SIPC. <br/><br/>
+      © 2026 Meridian Bank, N.A. All rights reserved. Meridian, the Meridian mark, and "Banking, redrawn." are trademarks of Meridian Bank.
+    </div>
+  </div>
+</section>
+
 <!-- ============ SHEET / SCRIM ============ -->
 
 <div class="scrim" id="scrim" onclick="closeSheet()"></div>
@@ -2515,7 +2888,13 @@ const defaultState = {
   language: 'en-US',
   signOutAfter: 5,         /* minutes */
   passcodeChangedAt: 'Apr 22, 2026',
-  cardReplacements: []
+  cardReplacements: [],
+  wallet: { apple:false, google:false, deviceName:'iPhone 15 Pro' },
+  wireRecipients: [
+    { id:'wr1', kind:'dom',  name:'Alex Rivera',     bank:'Wells Fargo',     account:'•• 8821', routing:'121000248', address:'123 Main St, Berkeley, CA' },
+    { id:'wr2', kind:'intl', name:'Studio Verde Ltd', bank:'Banco Santander', iban:'ES91 2100 0418 4502 0005 1332', swift:'BSCHESMM', address:'Carrer de Pelai 12, Barcelona, Spain', country:'Spain' },
+  ],
+  wireFees: { dom: 25, intl: 45, fxPct: 1.0, cutoff: '5:00 PM ET' }
 };
 
 function loadState(){
@@ -2562,7 +2941,7 @@ function maskAmt(s){ return s.replace(/[0-9]/g,'•') }
 /* ============================================================
    SCREEN ROUTER
    ============================================================ */
-const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle','cardLimits','cardInternational','cardReport','scheduled','personalInfo','linkedAccounts','beneficiaries','notifPrefs','language','autoSignOut','helpArticle','subs'];
+const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle','cardLimits','cardInternational','cardReport','scheduled','personalInfo','linkedAccounts','beneficiaries','notifPrefs','language','autoSignOut','helpArticle','subs','wire','wallet','cardTracker','about'];
 let current = 'splash';
 
 function go(toId){
@@ -2936,6 +3315,19 @@ function reviewTransfer(){
   openSheetRaw();
 }
 function confirmTransfer(){
+  const v = parseFloat(xfer.amount);
+  /* step-up for any transfer at or above $1,000 */
+  if(v >= 1000){
+    closeSheet();
+    return setTimeout(()=> requireStepUp({
+      reason: `Confirm transfer of $${fmt(v)} between accounts.`,
+      onSuccess: doConfirmTransfer,
+      onCancel: ()=> reviewTransfer()
+    }), 320);
+  }
+  doConfirmTransfer();
+}
+function doConfirmTransfer(){
   const from = accountById(xfer.from);
   const to = accountById(xfer.to);
   const v = parseFloat(xfer.amount);
@@ -2968,6 +3360,7 @@ function confirmTransfer(){
       </div>
     </div>
   `;
+  openSheetRaw();
   // re-render home + detail in background
   renderHome();
   if(activeId) renderTransactions(activeId);
@@ -2992,7 +3385,8 @@ function openSheet(kind){
     body.innerHTML = `
       <div class="list" style="margin:0">
         <div class="li" onclick="closeSheet();go('statements')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3 H16 L20 7 V21 H6 Z"/></svg></span><div class="li-meta"><b>Statements & documents</b></div><span class="li-trail">›</span></div>
-        <div class="li" onclick="closeSheet();openAcctDetails(activeId)"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16 V12 M12 8 V8.01"/></svg></span><div class="li-meta"><b>Account details</b><span>Routing & account number</span></div><span class="li-trail">›</span></div>
+        <div class="li" onclick="closeSheet();openAcctDetailsSecure(activeId)"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16 V12 M12 8 V8.01"/></svg></span><div class="li-meta"><b>Account details</b><span>Routing & account number</span></div><span class="li-trail">›</span></div>
+        <div class="li" onclick="closeSheet();startWire()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/><circle cx="12" cy="12" r="10"/></svg></span><div class="li-meta"><b>Send a wire</b><span>Domestic or international</span></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Set up direct deposit')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21 V11 M7 16 L12 21 L17 16"/></svg></span><div class="li-meta"><b>Set up direct deposit</b></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Rename account')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4 H4 V20 H20 V13"/><path d="M18.5 2.5 a2.12 2.12 0 0 1 3 3 L12 15 L8 16 L9 12 z"/></svg></span><div class="li-meta"><b>Rename account</b></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Close account')" style="color:var(--red)"><span class="li-icon" style="color:var(--red);background:rgba(200,50,44,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6 H21 M19 6 V20 a2 2 0 0 1 -2 2 H7 a2 2 0 0 1 -2 -2 V6 M8 6 V4 a2 2 0 0 1 2 -2 h4 a2 2 0 0 1 2 2 v2"/></svg></span><div class="li-meta"><b style="color:var(--red)">Close account</b></div></div>
@@ -3467,6 +3861,19 @@ function openAcctDetails(id){
   renderAcctDetails();
   go('acctDetails');
 }
+function openAcctDetailsSecure(id){
+  /* require step-up before showing the screen at all on first reveal */
+  openAcctDetails(id);
+}
+function revealAcctNumbers(){
+  if(acctDetailsReveal){
+    acctDetailsReveal = false; renderAcctDetails(); return;
+  }
+  requireStepUp({
+    reason: 'To display your full account, routing, and SWIFT numbers.',
+    onSuccess: ()=>{ acctDetailsReveal = true; renderAcctDetails(); }
+  });
+}
 function renderAcctDetails(){
   const a = accountById(acctDetailsId); if(!a) return;
   const isCredit = a.kind === 'credit';
@@ -3486,7 +3893,7 @@ function renderAcctDetails(){
         <b>${acctDetailsReveal?'Numbers visible':'Numbers hidden'}</b>
         <span>${acctDetailsReveal?'Anyone seeing your screen can read them':'Tap to reveal full account info'}</span>
       </div>
-      <button class="show-toggle" onclick="acctDetailsReveal=!acctDetailsReveal;renderAcctDetails()">${acctDetailsReveal?'Hide':'Show'}</button>
+      <button class="show-toggle" onclick="revealAcctNumbers()">${acctDetailsReveal?'Hide':'Show'}</button>
     </div>
 
     ${isCredit ? `
@@ -4356,11 +4763,26 @@ function confirmCardReport(){
       <div class="success-title">Card report filed</div>
       <div class="success-meta">Replacement arrives ${reportReason==='stolen'?'today by courier':'in 3–5 business days'}.<br/>Confirmation #${id.toUpperCase()}</div>
       <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;padding:0 18px">
-        <button class="btn btn-primary" onclick="back('cardReport','cards')">Done</button>
+        <button class="btn btn-primary" onclick="openCardTracker('${id}')">Track replacement</button>
+        <button class="btn btn-ghost" onclick="back('cardReport','cards')">Done</button>
       </div>
     </div>
   `;
+  renderTrackerBannerOnCards();
   renderHome(); renderNotifications();
+}
+function renderTrackerBannerOnCards(){
+  const slot = document.getElementById('trackerBannerSlot');
+  if(!slot) return;
+  const r = state.cardReplacements[0];
+  if(!r){ slot.innerHTML = ''; return; }
+  slot.innerHTML = `
+    <div class="tracker-banner" onclick="openCardTracker('${r.id}')">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16 V8 a2 2 0 0 0 -1 -1.73 L13 2.27 a2 2 0 0 0 -2 0 L4 6.27 A2 2 0 0 0 3 8 v8 a2 2 0 0 0 1 1.73 l7 4 a2 2 0 0 0 2 0 l7 -4 A2 2 0 0 0 21 16 z"/></svg></div>
+      <div class="meta"><b>Replacement card on the way</b><span>Tap to track delivery</span></div>
+      <span style="color:var(--muted)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+    </div>
+  `;
 }
 
 /* ============================================================
@@ -5272,6 +5694,533 @@ function estimateNext(day){
 }
 
 /* ============================================================
+   2FA STEP-UP (Face ID / passcode for sensitive actions)
+   ============================================================ */
+const STEP = { buffer:'', cb:null, fail:null };
+function requireStepUp({ reason='Verify it\'s you', allowBio=true, onSuccess, onCancel } = {}){
+  STEP.buffer = ''; STEP.cb = onSuccess || null; STEP.fail = onCancel || null;
+  document.getElementById('sheetTitle').textContent = 'Verify it\'s you';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="stepup-stage">
+      <div class="stepup-icon" id="suIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 8 V6 a2 2 0 0 1 2 -2 H9 M15 4 H17 a2 2 0 0 1 2 2 V8 M19 16 V18 a2 2 0 0 1 -2 2 H15 M9 20 H7 a2 2 0 0 1 -2 -2 V16"/>
+          <path d="M9 10 V11 M15 10 V11 M12 10 V14 M10 17 c1 .8 3 .8 4 0"/>
+        </svg>
+      </div>
+      <h3 class="stepup-title">Verify it's you</h3>
+      <div class="stepup-reason">${escapeHtml(reason)}</div>
+      <div class="stepup-state" id="suState">${state.bioEnabled && allowBio ? 'Tap below to use Face ID' : 'Enter your passcode'}</div>
+      <div class="stepup-actions">
+        ${state.bioEnabled && allowBio ? `<button class="btn btn-primary" onclick="stepupFaceId()">Use Face ID</button>` : ''}
+        <button class="btn btn-ghost" onclick="stepupShowPin()">Use passcode</button>
+        <button class="btn btn-ghost" onclick="stepupCancel()">Cancel</button>
+      </div>
+      <div class="stepup-pin" id="suPin">
+        <div class="pin-dots" id="suDots"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="pin-grid" id="suGrid">
+          ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="pin-key" data-su="${n}">${n}</button>`).join('')}
+          <span></span>
+          <button class="pin-key" data-su="0">0</button>
+          <button class="pin-key action" data-su="del" aria-label="Delete">⌫</button>
+        </div>
+      </div>
+    </div>
+  `;
+  // wire pin pad
+  document.querySelectorAll('#suGrid [data-su]').forEach(el => el.addEventListener('click', ()=> stepupPress(el.dataset.su)));
+  openSheetRaw();
+  if(state.bioEnabled && allowBio){
+    /* auto-trigger Face ID like a real app does on app/sheet open */
+    setTimeout(stepupFaceId, 500);
+  } else {
+    stepupShowPin();
+  }
+}
+function stepupShowPin(){
+  document.getElementById('suPin').classList.add('show');
+  document.getElementById('suState').textContent = 'Enter your 6-digit passcode';
+}
+function stepupPress(k){
+  if(k === 'del'){ STEP.buffer = STEP.buffer.slice(0,-1); }
+  else if(STEP.buffer.length < 6) STEP.buffer += k;
+  document.querySelectorAll('#suDots i').forEach((d,i)=> d.classList.toggle('filled', i < STEP.buffer.length));
+  if(STEP.buffer.length === 6) setTimeout(stepupSubmit, 140);
+}
+function stepupSubmit(){
+  if(STEP.buffer === state.pin){ stepupSuccess(); }
+  else {
+    const dots = document.getElementById('suDots');
+    dots.classList.remove('shake'); void dots.offsetWidth; dots.classList.add('shake');
+    document.getElementById('suState').classList.add('fail');
+    document.getElementById('suState').textContent = 'Incorrect passcode';
+    STEP.buffer = ''; setTimeout(()=>{
+      document.querySelectorAll('#suDots i').forEach(d=>d.classList.remove('filled'));
+    }, 200);
+  }
+}
+function stepupFaceId(){
+  const ic = document.getElementById('suIcon'); if(!ic) return;
+  ic.classList.add('scanning');
+  document.getElementById('suState').textContent = 'Looking for your face…';
+  setTimeout(()=>{
+    ic.classList.remove('scanning');
+    if(Math.random() < 0.94){ stepupSuccess(); }
+    else {
+      document.getElementById('suState').classList.add('fail');
+      document.getElementById('suState').textContent = 'Face not recognized — try again or use passcode';
+    }
+  }, 800);
+}
+function stepupSuccess(){
+  const st = document.getElementById('suState');
+  if(st){ st.classList.remove('fail'); st.classList.add('success'); st.textContent = 'Verified ✓'; }
+  if(navigator.vibrate) navigator.vibrate([10, 30, 10]);
+  setTimeout(()=>{
+    closeSheet();
+    const cb = STEP.cb; STEP.cb = null; STEP.fail = null;
+    if(cb) cb();
+  }, 350);
+}
+function stepupCancel(){
+  closeSheet();
+  const f = STEP.fail; STEP.cb = null; STEP.fail = null;
+  if(f) f();
+}
+
+/* ============================================================
+   WIRE TRANSFER
+   ============================================================ */
+let WIRE = { mode:'dom', fromId:null, recipientId:null, name:'', bank:'', accountOrIban:'', routingOrSwift:'', address:'', country:'United States', amount:'', purpose:'', memo:'' };
+function startWire(){
+  const ch = state.accounts.find(a => a.kind === 'checking');
+  WIRE = { ...WIRE, mode:'dom', fromId:ch.id, recipientId:null, name:'', bank:'', accountOrIban:'', routingOrSwift:'', address:'', country:'United States', amount:'', purpose:'', memo:'' };
+  document.querySelectorAll('#wireTabs .seg').forEach(s => s.classList.toggle('active', s.dataset.mode==='dom'));
+  document.querySelectorAll('#wireTabs .seg').forEach(s => s.addEventListener('click', ()=>{
+    WIRE.mode = s.dataset.mode;
+    document.querySelectorAll('#wireTabs .seg').forEach(x => x.classList.toggle('active', x === s));
+    renderWireForm();
+  }));
+  renderWireForm();
+  go('wire');
+}
+function renderWireForm(){
+  const intl = WIRE.mode === 'intl';
+  const from = accountById(WIRE.fromId);
+  const recip = WIRE.recipientId ? state.wireRecipients.find(r => r.id === WIRE.recipientId) : null;
+  const fee = intl ? state.wireFees.intl : state.wireFees.dom;
+  const amount = parseFloat(WIRE.amount || 0);
+  const fx = intl ? +(amount * state.wireFees.fxPct/100).toFixed(2) : 0;
+  const total = amount + fee + fx;
+
+  document.getElementById('wireBody').innerHTML = `
+    <div class="form" style="padding-top:0">
+      <div class="form-section">
+        <div class="form-label">From account</div>
+        <div class="acct-pick ${from.color==='savings'?'gold':''}" onclick="pickWireFromAccount()">
+          <div class="swatch"></div>
+          <div class="info"><b>${escapeHtml(from.name)}</b><span>${escapeHtml(from.mask)}</span><span class="bal">${fmtMoney(from.balance)} available</span></div>
+          <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">Beneficiary</div>
+        ${recip ? `
+          <div class="payee-row" style="border:1px solid var(--line);border-radius:14px;padding:14px">
+            <div class="payee-logo" style="background:linear-gradient(135deg,var(--navy),var(--navy-3))">${escapeHtml(recip.name.charAt(0))}</div>
+            <div class="payee-meta"><b>${escapeHtml(recip.name)}</b><span>${escapeHtml(recip.bank)} · ${escapeHtml(recip.account||recip.iban||'')}</span></div>
+            <button class="li-trail" style="background:none;border:0;color:var(--navy);font-size:13px;font-weight:700" onclick="WIRE.recipientId=null;renderWireForm()">Change</button>
+          </div>
+        ` : `
+          <div class="acct-pick" onclick="pickWireRecipient()" style="cursor:pointer">
+            <div class="swatch" style="background:var(--bg-2);color:var(--navy);display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M20 21 v-2 a4 4 0 0 0 -4 -4 H8 a4 4 0 0 0 -4 4 v2"/></svg></div>
+            <div class="info"><b>Select recipient</b><span>Saved beneficiaries or enter new</span></div>
+            <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+          </div>
+        `}
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">Amount</div>
+        <div class="amount-input">
+          <span class="currency">$</span>
+          <input type="text" inputmode="decimal" id="wireAmt" placeholder="0.00" value="${escapeHtml(WIRE.amount)}" />
+        </div>
+      </div>
+
+      ${intl ? `
+        <div class="form-section">
+          <div class="form-label">Purpose of payment</div>
+          <select class="field" id="wirePurpose">
+            <option value="">Select…</option>
+            <option ${WIRE.purpose==='goods'?'selected':''} value="goods">Payment for goods</option>
+            <option ${WIRE.purpose==='services'?'selected':''} value="services">Payment for services</option>
+            <option ${WIRE.purpose==='family'?'selected':''} value="family">Family support</option>
+            <option ${WIRE.purpose==='property'?'selected':''} value="property">Property purchase</option>
+            <option ${WIRE.purpose==='other'?'selected':''} value="other">Other</option>
+          </select>
+        </div>
+      ` : ''}
+
+      <div class="form-section">
+        <div class="form-label">Reference (sent with wire)</div>
+        <input class="field" id="wireMemo" maxlength="35" value="${escapeHtml(WIRE.memo)}" placeholder="Invoice #, contract #, etc." />
+      </div>
+    </div>
+
+    <div class="wire-fee-card">
+      <div class="row"><span>Wire amount</span><b>$${fmt(amount||0)}</b></div>
+      <div class="row"><span>Wire fee${intl?' (international)':' (domestic)'}</span><b>$${fmt(fee)}</b></div>
+      ${intl ? `<div class="row"><span>Currency conversion (~${state.wireFees.fxPct}%)</span><b>$${fmt(fx)}</b></div>` : ''}
+      <div class="row total"><span>Total debit</span><b>$${fmt(total||0)}</b></div>
+    </div>
+
+    <div class="wire-cutoff">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6 V12 L16 14"/></svg>
+      <div>
+        <b>${intl?'Arrives in 1–3 business days':'Same-day if submitted before '+state.wireFees.cutoff}</b>
+        <div style="font-weight:500;color:var(--muted);margin-top:2px">${intl?'Currency conversion happens at recipient bank.':'After cutoff, sent next business day.'}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('wireAmt').addEventListener('input', e => {
+    let v = e.target.value.replace(/[^0-9.]/g,'');
+    const parts = v.split('.'); if(parts.length>2) v = parts[0]+'.'+parts.slice(1).join('');
+    if(parts[1] && parts[1].length>2) v = parts[0]+'.'+parts[1].slice(0,2);
+    e.target.value = v; WIRE.amount = v;
+    renderWireFeeOnly();
+    validateWire();
+  });
+  document.getElementById('wireMemo').addEventListener('input', e => WIRE.memo = e.target.value);
+  if(intl){ document.getElementById('wirePurpose').addEventListener('change', e => WIRE.purpose = e.target.value); }
+  validateWire();
+}
+function renderWireFeeOnly(){
+  const intl = WIRE.mode === 'intl';
+  const fee = intl ? state.wireFees.intl : state.wireFees.dom;
+  const amount = parseFloat(WIRE.amount || 0);
+  const fx = intl ? +(amount * state.wireFees.fxPct/100).toFixed(2) : 0;
+  const total = amount + fee + fx;
+  const card = document.querySelector('.wire-fee-card');
+  if(!card) return;
+  card.querySelectorAll('.row').forEach((r,idx) => {
+    const b = r.querySelector('b');
+    if(idx === 0) b.textContent = '$' + fmt(amount||0);
+    else if(idx === 1) b.textContent = '$' + fmt(fee);
+    else if(idx === 2 && intl) b.textContent = '$' + fmt(fx);
+    else if(r.classList.contains('total')) b.textContent = '$' + fmt(total||0);
+  });
+}
+function validateWire(){
+  const amount = parseFloat(WIRE.amount || 0);
+  const from = accountById(WIRE.fromId);
+  const intl = WIRE.mode === 'intl';
+  const fee = intl ? state.wireFees.intl : state.wireFees.dom;
+  const fx = intl ? amount * state.wireFees.fxPct/100 : 0;
+  const total = amount + fee + fx;
+  const ok = WIRE.recipientId && amount > 0 && total <= from.balance && (!intl || WIRE.purpose);
+  document.getElementById('wireReview').disabled = !ok;
+}
+function pickWireFromAccount(){
+  document.getElementById('sheetTitle').textContent = 'Send wire from';
+  document.getElementById('sheetBody').innerHTML = state.accounts.filter(a => a.kind !== 'credit').map(a => `
+    <div class="acct-pick ${a.color==='savings'?'gold':''}" style="margin-bottom:10px" onclick="WIRE.fromId='${a.id}';renderWireForm()">
+      <div class="swatch"></div>
+      <div class="info"><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)}</span><span class="bal">${fmtMoney(a.balance)} available</span></div>
+    </div>
+  `).join('');
+  openSheetRaw();
+}
+function pickWireRecipient(){
+  const intl = WIRE.mode === 'intl';
+  const list = state.wireRecipients.filter(r => r.kind === WIRE.mode);
+  document.getElementById('sheetTitle').textContent = 'Wire recipient';
+  document.getElementById('sheetBody').innerHTML = `
+    ${list.length ? `<div class="section-h" style="padding:0 0 6px">Saved</div>` : ''}
+    ${list.map(r => `
+      <div class="payee-row" style="border:1px solid var(--line);border-radius:12px;margin-bottom:8px;padding:12px" onclick="WIRE.recipientId='${r.id}';closeSheet();renderWireForm()">
+        <div class="payee-logo" style="background:linear-gradient(135deg,var(--navy),var(--navy-3))">${escapeHtml(r.name.charAt(0))}</div>
+        <div class="payee-meta"><b>${escapeHtml(r.name)}</b><span>${escapeHtml(r.bank)} · ${escapeHtml(r.account||r.iban||'')}</span></div>
+      </div>
+    `).join('')}
+    <div class="add-payee" onclick="newWireRecipient()" style="margin:0">
+      <span class="plus">+</span>
+      <div><b>New ${intl?'international':'domestic'} recipient</b><span>${intl?'Name, bank, IBAN, SWIFT':'Name, bank, account, routing'}</span></div>
+      <span style="margin-left:auto;color:var(--muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+    </div>
+  `;
+  openSheetRaw();
+}
+function newWireRecipient(){
+  const intl = WIRE.mode === 'intl';
+  document.getElementById('sheetTitle').textContent = 'New wire recipient';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Beneficiary name</div><input class="field" id="wrName" placeholder="Full legal name" /></div>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Beneficiary bank</div><input class="field" id="wrBank" placeholder="${intl?'Banco Santander':'Wells Fargo'}" /></div>
+    ${intl ? `
+      <div class="form-section" style="margin-bottom:12px"><div class="form-label">IBAN</div><input class="field" id="wrAcct" placeholder="ES91 2100 0418 4502 0005 1332" /></div>
+      <div class="form-section" style="margin-bottom:12px"><div class="form-label">SWIFT / BIC</div><input class="field" id="wrRouting" placeholder="BSCHESMM" /></div>
+      <div class="form-section" style="margin-bottom:12px"><div class="form-label">Country</div><input class="field" id="wrCountry" placeholder="Spain" /></div>
+    ` : `
+      <div class="form-section" style="margin-bottom:12px"><div class="form-label">Account number</div><input class="field" id="wrAcct" /></div>
+      <div class="form-section" style="margin-bottom:12px"><div class="form-label">Routing number (ABA)</div><input class="field" id="wrRouting" inputmode="numeric" maxlength="9" /></div>
+    `}
+    <div class="form-section" style="margin-bottom:14px"><div class="form-label">Beneficiary address</div><textarea class="field" id="wrAddr" rows="2" style="resize:none"></textarea></div>
+    <button class="btn btn-primary" onclick="saveWireRecipient(${intl})">Save recipient</button>
+  `;
+}
+function saveWireRecipient(intl){
+  const name = document.getElementById('wrName').value.trim();
+  const bank = document.getElementById('wrBank').value.trim();
+  const acct = document.getElementById('wrAcct').value.trim();
+  const route = document.getElementById('wrRouting').value.trim();
+  const addr = document.getElementById('wrAddr').value.trim();
+  if(!name || !bank || !acct){ toast('Name, bank and account required'); return; }
+  const id = 'wr-'+Date.now();
+  const rec = { id, kind: intl?'intl':'dom', name, bank, address:addr };
+  if(intl){ rec.iban = acct; rec.swift = route; rec.country = document.getElementById('wrCountry').value.trim() || ''; }
+  else { rec.account = '•• ' + acct.slice(-4); rec.routing = route; }
+  state.wireRecipients.push(rec); saveState();
+  WIRE.recipientId = id;
+  closeSheet(); renderWireForm(); toast('Recipient saved');
+}
+function reviewWire(){
+  const r = state.wireRecipients.find(x => x.id === WIRE.recipientId); if(!r) return;
+  const from = accountById(WIRE.fromId);
+  const intl = WIRE.mode === 'intl';
+  const amount = parseFloat(WIRE.amount);
+  const fee = intl ? state.wireFees.intl : state.wireFees.dom;
+  const fx = intl ? +(amount * state.wireFees.fxPct/100).toFixed(2) : 0;
+  const total = amount + fee + fx;
+  document.getElementById('sheetTitle').textContent = 'Review wire';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="review-amount"><span class="cur">$</span>${fmt(amount)}</div>
+    <div class="review-row"><span class="lbl">To</span><span class="val">${escapeHtml(r.name)}<span class="sub">${escapeHtml(r.bank)}</span></span></div>
+    <div class="review-row"><span class="lbl">${intl?'IBAN':'Account'}</span><span class="val">${escapeHtml(r.iban || r.account || '')}</span></div>
+    <div class="review-row"><span class="lbl">${intl?'SWIFT/BIC':'Routing'}</span><span class="val">${escapeHtml(r.swift || r.routing || '')}</span></div>
+    ${intl ? `<div class="review-row"><span class="lbl">Country</span><span class="val">${escapeHtml(r.country||'—')}</span></div>` : ''}
+    <div class="review-row"><span class="lbl">From</span><span class="val">${escapeHtml(from.name)}<span class="sub">${escapeHtml(from.mask)}</span></span></div>
+    <div class="review-row"><span class="lbl">Wire fee</span><span class="val">$${fmt(fee)}</span></div>
+    ${intl ? `<div class="review-row"><span class="lbl">FX cost</span><span class="val">$${fmt(fx)}</span></div>` : ''}
+    <div class="review-row" style="font-weight:700"><span class="lbl" style="color:var(--ink)">Total debit</span><span class="val">$${fmt(total)}</span></div>
+    <div class="review-row"><span class="lbl">Reference</span><span class="val">${escapeHtml(WIRE.memo || '—')}</span></div>
+    ${intl ? `<div class="review-row"><span class="lbl">Purpose</span><span class="val">${escapeHtml(WIRE.purpose||'—')}</span></div>` : ''}
+    <p style="font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5;margin:14px 0 6px">Wires are typically <b style="color:var(--ink)">irreversible</b>. Double-check the IBAN/account number — bank names are not validated against the account.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="confirmWireWithStepUp()">Confirm wire</button>
+      <button class="btn btn-ghost" onclick="closeSheet()">Edit</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function confirmWireWithStepUp(){
+  const amount = parseFloat(WIRE.amount);
+  /* always step-up for wires regardless of amount */
+  closeSheet();
+  setTimeout(()=> requireStepUp({
+    reason: `Confirm wire of $${fmt(amount)} to a beneficiary outside Meridian.`,
+    onSuccess: doConfirmWire,
+    onCancel: ()=> reviewWire()
+  }), 320);
+}
+function doConfirmWire(){
+  const r = state.wireRecipients.find(x => x.id === WIRE.recipientId); if(!r) return;
+  const from = accountById(WIRE.fromId);
+  const intl = WIRE.mode === 'intl';
+  const amount = parseFloat(WIRE.amount);
+  const fee = intl ? state.wireFees.intl : state.wireFees.dom;
+  const fx = intl ? +(amount * state.wireFees.fxPct/100).toFixed(2) : 0;
+  const total = amount + fee + fx;
+  from.balance = +(from.balance - total).toFixed(2);
+  from.spendable = +(from.spendable - total).toFixed(2);
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  const txId = 't-wr-'+Date.now();
+  state.txByAccount[from.id] = [{
+    id:txId, day:today, date:today+', 2026', time:'just now',
+    cat:'Transfer', name:`Wire to ${r.name.split(' ')[0]}`, sub:`${intl?'International':'Domestic'} wire · ${r.bank}`,
+    amt:-total, c:3, status:'Pending', loc:{ city:intl?(r.country||'International'):'Domestic wire', state:'', lat:0, lng:0 }, method:'Wire'
+  }, ...(state.txByAccount[from.id]||[])];
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Wire submitted', body:`${fmtMoney(total)} to ${r.name} via ${r.bank}.`, time:'just now' });
+  saveState();
+  document.getElementById('sheetTitle').textContent = 'All set';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Wire submitted</div>
+      <div class="success-amt">${fmtMoney(amount)}</div>
+      <div class="success-meta">${escapeHtml(intl?'International':'Domestic')} wire to ${escapeHtml(r.name)}<br/>Confirmation #FED-${Math.floor(Math.random()*9000000+1000000)}</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" onclick="closeSheet();back('wire','home')">Done</button>
+        <button class="btn btn-ghost" onclick="closeSheet();startWire()">Send another</button>
+      </div>
+    </div>
+  `;
+  openSheetRaw();
+  renderHome(); renderNotifications();
+}
+
+/* ============================================================
+   ADD TO WALLET
+   ============================================================ */
+function startAddToWallet(){
+  document.getElementById('walletName').textContent = state.user.name;
+  document.getElementById('walletDevice').textContent = state.wallet.deviceName;
+  document.getElementById('walletCard').classList.remove('added');
+  document.getElementById('walletPass').classList.remove('show');
+  /* hide platform we don't apply to (basic UA sniff) */
+  const ua = navigator.userAgent || '';
+  const isApple = /iPhone|iPad|iPod|Macintosh/.test(ua);
+  const btns = document.getElementById('walletButtons');
+  Array.from(btns.children).forEach(b => b.style.display = '');
+  /* devices summary */
+  renderWalletDevices();
+  go('wallet');
+}
+function renderWalletDevices(){
+  const el = document.getElementById('walletDevices');
+  if(!el) return;
+  const enrolled = [];
+  if(state.wallet.apple) enrolled.push({ name:state.wallet.deviceName,        sub:'Apple Pay · Face ID',  ico:'apple' });
+  if(state.wallet.google) enrolled.push({ name:'Pixel 9 Pro',                  sub:'Google Pay',           ico:'google' });
+  if(!enrolled.length){
+    el.innerHTML = `<div class="wallet-passes-empty">No devices enrolled yet.</div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="section-h" style="padding-left:0">On this account</div>
+    <div class="list" style="margin:0">
+      ${enrolled.map(d => `
+        <div class="li"><span class="li-icon" style="background:${d.ico==='apple'?'#000':'#fff'};color:${d.ico==='apple'?'#fff':'#0e1924'};border:1px solid var(--line)"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M16.4 1c-.5 0-1.7.5-2.5 1.4-.7.8-1.3 2-1.1 3.1.6.05 1.7-.5 2.5-1.4.7-.8 1.2-2 1.1-3.1zM21 17.5c-.6 1.4-1 2-1.7 3.2-1 1.6-2.4 3.7-4.2 3.7-1.6 0-2-1-4.2-1-2.1 0-2.6 1-4.2 1-1.7 0-3-1.9-4-3.5-2.7-4.4-3-9.6-1.3-12.4 1.2-1.9 3.1-3.1 4.9-3.1 1.7 0 2.9 1 4.4 1 1.5 0 2.4-1 4.4-1 1.6 0 3.3.9 4.4 2.4-3.9 2-3.3 7.5-2.5 9.7z"/></svg></span><div class="li-meta"><b>${escapeHtml(d.name)}</b><span>${escapeHtml(d.sub)} · added today</span></div><span class="li-trail">›</span></div>
+      `).join('')}
+    </div>
+  `;
+}
+function addToAppleWallet(){
+  document.getElementById('walletCard').classList.add('added');
+  setTimeout(()=>{
+    document.getElementById('walletPass').classList.add('show');
+    state.wallet.apple = true; saveState();
+    state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Added to Apple Wallet', body:`Meridian Reserve •• 4827 is ready on ${state.wallet.deviceName}.`, time:'just now' });
+    if(navigator.vibrate) navigator.vibrate([40, 60, 40]);
+    saveState();
+    toast('Added to Apple Wallet');
+    setTimeout(renderWalletDevices, 200);
+  }, 600);
+}
+function addToGoogleWallet(){
+  document.getElementById('walletCard').classList.add('added');
+  setTimeout(()=>{
+    state.wallet.google = true; saveState();
+    state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Added to Google Pay', body:`Meridian Reserve •• 4827 is ready to tap.`, time:'just now' });
+    toast('Added to Google Pay');
+    setTimeout(renderWalletDevices, 200);
+  }, 600);
+}
+
+/* ============================================================
+   REPLACEMENT CARD TRACKER
+   ============================================================ */
+function openCardTracker(replacementId){
+  const r = replacementId
+    ? state.cardReplacements.find(x => x.id === replacementId)
+    : state.cardReplacements[0];
+  if(!r){
+    document.getElementById('trackerBody').innerHTML = '<div class="empty" style="padding:30px 18px">No active replacement orders.</div>';
+    go('cardTracker'); return;
+  }
+  /* progress over time — use ordered ts to advance through 5 steps */
+  const ordered = new Date(r.ordered + 'T09:00:00Z').getTime();
+  const now = Date.now();
+  const hours = (now - ordered) / 36e5;
+  const stepIdx = Math.min(5, Math.max(0, Math.floor(hours / 8)));     /* one step every ~8h */
+  const steps = [
+    { name:'Order received',  sub:'We have your request',                                      icon:'M5 12 L10 17 L19 7' },
+    { name:'Card produced',   sub:'Embossed and tested at our secure facility',                icon:'M5 12 L10 17 L19 7' },
+    { name:'Shipped',         sub:'Handed off to USPS Priority',                               icon:'M5 12 L10 17 L19 7' },
+    { name:'In transit',      sub:`En route to Newark, DE`,                                    icon:'M5 12 L10 17 L19 7' },
+    { name:'Out for delivery',sub:'On the truck for today',                                    icon:'M5 12 L10 17 L19 7' },
+    { name:'Delivered',       sub:'Activate the card to start using it',                       icon:'M5 12 L10 17 L19 7' },
+  ];
+  const tracking = ('1Z' + Math.floor(Math.random()*9e10+1e10)).slice(0,16).toUpperCase();
+  const eta = stepIdx >= 5 ? 'Delivered' : (r.reason==='stolen' ? 'Today by 7 PM' : 'Tue, May 5 by 8 PM');
+  const tlBuilder = steps.map((s, i) => {
+    const cls = i < stepIdx ? 'done' : i === stepIdx ? 'current' : 'todo';
+    return `
+      <div class="tl-step ${cls}">
+        <div class="tl-dot">${cls==='done'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg>':cls==='current'?'':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/></svg>'}</div>
+        <div class="tl-meta">
+          <b>${escapeHtml(s.name)}</b>
+          <span>${escapeHtml(s.sub)} ${cls!=='todo' ? ' · '+ relTime(stepIdx-i) : ''}</span>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('trackerBody').innerHTML = `
+    <div class="tracker-hero">
+      <div class="lbl">Replacement card</div>
+      <h2>Meridian Reserve</h2>
+      <div class="eta">Estimated delivery: <b>${escapeHtml(eta)}</b></div>
+      <div class="num"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3 V21 M3 9 H21"/></svg> Tracking ${tracking}</div>
+    </div>
+    <div class="timeline">${tlBuilder}</div>
+    <div style="padding:0 18px 24px">
+      ${stepIdx >= 5 ? `<button class="btn btn-primary" onclick="activateNewCard('${r.id}')">Activate card</button>` : `<button class="btn btn-ghost" onclick="copyText('${tracking}')">Copy tracking number</button>`}
+    </div>
+  `;
+  go('cardTracker');
+}
+function relTime(stepsAgo){
+  if(stepsAgo === 0) return 'now';
+  if(stepsAgo === 1) return '8h ago';
+  if(stepsAgo === 2) return '16h ago';
+  if(stepsAgo === 3) return '1d ago';
+  if(stepsAgo === 4) return '1d 8h ago';
+  return '2d ago';
+}
+function activateNewCard(id){
+  state.freezeOn = false;
+  state.cardReplacements = state.cardReplacements.filter(x => x.id !== id);
+  saveState();
+  toast('Card activated');
+  document.getElementById('freezeStatus').textContent = 'Card is active';
+  document.getElementById('freezeSwitch').classList.remove('on');
+  back('cardTracker','cards');
+}
+
+/* ============================================================
+   ABOUT SCREEN
+   ============================================================ */
+function openAbout(){
+  /* fill diagnostics */
+  const ua = navigator.userAgent || '';
+  const dev = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' : /Android/.test(ua) ? 'Android' : 'Web';
+  document.getElementById('diagDevice').textContent = dev + ' · ' + (navigator.platform || 'unknown');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  document.getElementById('diagInstall').textContent = isStandalone ? 'Home screen (PWA)' : 'In browser';
+  document.getElementById('diagLocale').textContent = (navigator.language || state.language || 'en-US');
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistration().then(r => {
+      document.getElementById('diagSW').textContent = r ? 'Active · scope ' + new URL(r.scope).pathname : 'Not registered';
+    }).catch(()=> { document.getElementById('diagSW').textContent = 'Unavailable'; });
+  } else {
+    document.getElementById('diagSW').textContent = 'Unsupported';
+  }
+  go('about');
+}
+function copyDiagnostics(){
+  const text =
+    'Meridian — diagnostic snapshot\n' +
+    'Version: v2.4.1 (build 4827)\n' +
+    'Device: ' + (document.getElementById('diagDevice')?.textContent || '—') + '\n' +
+    'Install: ' + (document.getElementById('diagInstall')?.textContent || '—') + '\n' +
+    'Locale: '  + (document.getElementById('diagLocale')?.textContent || '—') + '\n' +
+    'SW: '      + (document.getElementById('diagSW')?.textContent || '—') + '\n' +
+    'When: '    + new Date().toISOString();
+  copyText(text);
+}
+
+/* ============================================================
    BOOT
    ============================================================ */
 function boot(){
@@ -5284,6 +6233,7 @@ function boot(){
   renderNotifications();
   updateCardSummaries();
   updateNotifSummary();
+  renderTrackerBannerOnCards();
   // pull-to-refresh
   attachPTR('homeScroll',  'ptrHome',  ()=>{ lastUpdated = Date.now(); renderHome(); });
   attachPTRMouse('homeScroll', 'ptrHome', ()=>{ lastUpdated = Date.now(); renderHome(); });
