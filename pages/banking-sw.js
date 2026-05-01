@@ -2,7 +2,7 @@
  * Cache-first for the app shell so the demo works offline once installed
  * to the home screen.  Versioned cache so a new SW evicts the old one.
  */
-const CACHE = 'meridian-app-v2';
+const CACHE = 'meridian-app-v3';
 const SHELL = [
   './banking.html',
   './banking-manifest.webmanifest',

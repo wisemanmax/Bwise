@@ -1633,6 +1633,99 @@ html.standalone .screen.has-back::before{
 .roundup-card .meta .accum{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);margin-top:4px}
 .roundup-card .meta .accum em{font-style:normal;color:var(--muted);font-weight:500}
 
+/* ============ SWIPE-TO-REVEAL TX ROW ============ */
+.tx-wrap{position:relative;overflow:hidden;background:var(--bg)}
+.tx-wrap > .tx{border-top:1px solid var(--line-2)}
+.tx-wrap:first-of-type > .tx{border-top:0}
+.tx-actions-rev{
+  position:absolute;top:0;right:0;bottom:0;display:flex;
+  align-items:stretch;
+}
+.tx-actions-rev .btn-rev{
+  width:74px;display:grid;place-items:center;color:#fff;
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.04em;
+  border:0;cursor:pointer;line-height:1.2;text-align:center;padding:0 4px;
+  -webkit-tap-highlight-color:transparent;
+}
+.tx-actions-rev .btn-rev svg{width:18px;height:18px;display:block;margin:0 auto 2px}
+.tx-actions-rev .btn-rev.cat{background:var(--navy)}
+.tx-actions-rev .btn-rev.split{background:#a37e2a}
+.tx-actions-rev .btn-rev.hide{background:#5a6772}
+.tx-wrap .tx{
+  background:var(--bg);position:relative;z-index:1;
+  transform:translateX(0);transition:transform .25s cubic-bezier(.2,.7,.2,1);
+  touch-action:pan-y;
+  will-change:transform;
+}
+.tx-wrap.dragging .tx{transition:none}
+.tx-wrap.revealed .tx{transform:translateX(-222px)}
+
+/* ============ EMOJI PICKER ============ */
+.emoji-grid{
+  display:grid;grid-template-columns:repeat(8,1fr);gap:6px;
+  padding:8px 0 4px;
+}
+.emoji-cell{
+  display:grid;place-items:center;height:42px;border-radius:10px;
+  background:var(--bg-2);border:1.5px solid transparent;cursor:pointer;
+  font-size:22px;line-height:1;transition:transform .12s ease, border-color .15s ease;
+}
+.emoji-cell:active{transform:scale(.94)}
+.emoji-cell.active{border-color:var(--navy);background:rgba(11,51,88,.06)}
+[data-theme="dark"] .emoji-cell.active{background:rgba(74,143,209,.12)}
+.emoji-cell.none{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+
+/* ============ NOTIF GROUPING + ROWS ============ */
+.notif-section{
+  padding:14px 22px 6px;font-size:11px;font-weight:700;color:var(--muted);
+  letter-spacing:.1em;text-transform:uppercase;background:var(--bg);
+  border-top:1px solid var(--line-2);
+}
+.notif-section:first-child{border-top:0}
+.notif-wrap{position:relative;overflow:hidden;background:var(--bg)}
+.notif-wrap.dragging .notif{transition:none}
+.notif-wrap.revealed .notif{transform:translateX(-92px)}
+.notif-wrap .notif{transform:translateX(0);transition:transform .25s cubic-bezier(.2,.7,.2,1);touch-action:pan-y;background:var(--bg);position:relative;z-index:1}
+.notif-archive-action{
+  position:absolute;top:0;right:0;bottom:0;width:92px;
+  display:grid;place-items:center;background:#5a6772;color:#fff;
+  font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;line-height:1.2;text-align:center;padding:0 6px;
+}
+.notif-archive-action svg{width:20px;height:20px;display:block;margin:0 auto 2px}
+
+/* ============ CARD DESIGNS ============ */
+.credit-card[data-design="navy"]{background:linear-gradient(135deg, var(--navy-3) 0%, var(--navy-2) 100%)}
+.credit-card[data-design="gold"]{background:linear-gradient(135deg, #c89b3c 0%, #6e5419 100%)}
+.credit-card[data-design="gold"]::before{background:linear-gradient(135deg, transparent 45%, rgba(0,0,0,.35) 50%, transparent 65%);opacity:.8}
+.credit-card[data-design="marble"]{background:
+  radial-gradient(circle at 30% 20%, rgba(255,255,255,.08), transparent 40%),
+  radial-gradient(circle at 70% 60%, rgba(255,255,255,.05), transparent 40%),
+  linear-gradient(135deg, #2a2a2e 0%, #1a1a1c 100%)}
+.credit-card[data-design="marble"]::before{display:none}
+.credit-card[data-design="midnight"]{background:linear-gradient(135deg, #0a1a2a 0%, #050505 100%)}
+.credit-card[data-design="midnight"]::before{background:linear-gradient(135deg, transparent 45%, rgba(74,143,209,.6) 50%, transparent 65%);opacity:.5}
+.credit-card[data-design="sunset"]{background:linear-gradient(135deg, #c8322c 0%, #6e1816 60%, #2a1010 100%)}
+.credit-card[data-design="sunset"]::before{background:linear-gradient(135deg, transparent 45%, rgba(200,155,60,.6) 50%, transparent 65%);opacity:.7}
+.credit-card[data-design="emerald"]{background:linear-gradient(135deg, #0e7c4a 0%, #064a2c 100%)}
+.credit-card[data-design="emerald"]::before{background:linear-gradient(135deg, transparent 45%, rgba(212,175,106,.55) 50%, transparent 65%);opacity:.7}
+
+.design-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px}
+.design-tile{
+  position:relative;aspect-ratio:1.586/1;border-radius:14px;cursor:pointer;
+  border:2.5px solid transparent;transition:transform .12s ease, border-color .15s ease;
+  overflow:hidden;color:#fff;padding:10px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.design-tile:active{transform:scale(.97)}
+.design-tile.active{border-color:var(--navy)}
+.design-tile.active::after{
+  content:"✓";position:absolute;top:6px;right:6px;
+  width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;
+  font-size:12px;font-weight:700;display:grid;place-items:center;
+}
+.design-tile .top{font-family:var(--serif);font-weight:600;font-size:12px;letter-spacing:-.01em;opacity:.95}
+.design-tile .num{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;opacity:.85}
+
 /* ============ DEVICE STATUS BAR ============ */
 .status-bar{
   position:absolute;top:0;left:0;right:0;height:30px;z-index:80;
@@ -2198,9 +2291,9 @@ html.standalone .screen.has-back::before{
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12 a9 9 0 1 1 -3 -7"/><path d="M21 4 V11 H14"/></svg>
       Flip
     </button>
-    <button class="btn btn-ghost" onclick="toast('Card details copied')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15 H4 a2 2 0 0 1 -2 -2 V4 a2 2 0 0 1 2 -2 h9 a2 2 0 0 1 2 2 v1"/></svg>
-      Copy
+    <button class="btn btn-ghost" onclick="openCardArt()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2 a10 10 0 1 0 10 10 c0 -5 -3 -3 -6 -3 c-2 0 -4 -2 -2 -4 c2 -2 0 -3 -2 -3z"/></svg>
+      Design
     </button>
     <button class="btn btn-ghost" onclick="startAddToWallet()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10 H22"/></svg>
@@ -3128,7 +3221,10 @@ const defaultState = {
     ],
     history: [758, 762, 760, 765, 768, 766, 770, 772, 770, 774, 776, 770, 782]   /* last 13 months */
   },
-  ccPayments: []
+  ccPayments: [],
+  cardDesign: 'navy',
+  emojiPicks: ['💰','🏦','💳','✈️','🏖️','🏠','🚗','🎓','🎁','💍','🛍️','⛷️','🐶','🌱','💼','👨‍👩‍👧'],
+  archivedNotifIds: []
 };
 
 function loadState(){
@@ -3296,9 +3392,9 @@ function renderHome(){
   document.getElementById('greetName').textContent = state.user.name || 'friend';
   renderBillReminders();
   renderCreditScoreCard();
-  // total
+  // total (with ticker animation when balance changes)
   const total = state.accounts.reduce((s,a)=> s + (a.kind==='credit' ? 0 : a.balance), 0);
-  document.getElementById('totalAmt').textContent = state.hideBalances ? '$ • • • • •' : '$' + fmt(total);
+  animateHomeTotal(total);
   // notifications badge
   const unread = state.notifications.filter(n=>n.unread).length;
   const badge = document.getElementById('notifBadge');
@@ -3377,8 +3473,9 @@ function openAccount(id){
   const a = accountById(id); if(!a) return;
   activeId = id; activeFilter = 'All';
   document.getElementById('detailTitle').textContent = a.name + ' ' + a.mask;
-  document.getElementById('detailAmt').textContent = state.hideBalances ? '$••••' : fmtMoney(a.balance);
-  document.getElementById('spendable').textContent = state.hideBalances ? '$••' : fmtMoney(a.spendable);
+  /* reset previous detail balance trackers when switching accounts */
+  if(activeId !== id){ PREV_BAL.detail = null; PREV_BAL.spendable = null; }
+  animateDetailBalance(a);
   // filters
   const cats = ['All', ...new Set((state.txByAccount[id]||[]).map(t=>effectiveCat(t)))];
   const fr = document.getElementById('filterRow');
@@ -3435,16 +3532,34 @@ function renderTransactions(id){
     const bal = balances[t.id];
     const balLine = (typeof bal === 'number' && t.status !== 'Pending')
       ? `<span class="tx-bal">$${fmt(bal)}</span>` : '';
+    const ov = state.txOverrides[t.id] || {};
+    const hideLbl = ov.hidden ? 'Restore' : 'Hide';
     return `
-      <div class="tx" data-tx="${t.id}" data-acct="${id}">
-        <div class="tx-icon tx-c-${t.c||1}">${initial}</div>
-        <div class="tx-meta">
-          <div class="tx-name">${escapeHtml(t.name)}</div>
-          <div class="tx-sub">${escapeHtml(t.sub)}</div>
+      <div class="tx-wrap">
+        <div class="tx-actions-rev">
+          <button class="btn-rev cat" onclick="event.stopPropagation();recategorizeTx('${id}','${t.id}');openSheetRaw();collapseTx()" aria-label="Categorize">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6 H21 M6 12 H18 M9 18 H15"/></svg>
+            Category
+          </button>
+          <button class="btn-rev split" onclick="event.stopPropagation();splitTx('${id}','${t.id}');openSheetRaw();collapseTx()" aria-label="Split">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7 H8 L13 17 H21 M3 17 H8 L13 7 H21"/></svg>
+            Split
+          </button>
+          <button class="btn-rev hide" onclick="event.stopPropagation();hideTx('${id}','${t.id}');collapseTx()" aria-label="${hideLbl}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12 s4 -8 11 -8 s11 8 11 8 s-4 8 -11 8 s-11 -8 -11 -8z"/><circle cx="12" cy="12" r="3"/><path d="M2 2 L22 22"/></svg>
+            ${hideLbl}
+          </button>
         </div>
-        <div>
-          <div class="tx-amt ${t.amt>=0?'pos':'neg'}">${fmtSigned(t.amt)}</div>
-          ${balLine}
+        <div class="tx" data-tx="${t.id}" data-acct="${id}">
+          <div class="tx-icon tx-c-${t.c||1}">${initial}</div>
+          <div class="tx-meta">
+            <div class="tx-name">${escapeHtml(t.name)}</div>
+            <div class="tx-sub">${escapeHtml(t.sub)}</div>
+          </div>
+          <div>
+            <div class="tx-amt ${t.amt>=0?'pos':'neg'}">${fmtSigned(t.amt)}</div>
+            ${balLine}
+          </div>
         </div>
       </div>`;
   };
@@ -3464,7 +3579,17 @@ function renderTransactions(id){
   }
 
   list.innerHTML = html;
-  list.querySelectorAll('.tx').forEach(el => el.addEventListener('click', ()=> openTxDetail(el.dataset.acct, el.dataset.tx)));
+  list.querySelectorAll('.tx-wrap .tx').forEach(el => el.addEventListener('click', (e)=>{
+    /* if the row is revealed, tap collapses it instead of navigating */
+    const wrap = el.closest('.tx-wrap');
+    if(wrap?.classList.contains('revealed')){ wrap.classList.remove('revealed'); return; }
+    if(e.target.closest('.btn-rev')) return;
+    openTxDetail(el.dataset.acct, el.dataset.tx);
+  }));
+  attachTxSwipe(list);
+}
+function collapseTx(){
+  document.querySelectorAll('.tx-wrap.revealed').forEach(w => w.classList.remove('revealed'));
 }
 
 function effectiveCat(t){
@@ -3648,7 +3773,7 @@ function openSheet(kind){
         <div class="li" onclick="closeSheet();openAcctDetailsSecure(activeId)"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16 V12 M12 8 V8.01"/></svg></span><div class="li-meta"><b>Account details</b><span>Routing & account number</span></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();startWire()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/><circle cx="12" cy="12" r="10"/></svg></span><div class="li-meta"><b>Send a wire</b><span>Domestic or international</span></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Set up direct deposit')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21 V11 M7 16 L12 21 L17 16"/></svg></span><div class="li-meta"><b>Set up direct deposit</b></div><span class="li-trail">›</span></div>
-        <div class="li" onclick="closeSheet();toast('Rename account')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4 H4 V20 H20 V13"/><path d="M18.5 2.5 a2.12 2.12 0 0 1 3 3 L12 15 L8 16 L9 12 z"/></svg></span><div class="li-meta"><b>Rename account</b></div><span class="li-trail">›</span></div>
+        <div class="li" onclick="closeSheet();setTimeout(()=>openRenameAccount(activeId),320)"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4 H4 V20 H20 V13"/><path d="M18.5 2.5 a2.12 2.12 0 0 1 3 3 L12 15 L8 16 L9 12 z"/></svg></span><div class="li-meta"><b>Rename account</b><span>Add an emoji or change the name</span></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Close account')" style="color:var(--red)"><span class="li-icon" style="color:var(--red);background:rgba(200,50,44,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6 H21 M19 6 V20 a2 2 0 0 1 -2 2 H7 a2 2 0 0 1 -2 -2 V6 M8 6 V4 a2 2 0 0 1 2 -2 h4 a2 2 0 0 1 2 2 v2"/></svg></span><div class="li-meta"><b style="color:var(--red)">Close account</b></div></div>
       </div>
     `;
@@ -6950,6 +7075,405 @@ function sweepNow(){
 }
 
 /* ============================================================
+   ANIMATED NUMBER TICKER
+   ============================================================ */
+function tickNumber(el, from, to, opts){
+  if(!el) return;
+  opts = opts || {};
+  const dur = opts.dur || 600;
+  const formatter = opts.fmt || (n => '$' + fmt(n));
+  if(state.hideBalances){ el.textContent = opts.hidden || '$ • • • • •'; return; }
+  if(Math.abs(to - from) < 0.005){ el.textContent = formatter(to); return; }
+  const start = performance.now();
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  function step(now){
+    const t = Math.min(1, (now - start) / dur);
+    el.textContent = formatter(from + (to - from) * ease(t));
+    if(t < 1) requestAnimationFrame(step);
+    else el.textContent = formatter(to);
+  }
+  cancelAnimationFrame(el.__tick);
+  el.__tick = requestAnimationFrame(step);
+}
+const PREV_BAL = { home:null, detail:null, spendable:null };
+function animateHomeTotal(newTotal){
+  const el = document.getElementById('totalAmt');
+  if(PREV_BAL.home === null || state.hideBalances){
+    el.textContent = state.hideBalances ? '$ • • • • •' : '$' + fmt(newTotal);
+  } else {
+    tickNumber(el, PREV_BAL.home, newTotal);
+  }
+  PREV_BAL.home = newTotal;
+}
+function animateDetailBalance(acct){
+  const el = document.getElementById('detailAmt');
+  const sp = document.getElementById('spendable');
+  if(PREV_BAL.detail === null || state.hideBalances){
+    el.textContent = state.hideBalances ? '$••••' : fmtMoney(acct.balance);
+  } else {
+    tickNumber(el, PREV_BAL.detail, acct.balance, { fmt: fmtMoney });
+  }
+  if(PREV_BAL.spendable === null || state.hideBalances){
+    sp.textContent = state.hideBalances ? '$••' : fmtMoney(acct.spendable);
+  } else {
+    tickNumber(sp, PREV_BAL.spendable, acct.spendable, { fmt: fmtMoney });
+  }
+  PREV_BAL.detail = acct.balance;
+  PREV_BAL.spendable = acct.spendable;
+}
+
+/* ============================================================
+   DRAG-TO-DISMISS SHEETS
+   ============================================================ */
+function attachSheetDrag(){
+  const sheet = document.getElementById('sheet');
+  const handle = sheet.querySelector('.sheet-handle');
+  const head   = sheet.querySelector('.sheet-head');
+  let startY = 0, dy = 0, dragging = false, startTime = 0;
+  const onStart = (e) => {
+    if(!sheet.classList.contains('show')) return;
+    const t = e.touches ? e.touches[0] : e;
+    startY = t.clientY; dy = 0; dragging = true; startTime = performance.now();
+    sheet.style.transition = 'none';
+    document.getElementById('scrim').style.transition = 'none';
+  };
+  const onMove = (e) => {
+    if(!dragging) return;
+    const t = e.touches ? e.touches[0] : e;
+    dy = Math.max(0, t.clientY - startY);
+    sheet.style.transform = `translateY(${dy}px)`;
+    /* fade scrim as the sheet drags */
+    const op = Math.max(0, 1 - dy / 400);
+    document.getElementById('scrim').style.opacity = op.toFixed(2);
+  };
+  const onEnd = () => {
+    if(!dragging) return;
+    dragging = false;
+    sheet.style.transition = '';
+    document.getElementById('scrim').style.transition = '';
+    document.getElementById('scrim').style.opacity = '';
+    const elapsed = performance.now() - startTime;
+    const velocity = dy / Math.max(1, elapsed);
+    if(dy > 130 || velocity > 0.5){
+      sheet.style.transform = '';
+      closeSheet();
+    } else {
+      sheet.style.transform = '';
+    }
+    dy = 0;
+  };
+  [handle, head].forEach(el => {
+    if(!el) return;
+    el.addEventListener('touchstart', onStart, { passive:true });
+    el.addEventListener('mousedown', onStart);
+  });
+  document.addEventListener('touchmove', onMove, { passive:true });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchend', onEnd);
+  document.addEventListener('mouseup', onEnd);
+  document.addEventListener('touchcancel', onEnd);
+}
+
+/* ============================================================
+   SWIPE-TO-REVEAL ON TX ROWS
+   ============================================================ */
+let __txSwipeAttached = false;
+function attachTxSwipe(root){
+  if(!root) root = document.getElementById('txList');
+  if(!root || __txSwipeAttached) return;
+  __txSwipeAttached = true;
+  let active = null;
+  let startX = 0, startY = 0, dx = 0, dragging = false, axis = '';
+  const THRESH = 60, MAX = 222;
+
+  const onStart = (e) => {
+    const wrap = e.target.closest('.tx-wrap'); if(!wrap) return;
+    /* close any other revealed row */
+    root.querySelectorAll('.tx-wrap.revealed').forEach(w => { if(w !== wrap) w.classList.remove('revealed'); });
+    active = wrap;
+    const t = e.touches ? e.touches[0] : e;
+    startX = t.clientX; startY = t.clientY; dx = 0; axis = ''; dragging = true;
+    wrap.classList.add('dragging');
+  };
+  const onMove = (e) => {
+    if(!dragging || !active) return;
+    const t = e.touches ? e.touches[0] : e;
+    const dxRaw = t.clientX - startX;
+    const dyRaw = t.clientY - startY;
+    if(!axis){
+      if(Math.abs(dxRaw) > 8 || Math.abs(dyRaw) > 8){
+        axis = Math.abs(dxRaw) > Math.abs(dyRaw) ? 'x' : 'y';
+      }
+    }
+    if(axis !== 'x') return;
+    /* only allow swiping left to reveal; or right if already revealed */
+    const startedRevealed = active.classList.contains('revealed');
+    let next = startedRevealed ? -MAX + dxRaw : dxRaw;
+    next = Math.min(0, Math.max(-MAX, next));
+    dx = next;
+    active.querySelector('.tx').style.transform = `translateX(${dx}px)`;
+    if(e.cancelable) e.preventDefault?.();
+  };
+  const onEnd = () => {
+    if(!dragging || !active){ dragging = false; return; }
+    dragging = false;
+    active.classList.remove('dragging');
+    active.querySelector('.tx').style.transform = '';
+    if(axis === 'x'){
+      const startedRevealed = active.classList.contains('revealed');
+      const shouldReveal = startedRevealed ? dx < -THRESH : dx < -THRESH;
+      active.classList.toggle('revealed', shouldReveal);
+    }
+    active = null;
+  };
+
+  root.addEventListener('touchstart', onStart, { passive:true });
+  root.addEventListener('mousedown',  onStart);
+  document.addEventListener('touchmove', onMove, { passive:false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchend',  onEnd);
+  document.addEventListener('mouseup',   onEnd);
+  document.addEventListener('touchcancel', onEnd);
+
+  /* tap-anywhere outside collapses */
+  document.addEventListener('click', e => {
+    if(e.target.closest('.tx-wrap.revealed') || e.target.closest('.btn-rev')) return;
+    root.querySelectorAll('.tx-wrap.revealed').forEach(w => w.classList.remove('revealed'));
+  });
+}
+
+/* ============================================================
+   ACCOUNT EMOJI + RENAME
+   ============================================================ */
+function openRenameAccount(id){
+  const a = accountById(id); if(!a) return;
+  /* parse out a leading emoji if present */
+  const m = a.name.match(/^(\p{Extended_Pictographic}(‍\p{Extended_Pictographic})*️?)\s+(.+)$/u);
+  const currentEmoji = m ? m[1] : '';
+  const cleanName = m ? m[3] : a.name;
+  document.getElementById('sheetTitle').textContent = 'Rename account';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">Display name</div>
+      <input class="field" id="rnName" value="${escapeHtml(cleanName)}" maxlength="32" />
+    </div>
+    <div class="form-section" style="margin-bottom:6px">
+      <div class="form-label">Emoji (optional)</div>
+      <div class="emoji-grid" id="rnEmojiGrid">
+        <div class="emoji-cell none ${!currentEmoji?'active':''}" data-e="">None</div>
+        ${state.emojiPicks.map(e => `<div class="emoji-cell ${e===currentEmoji?'active':''}" data-e="${e}">${e}</div>`).join('')}
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+      <button class="btn btn-primary" onclick="saveRenameAccount('${id}')">Save</button>
+      <button class="btn btn-ghost" onclick="closeSheet()">Cancel</button>
+    </div>
+  `;
+  document.querySelectorAll('#rnEmojiGrid .emoji-cell').forEach(el => el.addEventListener('click', ()=>{
+    document.querySelectorAll('#rnEmojiGrid .emoji-cell').forEach(x => x.classList.remove('active'));
+    el.classList.add('active');
+  }));
+  openSheetRaw();
+}
+function saveRenameAccount(id){
+  const a = accountById(id); if(!a) return;
+  const name = document.getElementById('rnName').value.trim();
+  if(!name){ toast('Name required'); return; }
+  const emoji = document.querySelector('#rnEmojiGrid .emoji-cell.active')?.dataset.e || '';
+  a.name = (emoji ? emoji + ' ' : '') + name;
+  saveState();
+  closeSheet();
+  /* refresh visible places */
+  if(activeId === id) document.getElementById('detailTitle').textContent = a.name + ' ' + a.mask;
+  renderHome();
+  if(activeId) renderTransactions(activeId);
+  toast('Account renamed');
+}
+
+/* ============================================================
+   RICH NOTIFICATIONS (grouping + archive + deep-link)
+   ============================================================ */
+function notifGroup(time){
+  const t = String(time).toLowerCase();
+  if(t === 'just now' || /^\d+(s|m| min|h| hr)/.test(t.replace(/\s/g,'')) || /^\d+\s*(s|min|h|hr)/.test(t)) return 'today';
+  if(t.includes('yesterday')) return 'yesterday';
+  if(/^\d+\s*(d|day)/.test(t) || /^\dh ago/.test(t)){
+    const m = t.match(/^(\d+)/);
+    const d = m ? parseInt(m[1],10) : 99;
+    return d <= 7 ? 'this-week' : 'older';
+  }
+  if(/week/.test(t)) return 'this-week';
+  return 'older';
+}
+const NOTIF_GROUP_LABEL = { 'today':'Today','yesterday':'Yesterday','this-week':'This week','older':'Older' };
+function notifDeepLink(n){
+  const text = (n.title + ' ' + (n.body||'')).toLowerCase();
+  if(/statement/.test(text)) return ()=> go('statements');
+  if(/dispute|case/.test(text)) return ()=> openArticle('disputes');
+  if(/wire/.test(text)) return ()=> startWire();
+  if(/zelle/.test(text)) return ()=> startZelle();
+  if(/bill|payment/.test(text)) return ()=> { go('payBill'); renderPayees(); };
+  if(/replacement/.test(text)) return ()=> { const r = state.cardReplacements[0]; if(r) openCardTracker(r.id); };
+  if(/wallet|apple pay|google pay/.test(text)) return ()=> { go('cards'); setTab('cards'); };
+  if(/transfer|deposit|interest/.test(text)){
+    const a = state.accounts.find(x => new RegExp(x.name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i').test(text));
+    return ()=> { if(a) openAccount(a.id); else go('home'); };
+  }
+  return ()=> go('home');
+}
+function renderNotifications(){
+  const list = document.getElementById('notifList');
+  if(!list) return;
+  const visible = state.notifications.filter(n => !state.archivedNotifIds.includes(n.id));
+  if(!visible.length){
+    list.innerHTML = `
+      <div style="padding:48px 30px;text-align:center;color:var(--muted)">
+        <div style="width:56px;height:56px;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;margin:0 auto 12px;color:var(--muted-2)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/><path d="M13.73 21a2 2 0 0 1 -3.46 0"/></svg>
+        </div>
+        <b style="display:block;color:var(--ink);font-size:15px;font-weight:700;margin-bottom:4px">All caught up</b>
+        <span style="font-size:13px;font-weight:500">We'll let you know when there's news.</span>
+      </div>`;
+    return;
+  }
+  /* group */
+  const groups = { today:[], yesterday:[], 'this-week':[], older:[] };
+  visible.forEach(n => groups[notifGroup(n.time)]?.push(n));
+  let html = '';
+  for(const k of ['today','yesterday','this-week','older']){
+    if(!groups[k].length) continue;
+    html += `<div class="notif-section">${NOTIF_GROUP_LABEL[k]}</div>`;
+    html += groups[k].map(n => `
+      <div class="notif-wrap" data-id="${n.id}">
+        <div class="notif-archive-action" onclick="archiveNotif('${n.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8 V21 H3 V8"/><rect x="1" y="3" width="22" height="5"/><path d="M10 12 H14"/></svg>
+          Archive
+        </div>
+        <div class="notif ${n.unread?'unread':''}" onclick="onNotifClick('${n.id}')">
+          <div class="notif-dot"></div>
+          <div class="notif-meta">
+            <div class="notif-title">${escapeHtml(n.title)}</div>
+            <div class="notif-body">${escapeHtml(n.body||'')}</div>
+            <div class="notif-time">${escapeHtml(n.time||'')}</div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  list.innerHTML = html;
+  attachNotifSwipe();
+}
+function onNotifClick(id){
+  const n = state.notifications.find(x => x.id === id); if(!n) return;
+  /* if revealed, just collapse */
+  const wrap = document.querySelector(`.notif-wrap[data-id="${id}"]`);
+  if(wrap?.classList.contains('revealed')){ wrap.classList.remove('revealed'); return; }
+  if(n.unread){ n.unread = false; saveState(); renderHome(); }
+  const action = notifDeepLink(n);
+  back('notifications', 'home');                    /* keep stack tidy */
+  setTimeout(action, 320);
+}
+function archiveNotif(id){
+  if(!state.archivedNotifIds.includes(id)) state.archivedNotifIds.push(id);
+  saveState(); renderNotifications(); renderHome();
+  toast('Archived');
+}
+let __notifSwipeAttached = false;
+function attachNotifSwipe(){
+  const root = document.getElementById('notifList'); if(!root || __notifSwipeAttached) return;
+  __notifSwipeAttached = true;
+  let active = null, startX = 0, startY = 0, dx = 0, axis = '', dragging = false;
+  const THRESH = 40, MAX = 92;
+  const onStart = e => {
+    const wrap = e.target.closest('.notif-wrap'); if(!wrap) return;
+    root.querySelectorAll('.notif-wrap.revealed').forEach(w => { if(w !== wrap) w.classList.remove('revealed'); });
+    active = wrap;
+    const t = e.touches ? e.touches[0] : e;
+    startX = t.clientX; startY = t.clientY; dx = 0; axis = ''; dragging = true;
+    wrap.classList.add('dragging');
+  };
+  const onMove = e => {
+    if(!dragging || !active) return;
+    const t = e.touches ? e.touches[0] : e;
+    const dxRaw = t.clientX - startX, dyRaw = t.clientY - startY;
+    if(!axis){ if(Math.abs(dxRaw) > 8 || Math.abs(dyRaw) > 8) axis = Math.abs(dxRaw) > Math.abs(dyRaw) ? 'x' : 'y'; }
+    if(axis !== 'x') return;
+    const startedRevealed = active.classList.contains('revealed');
+    let next = startedRevealed ? -MAX + dxRaw : dxRaw;
+    next = Math.min(0, Math.max(-MAX, next));
+    dx = next;
+    active.querySelector('.notif').style.transform = `translateX(${dx}px)`;
+    if(e.cancelable) e.preventDefault?.();
+  };
+  const onEnd = () => {
+    if(!dragging || !active){ dragging = false; return; }
+    dragging = false;
+    active.classList.remove('dragging');
+    active.querySelector('.notif').style.transform = '';
+    if(axis === 'x') active.classList.toggle('revealed', dx < -THRESH);
+    active = null;
+  };
+  root.addEventListener('touchstart', onStart, { passive:true });
+  root.addEventListener('mousedown',  onStart);
+  document.addEventListener('touchmove', onMove, { passive:false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchend',  onEnd);
+  document.addEventListener('mouseup',   onEnd);
+  document.addEventListener('touchcancel', onEnd);
+}
+
+/* ============================================================
+   CARD ART SELECTION
+   ============================================================ */
+const CARD_DESIGNS = [
+  { id:'navy',     name:'Reserve Navy',  desc:'Signature' },
+  { id:'gold',     name:'Gold Accent',   desc:'Premium' },
+  { id:'marble',   name:'Carbon Marble', desc:'Stealth' },
+  { id:'midnight', name:'Midnight',      desc:'After hours' },
+  { id:'sunset',   name:'Sunset',        desc:'Limited edition' },
+  { id:'emerald',  name:'Emerald',       desc:'Travel' },
+];
+function applyCardDesign(){
+  const el = document.getElementById('creditCard');
+  if(el) el.setAttribute('data-design', state.cardDesign || 'navy');
+  /* also apply on the back */
+}
+function openCardArt(){
+  document.getElementById('sheetTitle').textContent = 'Card art';
+  document.getElementById('sheetBody').innerHTML = `
+    <p style="font-size:13px;color:var(--muted);font-weight:500;margin:0 0 10px">Pick a design — preview updates instantly.</p>
+    <div class="design-grid">
+      ${CARD_DESIGNS.map(d => `
+        <div class="design-tile ${state.cardDesign===d.id?'active':''}" data-design="${d.id}">
+          <div class="top">${escapeHtml(d.name)}</div>
+          <div class="num">•••• 4827</div>
+        </div>
+      `).join('')}
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);font-weight:500;margin:0 0 4px;line-height:1.5">A new physical card is mailed for design changes ($0 — first per year). Apple Pay / Google Pay artwork updates immediately.</p>
+  `;
+  /* set the design preview backgrounds via inline CSS using same gradients */
+  const designStyles = {
+    navy:'linear-gradient(135deg, var(--navy-3) 0%, var(--navy-2) 100%)',
+    gold:'linear-gradient(135deg, #c89b3c 0%, #6e5419 100%)',
+    marble:'radial-gradient(circle at 30% 20%, rgba(255,255,255,.08), transparent 40%), radial-gradient(circle at 70% 60%, rgba(255,255,255,.05), transparent 40%), linear-gradient(135deg, #2a2a2e 0%, #1a1a1c 100%)',
+    midnight:'linear-gradient(135deg, #0a1a2a 0%, #050505 100%)',
+    sunset:'linear-gradient(135deg, #c8322c 0%, #6e1816 60%, #2a1010 100%)',
+    emerald:'linear-gradient(135deg, #0e7c4a 0%, #064a2c 100%)',
+  };
+  document.querySelectorAll('.design-tile').forEach(tile => {
+    tile.style.background = designStyles[tile.dataset.design];
+    tile.addEventListener('click', () => {
+      state.cardDesign = tile.dataset.design;
+      saveState();
+      document.querySelectorAll('.design-tile').forEach(t => t.classList.toggle('active', t === tile));
+      applyCardDesign();
+      toast(CARD_DESIGNS.find(d => d.id === tile.dataset.design).name);
+    });
+  });
+  openSheetRaw();
+}
+
+/* ============================================================
    BOOT
    ============================================================ */
 function boot(){
@@ -6963,6 +7487,8 @@ function boot(){
   updateCardSummaries();
   updateNotifSummary();
   renderTrackerBannerOnCards();
+  applyCardDesign();
+  attachSheetDrag();
   // pull-to-refresh
   attachPTR('homeScroll',  'ptrHome',  ()=>{ lastUpdated = Date.now(); renderHome(); });
   attachPTRMouse('homeScroll', 'ptrHome', ()=>{ lastUpdated = Date.now(); renderHome(); });
