@@ -3089,7 +3089,8 @@ const defaultState = {
   hideBalances: false,
   hasOnboarded: false,
   pin: null,           /* 6-digit string, null until user sets one */
-  bioEnabled: true,    /* Face ID mock */
+  bioEnabled: true,    /* Face ID / platform authenticator */
+  bioCredentialId: null, /* base64url id of registered WebAuthn credential */
   signedIn: false,     /* gate for the lock screen */
   freezeOn: false,
   notifications: [
@@ -3900,9 +3901,10 @@ function lockSetMode(mode, opts){
   lockEl.classList.toggle('setup', mode !== 'verify');
   step.style.display = mode === 'verify' ? 'none' : 'block';
   if(mode === 'verify'){
+    const bioReady = state.bioEnabled && webAuthnAvailable() && !!state.bioCredentialId;
     name.textContent  = `Welcome back, ${state.user.name}`;
-    greet.textContent = state.bioEnabled ? 'Use Face ID or enter passcode' : 'Enter your 6-digit passcode';
-    bio.style.visibility = state.bioEnabled ? 'visible' : 'hidden';
+    greet.textContent = bioReady ? 'Use Face ID or enter passcode' : 'Enter your 6-digit passcode';
+    bio.style.visibility = bioReady ? 'visible' : 'hidden';
     notYou.style.display = 'block';
     forgot.style.display = '';
   } else if(mode === 'setup'){
@@ -3984,17 +3986,113 @@ function pinUnlocked(){
   }, 280);
 }
 
-function faceIdMock(){
-  toast('Looking for your face…');
-  setTimeout(()=>{
-    if(Math.random() < 0.92){
-      LOCK.buffer = state.pin || '';
-      lockShowDots();
-      setTimeout(pinUnlocked, 200);
+/* ---------- WebAuthn (real Face ID / Touch ID / Windows Hello) ---------- */
+function webAuthnAvailable(){
+  return !!(window.PublicKeyCredential && navigator.credentials && navigator.credentials.create);
+}
+async function platformAuthenticatorAvailable(){
+  if(!webAuthnAvailable()) return false;
+  try {
+    if(typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== 'function') return false;
+    return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+  } catch { return false; }
+}
+function _b64uToBuf(s){
+  s = String(s).replace(/-/g,'+').replace(/_/g,'/');
+  const pad = s.length % 4; if(pad) s += '='.repeat(4 - pad);
+  const bin = atob(s); const buf = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  return buf.buffer;
+}
+function _bufToB64u(buf){
+  const bytes = new Uint8Array(buf);
+  let s = ''; for(let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+async function registerBiometric(){
+  if(!webAuthnAvailable()) throw new Error('not-supported');
+  const userId = crypto.getRandomValues(new Uint8Array(16));
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const cred = await navigator.credentials.create({
+    publicKey: {
+      challenge,
+      rp: { name: 'Meridian' },
+      user: {
+        id: userId,
+        name: (state.user && state.user.name) || 'meridian-user',
+        displayName: (state.user && state.user.name) || 'Meridian user',
+      },
+      pubKeyCredParams: [
+        { type: 'public-key', alg: -7   }, // ES256
+        { type: 'public-key', alg: -257 }, // RS256
+      ],
+      authenticatorSelection: {
+        authenticatorAttachment: 'platform',
+        userVerification: 'required',
+        residentKey: 'preferred',
+      },
+      timeout: 60000,
+      attestation: 'none',
+    }
+  });
+  if(!cred) throw new Error('no-credential');
+  state.bioCredentialId = _bufToB64u(cred.rawId);
+  saveState();
+  return true;
+}
+async function authenticateBiometric(){
+  if(!webAuthnAvailable()) throw new Error('not-supported');
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
+  const opts = {
+    publicKey: {
+      challenge,
+      timeout: 60000,
+      userVerification: 'required',
+    }
+  };
+  if(state.bioCredentialId){
+    opts.publicKey.allowCredentials = [{
+      id: _b64uToBuf(state.bioCredentialId),
+      type: 'public-key',
+      transports: ['internal'],
+    }];
+  }
+  const assertion = await navigator.credentials.get(opts);
+  if(!assertion) throw new Error('no-assertion');
+  return true;
+}
+
+async function faceIdMock(){
+  if(!webAuthnAvailable()){
+    toast('Face ID isn’t supported on this device');
+    return;
+  }
+  if(!state.bioCredentialId){
+    // Not yet enrolled on this device — fall back to passcode and offer to enroll afterward.
+    toast('Face ID not set up yet — use your passcode');
+    return;
+  }
+  const greet = document.getElementById('lockGreet');
+  const prev = greet ? greet.textContent : '';
+  if(greet) greet.textContent = 'Looking for your face…';
+  try {
+    await authenticateBiometric();
+    LOCK.buffer = state.pin || '';
+    lockShowDots();
+    setTimeout(pinUnlocked, 200);
+  } catch (err){
+    if(greet) greet.textContent = prev;
+    const name = err && err.name;
+    if(name === 'NotAllowedError' || name === 'AbortError'){
+      lockShake('Face ID canceled. Try again or use passcode.');
+    } else if(name === 'InvalidStateError'){
+      lockShake('Face ID not enrolled on this device. Use passcode.');
+    } else if(err && err.message === 'not-supported'){
+      lockShake('Face ID isn’t supported here. Use passcode.');
     } else {
       lockShake('Face not recognized. Try again or use passcode.');
     }
-  }, 700);
+  }
 }
 
 function lockShow(opts){
@@ -4019,7 +4117,7 @@ function signOut(){
 
 function signOutHard(){
   if(!confirm('Forget this device? You’ll need to sign in again with your full credentials.')) return;
-  state.pin = null; state.signedIn = false; state.bioEnabled = true; saveState();
+  state.pin = null; state.signedIn = false; state.bioEnabled = false; state.bioCredentialId = null; saveState();
   toast('Device signed out');
   closeSheet();
   lockShow();
@@ -5642,11 +5740,48 @@ function resetIdleTimer(){
 /* ============================================================
    FACE ID TOGGLE / PASSCODE CHANGE
    ============================================================ */
-function toggleFaceId(el){
-  state.bioEnabled = !state.bioEnabled; saveState();
-  const sw = document.getElementById('bioSwitch');
-  sw.classList.toggle('on', state.bioEnabled);
-  document.getElementById('bioLabel').textContent = state.bioEnabled ? 'Enabled' : 'Disabled';
+async function toggleFaceId(el){
+  const sw    = document.getElementById('bioSwitch');
+  const label = document.getElementById('bioLabel');
+  const turningOn = !state.bioEnabled;
+
+  if(turningOn){
+    if(!webAuthnAvailable()){
+      toast('Face ID isn’t supported on this device');
+      return;
+    }
+    const supported = await platformAuthenticatorAvailable();
+    if(!supported){
+      toast('No Face ID, Touch ID, or fingerprint reader found');
+      return;
+    }
+    if(label) label.textContent = 'Setting up…';
+    try {
+      await registerBiometric();
+      state.bioEnabled = true; saveState();
+      if(sw) sw.classList.add('on');
+      if(label) label.textContent = 'Enabled';
+      toast('Face ID enabled');
+    } catch (err){
+      if(label) label.textContent = state.bioEnabled ? 'Enabled' : 'Disabled';
+      const name = err && err.name;
+      if(name === 'NotAllowedError' || name === 'AbortError'){
+        toast('Face ID setup canceled');
+      } else if(name === 'InvalidStateError'){
+        toast('A credential is already registered for this site');
+      } else {
+        toast('Couldn’t enable Face ID — try again');
+      }
+    }
+    return;
+  }
+
+  // Turning off
+  state.bioEnabled = false;
+  state.bioCredentialId = null;
+  saveState();
+  if(sw) sw.classList.remove('on');
+  if(label) label.textContent = 'Disabled';
 }
 function changePasscode(){
   if(!confirm('Set a new 6-digit passcode?')) return;
@@ -6096,9 +6231,9 @@ function requireStepUp({ reason='Verify it\'s you', allowBio=true, onSuccess, on
       </div>
       <h3 class="stepup-title">Verify it's you</h3>
       <div class="stepup-reason">${escapeHtml(reason)}</div>
-      <div class="stepup-state" id="suState">${state.bioEnabled && allowBio ? 'Tap below to use Face ID' : 'Enter your passcode'}</div>
+      <div class="stepup-state" id="suState">${state.bioEnabled && allowBio && webAuthnAvailable() && state.bioCredentialId ? 'Tap below to use Face ID' : 'Enter your passcode'}</div>
       <div class="stepup-actions">
-        ${state.bioEnabled && allowBio ? `<button class="btn btn-primary" onclick="stepupFaceId()">Use Face ID</button>` : ''}
+        ${state.bioEnabled && allowBio && webAuthnAvailable() && state.bioCredentialId ? `<button class="btn btn-primary" onclick="stepupFaceId()">Use Face ID</button>` : ''}
         <button class="btn btn-ghost" onclick="stepupShowPin()">Use passcode</button>
         <button class="btn btn-ghost" onclick="stepupCancel()">Cancel</button>
       </div>
@@ -6116,7 +6251,7 @@ function requireStepUp({ reason='Verify it\'s you', allowBio=true, onSuccess, on
   // wire pin pad
   document.querySelectorAll('#suGrid [data-su]').forEach(el => el.addEventListener('click', ()=> stepupPress(el.dataset.su)));
   openSheetRaw();
-  if(state.bioEnabled && allowBio){
+  if(state.bioEnabled && allowBio && webAuthnAvailable() && state.bioCredentialId){
     /* auto-trigger Face ID like a real app does on app/sheet open */
     setTimeout(stepupFaceId, 500);
   } else {
@@ -6145,18 +6280,32 @@ function stepupSubmit(){
     }, 200);
   }
 }
-function stepupFaceId(){
+async function stepupFaceId(){
   const ic = document.getElementById('suIcon'); if(!ic) return;
+  const stateEl = document.getElementById('suState');
+  if(!webAuthnAvailable() || !state.bioCredentialId){
+    stepupShowPin();
+    return;
+  }
   ic.classList.add('scanning');
-  document.getElementById('suState').textContent = 'Looking for your face…';
-  setTimeout(()=>{
+  if(stateEl){ stateEl.classList.remove('fail'); stateEl.textContent = 'Looking for your face…'; }
+  try {
+    await authenticateBiometric();
     ic.classList.remove('scanning');
-    if(Math.random() < 0.94){ stepupSuccess(); }
-    else {
-      document.getElementById('suState').classList.add('fail');
-      document.getElementById('suState').textContent = 'Face not recognized — try again or use passcode';
+    stepupSuccess();
+  } catch (err){
+    ic.classList.remove('scanning');
+    if(!stateEl) return;
+    stateEl.classList.add('fail');
+    const name = err && err.name;
+    if(name === 'NotAllowedError' || name === 'AbortError'){
+      stateEl.textContent = 'Face ID canceled — use passcode';
+    } else if(name === 'InvalidStateError'){
+      stateEl.textContent = 'Not enrolled on this device — use passcode';
+    } else {
+      stateEl.textContent = 'Face not recognized — try again or use passcode';
     }
-  }, 800);
+  }
 }
 function stepupSuccess(){
   const st = document.getElementById('suState');
@@ -7495,11 +7644,26 @@ function boot(){
   attachPTRMouse('homeScroll', 'ptrHome', ()=>{ lastUpdated = Date.now(); renderHome(); });
   attachPTR('detailScroll','ptrDetail',()=>{ if(activeId) renderTransactions(activeId); });
   attachPTRMouse('detailScroll','ptrDetail',()=>{ if(activeId) renderTransactions(activeId); });
-  // sync bio switch
+  // sync bio switch — reconcile saved state against real WebAuthn support
   const bioSw = document.getElementById('bioSwitch');
-  if(bioSw) bioSw.classList.toggle('on', state.bioEnabled);
   const bioLb = document.getElementById('bioLabel');
-  if(bioLb) bioLb.textContent = state.bioEnabled ? 'Enabled' : 'Disabled';
+  const bioRow = bioSw ? bioSw.closest('.li') : null;
+  if(!webAuthnAvailable()){
+    state.bioEnabled = false; state.bioCredentialId = null; saveState();
+    if(bioSw) bioSw.classList.remove('on');
+    if(bioLb) bioLb.textContent = 'Not supported';
+    if(bioRow) bioRow.style.opacity = '0.55';
+  } else {
+    // If toggle was on but no credential exists yet, treat it as off until enrolled.
+    if(state.bioEnabled && !state.bioCredentialId){
+      state.bioEnabled = false; saveState();
+    }
+    if(bioSw) bioSw.classList.toggle('on', state.bioEnabled);
+    if(bioLb) bioLb.textContent = state.bioEnabled ? 'Enabled' : 'Not set up';
+    platformAuthenticatorAvailable().then(ok => {
+      if(!ok && bioLb && !state.bioEnabled) bioLb.textContent = 'Unavailable';
+    });
+  }
   const pcMeta = document.getElementById('passcodeMeta');
   if(pcMeta) pcMeta.textContent = 'Last changed ' + (state.passcodeChangedAt || 'recently');
   const soMeta = document.getElementById('signOutMeta');
