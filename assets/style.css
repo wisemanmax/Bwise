@@ -1686,6 +1686,27 @@ header {
     padding-inline-start: calc(var(--space-xl) + var(--space-xs));
 }
 
+.card-cta-row {
+    margin: var(--space-md) 0 0;
+}
+
+.card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast), letter-spacing var(--transition-fast);
+}
+
+.card-cta:hover,
+.card-cta:focus-visible {
+    color: var(--primary-alt);
+    letter-spacing: 0.02em;
+}
+
 /* ----------------------------------------------------------------------------
    SKILLS
    ---------------------------------------------------------------------------- */
