@@ -3,8 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Byheir Wise - Lead Business Execution Consultant</title>
-    <meta name="description" content="Portfolio and experience of Byheir Wise, Lead Business Execution Consultant specializing in operations, data, and automation.">
+    <title>Byheir Wise — Lead Business Execution Consultant</title>
+    <meta name="description" content="Portfolio of Byheir Wise — Lead Business Execution Consultant. Operations, data, and automation in regulated fintech. Banking PWA, fraud, credit, collections, and AI demos.">
+
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="theme-color" content="#667eea">
+    <meta name="color-scheme" content="light dark">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Byheir Wise">
+    <meta property="og:title" content="Byheir Wise — Lead Business Execution Consultant">
+    <meta property="og:description" content="Operations, data, and automation in regulated fintech. Live demos: banking PWA, fraud, credit, collections, AI relationship intelligence.">
+    <meta property="og:url" content="https://www.byheir.com">
+    <meta property="og:image" content="https://www.byheir.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Byheir Wise — Lead Business Execution Consultant. Operations, Data, Automation.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Byheir Wise — Lead Business Execution Consultant">
+    <meta name="twitter:description" content="Operations, data, and automation in regulated fintech. Live demos and case studies.">
+    <meta name="twitter:image" content="https://www.byheir.com/assets/og-image.png">
+    <meta name="twitter:image:alt" content="Byheir Wise — Lead Business Execution Consultant">
+
+    <link rel="canonical" href="https://www.byheir.com/">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Byheir Wise",
+        "jobTitle": "Lead Business Execution Consultant",
+        "url": "https://www.byheir.com",
+        "email": "mailto:byheirw@gmail.com",
+        "image": "https://www.byheir.com/assets/og-image.png",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bear",
+            "addressRegion": "DE",
+            "addressCountry": "US"
+        },
+        "worksFor": {
+            "@type": "Organization",
+            "name": "SLM Corporation (Sallie Mae Bank)"
+        },
+        "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Wilmington University"
+        },
+        "sameAs": [
+            "https://www.linkedin.com/in/byheir-wise-976253265",
+            "https://github.com/wisemanmax"
+        ]
+    }
+    </script>
+
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -18,24 +71,29 @@
             <ul class="nav-menu" id="primary-navigation">
                 <li><a href="#about">About</a></li>
                 <li><a href="#experience">Experience</a></li>
+                <li><a href="#work">Work</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="pages/html.html">HTML</a></li>
-                <li><a href="pages/css.html">CSS</a></li>
-                <li><a href="pages/javascript.html">JavaScript</a></li>
-                <li><a href="pages/backend.html">Backend</a></li>
-                <li><a href="pages/cicd.html">CI/CD</a></li>
-                <li><a href="pages/login.html">Dashboard</a></li>
-                <li><a href="pages/case-study.html">Case Study</a></li>
             </ul>
         </nav>
     </header>
 
     <section class="hero-section" aria-labelledby="hero-title">
         <div class="hero-inner">
-            <div class="hero-label">Available for opportunities</div>
+            <div class="hero-label">
+                <span class="status-dot" aria-hidden="true"></span>
+                Available for opportunities
+            </div>
             <h1 id="hero-title" class="hero-title">Byheir Wise</h1>
             <p class="hero-subtitle">Lead Business Execution Consultant</p>
+
+            <div class="hero-cta-row">
+                <a class="hero-cta hero-cta--primary" href="#work">See the work</a>
+                <a class="hero-cta hero-cta--ghost" href="assets/byheir-wise-resume.pdf" download>
+                    <span aria-hidden="true">↓</span> Download résumé
+                </a>
+                <a class="hero-cta hero-cta--ghost" href="mailto:byheirw@gmail.com">Email me</a>
+            </div>
 
             <div class="stats-bar" aria-label="Key career metrics">
                 <div class="stat-box">
@@ -150,6 +208,165 @@
             </div>
         </section>
 
+        <section id="work" class="container" aria-labelledby="work-title">
+            <div class="section-header">
+                <h2 id="work-title" class="section-title">Selected work</h2>
+                <p class="section-subtitle">
+                    Live demos and case studies. The first row runs on this site; the second is hosted elsewhere and opens in a new tab.
+                </p>
+            </div>
+
+            <h3 class="work-row-title">In-domain demos</h3>
+            <div class="work-grid">
+                <a class="work-card" href="pages/banking.html" aria-label="Banking PWA demo">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/banking.png" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole builder</span>
+                            <span class="work-card__status work-card__status--live">Live demo</span>
+                        </div>
+                        <h4 class="work-card__title">Banking PWA</h4>
+                        <p class="work-card__tagline">iOS-style banking — biometric login, transfers, round-ups, push notifications.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>PWA</li><li>Service Worker</li><li>Web Manifest</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card" href="pages/fraud-risk.html" aria-label="Fraud Risk demo">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/fraud-risk.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Lead engineer</span>
+                            <span class="work-card__status work-card__status--live">Live demo</span>
+                        </div>
+                        <h4 class="work-card__title">Fraud Risk</h4>
+                        <p class="work-card__tagline">Real-time fraud monitoring — alert triage, link analysis, identity verification.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>Dashboards</li><li>Risk ops</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card" href="pages/credit-underwriting.html" aria-label="Credit Underwriting demo">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/credit-underwriting.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Lead engineer</span>
+                            <span class="work-card__status work-card__status--live">Live demo</span>
+                        </div>
+                        <h4 class="work-card__title">Credit Underwriting</h4>
+                        <p class="work-card__tagline">Decision engine, document processing, manual review, adverse-action workflow.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>Workflow</li><li>Compliance</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card" href="pages/collections-toolkit.html" aria-label="Collections Toolkit demo">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/collections-toolkit.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Lead engineer</span>
+                            <span class="work-card__status work-card__status--live">Live demo</span>
+                        </div>
+                        <h4 class="work-card__title">Collections Toolkit</h4>
+                        <p class="work-card__tagline">End-to-end suite — segmentation, dialer, comms hub, QA, and compliance.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>Contact center</li><li>QA</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card work-card--wide" href="pages/case-study.html" aria-label="Operations Command Center case study">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Program lead</span>
+                            <span class="work-card__status work-card__status--case">Case study</span>
+                        </div>
+                        <h4 class="work-card__title">Operations Command Center</h4>
+                        <p class="work-card__tagline">Cross-functional operations platform — dashboards, alerts, workflow orchestration.</p>
+                        <ul class="work-card__chips">
+                            <li>Power BI</li><li>Snowflake</li><li>Azure DevOps</li><li>Process design</li>
+                        </ul>
+                        <span class="work-card__cta">Read case study →</span>
+                    </div>
+                </a>
+            </div>
+
+            <h3 class="work-row-title">External apps <span class="work-row-title__hint">(open in a new tab)</span></h3>
+            <div class="work-grid work-grid--external">
+                <a class="work-card work-card--external" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="Ironlog — opens in a new tab">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/ironlog.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole designer + engineer</span>
+                            <span class="work-card__status work-card__status--live">Live · v9.0</span>
+                        </div>
+                        <h4 class="work-card__title">Ironlog <span class="work-card__ext" aria-hidden="true">↗</span></h4>
+                        <p class="work-card__tagline">Offline-first powerlifting &amp; fitness PWA — workouts, macros, AI coach, social.</p>
+                        <ul class="work-card__chips">
+                            <li>React 18</li><li>Vite 6</li><li>PWA</li><li>Vercel</li><li>Supabase</li><li>Cloudflare R2</li>
+                        </ul>
+                        <span class="work-card__cta">ironlog.space →</span>
+                    </div>
+                </a>
+
+                <a class="work-card work-card--external" href="https://wisemanmax.github.io/partnerpulse/" target="_blank" rel="noopener noreferrer" aria-label="Partner Pulse — opens in a new tab">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/partner-pulse.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole builder</span>
+                            <span class="work-card__status work-card__status--live">Live</span>
+                        </div>
+                        <h4 class="work-card__title">Partner Pulse <span class="work-card__ext" aria-hidden="true">↗</span></h4>
+                        <p class="work-card__tagline">AI relationship intelligence for higher-ed lending — briefings, churn risk, comms.</p>
+                        <ul class="work-card__chips">
+                            <li>React 18</li><li>Vite 5</li><li>Tailwind</li><li>Recharts</li><li>Claude Sonnet 4</li><li>Cloudflare Workers</li>
+                        </ul>
+                        <span class="work-card__cta">partnerpulse →</span>
+                    </div>
+                </a>
+
+                <a class="work-card work-card--external" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer" aria-label="Wiseforge — opens in a new tab">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/wiseforge.png" alt="" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Solo designer + dev</span>
+                            <span class="work-card__status work-card__status--live">Active · v0.13</span>
+                        </div>
+                        <h4 class="work-card__title">Wiseforge <span class="work-card__ext" aria-hidden="true">↗</span></h4>
+                        <p class="work-card__tagline">Build · Push · Deploy · Repeat — describe an app in chat, ship it to GitHub Pages.</p>
+                        <ul class="work-card__chips">
+                            <li>Vanilla JS</li><li>Vite</li><li>Claude API</li><li>GPT-4o</li><li>GitHub REST</li><li>PWA</li>
+                        </ul>
+                        <span class="work-card__cta">wiseforge.dev →</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
         <section id="skills" class="container" aria-labelledby="skills-title">
             <div class="section-header">
                 <h2 id="skills-title" class="section-title">Skills and expertise</h2>
@@ -225,13 +442,27 @@
                     </div>
                 </article>
             </div>
+
+            <div class="code-samples">
+                <h3 class="code-samples__title">Code samples</h3>
+                <p class="code-samples__subtitle">Bite-sized walkthroughs of the underlying stack — syntax, patterns, and a working preview on each page.</p>
+                <ul class="code-samples__list">
+                    <li><a href="pages/html.html">HTML</a></li>
+                    <li><a href="pages/css.html">CSS</a></li>
+                    <li><a href="pages/javascript.html">JavaScript</a></li>
+                    <li><a href="pages/backend.html">Backend</a></li>
+                    <li><a href="pages/cicd.html">CI/CD</a></li>
+                </ul>
+            </div>
         </section>
 
         <section id="contact" class="container" aria-labelledby="contact-title">
             <div class="contact-section">
-                <h2 id="contact-title" class="contact-title">Let&#39;s connect and build something impactful</h2>
+                <h2 id="contact-title" class="contact-title">Let's connect and build something impactful</h2>
                 <p class="contact-subtitle">
-                    You can use this portfolio, my resume, and my work history as a starting point. I am open to roles that blend engineering, operations, and leadership.
+                    I'm looking for senior engineering, lead, or operations-PM roles at fintech, regulated, or platform-heavy companies.
+                    <a href="mailto:byheirw@gmail.com">Email me</a> or
+                    <a href="assets/byheir-wise-resume.pdf" download>download my résumé</a>.
                 </p>
 
                 <div class="contact-info-grid">
@@ -250,7 +481,19 @@
                     <div class="contact-item">
                         <div class="contact-label">LinkedIn</div>
                         <div class="contact-value">
-                            <a href="https://www.linkedin.com/in/byheir-wise-976253265?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" aria-label="LinkedIn profile link">LinkedIn profile</a>
+                            <a href="https://www.linkedin.com/in/byheir-wise-976253265" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in a new tab)">LinkedIn profile</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">GitHub</div>
+                        <div class="contact-value">
+                            <a href="https://github.com/wisemanmax" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile (opens in a new tab)">@wisemanmax</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Résumé</div>
+                        <div class="contact-value">
+                            <a href="assets/byheir-wise-resume.pdf" download aria-label="Download résumé as PDF">Download PDF</a>
                         </div>
                     </div>
                 </div>
