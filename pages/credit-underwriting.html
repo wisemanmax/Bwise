@@ -366,8 +366,16 @@
 .demo-back a:hover,.demo-back a:focus-visible{background:rgba(15,23,42,.08)}
 .demo-back__chev{font-size:1rem;line-height:1}
 .demo-back__sub{color:#64748b;font-weight:500;margin-inline-start:.4rem;border-inline-start:1px solid rgba(15,23,42,.15);padding-inline-start:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}
-@media (max-width:480px){.demo-back__sub{display:none}}
-@media (prefers-color-scheme:dark){.demo-back{background:rgba(15,23,42,.94);border-bottom-color:rgba(148,163,184,.18);color:#e2e8f0}.demo-back a{color:#e2e8f0}.demo-back a:hover,.demo-back a:focus-visible{background:rgba(148,163,184,.18)}.demo-back__sub{color:#94a3b8;border-inline-start-color:rgba(148,163,184,.3)}}
+.demo-back__spacer{flex:1 1 auto}
+.demo-back__fs{display:inline-flex;align-items:center;gap:.4rem;background:transparent;border:0;cursor:pointer;color:inherit;font:inherit;padding:.3rem .7rem;border-radius:999px;transition:background .15s ease}
+.demo-back__fs:hover,.demo-back__fs:focus-visible{background:rgba(15,23,42,.08)}
+.demo-back__fs svg{width:1rem;height:1rem;display:block;flex-shrink:0}
+@media (max-width:480px){.demo-back__sub{display:none}.demo-back__fs-label{display:none}}
+@media (prefers-color-scheme:dark){.demo-back{background:rgba(15,23,42,.94);border-bottom-color:rgba(148,163,184,.18);color:#e2e8f0}.demo-back a{color:#e2e8f0}.demo-back a:hover,.demo-back a:focus-visible{background:rgba(148,163,184,.18)}.demo-back__sub{color:#94a3b8;border-inline-start-color:rgba(148,163,184,.3)}.demo-back__fs:hover,.demo-back__fs:focus-visible{background:rgba(148,163,184,.18)}}
+:fullscreen .demo-back{background:rgba(15,23,42,.7);border-bottom-color:rgba(255,255,255,.12);color:#f1f5f9}
+:fullscreen .demo-back a,:fullscreen .demo-back__fs{color:#f1f5f9}
+:fullscreen .demo-back a:hover,:fullscreen .demo-back a:focus-visible,:fullscreen .demo-back__fs:hover,:fullscreen .demo-back__fs:focus-visible{background:rgba(255,255,255,.14)}
+:fullscreen .demo-back__sub{color:#cbd5e1;border-inline-start-color:rgba(255,255,255,.18)}
 @media print{.demo-back{display:none}}
 </style>
 </head>
@@ -378,7 +386,44 @@
     <span class="demo-back__label">Portfolio</span>
   </a>
   <span class="demo-back__sub">byheir.com</span>
+  <span class="demo-back__spacer" aria-hidden="true"></span>
+  <button class="demo-back__fs" type="button" aria-label="Enter fullscreen" data-fs-toggle hidden>
+    <svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>
+    <span class="demo-back__fs-label">Fullscreen</span>
+  </button>
 </div>
+<script>
+(function(){
+  var btn = document.querySelector('[data-fs-toggle]');
+  if(!btn) return;
+  var docEl = document.documentElement;
+  var req = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
+  var exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+  if(!req) return;
+  btn.hidden = false;
+  var iconEnter = 'M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4';
+  var iconExit  = 'M6 2v4H2M10 2v4h4M6 14v-4H2M10 14v-4h4';
+  var path = btn.querySelector('svg path');
+  var label = btn.querySelector('.demo-back__fs-label');
+  function isFs(){ return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement); }
+  function update(){
+    var fs = isFs();
+    btn.setAttribute('aria-label', fs ? 'Exit fullscreen' : 'Enter fullscreen');
+    if(label) label.textContent = fs ? 'Exit fullscreen' : 'Fullscreen';
+    if(path) path.setAttribute('d', fs ? iconExit : iconEnter);
+  }
+  btn.addEventListener('click', function(){
+    try{
+      if(isFs()){ exit && exit.call(document); }
+      else { req.call(docEl); }
+    } catch(e){}
+  });
+  ['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(function(ev){
+    document.addEventListener(ev, update);
+  });
+  update();
+})();
+</script>
 
     <a class="skip-link" href="#main">Skip to content</a>
   <header class="header">
