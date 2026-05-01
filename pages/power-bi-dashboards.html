@@ -945,6 +945,383 @@
     table.data thead th .sort-i.fa-sort-up,
     table.data thead th .sort-i.fa-sort-down { opacity: 1; color: var(--accent); }
 
+    /* Roll-rate heatmap */
+    .rr-grid {
+      display: grid;
+      grid-template-columns: 110px repeat(5, minmax(0, 1fr));
+      gap: 4px; padding: 6px;
+      background: var(--surface-1);
+      border-radius: var(--r-sm);
+    }
+    .rr-cell, .rr-h, .rr-row-h {
+      padding: 8px 6px; border-radius: 6px; text-align: center;
+      font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+    }
+    .rr-h, .rr-row-h {
+      color: var(--text-3); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.08em;
+      font-family: var(--font-sans);
+    }
+    .rr-row-h { text-align: left; padding-left: 10px; }
+    .rr-cell {
+      color: #fff; cursor: default;
+      background: rgba(148,163,184,0.08);
+      transition: transform .12s ease;
+    }
+    .rr-cell:hover { transform: scale(1.04); outline: 1px solid var(--border-3); }
+
+    /* Decomposition tree */
+    .decomp { display: flex; gap: 8px; align-items: stretch; padding: 8px 4px; overflow-x: auto; }
+    .decomp__col {
+      display: flex; flex-direction: column; gap: 6px;
+      min-width: 200px;
+      padding: 8px;
+      border-radius: var(--r-sm);
+      background: rgba(255,255,255,0.02);
+    }
+    .decomp__col-h {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0 6px;
+    }
+    .decomp__node {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 10px 12px;
+      border-radius: var(--r-sm);
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      cursor: pointer;
+      transition: border-color .15s, background .15s, transform .12s;
+      position: relative;
+    }
+    .decomp__node:hover { background: var(--surface-3); border-color: var(--border-3); }
+    .decomp__node.is-active {
+      background: var(--accent-soft);
+      border-color: var(--accent-ring);
+      transform: translateX(2px);
+    }
+    .decomp__node.is-active::after {
+      content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+      border-left: 8px solid var(--accent); border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+    }
+    .decomp__label {
+      display: flex; align-items: center; justify-content: space-between;
+      color: var(--text-1); font-weight: 600; font-size: 13px;
+    }
+    .decomp__label .ai { color: var(--accent); font-size: 10px; }
+    .decomp__bar { position: relative; height: 4px; background: var(--surface-3); border-radius: 999px; overflow: hidden; }
+    .decomp__bar > span { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 999px; }
+    .decomp__meta {
+      display: flex; justify-content: space-between; font-family: var(--font-mono);
+      font-size: 11px; color: var(--text-3);
+    }
+
+    /* Model: tools bar */
+    .model-tools {
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+      padding-bottom: 14px; margin-bottom: 6px;
+      border-bottom: 1px solid var(--border-1);
+    }
+    .model-tools__spacer { flex: 1; }
+    .model-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Star schema canvas */
+    .schema-canvas {
+      position: relative; width: 100%; height: 480px;
+      background:
+        radial-gradient(ellipse at center, rgba(242,200,17,0.05), transparent 60%),
+        repeating-linear-gradient(0deg, transparent 0 39px, rgba(148,163,184,0.04) 39px 40px),
+        repeating-linear-gradient(90deg, transparent 0 39px, rgba(148,163,184,0.04) 39px 40px),
+        var(--surface-1);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+    .schema-canvas svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .schema-table {
+      position: absolute;
+      min-width: 150px;
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      pointer-events: auto;
+      z-index: 2;
+    }
+    .schema-table:hover { transform: translateY(-2px); border-color: var(--border-3); box-shadow: var(--shadow-lg); }
+    .schema-table.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft), var(--shadow-lg); }
+    .schema-table.is-fact { border-color: rgba(242,200,17,0.5); }
+    .schema-table__head {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 10px; font-size: 12px; font-weight: 700;
+      color: var(--text-1);
+      border-bottom: 1px solid var(--border-1);
+      background: var(--surface-2);
+      border-radius: var(--r-sm) var(--r-sm) 0 0;
+    }
+    .schema-table.is-fact .schema-table__head { background: linear-gradient(180deg, rgba(242,200,17,0.10), var(--surface-2)); }
+    .schema-table__head i { font-size: 10px; }
+    .schema-table.is-fact .schema-table__head i { color: var(--accent); }
+    .schema-table.is-dim  .schema-table__head i { color: var(--info); }
+    .schema-table__cols { padding: 4px 8px 6px; }
+    .schema-col {
+      display: flex; align-items: center; gap: 6px;
+      padding: 2px 4px; font-size: 11px; color: var(--text-3);
+      font-family: var(--font-mono);
+    }
+    .schema-col i { font-size: 8px; opacity: 0.7; }
+    .schema-col.key { color: var(--accent-2); }
+    .schema-col.fk  { color: #93c5fd; }
+    .schema-col.measure { color: #6ee7b7; }
+
+    /* Inspector */
+    .inspector { display: flex; flex-direction: column; gap: 12px; max-height: 480px; overflow-y: auto; }
+    .inspector__sec {
+      padding: 10px 12px; border-radius: var(--r-sm);
+      background: var(--surface-2); border: 1px solid var(--border-1);
+    }
+    .inspector__sec h5 {
+      font-size: 11px; color: var(--text-3); text-transform: uppercase;
+      letter-spacing: 0.1em; font-weight: 700; margin-bottom: 8px;
+    }
+    .inspector__row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0; font-size: 12.5px;
+      border-top: 1px dashed var(--border-1);
+    }
+    .inspector__row:first-of-type { border-top: 0; }
+    .inspector__row .k { color: var(--text-3); font-family: var(--font-mono); }
+    .inspector__row .v { color: var(--text-1); font-weight: 600; font-family: var(--font-mono); font-size: 11.5px; }
+    .badge-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 2px 8px; border-radius: 999px;
+      background: var(--surface-3); border: 1px solid var(--border-2);
+      color: var(--text-2); font-size: 11px; font-weight: 600;
+    }
+    .badge-chip--key { background: var(--accent-soft); color: var(--accent-2); border-color: var(--accent-ring); }
+    .badge-chip--fk  { background: var(--info-soft); color: #93c5fd; border-color: rgba(59,130,246,0.3); }
+
+    /* Measures catalog */
+    .measures { display: flex; flex-direction: column; gap: 8px; }
+    .measure {
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+      background: var(--surface-1);
+      transition: border-color .15s ease;
+    }
+    .measure:hover { border-color: var(--border-3); }
+    .measure__head {
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      cursor: pointer;
+    }
+    .measure__name { font-family: var(--font-mono); font-weight: 700; color: var(--text-1); font-size: 13px; }
+    .measure__desc { color: var(--text-3); font-size: 12.5px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .measure__tag {
+      font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 8px; border-radius: 999px;
+      background: var(--surface-3); color: var(--text-3); border: 1px solid var(--border-2);
+    }
+    .measure__tag.t-time { background: rgba(59,130,246,0.12); color: #93c5fd; border-color: rgba(59,130,246,0.3); }
+    .measure__tag.t-calc { background: rgba(242,200,17,0.12); color: var(--accent-2); border-color: var(--accent-ring); }
+    .measure__tag.t-risk { background: rgba(239,68,68,0.12); color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+    .measure__tag.t-perf { background: rgba(16,185,129,0.12); color: #6ee7b7; border-color: rgba(16,185,129,0.3); }
+    .measure__chev { color: var(--text-4); transition: transform .15s ease; }
+    .measure.is-open .measure__chev { transform: rotate(180deg); }
+    .measure__body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .25s ease;
+    }
+    .measure.is-open .measure__body { max-height: 600px; }
+    .dax-block {
+      margin: 0 14px 14px;
+      padding: 12px 14px;
+      background: #060a13;
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+      color: #c5cfdf;
+      font-family: var(--font-mono); font-size: 12px; line-height: 1.6;
+      white-space: pre; overflow-x: auto;
+    }
+    .dax-kw   { color: #f2c811; font-weight: 700; }
+    .dax-fn   { color: #93c5fd; }
+    .dax-str  { color: #6ee7b7; }
+    .dax-num  { color: #fca5a5; }
+    .dax-tbl  { color: #fcd34d; }
+    .dax-com  { color: #5b6781; font-style: italic; }
+    .measure__deps {
+      display: flex; gap: 6px; padding: 0 14px 14px; flex-wrap: wrap;
+    }
+    .dep-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 2px 8px; border-radius: 999px;
+      background: var(--surface-2); border: 1px solid var(--border-2);
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-2);
+    }
+    .dep-chip i { color: var(--text-4); font-size: 9px; }
+
+    /* Tables list */
+    .tables-list { display: flex; flex-direction: column; gap: 8px; }
+    .tlist-row {
+      display: grid; grid-template-columns: 32px 1fr 110px 110px 80px;
+      gap: 12px; align-items: center;
+      padding: 10px 12px;
+      background: var(--surface-1);
+      border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+    }
+    .tlist-row .tname { font-family: var(--font-mono); font-weight: 700; color: var(--text-1); }
+    .tlist-row .tcols { color: var(--text-3); font-size: 12px; }
+
+    /* Lineage flow canvas */
+    .lineage-canvas {
+      position: relative; width: 100%; height: 320px;
+      background:
+        repeating-linear-gradient(0deg, transparent 0 39px, rgba(148,163,184,0.04) 39px 40px),
+        repeating-linear-gradient(90deg, transparent 0 39px, rgba(148,163,184,0.04) 39px 40px),
+        var(--surface-1);
+      border-radius: var(--r-md); overflow: hidden;
+    }
+    .lineage-canvas svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .lineage-node {
+      position: absolute; min-width: 130px;
+      background: var(--bg-2); border: 1px solid var(--border-2);
+      border-radius: var(--r-sm);
+      padding: 10px 12px; font-size: 12px;
+      box-shadow: var(--shadow-sm);
+      z-index: 2;
+    }
+    .lineage-node__type { font-size: 10px; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+    .lineage-node__name { color: var(--text-1); font-weight: 700; margin-top: 3px; }
+    .lineage-node__name i { margin-right: 6px; }
+    .lineage-node--source .lineage-node__name i { color: #67e8f9; }
+    .lineage-node--flow   .lineage-node__name i { color: var(--violet); }
+    .lineage-node--ds     .lineage-node__name i { color: var(--info); }
+    .lineage-node--report .lineage-node__name i { color: var(--accent); }
+    .lineage-node--sub    .lineage-node__name i { color: var(--success); }
+    .lineage-node__meta { color: var(--text-3); font-size: 11px; margin-top: 4px; }
+
+    /* RLS matrix */
+    .rls-matrix {
+      display: grid;
+      grid-template-columns: 130px repeat(5, minmax(0,1fr));
+      gap: 2px; padding: 6px;
+      background: var(--surface-1); border-radius: var(--r-sm);
+      border: 1px solid var(--border-1);
+    }
+    .rls-h, .rls-rh, .rls-c {
+      padding: 8px; border-radius: 4px; font-size: 11.5px;
+      text-align: center; font-weight: 600;
+    }
+    .rls-h { color: var(--text-3); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.08em; }
+    .rls-rh { color: var(--text-1); text-align: left; padding-left: 10px; font-family: var(--font-mono); }
+    .rls-c { cursor: pointer; transition: transform .12s; }
+    .rls-c:hover { transform: scale(1.02); }
+    .rls-c.read { background: var(--success-soft); color: #6ee7b7; }
+    .rls-c.filter { background: var(--info-soft); color: #93c5fd; }
+    .rls-c.mask { background: var(--warn-soft); color: #fcd34d; }
+    .rls-c.deny { background: var(--danger-soft); color: #fca5a5; }
+    .rls-c.is-selected { outline: 2px solid var(--accent); }
+
+    /* Endorsement list */
+    .endorsement { display: flex; flex-direction: column; gap: 8px; }
+    .endorsement__row {
+      display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center;
+      padding: 10px 12px; background: var(--surface-1); border: 1px solid var(--border-2); border-radius: var(--r-sm);
+    }
+    .endorsement__name { font-weight: 700; color: var(--text-1); }
+    .endorsement__name small { display: block; color: var(--text-3); font-weight: 500; font-size: 11.5px; margin-top: 2px; }
+    .endorsement-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700;
+    }
+    .endorsement-badge.cert { background: var(--success-soft); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+    .endorsement-badge.prom { background: var(--info-soft); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+    .sens-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      background: var(--warn-soft); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3);
+    }
+    .sens-badge.npi { background: var(--danger-soft); color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+
+    /* Refresh history */
+    .refresh-history {
+      display: grid; grid-template-columns: repeat(30, minmax(0,1fr));
+      gap: 4px;
+    }
+    .rh-cell {
+      aspect-ratio: 1 / 2.2;
+      border-radius: 3px;
+      background: var(--success);
+      cursor: help;
+      transition: transform .12s;
+    }
+    .rh-cell:hover { transform: scaleY(1.1); }
+    .rh-cell.warn { background: var(--warn); }
+    .rh-cell.fail { background: var(--danger); }
+
+    /* Performance Analyzer list */
+    .perf-list { display: flex; flex-direction: column; gap: 6px; }
+    .perf-row {
+      display: grid; grid-template-columns: 1.5fr repeat(3, 1fr) 80px;
+      gap: 12px; align-items: center;
+      padding: 10px 12px;
+      background: var(--surface-1); border: 1px solid var(--border-2); border-radius: var(--r-sm);
+    }
+    .perf-row .pname { color: var(--text-1); font-weight: 600; font-size: 13px; }
+    .perf-row .ptime { font-family: var(--font-mono); color: var(--text-1); font-size: 12px; }
+    .perf-bar {
+      grid-column: 1 / -1;
+      display: flex; height: 6px; border-radius: 999px; overflow: hidden;
+      background: var(--surface-3);
+    }
+    .perf-bar span { display: block; height: 100%; }
+    .perf-bar .se { background: var(--info); }
+    .perf-bar .fe { background: var(--violet); }
+    .perf-bar .ot { background: var(--text-4); }
+    .perf-legend { display: flex; gap: 12px; font-size: 11px; color: var(--text-3); }
+    .perf-legend i.dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; margin-right: 5px; }
+
+    /* Bookmarks menu */
+    .bookmarks-menu {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      min-width: 260px;
+      background: var(--bg-2); border: 1px solid var(--border-3);
+      border-radius: var(--r-md); box-shadow: var(--shadow-lg);
+      padding: 6px;
+      opacity: 0; transform: translateY(-4px); pointer-events: none;
+      transition: opacity .15s, transform .15s;
+      z-index: 1500;
+    }
+    .bookmarks-menu.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .bm-h {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border-1);
+    }
+    .bm-h__title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); font-weight: 700; }
+    .bm-list { max-height: 240px; overflow-y: auto; padding: 4px 0; }
+    .bm-row {
+      display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+      border-radius: var(--r-sm); cursor: pointer; color: var(--text-2);
+      font-size: 13px;
+    }
+    .bm-row:hover { background: var(--surface-2); color: var(--text-1); }
+    .bm-row .meta { color: var(--text-4); margin-left: auto; font-size: 11px; }
+    .bm-row .del { color: var(--text-4); padding: 4px 6px; border-radius: 4px; }
+    .bm-row .del:hover { color: #fca5a5; background: rgba(239,68,68,0.12); }
+    .bm-row.empty { color: var(--text-4); cursor: default; padding: 12px; justify-content: center; font-size: 12px; }
+    .bm-add {
+      display: flex; gap: 6px; padding: 8px;
+      border-top: 1px solid var(--border-1);
+    }
+    .bm-add input {
+      flex: 1; height: 30px; padding: 0 10px; font-size: 12.5px;
+      background: var(--surface-1); border: 1px solid var(--border-2);
+      border-radius: 6px; color: var(--text-1);
+    }
+    .bm-add input:focus { border-color: var(--accent); outline: none; box-shadow: var(--ring); }
+
     /* Toast */
     .toast {
       position: fixed; bottom: 24px; left: 50%;
@@ -1232,8 +1609,11 @@
           </span>
         </div>
         <div class="viewer__ctrls">
-          <button class="btn btn--ghost btn--sm"><i class="fas fa-comments"></i> Comments</button>
-          <button class="btn btn--ghost btn--sm"><i class="fas fa-bookmark"></i> Bookmarks</button>
+          <span class="lineage" id="syncIndicator" title="Slicers sync to URL"><i class="fas fa-link"></i> Sync slicers</span>
+          <button class="btn btn--ghost btn--sm" id="copyLinkBtn" title="Copy view link"><i class="fas fa-link"></i> Copy link</button>
+          <div class="bookmarks-wrap" style="position:relative">
+            <button class="btn btn--ghost btn--sm" id="bookmarkBtn" aria-haspopup="menu" aria-expanded="false"><i class="fas fa-bookmark"></i> Bookmarks <i class="fas fa-chevron-down" style="font-size:9px;margin-left:2px"></i></button>
+          </div>
           <button class="btn btn--ghost btn--sm"><i class="fas fa-expand"></i> Fullscreen</button>
           <a class="btn btn--soft btn--sm" href="../mock-exports/power-bi-executive-summary.svg" download>
             <i class="fas fa-download"></i> Export PDF
@@ -1245,6 +1625,9 @@
         <button class="tab is-active" role="tab" aria-selected="true" data-pane="overview">
           <i class="fas fa-chart-line"></i> Overview <span class="count">5</span>
         </button>
+        <button class="tab" role="tab" aria-selected="false" data-pane="vintage">
+          <i class="fas fa-layer-group"></i> Vintage &amp; Roll-rates <span class="count">9</span>
+        </button>
         <button class="tab" role="tab" aria-selected="false" data-pane="operations">
           <i class="fas fa-gears"></i> Operations <span class="count">8</span>
         </button>
@@ -1252,7 +1635,13 @@
           <i class="fas fa-dollar-sign"></i> Financial <span class="count">6</span>
         </button>
         <button class="tab" role="tab" aria-selected="false" data-pane="quality">
-          <i class="fas fa-shield-halved"></i> Quality &amp; Compliance <span class="count">4</span>
+          <i class="fas fa-shield-halved"></i> Quality
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-pane="model">
+          <i class="fas fa-diagram-project"></i> Semantic model <span class="count">DAX</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-pane="governance">
+          <i class="fas fa-shield"></i> Governance
         </button>
         <button class="tab" role="tab" aria-selected="false" data-pane="data">
           <i class="fas fa-table"></i> Data
@@ -1264,11 +1653,20 @@
         <div class="viz-grid">
           <article class="viz viz--8">
             <div class="viz__head">
-              <div class="viz__title"><i class="fas fa-wave-square"></i> Revenue vs Target — last 12 months</div>
-              <button class="viz__menu" aria-label="More"><i class="fas fa-ellipsis"></i></button>
+              <div class="viz__title"><i class="fas fa-wave-square"></i> <span id="primaryMeasureTitle">Revenue vs Target — last 12 months</span></div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <label class="viz__sub" for="fieldParam" style="font-weight:600">Measure</label>
+                <select id="fieldParam" class="slicer" style="height:28px;padding:0 10px;font-size:12px">
+                  <option value="revenue" selected>Revenue ($M)</option>
+                  <option value="collections">Gross Collections ($M)</option>
+                  <option value="recovery">Recovery $ ($M)</option>
+                  <option value="approvals">Credit Approvals (k)</option>
+                </select>
+                <button class="viz__menu" aria-label="More"><i class="fas fa-ellipsis"></i></button>
+              </div>
             </div>
             <div class="viz__chart viz__chart--lg"><canvas data-chart="rev-vs-target"></canvas></div>
-            <div class="viz__sub">Revenue (bars) · Target (line). Variance highlighted.</div>
+            <div class="viz__sub" id="primaryMeasureSub">Revenue (bars) · Target (line). Field parameter swaps measure live.</div>
           </article>
 
           <article class="viz viz--4">
@@ -1354,6 +1752,163 @@
           <article class="viz viz--6">
             <div class="viz__head"><div class="viz__title"><i class="fas fa-star"></i> QA score trend</div></div>
             <div class="viz__chart"><canvas data-chart="q-qa"></canvas></div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Vintage & Roll-rates pane (Collections deep dive) -->
+      <div class="pane" id="pane-vintage" role="tabpanel">
+        <div class="viz-grid">
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-layer-group"></i> Vintage curves — cumulative net loss % by origination cohort</div>
+              <div class="viz__sub">Months on book vs cumulative loss</div>
+            </div>
+            <div class="viz__chart viz__chart--lg"><canvas data-chart="vintage-curves"></canvas></div>
+          </article>
+
+          <article class="viz viz--6">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-table-cells"></i> Roll-rate matrix</div>
+              <div class="viz__sub">P(state<sub>t+1</sub> | state<sub>t</sub>) · last 90 days</div>
+            </div>
+            <div id="rollRateGrid" class="rr-grid" aria-label="Roll-rate transition matrix"></div>
+            <div class="viz__sub" style="margin-top:10px">Net flow into 90+: <strong style="color:#fcd34d">+$418k</strong>, vs prior <strong style="color:#6ee7b7">−$72k</strong>.</div>
+          </article>
+
+          <article class="viz viz--6">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-arrows-rotate"></i> Recovery curve — $ recovered post charge-off</div>
+              <div class="viz__sub">Days post COF · actual vs model band</div>
+            </div>
+            <div class="viz__chart"><canvas data-chart="recovery-curve"></canvas></div>
+          </article>
+
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-sitemap"></i> Decomposition tree — Default rate (3.2%)</div>
+              <div class="viz__sub">Click a node to drill</div>
+            </div>
+            <div id="decompTree" class="decomp"></div>
+          </article>
+
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-chart-simple"></i> Champion / Challenger — liquidation lift</div>
+              <div class="viz__sub">A/B test: Strategy B (settlement-first) vs Champion</div>
+            </div>
+            <div class="viz__chart"><canvas data-chart="champion-challenger"></canvas></div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Semantic Model pane -->
+      <div class="pane" id="pane-model" role="tabpanel">
+        <div class="model-tools">
+          <div class="seg" id="modelSeg" role="tablist" aria-label="Model view">
+            <button class="is-active" type="button" data-view="diagram"><i class="fas fa-diagram-project"></i> Diagram</button>
+            <button type="button" data-view="measures"><i class="fas fa-calculator"></i> Measures</button>
+            <button type="button" data-view="tables"><i class="fas fa-table"></i> Tables</button>
+            <button type="button" data-view="relationships"><i class="fas fa-link"></i> Relationships</button>
+          </div>
+          <div class="model-tools__spacer"></div>
+          <div class="model-stats">
+            <span class="lineage"><i class="fas fa-cube"></i> 3 fact / 6 dim</span>
+            <span class="lineage"><i class="fas fa-calculator"></i> 47 measures</span>
+            <span class="lineage"><i class="fas fa-link"></i> 12 relationships</span>
+          </div>
+        </div>
+
+        <div class="viz-grid" id="modelDiagramView">
+          <article class="viz viz--8" style="padding:0">
+            <div id="schemaCanvas" class="schema-canvas" aria-label="Star schema diagram"></div>
+          </article>
+          <article class="viz viz--4" id="schemaInspector">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-circle-info"></i> <span id="inspectorTitle">Click a table</span></div>
+            </div>
+            <div id="inspectorBody" class="inspector"></div>
+          </article>
+        </div>
+
+        <div class="viz-grid" id="modelMeasuresView" hidden>
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-calculator"></i> Measure catalog</div>
+              <input type="search" id="measureSearch" placeholder="Search measures…" style="height:30px;padding:0 12px;background:var(--surface-2);border:1px solid var(--border-2);border-radius:8px;color:var(--text-1);min-width:220px">
+            </div>
+            <div id="measureList" class="measures"></div>
+          </article>
+        </div>
+
+        <div class="viz-grid" id="modelTablesView" hidden>
+          <article class="viz viz--12">
+            <div class="viz__head"><div class="viz__title"><i class="fas fa-table"></i> Tables &amp; columns</div></div>
+            <div id="tablesList" class="tables-list"></div>
+          </article>
+        </div>
+
+        <div class="viz-grid" id="modelRelationshipsView" hidden>
+          <article class="viz viz--12">
+            <div class="viz__head"><div class="viz__title"><i class="fas fa-link"></i> Relationships</div></div>
+            <div class="table-wrap">
+              <table class="data" id="relTable">
+                <thead><tr><th>From</th><th>To</th><th>Cardinality</th><th>Cross-filter</th><th>Active</th><th>Storage</th></tr></thead>
+                <tbody id="relBody"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Governance pane -->
+      <div class="pane" id="pane-governance" role="tabpanel">
+        <div class="viz-grid">
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-diagram-project"></i> End-to-end lineage</div>
+              <div class="viz__sub">Snowflake → Dataflow → Dataset → Report → Distribution</div>
+            </div>
+            <div id="lineageCanvas" class="lineage-canvas" aria-label="Lineage flow diagram"></div>
+          </article>
+
+          <article class="viz viz--6">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-shield-halved"></i> Row-level security matrix</div>
+              <div class="viz__sub">Roles × tables · click a cell for the DAX filter</div>
+            </div>
+            <div id="rlsMatrix" class="rls-matrix"></div>
+            <pre id="rlsDax" class="dax-block" hidden></pre>
+          </article>
+
+          <article class="viz viz--6">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-tags"></i> Sensitivity &amp; endorsement</div>
+            </div>
+            <div id="endorsementList" class="endorsement"></div>
+          </article>
+
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-clock-rotate-left"></i> Refresh history — last 30 runs</div>
+              <div class="viz__sub">Hover a cell for duration · red = failure</div>
+            </div>
+            <div id="refreshHistory" class="refresh-history"></div>
+            <div style="display:flex;gap:18px;margin-top:12px;font-size:12.5px;color:var(--text-3);flex-wrap:wrap">
+              <span><strong style="color:var(--text-1)">29</strong> success</span>
+              <span><strong style="color:var(--text-1)">1</strong> failure (auto-recovered)</span>
+              <span>p50 <strong style="color:var(--text-1)">1m 12s</strong></span>
+              <span>p95 <strong style="color:var(--text-1)">2m 34s</strong></span>
+              <span>SLA attainment <strong style="color:#6ee7b7">99.4%</strong></span>
+            </div>
+          </article>
+
+          <article class="viz viz--12">
+            <div class="viz__head">
+              <div class="viz__title"><i class="fas fa-microchip"></i> Performance Analyzer — top 5 visuals</div>
+              <div class="viz__sub">DAX query · Storage Engine · Formula Engine breakdown</div>
+            </div>
+            <div id="perfList" class="perf-list"></div>
           </article>
         </div>
       </div>
@@ -2089,9 +2644,940 @@
     document.querySelectorAll('canvas[data-chart]').forEach(cv => {
       const key = cv.dataset.chart;
       if (!map[key]) return;
-      lazy(cv, () => map[key](cv));
+      lazy(cv, () => { const c = map[key](cv); chartRegistry.set(cv, c); });
     });
   }
+
+  /* ============================================================
+     SEMANTIC MODEL — schema, tables, measures, relationships
+     ============================================================ */
+  const MODEL = {
+    facts: [
+      { id:'F_COLL', name:'FACT_COLLECTIONS', rows:'42.1M', mode:'DirectQuery',
+        cols:[
+          {n:'CollectionEventKey', t:'int',  k:'pk'},
+          {n:'DateKey',            t:'int',  k:'fk', to:'D_DATE'},
+          {n:'BorrowerKey',        t:'int',  k:'fk', to:'D_BORROWER'},
+          {n:'AgentKey',           t:'int',  k:'fk', to:'D_AGENT'},
+          {n:'QueueKey',           t:'int',  k:'fk', to:'D_QUEUE'},
+          {n:'ProductKey',         t:'int',  k:'fk', to:'D_PRODUCT'},
+          {n:'PromiseAmount',      t:'money'},
+          {n:'PaidAmount',         t:'money'},
+          {n:'PromiseKept',        t:'bool'},
+          {n:'CallSeconds',        t:'int'},
+          {n:'OutcomeCode',        t:'varchar(8)'}
+        ] },
+      { id:'F_DEC', name:'FACT_DECISIONS', rows:'8.7M', mode:'Import',
+        cols:[
+          {n:'DecisionKey',        t:'int',  k:'pk'},
+          {n:'DateKey',            t:'int',  k:'fk', to:'D_DATE'},
+          {n:'BorrowerKey',        t:'int',  k:'fk', to:'D_BORROWER'},
+          {n:'ProductKey',         t:'int',  k:'fk', to:'D_PRODUCT'},
+          {n:'FicoBucket',         t:'tinyint'},
+          {n:'AmountRequested',    t:'money'},
+          {n:'AmountApproved',     t:'money'},
+          {n:'AutoDecision',       t:'bool'},
+          {n:'DecisionMs',         t:'int'},
+          {n:'AdverseActionCode',  t:'varchar(4)'}
+        ] },
+      { id:'F_FRAUD', name:'FACT_FRAUD_EVENTS', rows:'stream', mode:'Push',
+        cols:[
+          {n:'EventKey',           t:'bigint', k:'pk'},
+          {n:'DateKey',            t:'int',    k:'fk', to:'D_DATE'},
+          {n:'BorrowerKey',        t:'int',    k:'fk', to:'D_BORROWER'},
+          {n:'ProductKey',         t:'int',    k:'fk', to:'D_PRODUCT'},
+          {n:'Score',              t:'decimal(5,4)'},
+          {n:'IsBlocked',          t:'bool'},
+          {n:'LossPrevented',      t:'money'},
+          {n:'ChannelCode',        t:'varchar(4)'}
+        ] }
+    ],
+    dims: [
+      { id:'D_DATE', name:'DIM_DATE', rows:'12,784', mode:'Import',
+        cols:[
+          {n:'DateKey', t:'int', k:'pk'},
+          {n:'Date', t:'date'},
+          {n:'YearMonth', t:'int'},
+          {n:'Quarter', t:'tinyint'},
+          {n:'IsBusinessDay', t:'bool'},
+          {n:'FiscalYear', t:'smallint'}
+        ] },
+      { id:'D_BORROWER', name:'DIM_BORROWER', rows:'1.4M', mode:'DirectQuery',
+        cols:[
+          {n:'BorrowerKey', t:'int', k:'pk'},
+          {n:'BorrowerId', t:'varchar(16)'},
+          {n:'Region', t:'varchar(16)'},
+          {n:'State', t:'char(2)'},
+          {n:'CreditBand', t:'varchar(12)'},
+          {n:'OriginationVintage', t:'varchar(8)'},
+          {n:'PII_Email_Masked', t:'varchar(64)'}
+        ] },
+      { id:'D_AGENT', name:'DIM_AGENT', rows:'612', mode:'Import',
+        cols:[
+          {n:'AgentKey', t:'int', k:'pk'},
+          {n:'AgentId', t:'varchar(8)'},
+          {n:'Tier', t:'tinyint'},
+          {n:'Team', t:'varchar(24)'},
+          {n:'StartDate', t:'date'}
+        ] },
+      { id:'D_QUEUE', name:'DIM_QUEUE', rows:'48', mode:'Import',
+        cols:[
+          {n:'QueueKey', t:'int', k:'pk'},
+          {n:'QueueName', t:'varchar(32)'},
+          {n:'Strategy', t:'varchar(16)'},
+          {n:'IsCurePath', t:'bool'}
+        ] },
+      { id:'D_PRODUCT', name:'DIM_PRODUCT', rows:'24', mode:'Import',
+        cols:[
+          {n:'ProductKey', t:'int', k:'pk'},
+          {n:'ProductCode', t:'varchar(8)'},
+          {n:'OriginationYear', t:'smallint'},
+          {n:'TermMonths', t:'smallint'}
+        ] },
+      { id:'D_REGION', name:'DIM_REGION', rows:'56', mode:'Import',
+        cols:[
+          {n:'RegionKey', t:'int', k:'pk'},
+          {n:'RegionName', t:'varchar(24)'},
+          {n:'StateCode', t:'char(2)'},
+          {n:'TimeZone', t:'varchar(8)'}
+        ] }
+    ],
+    relationships: [
+      { from:'FACT_COLLECTIONS.DateKey',       to:'DIM_DATE.DateKey',          card:'*:1', cf:'Single', active:true,  storage:'In-memory' },
+      { from:'FACT_COLLECTIONS.BorrowerKey',   to:'DIM_BORROWER.BorrowerKey',  card:'*:1', cf:'Single', active:true,  storage:'DirectQuery' },
+      { from:'FACT_COLLECTIONS.AgentKey',      to:'DIM_AGENT.AgentKey',        card:'*:1', cf:'Single', active:true,  storage:'In-memory' },
+      { from:'FACT_COLLECTIONS.QueueKey',      to:'DIM_QUEUE.QueueKey',        card:'*:1', cf:'Single', active:true,  storage:'In-memory' },
+      { from:'FACT_COLLECTIONS.ProductKey',    to:'DIM_PRODUCT.ProductKey',    card:'*:1', cf:'Single', active:true,  storage:'In-memory' },
+      { from:'FACT_DECISIONS.DateKey',         to:'DIM_DATE.DateKey',          card:'*:1', cf:'Single', active:true,  storage:'In-memory' },
+      { from:'FACT_DECISIONS.BorrowerKey',     to:'DIM_BORROWER.BorrowerKey',  card:'*:1', cf:'Single', active:true,  storage:'DirectQuery' },
+      { from:'FACT_DECISIONS.ProductKey',      to:'DIM_PRODUCT.ProductKey',    card:'*:1', cf:'Single', active:true,  storage:'In-memory' },
+      { from:'FACT_FRAUD_EVENTS.DateKey',      to:'DIM_DATE.DateKey',          card:'*:1', cf:'Single', active:true,  storage:'Push' },
+      { from:'FACT_FRAUD_EVENTS.BorrowerKey',  to:'DIM_BORROWER.BorrowerKey',  card:'*:1', cf:'Single', active:true,  storage:'Push' },
+      { from:'FACT_FRAUD_EVENTS.ProductKey',   to:'DIM_PRODUCT.ProductKey',    card:'*:1', cf:'Single', active:true,  storage:'Push' },
+      { from:'DIM_BORROWER.RegionKey',         to:'DIM_REGION.RegionKey',      card:'*:1', cf:'Single', active:false, storage:'Snowflake-side' }
+    ]
+  };
+
+  const MEASURES = [
+    { name:'[Net Collections MTD]', tag:'time', tagL:'Time intel', desc:'Month-to-date paid amount, current period.',
+      dax: `Net Collections MTD =
+CALCULATE (
+    [Gross Collections],
+    DATESMTD ( DIM_DATE[Date] )
+)`,
+      deps:['Gross Collections','DIM_DATE[Date]'] },
+    { name:'[Gross Collections]', tag:'calc', tagL:'Calc',
+      desc:'Sum of paid amount across all events in context.',
+      dax: `Gross Collections =
+SUM ( FACT_COLLECTIONS[PaidAmount] )`,
+      deps:['FACT_COLLECTIONS[PaidAmount]'] },
+    { name:'[Promise Kept Rate]', tag:'calc', tagL:'Calc',
+      desc:'Share of promises-to-pay that resolved as paid within the SLA window.',
+      dax: `Promise Kept Rate =
+DIVIDE (
+    CALCULATE (
+        COUNTROWS ( FACT_COLLECTIONS ),
+        FACT_COLLECTIONS[PromiseKept] = TRUE
+    ),
+    CALCULATE (
+        COUNTROWS ( FACT_COLLECTIONS ),
+        NOT ISBLANK ( FACT_COLLECTIONS[PromiseAmount] )
+    ),
+    BLANK ()
+)`,
+      deps:['FACT_COLLECTIONS[PromiseKept]','FACT_COLLECTIONS[PromiseAmount]'] },
+    { name:'[Roll Rate 30→60]', tag:'risk', tagL:'Risk',
+      desc:'Probability of moving from 30-DPD to 60-DPD month over month.',
+      dax: `Roll Rate 30 to 60 =
+VAR _Now60 =
+    CALCULATE (
+        [Balance],
+        DIM_AGING[BucketDays] >= 60 && DIM_AGING[BucketDays] < 90
+    )
+VAR _Prior30 =
+    CALCULATE (
+        [Balance],
+        DIM_AGING[BucketDays] >= 30 && DIM_AGING[BucketDays] < 60,
+        DATEADD ( DIM_DATE[Date], -1, MONTH )
+    )
+RETURN
+    DIVIDE ( _Now60, _Prior30, BLANK () )`,
+      deps:['Balance','DIM_AGING[BucketDays]','DIM_DATE[Date]'] },
+    { name:'[Vintage Loss Curve %]', tag:'risk', tagL:'Risk',
+      desc:'Cumulative net loss divided by original disbursed balance, by months on book.',
+      dax: `Vintage Loss Curve % =
+VAR _Charged =
+    CALCULATE (
+        SUM ( FACT_LOSS[ChargedOff] ),
+        FILTER (
+            ALL ( DIM_DATE ),
+            DIM_DATE[MonthsOnBook] <= MAX ( DIM_DATE[MonthsOnBook] )
+        )
+    )
+VAR _Original =
+    CALCULATE (
+        SUM ( FACT_DISBURSEMENT[OriginalBalance] ),
+        ALL ( DIM_DATE )
+    )
+RETURN
+    DIVIDE ( _Charged, _Original, 0 )`,
+      deps:['FACT_LOSS[ChargedOff]','FACT_DISBURSEMENT[OriginalBalance]'] },
+    { name:'[Approval Rate]', tag:'calc', tagL:'Calc',
+      desc:'Approved decisions divided by total decisioned applications.',
+      dax: `Approval Rate =
+DIVIDE (
+    CALCULATE (
+        COUNTROWS ( FACT_DECISIONS ),
+        FACT_DECISIONS[AmountApproved] > 0
+    ),
+    COUNTROWS ( FACT_DECISIONS ),
+    BLANK ()
+)`,
+      deps:['FACT_DECISIONS[AmountApproved]'] },
+    { name:'[Auto-Decision Rate]', tag:'calc', tagL:'Calc',
+      desc:'Share of decisions resolved by the rule engine without human review.',
+      dax: `Auto-Decision Rate =
+DIVIDE (
+    CALCULATE (
+        COUNTROWS ( FACT_DECISIONS ),
+        FACT_DECISIONS[AutoDecision] = TRUE
+    ),
+    COUNTROWS ( FACT_DECISIONS )
+)`,
+      deps:['FACT_DECISIONS[AutoDecision]'] },
+    { name:'[Risk-Adjusted Yield]', tag:'risk', tagL:'Risk',
+      desc:'Yield net of expected loss using LGD-weighted exposure.',
+      dax: `Risk-Adjusted Yield =
+VAR _Yield = [Gross Yield]
+VAR _ExpectedLoss =
+    SUMX (
+        VALUES ( DIM_PRODUCT[ProductCode] ),
+        [PD] * [LGD] * [EAD]
+    )
+RETURN
+    _Yield - DIVIDE ( _ExpectedLoss, [Avg Balance] )`,
+      deps:['Gross Yield','PD','LGD','EAD','Avg Balance'] },
+    { name:'[YoY % Collections]', tag:'time', tagL:'Time intel',
+      desc:'Same-period year-over-year change in net collections.',
+      dax: `YoY % Collections =
+VAR _Curr = [Net Collections MTD]
+VAR _Prior =
+    CALCULATE (
+        [Net Collections MTD],
+        SAMEPERIODLASTYEAR ( DIM_DATE[Date] )
+    )
+RETURN
+    DIVIDE ( _Curr - _Prior, _Prior )`,
+      deps:['Net Collections MTD','DIM_DATE[Date]'] },
+    { name:'[Fraud Precision]', tag:'perf', tagL:'Quality',
+      desc:'True positives divided by alerts raised by the model in the period.',
+      dax: `Fraud Precision =
+DIVIDE (
+    CALCULATE (
+        COUNTROWS ( FACT_FRAUD_EVENTS ),
+        FACT_FRAUD_EVENTS[IsConfirmedFraud] = TRUE
+    ),
+    CALCULATE (
+        COUNTROWS ( FACT_FRAUD_EVENTS ),
+        FACT_FRAUD_EVENTS[IsBlocked] = TRUE
+    )
+)`,
+      deps:['FACT_FRAUD_EVENTS[IsConfirmedFraud]','FACT_FRAUD_EVENTS[IsBlocked]'] },
+    { name:'[Active Customers]', tag:'calc', tagL:'Calc',
+      desc:'Distinct borrowers with at least one open loan in the current month.',
+      dax: `Active Customers =
+CALCULATE (
+    DISTINCTCOUNT ( DIM_BORROWER[BorrowerId] ),
+    FACT_LOAN_STATUS[IsOpen] = TRUE
+)`,
+      deps:['DIM_BORROWER[BorrowerId]','FACT_LOAN_STATUS[IsOpen]'] }
+  ];
+
+  // simple DAX highlighter
+  function highlightDAX(s) {
+    const kws = ['CALCULATE','VAR','RETURN','DIVIDE','SUM','SUMX','COUNTROWS','DISTINCTCOUNT','FILTER','VALUES','ALL','DATESMTD','SAMEPERIODLASTYEAR','DATEADD','TRUE','FALSE','BLANK','ISBLANK','MAX','MIN','NOT'];
+    return s
+      .replace(/\/\/[^\n]*/g, m => `<span class="dax-com">${m}</span>`)
+      .replace(/"[^"]*"/g, m => `<span class="dax-str">${m}</span>`)
+      .replace(/\b(FACT_[A-Z_]+|DIM_[A-Z_]+)\b/g, m => `<span class="dax-tbl">${m}</span>`)
+      .replace(new RegExp(`\\b(${kws.join('|')})\\b`, 'g'), m => `<span class="dax-kw">${m}</span>`)
+      .replace(/\b(\d+(?:\.\d+)?)\b/g, m => `<span class="dax-num">${m}</span>`);
+  }
+
+  function renderSchema() {
+    const host = document.getElementById('schemaCanvas');
+    if (!host) return;
+    host.innerHTML = '';
+    // Layout: facts in center column (stacked), dims around them.
+    const W = host.clientWidth || 720, H = 480;
+    const positions = {
+      F_COLL:    { x: W*0.42, y: 60 },
+      F_DEC:     { x: W*0.42, y: 200 },
+      F_FRAUD:   { x: W*0.42, y: 340 },
+      D_DATE:    { x: W*0.10, y: 30 },
+      D_BORROWER:{ x: W*0.74, y: 30 },
+      D_AGENT:   { x: W*0.10, y: 180 },
+      D_QUEUE:   { x: W*0.74, y: 180 },
+      D_PRODUCT: { x: W*0.10, y: 330 },
+      D_REGION:  { x: W*0.74, y: 330 }
+    };
+    const all = [...MODEL.facts.map(t => ({...t, kind:'fact'})), ...MODEL.dims.map(t => ({...t, kind:'dim'}))];
+    const nodeById = {};
+    all.forEach(t => {
+      const node = document.createElement('div');
+      node.className = `schema-table is-${t.kind}`;
+      node.dataset.id = t.id;
+      node.style.left = positions[t.id].x + 'px';
+      node.style.top  = positions[t.id].y + 'px';
+      const cols = t.cols.slice(0, 5).map(c => {
+        const cls = c.k === 'pk' ? 'key' : c.k === 'fk' ? 'fk' : '';
+        const ic = c.k === 'pk' ? 'fa-key' : c.k === 'fk' ? 'fa-arrow-right-arrow-left' : 'fa-circle';
+        return `<div class="schema-col ${cls}"><i class="fas ${ic}"></i> ${c.n}</div>`;
+      }).join('') + (t.cols.length > 5 ? `<div class="schema-col" style="opacity:.5">+ ${t.cols.length - 5} more</div>` : '');
+      node.innerHTML = `
+        <div class="schema-table__head">
+          <i class="fas ${t.kind === 'fact' ? 'fa-cube' : 'fa-table'}"></i>
+          <span>${t.name}</span>
+          <span style="margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--text-4);font-weight:500">${t.rows}</span>
+        </div>
+        <div class="schema-table__cols">${cols}</div>`;
+      host.appendChild(node);
+      nodeById[t.id] = node;
+    });
+
+    // SVG relationships
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const defs = document.createElementNS(ns, 'defs');
+    defs.innerHTML = `
+      <marker id="rel-many" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M0,0 L10,5 L0,10 M0,5 L10,5" stroke="rgba(242,200,17,0.85)" stroke-width="1" fill="none"/>
+      </marker>
+      <marker id="rel-one" viewBox="0 0 10 10" refX="0" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+        <line x1="2" y1="2" x2="2" y2="8" stroke="rgba(242,200,17,0.85)" stroke-width="1.4"/>
+      </marker>`;
+    svg.appendChild(defs);
+
+    // Wait a tick so DOM measurements are accurate
+    requestAnimationFrame(() => {
+      MODEL.relationships.forEach(rel => {
+        const fromTbl = rel.from.split('.')[0], toTbl = rel.to.split('.')[0];
+        const fromNode = host.querySelector(`[data-id="${MODEL.facts.concat(MODEL.dims).find(t=>t.name===fromTbl)?.id}"]`);
+        const toNode   = host.querySelector(`[data-id="${MODEL.facts.concat(MODEL.dims).find(t=>t.name===toTbl)?.id}"]`);
+        if (!fromNode || !toNode) return;
+        const fr = fromNode.getBoundingClientRect();
+        const tr = toNode.getBoundingClientRect();
+        const hr = host.getBoundingClientRect();
+        const fx = fr.left - hr.left + fr.width / 2;
+        const fy = fr.top  - hr.top  + fr.height / 2;
+        const tx = tr.left - hr.left + tr.width / 2;
+        const ty = tr.top  - hr.top  + tr.height / 2;
+        const path = document.createElementNS(ns, 'path');
+        const cx = (fx + tx) / 2;
+        path.setAttribute('d', `M${fx},${fy} C${cx},${fy} ${cx},${ty} ${tx},${ty}`);
+        path.setAttribute('stroke', rel.active ? 'rgba(242,200,17,0.7)' : 'rgba(148,163,184,0.4)');
+        path.setAttribute('stroke-width', '1.4');
+        path.setAttribute('fill', 'none');
+        if (!rel.active) path.setAttribute('stroke-dasharray', '4 4');
+        path.setAttribute('marker-start', 'url(#rel-many)');
+        path.setAttribute('marker-end', 'url(#rel-one)');
+        svg.appendChild(path);
+      });
+      host.appendChild(svg);
+    });
+
+    host.querySelectorAll('.schema-table').forEach(n => {
+      n.addEventListener('click', () => {
+        host.querySelectorAll('.schema-table').forEach(x => x.classList.remove('is-active'));
+        n.classList.add('is-active');
+        renderInspector(n.dataset.id);
+      });
+    });
+
+    renderInspector('F_COLL');
+  }
+  function renderInspector(id) {
+    const t = [...MODEL.facts, ...MODEL.dims].find(x => x.id === id);
+    if (!t) return;
+    document.getElementById('inspectorTitle').textContent = t.name;
+    const meas = MEASURES.filter(m => m.deps.some(d => d.startsWith(t.name + '['))).map(m => m.name);
+    document.getElementById('inspectorBody').innerHTML = `
+      <div class="inspector__sec">
+        <h5>Properties</h5>
+        <div class="inspector__row"><span class="k">Kind</span><span class="v">${MODEL.facts.includes(t) ? 'Fact' : 'Dim'}</span></div>
+        <div class="inspector__row"><span class="k">Rows</span><span class="v">${t.rows}</span></div>
+        <div class="inspector__row"><span class="k">Storage</span><span class="v"><span class="badge-chip ${t.mode==='Import'?'':t.mode==='DirectQuery'?'badge-chip--fk':'badge-chip--key'}">${t.mode}</span></span></div>
+      </div>
+      <div class="inspector__sec">
+        <h5>Columns (${t.cols.length})</h5>
+        ${t.cols.map(c => `<div class="inspector__row">
+          <span class="k">${c.n}</span>
+          <span class="v">${c.t}${c.k==='pk'?' <span class="badge-chip badge-chip--key">PK</span>':c.k==='fk'?' <span class="badge-chip badge-chip--fk">FK</span>':''}</span>
+        </div>`).join('')}
+      </div>
+      ${meas.length ? `<div class="inspector__sec">
+        <h5>Used in measures (${meas.length})</h5>
+        ${meas.map(m => `<div class="inspector__row"><span class="k">${m}</span><span class="v"></span></div>`).join('')}
+      </div>` : ''}
+    `;
+  }
+
+  function renderMeasures() {
+    const host = document.getElementById('measureList');
+    if (!host) return;
+    const q = (document.getElementById('measureSearch')?.value || '').toLowerCase();
+    const list = MEASURES.filter(m => !q || (m.name + ' ' + m.desc).toLowerCase().includes(q));
+    host.innerHTML = list.map((m, i) => `
+      <div class="measure" data-i="${i}">
+        <div class="measure__head">
+          <i class="far fa-square-caret-down measure__chev"></i>
+          <span class="measure__name">${m.name}</span>
+          <span class="measure__desc">${m.desc}</span>
+          <span class="measure__tag t-${m.tag}">${m.tagL}</span>
+        </div>
+        <div class="measure__body">
+          <pre class="dax-block">${highlightDAX(m.dax)}</pre>
+          <div class="measure__deps">${m.deps.map(d => `<span class="dep-chip"><i class="fas fa-link"></i> ${d}</span>`).join('')}</div>
+        </div>
+      </div>`).join('') || `<div class="empty"><i class="fas fa-circle-info"></i><strong>No measures match</strong></div>`;
+    host.querySelectorAll('.measure__head').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('is-open')));
+  }
+
+  function renderTablesList() {
+    const host = document.getElementById('tablesList');
+    if (!host) return;
+    const all = [...MODEL.facts, ...MODEL.dims];
+    host.innerHTML = all.map(t => {
+      const isFact = MODEL.facts.includes(t);
+      return `<div class="tlist-row">
+        <i class="fas ${isFact?'fa-cube':'fa-table'}" style="color:${isFact?'var(--accent)':'var(--info)'};text-align:center"></i>
+        <div><div class="tname">${t.name}</div><div class="tcols">${t.cols.length} columns · ${t.cols.filter(c=>c.k==='pk').length} key · ${t.cols.filter(c=>c.k==='fk').length} foreign</div></div>
+        <div><span class="badge-chip">${t.rows}</span></div>
+        <div><span class="badge-chip ${t.mode==='Import'?'':'badge-chip--fk'}">${t.mode}</span></div>
+        <div><span class="badge-chip ${isFact?'badge-chip--key':''}">${isFact?'Fact':'Dim'}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderRelationships() {
+    const body = document.getElementById('relBody');
+    if (!body) return;
+    body.innerHTML = MODEL.relationships.map(r => `<tr>
+      <td><span class="b-name" style="font-family:var(--font-mono);font-size:12.5px">${r.from}</span></td>
+      <td><span class="b-name" style="font-family:var(--font-mono);font-size:12.5px">${r.to}</span></td>
+      <td><span class="pill pill--info">${r.card}</span></td>
+      <td>${r.cf}</td>
+      <td>${r.active ? '<span class="pill pill--ok">Active</span>' : '<span class="pill pill--warn">Inactive</span>'}</td>
+      <td><span class="badge-chip">${r.storage}</span></td>
+    </tr>`).join('');
+  }
+
+  /* ============================================================
+     GOVERNANCE — lineage, RLS, refresh history, perf, endorsement
+     ============================================================ */
+  const LINEAGE_NODES = [
+    { id:'src1', kind:'source', icon:'fa-snowflake',         name:'Snowflake · ANALYTICS', meta:'42 tables · 2.3 TB',                    x: 30 },
+    { id:'src2', kind:'source', icon:'fa-snowflake',         name:'Snowflake · CREDIT',    meta:'CDC stream · 15 min',                   x: 30 },
+    { id:'src3', kind:'source', icon:'fa-bolt',              name:'Kafka · fraud_events',  meta:'JSON · ~2k msg/min',                    x: 30 },
+    { id:'fl1',  kind:'flow',   icon:'fa-diagram-project',   name:'DF_OPS_PULSE',          meta:'Power Query · 14 entities',             x: 240 },
+    { id:'fl2',  kind:'flow',   icon:'fa-diagram-project',   name:'DF_FRAUD_RT',           meta:'Spark structured streaming',            x: 240 },
+    { id:'ds1',  kind:'ds',     icon:'fa-cube',              name:'Operations Pulse v3',   meta:'Composite · 3 fact / 6 dim',            x: 460 },
+    { id:'rep1', kind:'report', icon:'fa-chart-pie',         name:'Executive Summary',     meta:'5 pages · 18 visuals',                  x: 660 },
+    { id:'rep2', kind:'report', icon:'fa-chart-line',        name:'Collections Performance', meta:'8 pages · 32 visuals',                x: 660 },
+    { id:'rep3', kind:'report', icon:'fa-shield-halved',     name:'Compliance Scorecard',  meta:'4 pages · 12 visuals',                  x: 660 },
+    { id:'sub1', kind:'sub',    icon:'fa-envelope',          name:'CFO subscription',      meta:'Mon 7:00 AM ET · 4 recipients',         x: 880 },
+    { id:'sub2', kind:'sub',    icon:'fa-mobile',            name:'Mobile App',            meta:'Power BI Mobile · 152 daily users',     x: 880 }
+  ];
+  const LINEAGE_EDGES = [
+    ['src1','fl1'], ['src2','fl1'], ['src3','fl2'],
+    ['fl1','ds1'],  ['fl2','ds1'],
+    ['ds1','rep1'], ['ds1','rep2'], ['ds1','rep3'],
+    ['rep1','sub1'],['rep1','sub2'],['rep2','sub2']
+  ];
+  const Y_BY_KIND = { source:[40,140,240], flow:[80,200], ds:[140], report:[40,140,240], sub:[80,200] };
+
+  function renderLineage() {
+    const host = document.getElementById('lineageCanvas');
+    if (!host) return;
+    host.innerHTML = '';
+    const counters = { source:0, flow:0, ds:0, report:0, sub:0 };
+    const nodeById = {};
+    LINEAGE_NODES.forEach(n => {
+      const yArr = Y_BY_KIND[n.kind];
+      const y = yArr[counters[n.kind]++ % yArr.length];
+      const el = document.createElement('div');
+      el.className = `lineage-node lineage-node--${n.kind}`;
+      el.style.left = n.x + 'px'; el.style.top = y + 'px';
+      el.innerHTML = `
+        <div class="lineage-node__type">${n.kind}</div>
+        <div class="lineage-node__name"><i class="fas ${n.icon}"></i>${n.name}</div>
+        <div class="lineage-node__meta">${n.meta}</div>`;
+      host.appendChild(el);
+      nodeById[n.id] = el;
+    });
+
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    requestAnimationFrame(() => {
+      const hr = host.getBoundingClientRect();
+      LINEAGE_EDGES.forEach(([a,b]) => {
+        const A = nodeById[a].getBoundingClientRect(), B = nodeById[b].getBoundingClientRect();
+        const fx = A.right - hr.left, fy = A.top - hr.top + A.height/2;
+        const tx = B.left  - hr.left, ty = B.top - hr.top + B.height/2;
+        const cx = (fx + tx) / 2;
+        const path = document.createElementNS(ns, 'path');
+        path.setAttribute('d', `M${fx},${fy} C${cx},${fy} ${cx},${ty} ${tx},${ty}`);
+        path.setAttribute('stroke', 'rgba(242,200,17,0.55)');
+        path.setAttribute('stroke-width', '1.3');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('marker-end', 'url(#arr)');
+        svg.appendChild(path);
+      });
+      const defs = document.createElementNS(ns, 'defs');
+      defs.innerHTML = `<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10" fill="rgba(242,200,17,0.55)"/></marker>`;
+      svg.appendChild(defs);
+      host.appendChild(svg);
+    });
+  }
+
+  const RLS = {
+    roles: ['Collections Mgr','Fraud Analyst','Auditor','Executive','Service Agent'],
+    tables: ['FACT_COLLECTIONS','FACT_DECISIONS','FACT_FRAUD_EVENTS','DIM_BORROWER (PII)','DIM_AGENT'],
+    matrix: [
+      ['read','filter','deny','filter','filter'],
+      ['filter','filter','read','mask','deny'],
+      ['read','read','read','read','read'],
+      ['read','read','read','mask','filter'],
+      ['filter','deny','deny','mask','filter']
+    ],
+    daxByCell: {
+      '0_0': '// Collections Mgr · FACT_COLLECTIONS — read all\n// (no row filter applied)',
+      '0_1': '[FACT_DECISIONS] = FILTER ( FACT_DECISIONS,\n    DIM_BORROWER[Region] = USERPRINCIPALNAME() )\n// limit to manager\'s region',
+      '0_3': 'DIM_BORROWER[Region] IN VALUES ( UserRegion[Region] )',
+      '1_2': '// Fraud Analyst · full read on FACT_FRAUD_EVENTS',
+      '1_3': '// PII columns masked at the column level (OLS)\n// Email, SSN_Last4, DOB returned as ****',
+      '2_0': '// Auditor — read across all\n// Static role, no filter',
+      '4_3': '// PII masked + region filter\nDIM_BORROWER[Region] = USERPRINCIPALNAME()'
+    }
+  };
+  function renderRLS() {
+    const host = document.getElementById('rlsMatrix');
+    if (!host) return;
+    let html = `<div class="rls-h"></div>` + RLS.tables.map(t => `<div class="rls-h">${t}</div>`).join('');
+    RLS.roles.forEach((role, ri) => {
+      html += `<div class="rls-rh">${role}</div>`;
+      RLS.tables.forEach((_, ci) => {
+        const v = RLS.matrix[ri][ci];
+        const lbl = { read:'Read', filter:'Filter', mask:'Mask', deny:'Deny' }[v];
+        html += `<div class="rls-c ${v}" data-r="${ri}" data-c="${ci}" tabindex="0" role="button" aria-label="${role} on ${RLS.tables[ci]}: ${lbl}">${lbl}</div>`;
+      });
+    });
+    host.innerHTML = html;
+    host.querySelectorAll('.rls-c').forEach(c => {
+      c.addEventListener('click', () => {
+        host.querySelectorAll('.rls-c').forEach(x => x.classList.remove('is-selected'));
+        c.classList.add('is-selected');
+        const key = `${c.dataset.r}_${c.dataset.c}`;
+        const dax = RLS.daxByCell[key] || `// ${RLS.roles[c.dataset.r]} · ${RLS.tables[c.dataset.c]}\n// ${c.textContent} access — default policy applies`;
+        const block = document.getElementById('rlsDax');
+        block.innerHTML = highlightDAX(dax);
+        block.hidden = false;
+      });
+    });
+  }
+
+  const ENDORSEMENTS = [
+    { name:'Operations Pulse v3', meta:'Workspace · Operations · Owner BW · 1.2k viewers', endorse:'cert', sens:'Confidential' },
+    { name:'Collections Performance', meta:'Owner BW · refreshed every 15 min', endorse:'cert', sens:'Confidential — PII' },
+    { name:'Credit Approval Analytics', meta:'Owner BW · refreshed daily 04:00 ET', endorse:'cert', sens:'Confidential — NPI' },
+    { name:'Fraud Detection Metrics', meta:'Owner DR · streaming', endorse:'prom', sens:'Highly Confidential — NPI' },
+    { name:'Compliance Scorecard', meta:'Owner MK · monthly close', endorse:'cert', sens:'Confidential' }
+  ];
+  function renderEndorsement() {
+    const host = document.getElementById('endorsementList');
+    if (!host) return;
+    host.innerHTML = ENDORSEMENTS.map(e => `<div class="endorsement__row">
+      <div class="endorsement__name">${e.name}<small>${e.meta}</small></div>
+      <span class="sens-badge ${/NPI/.test(e.sens)?'npi':''}"><i class="fas fa-tag"></i> ${e.sens}</span>
+      <span class="endorsement-badge ${e.endorse==='cert'?'cert':'prom'}">
+        <i class="fas ${e.endorse==='cert'?'fa-circle-check':'fa-thumbs-up'}"></i> ${e.endorse==='cert'?'Certified':'Promoted'}
+      </span>
+    </div>`).join('');
+  }
+
+  function renderRefreshHistory() {
+    const host = document.getElementById('refreshHistory');
+    if (!host) return;
+    // 30 cells, mostly success, 1 fail, 2 warn, with realistic durations
+    const seed = [72,68,71,74,69,73,75,70,76,72,68,73,77,71,69,80,210,72,70,68,73,71,74,72,73,69,72,70,71,72];
+    const fail = [16];           // index that failed
+    const warn = [10, 23];       // slow but ok
+    host.innerHTML = seed.map((sec, i) => {
+      const cls = fail.includes(i) ? 'fail' : warn.includes(i) ? 'warn' : '';
+      return `<div class="rh-cell ${cls}" title="Run ${i+1} · ${cls==='fail'?'FAILED':sec+'s'}"></div>`;
+    }).join('');
+  }
+
+  const PERF = [
+    { v:'Revenue vs Target', total:412, se:280, fe:118, ot:14 },
+    { v:'Mix by business unit', total:96, se:48, fe:42, ot:6 },
+    { v:'Vintage curves',  total:284, se:204, fe:62, ot:18 },
+    { v:'Roll-rate matrix', total:178, se:120, fe:48, ot:10 },
+    { v:'Top performing units', total:94, se:34, fe:48, ot:12 }
+  ];
+  function renderPerf() {
+    const host = document.getElementById('perfList');
+    if (!host) return;
+    host.innerHTML = `<div class="perf-legend">
+        <span><i class="dot" style="background:var(--info)"></i>Storage Engine</span>
+        <span><i class="dot" style="background:var(--violet)"></i>Formula Engine</span>
+        <span><i class="dot" style="background:var(--text-4)"></i>Other</span>
+      </div>` + PERF.map(p => {
+      const totalPx = 100;
+      const s = (p.se/p.total)*totalPx, f = (p.fe/p.total)*totalPx, o = (p.ot/p.total)*totalPx;
+      return `<div class="perf-row">
+        <div class="pname">${p.v}</div>
+        <div class="ptime">SE ${p.se}ms</div>
+        <div class="ptime">FE ${p.fe}ms</div>
+        <div class="ptime">OT ${p.ot}ms</div>
+        <div class="ptime" style="text-align:right;font-weight:700">${p.total}ms</div>
+        <div class="perf-bar"><span class="se" style="width:${s}%"></span><span class="fe" style="width:${f}%"></span><span class="ot" style="width:${o}%"></span></div>
+      </div>`;
+    }).join('');
+  }
+
+  /* ============================================================
+     VINTAGE / ROLL-RATE / RECOVERY / DECOMP / CHAMPION
+     ============================================================ */
+  function buildVintageCharts() {
+    const cohorts = ['2023 Q3','2023 Q4','2024 Q1','2024 Q2','2024 Q3','2024 Q4','2025 Q1'];
+    const palette = [COLORS.text4, COLORS.text3, COLORS.info, COLORS.violet, COLORS.teal, COLORS.warn, COLORS.accent];
+    // Cumulative loss % by months on book per cohort
+    const series = cohorts.map((c, i) => {
+      const peak = 5.5 + (i % 3) * 0.6 - i * 0.08;
+      const data = [];
+      for (let m = 0; m <= 24; m++) {
+        const x = m / 24;
+        const v = peak * (1 - Math.exp(-3.2 * x)) + (i % 2 === 0 ? 0.1 : -0.05) * Math.sin(m / 3);
+        data.push(+(Math.max(0, v).toFixed(2)));
+      }
+      // most recent cohorts only have partial data
+      const cap = i >= 5 ? (i === 5 ? 12 : 6) : 25;
+      return { c, data: data.slice(0, cap), color: palette[i] };
+    });
+
+    const cv = document.querySelector('canvas[data-chart="vintage-curves"]');
+    if (cv) lazy(cv, () => new Chart(cv, {
+      type: 'line',
+      data: {
+        labels: Array.from({length: 25}, (_,i) => i),
+        datasets: series.map(s => ({
+          label: s.c, data: s.data, borderColor: s.color,
+          backgroundColor: hexA(s.color, 0.05), borderWidth: 2,
+          tension: 0.35, pointRadius: 0, pointHoverRadius: 4, fill: false,
+          spanGaps: false
+        }))
+      },
+      options: { responsive: true, maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 8, padding: 10 } },
+          tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y}%` } }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Months on book', color: COLORS.text3 }, grid: { display: false } },
+          y: { title: { display: true, text: 'Cumulative net loss %', color: COLORS.text3 },
+               ticks: { callback: v => v + '%' }, grid: gridOpts() }
+        } }
+    }));
+
+    // Recovery curve
+    const rec = document.querySelector('canvas[data-chart="recovery-curve"]');
+    if (rec) lazy(rec, () => {
+      const days = Array.from({length: 13}, (_,i) => i*30);
+      const actual = [0, 8, 18, 26, 32, 36, 39, 41, 42.5, 43.4, 43.9, 44.2, 44.4];
+      const upper  = actual.map(v => +(v + 3 + Math.random()*1.2).toFixed(1));
+      const lower  = actual.map(v => +Math.max(0, v - 3 - Math.random()*1.2).toFixed(1));
+      const ctx = rec.getContext('2d');
+      return new Chart(rec, {
+        type: 'line',
+        data: { labels: days, datasets: [
+          { label: 'Model upper', data: upper, borderColor: 'transparent',
+            backgroundColor: hexA(COLORS.info, 0.18), pointRadius: 0, fill: '+1' },
+          { label: 'Model lower', data: lower, borderColor: 'transparent',
+            backgroundColor: 'transparent', pointRadius: 0, fill: false },
+          { label: 'Actual recovery %', data: actual, borderColor: COLORS.accent,
+            backgroundColor: gradient(ctx, COLORS.accent, 0.20, 0),
+            tension: 0.4, fill: false, pointRadius: 3, pointBackgroundColor: COLORS.accent }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { filter: it => it.text !== 'Model lower' } },
+                     tooltip: { callbacks: { label: c => c.dataset.label === 'Model lower' ? null : `${c.dataset.label}: ${c.parsed.y}%` } } },
+          scales: { x: { title: { display: true, text: 'Days post charge-off', color: COLORS.text3 }, grid: { display: false } },
+                    y: { ticks: { callback: v => v + '%' }, grid: gridOpts() } } }
+      });
+    });
+
+    // Champion / Challenger
+    const cc = document.querySelector('canvas[data-chart="champion-challenger"]');
+    if (cc) lazy(cc, () => new Chart(cc, {
+      type: 'bar',
+      data: {
+        labels: ['Northeast','Southeast','Midwest','West','National'],
+        datasets: [
+          { label: 'Champion', data: [42, 38, 36, 40, 39], backgroundColor: hexA(COLORS.text3, 0.5), borderRadius: 4, borderSkipped: false },
+          { label: 'Challenger B', data: [48, 41, 39, 46, 43.5], backgroundColor: hexA(COLORS.accent, 0.85), borderRadius: 4, borderSkipped: false }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.parsed.y}% liquidation` } } },
+        scales: { y: { ticks: { callback: v => v + '%' }, grid: gridOpts() }, x: { grid: { display: false } } } }
+    }));
+  }
+
+  function renderRollRate() {
+    const host = document.getElementById('rollRateGrid');
+    if (!host) return;
+    const states = ['Current','30 DPD','60 DPD','90 DPD','COF'];
+    // Probability of moving from row state to col state (next month)
+    const m = [
+      [0.962, 0.030, 0.005, 0.002, 0.001],
+      [0.580, 0.260, 0.120, 0.030, 0.010],
+      [0.190, 0.180, 0.310, 0.260, 0.060],
+      [0.060, 0.060, 0.110, 0.430, 0.340],
+      [0.020, 0.000, 0.000, 0.000, 0.980]
+    ];
+    let html = `<div class="rr-h"></div>` + states.map(s => `<div class="rr-h">${s}</div>`).join('');
+    states.forEach((row, ri) => {
+      html += `<div class="rr-row-h">${row}</div>`;
+      m[ri].forEach((p, ci) => {
+        const a = 0.10 + p * 0.85;
+        const isBad = (ri < 4 && ci > ri) || (ri >= 1 && ci === 4);
+        const isGood = ri >= 1 && ci < ri;
+        const color = isBad ? `rgba(239,68,68,${a})` : isGood ? `rgba(16,185,129,${a})` : `rgba(148,163,184,${a*0.6})`;
+        html += `<div class="rr-cell" style="background:${color}" title="P(${row}→${states[ci]}) = ${(p*100).toFixed(1)}%">${(p*100).toFixed(1)}%</div>`;
+      });
+    });
+    host.innerHTML = html;
+  }
+
+  // Decomposition tree data
+  const DECOMP = {
+    root: { label:'Default rate', value:'3.2%', delta:'+0.3 pp', share:1.0 },
+    levels: [
+      { name:'By region',  options:[
+        { label:'West',      value:'4.1%', delta:'+0.6 pp', share:0.42 },
+        { label:'Northeast', value:'2.6%', delta:'+0.1 pp', share:0.28 },
+        { label:'Southeast', value:'3.3%', delta:'+0.4 pp', share:0.18 },
+        { label:'Midwest',   value:'2.2%', delta:'−0.1 pp', share:0.12 }
+      ]},
+      { name:'By vintage', options:[
+        { label:'2023 H2',  value:'5.4%', delta:'+0.9 pp', share:0.55 },
+        { label:'2024 H1',  value:'3.7%', delta:'+0.4 pp', share:0.28 },
+        { label:'2024 H2',  value:'2.1%', delta:'+0.1 pp', share:0.12 },
+        { label:'2025 H1',  value:'1.4%', delta:'−',       share:0.05 }
+      ]},
+      { name:'By FICO band · AI insight', options:[
+        { label:'580–619', value:'8.2%', delta:'+1.4 pp', share:0.46, ai:true },
+        { label:'620–659', value:'4.6%', delta:'+0.5 pp', share:0.28 },
+        { label:'660–699', value:'2.1%', delta:'+0.1 pp', share:0.16 },
+        { label:'700+',    value:'0.7%', delta:'−0.1 pp', share:0.10 }
+      ]}
+    ]
+  };
+  function renderDecomp() {
+    const host = document.getElementById('decompTree');
+    if (!host) return;
+    let path = [0, 0, 0]; // active index per level
+    function build() {
+      let html = `<div class="decomp__col">
+        <div class="decomp__col-h">Root</div>
+        <div class="decomp__node is-active">
+          <div class="decomp__label">${DECOMP.root.label}</div>
+          <div class="decomp__bar"><span style="width:100%"></span></div>
+          <div class="decomp__meta"><span>${DECOMP.root.value}</span><span style="color:#fcd34d">${DECOMP.root.delta}</span></div>
+        </div>
+      </div>`;
+      DECOMP.levels.forEach((lvl, i) => {
+        html += `<div class="decomp__col"><div class="decomp__col-h">${lvl.name}</div>`;
+        lvl.options.forEach((o, j) => {
+          html += `<div class="decomp__node ${path[i] === j ? 'is-active' : ''}" data-lvl="${i}" data-j="${j}">
+            <div class="decomp__label">${o.label} ${o.ai ? '<span class="ai" title="AI-suggested split"><i class="fas fa-wand-magic-sparkles"></i> AI</span>' : ''}</div>
+            <div class="decomp__bar"><span style="width:${(o.share*100).toFixed(0)}%"></span></div>
+            <div class="decomp__meta"><span>${o.value}</span><span style="color:${o.delta.includes('+')?'#fca5a5':'#6ee7b7'}">${o.delta}</span></div>
+          </div>`;
+        });
+        html += `</div>`;
+      });
+      host.innerHTML = html;
+      host.querySelectorAll('.decomp__node[data-lvl]').forEach(n => {
+        n.addEventListener('click', () => {
+          path[+n.dataset.lvl] = +n.dataset.j;
+          build();
+        });
+      });
+    }
+    build();
+  }
+
+  /* ============================================================
+     FIELD PARAMETERS
+     ============================================================ */
+  const FIELD_PARAMS = {
+    revenue:    { title: 'Revenue vs Target — last 12 months', sub: 'Revenue (bars) · Target (line). $M.',
+      bars: [9.2,9.6,10.1,10.4,10.8,11.0,11.2,11.5,11.8,12.0,12.2,12.4],
+      line: [9.5,9.8,10.0,10.4,10.8,11.2,11.5,11.8,12.0,12.3,12.6,13.0],
+      fmt: v => '$' + v + 'M' },
+    collections:{ title: 'Gross Collections vs Target — last 12 months', sub: 'Collections (bars) · Target (line). $M.',
+      bars: [0.86,0.92,1.04,1.08,1.12,1.16,1.18,1.20,1.21,1.22,1.23,1.24],
+      line: [1.00,1.05,1.10,1.15,1.20,1.25,1.30,1.32,1.36,1.40,1.45,1.50],
+      fmt: v => '$' + v + 'M' },
+    recovery:   { title: 'Recovery $ vs Target — last 12 months', sub: 'Recovery (bars) · Target (line). $M.',
+      bars: [0.31,0.34,0.36,0.38,0.40,0.39,0.41,0.42,0.41,0.42,0.42,0.42],
+      line: [0.35,0.38,0.40,0.42,0.45,0.47,0.48,0.49,0.50,0.50,0.50,0.50],
+      fmt: v => '$' + v + 'M' },
+    approvals:  { title: 'Credit Approvals vs Target — last 12 months', sub: 'Approvals (bars) · Target (line). thousands.',
+      bars: [0.92,0.97,1.04,1.08,1.10,1.12,1.16,1.20,1.22,1.23,1.24,1.24],
+      line: [1.00,1.05,1.08,1.10,1.15,1.18,1.20,1.22,1.24,1.26,1.28,1.30],
+      fmt: v => v + 'k' }
+  };
+  function applyFieldParam(key) {
+    const fp = FIELD_PARAMS[key]; if (!fp) return;
+    document.getElementById('primaryMeasureTitle').textContent = fp.title;
+    document.getElementById('primaryMeasureSub').textContent = fp.sub;
+    const cv = document.querySelector('canvas[data-chart="rev-vs-target"]');
+    const c = chartRegistry.get(cv); if (!c) return;
+    c.data.datasets[0].data = fp.bars;
+    c.data.datasets[1].data = fp.line;
+    c.options.scales.y.ticks.callback = fp.fmt;
+    c.update();
+    flashToast('Measure: ' + fp.title.split(' vs ')[0]);
+  }
+
+  /* ============================================================
+     BOOKMARKS + URL STATE
+     ============================================================ */
+  function stateToParams() {
+    const p = new URLSearchParams();
+    if (filters.range !== 7) p.set('r', filters.range);
+    ['bu','region','segment','status'].forEach(d => {
+      if (filters[d].size) p.set(d, Array.from(filters[d]).join('|'));
+    });
+    if (filters.search) p.set('q', filters.search);
+    const tab = document.querySelector('.tab.is-active')?.dataset.pane;
+    if (tab && tab !== 'overview') p.set('t', tab);
+    return p;
+  }
+  function pushURL() {
+    const p = stateToParams();
+    const url = location.pathname + (p.toString() ? '?' + p : '');
+    history.replaceState(null, '', url);
+  }
+  function applyParams() {
+    const p = new URLSearchParams(location.search);
+    if (p.has('r')) {
+      const r = +p.get('r');
+      filters.range = r;
+      const btn = document.querySelector(`#rangeSeg button[data-range="${r}"]`);
+      if (btn) {
+        document.querySelectorAll('#rangeSeg button').forEach(x => x.classList.remove('is-active'));
+        btn.classList.add('is-active');
+      }
+    }
+    ['bu','region','segment','status'].forEach(d => {
+      if (p.has(d)) filters[d] = new Set(p.get(d).split('|').filter(Boolean));
+    });
+    if (p.has('q')) {
+      filters.search = p.get('q');
+      const s = document.getElementById('globalSearch'); if (s) s.value = filters.search;
+    }
+    if (p.has('t')) {
+      const tab = document.querySelector(`.tab[data-pane="${p.get('t')}"]`);
+      if (tab) tab.click();
+    }
+  }
+
+  const BOOKMARK_KEY = 'pbi.bookmarks';
+  function loadBookmarks() { try { return JSON.parse(localStorage.getItem(BOOKMARK_KEY) || '[]'); } catch { return []; } }
+  function saveBookmarks(arr) { localStorage.setItem(BOOKMARK_KEY, JSON.stringify(arr)); }
+
+  function renderBookmarksMenu() {
+    let menu = document.getElementById('bookmarksMenu');
+    if (!menu) {
+      menu = document.createElement('div');
+      menu.id = 'bookmarksMenu';
+      menu.className = 'bookmarks-menu';
+      document.querySelector('.bookmarks-wrap').appendChild(menu);
+    }
+    const list = loadBookmarks();
+    menu.innerHTML = `
+      <div class="bm-h"><span class="bm-h__title">Saved views (${list.length})</span></div>
+      <div class="bm-list">
+        ${list.length ? list.map((b,i) => `
+          <div class="bm-row" data-i="${i}">
+            <i class="fas fa-bookmark" style="color:var(--accent);font-size:11px"></i>
+            <span>${b.name}</span>
+            <span class="meta">${b.params}</span>
+            <button class="del" data-del="${i}" aria-label="Delete"><i class="fas fa-trash"></i></button>
+          </div>`).join('') : '<div class="bm-row empty">No saved views yet</div>'}
+      </div>
+      <div class="bm-add">
+        <input id="bmName" placeholder="Name this view…" maxlength="60">
+        <button class="btn btn--primary btn--sm" id="bmSave"><i class="fas fa-plus"></i> Save</button>
+      </div>`;
+
+    menu.querySelectorAll('.bm-row[data-i]').forEach(r => {
+      r.addEventListener('click', e => {
+        if (e.target.closest('.del')) return;
+        const i = +r.dataset.i;
+        const b = loadBookmarks()[i]; if (!b) return;
+        const params = new URLSearchParams(b.params);
+        // Reset and apply
+        ['bu','region','segment','status'].forEach(d => filters[d].clear());
+        filters.search = '';
+        document.getElementById('globalSearch').value = '';
+        for (const [k,v] of params) {
+          if (k === 'r') filters.range = +v;
+          else if (k === 'q') { filters.search = v; document.getElementById('globalSearch').value = v; }
+          else if (filters[k]) filters[k] = new Set(v.split('|'));
+          else if (k === 't') { const tab = document.querySelector(`.tab[data-pane="${v}"]`); if (tab) tab.click(); }
+        }
+        onFiltersChanged();
+        flashToast('Loaded: ' + b.name);
+        toggleBookmarksMenu(false);
+      });
+    });
+    menu.querySelectorAll('.del').forEach(d => d.addEventListener('click', e => {
+      e.stopPropagation();
+      const list = loadBookmarks();
+      list.splice(+d.dataset.del, 1);
+      saveBookmarks(list);
+      renderBookmarksMenu();
+    }));
+    menu.querySelector('#bmSave').addEventListener('click', () => {
+      const name = (menu.querySelector('#bmName').value || '').trim() || 'View ' + (list.length + 1);
+      const params = stateToParams().toString();
+      const list2 = loadBookmarks();
+      list2.unshift({ name, params, ts: Date.now() });
+      saveBookmarks(list2);
+      renderBookmarksMenu();
+      flashToast('View saved');
+    });
+  }
+  function toggleBookmarksMenu(force) {
+    const menu = document.getElementById('bookmarksMenu');
+    const btn = document.getElementById('bookmarkBtn');
+    if (!menu) return;
+    const next = force === undefined ? !menu.classList.contains('is-open') : force;
+    menu.classList.toggle('is-open', next);
+    btn.setAttribute('aria-expanded', String(next));
+  }
+
+  // Hook URL push into the existing onFiltersChanged
+  const _onFiltersChanged = onFiltersChanged;
+  onFiltersChanged = function () { _onFiltersChanged(); pushURL(); };
 
   /* ============================================================
      Tabs, drawer, favorites, search, toast, range
@@ -2107,12 +3593,27 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     setChartDefaults();
+    applyParams();
     renderSparklines();
     renderReports();
     renderTable();
     buildViewerCharts();
+    buildVintageCharts();
+    renderRollRate();
+    renderDecomp();
+    renderSchema();
+    renderMeasures();
+    renderTablesList();
+    renderRelationships();
+    renderLineage();
+    renderRLS();
+    renderEndorsement();
+    renderRefreshHistory();
+    renderPerf();
+    renderBookmarksMenu();
     renderChips();
     refreshSlicerLabels();
+    pushURL();
 
     // Tabs
     const tabs = document.querySelectorAll('.tab');
@@ -2263,6 +3764,58 @@
     // Hero refresh button (visual)
     document.querySelector('.icon-btn[aria-label="Refresh"]')?.addEventListener('click', () => {
       flashToast('Dataset refreshed');
+    });
+
+    // Model pane sub-views
+    document.querySelectorAll('#modelSeg button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#modelSeg button').forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      const v = b.dataset.view;
+      ['Diagram','Measures','Tables','Relationships'].forEach(name => {
+        const el = document.getElementById('model' + name + 'View');
+        if (el) el.hidden = name.toLowerCase() !== v.toLowerCase();
+      });
+      // Re-render schema on diagram show, in case container width changed
+      if (v === 'diagram') requestAnimationFrame(renderSchema);
+    }));
+
+    // Measure search
+    document.getElementById('measureSearch')?.addEventListener('input', debounce(renderMeasures, 120));
+
+    // Field parameter swap on Overview chart
+    document.getElementById('fieldParam')?.addEventListener('change', e => {
+      applyFieldParam(e.target.value);
+    });
+
+    // Bookmarks menu
+    document.getElementById('bookmarkBtn')?.addEventListener('click', e => {
+      e.stopPropagation(); toggleBookmarksMenu();
+    });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#bookmarksMenu') && !e.target.closest('#bookmarkBtn')) {
+        toggleBookmarksMenu(false);
+      }
+    });
+
+    // Copy link
+    document.getElementById('copyLinkBtn')?.addEventListener('click', async () => {
+      pushURL();
+      try { await navigator.clipboard.writeText(location.href); flashToast('Link copied'); }
+      catch { flashToast('Copy failed'); }
+    });
+
+    // Tab change — push URL
+    document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => pushURL()));
+
+    // Re-render schema on resize so the SVG lines stay in sync
+    let resizeT;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeT);
+      resizeT = setTimeout(() => {
+        if (!document.getElementById('pane-model')?.classList.contains('is-active')) return;
+        if (document.getElementById('modelDiagramView')?.hidden) return;
+        renderSchema();
+      }, 200);
     });
   });
 </script>
