@@ -1191,8 +1191,6 @@ function init() {
     if (window.location.hostname === 'localhost') {
       new PerformanceMonitor();
     }
-
-    console.log('✓ Portfolio initialized successfully');
   } catch (error) {
     console.error('Initialization error:', error);
   }

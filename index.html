@@ -7,6 +7,7 @@
     <meta name="description" content="Portfolio of Byheir Wise — engineer and BI platform owner in regulated student lending. Power BI, Snowflake, Python automation, full-stack PWAs, and AI-augmented reporting platforms.">
 
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#667eea">
     <meta name="color-scheme" content="light dark">
 
@@ -96,22 +97,22 @@
                 <a class="hero-cta hero-cta--ghost" href="mailto:byheirw@gmail.com">Email me</a>
             </div>
 
-            <div class="stats-bar" aria-label="Key career metrics">
+            <div class="stats-bar" aria-label="What sets this work apart">
                 <div class="stat-box">
-                    <div class="stat-number">7+</div>
-                    <div class="stat-label">Years experience</div>
+                    <div class="stat-number">7+ yrs</div>
+                    <div class="stat-label">Regulated fintech</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number">60%</div>
-                    <div class="stat-label">Efficiency improvement</div>
+                    <div class="stat-number stat-number--text">End-to-end</div>
+                    <div class="stat-label">BI + full-stack ownership</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number">30%</div>
-                    <div class="stat-label">Faster compliance reviews</div>
+                    <div class="stat-number stat-number--text">Solo</div>
+                    <div class="stat-label">Concept → production</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number">1,000+</div>
-                    <div class="stat-label">Users supported</div>
+                    <div class="stat-number stat-number--text">Power BI</div>
+                    <div class="stat-label">Snowflake · Python · React</div>
                 </div>
             </div>
         </div>
@@ -143,6 +144,17 @@
                     </p>
                 </div>
             </article>
+
+            <!-- TODO: paste a real LinkedIn recommendation excerpt or manager email quote here, with attribution. Leave hidden until populated. -->
+            <aside class="quote-strip" hidden aria-label="What collaborators say">
+                <blockquote class="quote-strip__quote">
+                    <p>“TODO — pull-quote text here.”</p>
+                    <cite class="quote-strip__cite">
+                        <span class="quote-strip__name">TODO Name</span>
+                        <span class="quote-strip__role">TODO Title, TODO Company</span>
+                    </cite>
+                </blockquote>
+            </aside>
         </section>
 
         <section id="experience" class="container" aria-labelledby="experience-title">
@@ -211,10 +223,10 @@
                     </div>
                     <div class="card-content">
                         <ul class="achievement-list">
-                            <li>Designed and deployed a partner relationship analytics PWA delivering portfolio health scoring, KPI dashboards, and account intelligence across a multi-partner book of business — modeled on patterns used in lender-facing analytics products.</li>
-                            <li>Engineered interactive dashboards with Recharts surfacing account health trends, task throughput, and partner engagement metrics for stakeholder consumption.</li>
-                            <li>Built a scalable reporting framework with shared KPI definitions, CRM workflow integration, and AI-generated executive communications — moving the team from one-off reports to a reusable analytics layer.</li>
-                            <li>Architected a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers) with secure API proxying, demonstrating independent judgment on tooling and cost-efficient delivery.</li>
+                            <li><strong>Problem:</strong> a multi-partner book of business tracked across spreadsheets, CRMs, and ad-hoc reports — no shared view of portfolio health or partner engagement.</li>
+                            <li><strong>Approach:</strong> shipped a relationship-analytics PWA with portfolio health scoring, KPI dashboards, account intelligence, and AI-generated executive comms — built solo end-to-end.</li>
+                            <li><strong>Decision:</strong> chose a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers with secure API proxying) so the team can own the platform without standing up ops or paying for unused capacity.</li>
+                            <li><strong>Stack:</strong> React 18, Vite, Recharts, Cloudflare Workers, Claude Sonnet 4.</li>
                         </ul>
                         <p class="card-cta-row">
                             <a class="card-cta" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">Visit PartnerPulse <span aria-hidden="true">↗</span></a>
@@ -229,9 +241,10 @@
                     </div>
                     <div class="card-content">
                         <ul class="achievement-list">
-                            <li>Architected a platform that runs structured, multi-stage data validation and report-generation pipelines with automated quality gates and audit trails.</li>
-                            <li>Designed CI/CD integrating GitHub, Supabase, and external AI APIs with branch review, change auditing, and merge controls — applying enterprise-grade release discipline to analytics tooling.</li>
-                            <li>Built automated consistency and reliability checks ensuring downstream reporting outputs meet quality standards before delivery.</li>
+                            <li><strong>Problem:</strong> reporting pipelines kept accumulating validation debt — one-off checks, ad-hoc fixes, no audit trail when downstream numbers shifted.</li>
+                            <li><strong>Approach:</strong> architected a multi-stage data-validation and report-generation platform with automated quality gates and an audit trail at every step.</li>
+                            <li><strong>Decision:</strong> wired GitHub, Supabase, and external AI APIs into a CI/CD-style release flow with branch review, change auditing, and merge controls — applying enterprise release discipline to analytics tooling.</li>
+                            <li><strong>Stack:</strong> Python, Snowflake, Supabase, GitHub Actions, AI APIs.</li>
                         </ul>
                         <p class="card-cta-row">
                             <a class="card-cta" href="pages/the-builder.html">Read the case study <span aria-hidden="true">→</span></a>
@@ -246,9 +259,10 @@
                     </div>
                     <div class="card-content">
                         <ul class="achievement-list">
-                            <li>Built a full-stack analytics PWA suite (IronLog, FinanceLog, NutritionLog) on a unified Supabase backend with SSO and real-time data sync.</li>
-                            <li>Engineered analytics dashboards with custom charting and progress-tracking modules, surfacing trend analysis and behavioral KPIs to end users.</li>
-                            <li>Implemented session-level monitoring and feature-effectiveness tracking, generating product analytics and adoption metrics across the platform.</li>
+                            <li><strong>Problem:</strong> tracking workouts, finances, and nutrition meant juggling disconnected apps with no shared data layer or trend visibility.</li>
+                            <li><strong>Approach:</strong> built a three-app analytics PWA suite (IronLog, FinanceLog, NutritionLog) on a unified Supabase backend with SSO and real-time data sync.</li>
+                            <li><strong>Decision:</strong> layered session-level monitoring and feature-effectiveness tracking on top so each app generates product analytics that feed back into the next iteration.</li>
+                            <li><strong>Stack:</strong> React 18, Vite 6, Supabase, Vercel, Cloudflare R2, PWA.</li>
                         </ul>
                         <p class="card-cta-row">
                             <a class="card-cta" href="https://ironlog.space" target="_blank" rel="noopener noreferrer">Visit IronLog <span aria-hidden="true">↗</span></a>
@@ -262,105 +276,33 @@
             <div class="section-header">
                 <h2 id="work-title" class="section-title">Selected work</h2>
                 <p class="section-subtitle">
-                    Live demos and case studies. The first row runs on this site; the second is hosted elsewhere and opens in a new tab.
+                    Three groups: case studies that walk through real decisions, demos and UI explorations built to show range, and external apps live in production.
                 </p>
             </div>
 
-            <h3 class="work-row-title">In-domain demos</h3>
+            <h3 class="work-row-title">Case studies</h3>
             <div class="work-grid">
-                <a class="work-card" href="pages/banking.html" aria-label="Banking PWA demo">
+                <a class="work-card work-card--wide" href="pages/case-study.html" aria-label="Operations Command Center case study">
                     <div class="work-card__media">
-                        <img src="assets/work-thumbs/banking.png" alt="" loading="lazy" width="1200" height="675">
+                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
                     <div class="work-card__body">
                         <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
+                            <span class="work-card__role">Program lead</span>
+                            <span class="work-card__status work-card__status--case">Case study</span>
                         </div>
-                        <h4 class="work-card__title">Banking PWA</h4>
-                        <p class="work-card__tagline">iOS-style banking — biometric login, transfers, round-ups, push notifications.</p>
+                        <h4 class="work-card__title">Operations Command Center</h4>
+                        <p class="work-card__tagline">Cross-functional operations platform — dashboards, alerts, workflow orchestration.</p>
                         <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>PWA</li><li>Service Worker</li><li>Web Manifest</li>
+                            <li>Power BI</li><li>Snowflake</li><li>Azure DevOps</li><li>Process design</li>
                         </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/fraud-risk.html" aria-label="Fraud Risk demo">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/fraud-risk.png" alt="" loading="lazy">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Lead engineer</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">Fraud Risk</h4>
-                        <p class="work-card__tagline">Real-time fraud monitoring — alert triage, link analysis, identity verification.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>Dashboards</li><li>Risk ops</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/credit-underwriting.html" aria-label="Credit Underwriting demo">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/credit-underwriting.png" alt="" loading="lazy">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Lead engineer</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">Credit Underwriting</h4>
-                        <p class="work-card__tagline">Decision engine, document processing, manual review, adverse-action workflow.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>Workflow</li><li>Compliance</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/collections-toolkit.html" aria-label="Collections Toolkit demo">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/collections-toolkit.png" alt="" loading="lazy">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Lead engineer</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">Collections Toolkit</h4>
-                        <p class="work-card__tagline">End-to-end suite — segmentation, dialer, comms hub, QA, and compliance.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>Contact center</li><li>QA</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/power-bi-dashboards.html" aria-label="Power BI dashboards showcase">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">BI lead</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">Power BI Dashboards</h4>
-                        <p class="work-card__tagline">Executive reporting, KPI standardization, reconciliation — Power BI &amp; Snowflake patterns.</p>
-                        <ul class="work-card__chips">
-                            <li>Power BI</li><li>Snowflake</li><li>KPI design</li><li>Executive reporting</li>
-                        </ul>
-                        <span class="work-card__cta">View showcase →</span>
+                        <span class="work-card__cta">Read case study →</span>
                     </div>
                 </a>
 
                 <a class="work-card" href="pages/the-builder.html" aria-label="The Builder — AI-augmented reporting and validation platform case study">
                     <div class="work-card__media">
-                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy">
+                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
                     <div class="work-card__body">
                         <div class="work-card__meta">
@@ -376,30 +318,105 @@
                     </div>
                 </a>
 
-                <a class="work-card work-card--wide" href="pages/case-study.html" aria-label="Operations Command Center case study">
+                <a class="work-card" href="pages/power-bi-dashboards.html" aria-label="Power BI dashboards showcase">
                     <div class="work-card__media">
-                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy">
+                        <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
                     <div class="work-card__body">
                         <div class="work-card__meta">
-                            <span class="work-card__role">Program lead</span>
-                            <span class="work-card__status work-card__status--case">Case study</span>
+                            <span class="work-card__role">BI lead</span>
+                            <span class="work-card__status work-card__status--case">Showcase</span>
                         </div>
-                        <h4 class="work-card__title">Operations Command Center</h4>
-                        <p class="work-card__tagline">Cross-functional operations platform — dashboards, alerts, workflow orchestration.</p>
+                        <h4 class="work-card__title">Power BI Dashboards</h4>
+                        <p class="work-card__tagline">Executive reporting, KPI standardization, reconciliation — Power BI &amp; Snowflake patterns.</p>
                         <ul class="work-card__chips">
-                            <li>Power BI</li><li>Snowflake</li><li>Azure DevOps</li><li>Process design</li>
+                            <li>Power BI</li><li>Snowflake</li><li>KPI design</li><li>Executive reporting</li>
                         </ul>
-                        <span class="work-card__cta">Read case study →</span>
+                        <span class="work-card__cta">View showcase →</span>
                     </div>
                 </a>
             </div>
 
-            <h3 class="work-row-title">External apps <span class="work-row-title__hint">(open in a new tab)</span></h3>
+            <h3 class="work-row-title">Demos &amp; UI explorations <span class="work-row-title__hint">(built for this portfolio to show range)</span></h3>
+            <div class="work-grid">
+                <a class="work-card" href="pages/banking.html" aria-label="Banking PWA demo">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/banking.png" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole builder</span>
+                            <span class="work-card__status work-card__status--live">Live PWA demo</span>
+                        </div>
+                        <h4 class="work-card__title">Banking PWA</h4>
+                        <p class="work-card__tagline">iOS-style banking — biometric login, transfers, round-ups, push notifications.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>PWA</li><li>Service Worker</li><li>Web Manifest</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card" href="pages/fraud-risk.html" aria-label="Fraud Risk UI exploration">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/fraud-risk.png" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole builder</span>
+                            <span class="work-card__status work-card__status--live">UI exploration</span>
+                        </div>
+                        <h4 class="work-card__title">Fraud Risk</h4>
+                        <p class="work-card__tagline">Real-time fraud monitoring — alert triage, link analysis, identity verification.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>Dashboards</li><li>Risk ops</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card" href="pages/credit-underwriting.html" aria-label="Credit Underwriting UI exploration">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/credit-underwriting.png" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole builder</span>
+                            <span class="work-card__status work-card__status--live">UI exploration</span>
+                        </div>
+                        <h4 class="work-card__title">Credit Underwriting</h4>
+                        <p class="work-card__tagline">Decision engine, document processing, manual review, adverse-action workflow.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>Workflow</li><li>Compliance</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+
+                <a class="work-card" href="pages/collections-toolkit.html" aria-label="Collections Toolkit UI exploration">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/collections-toolkit.png" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole builder</span>
+                            <span class="work-card__status work-card__status--live">UI exploration</span>
+                        </div>
+                        <h4 class="work-card__title">Collections Toolkit</h4>
+                        <p class="work-card__tagline">End-to-end suite — segmentation, dialer, comms hub, QA, and compliance.</p>
+                        <ul class="work-card__chips">
+                            <li>HTML</li><li>CSS</li><li>JS</li><li>Contact center</li><li>QA</li>
+                        </ul>
+                        <span class="work-card__cta">View demo →</span>
+                    </div>
+                </a>
+            </div>
+
+            <h3 class="work-row-title">External apps <span class="work-row-title__hint">(live in production · open in a new tab)</span></h3>
             <div class="work-grid work-grid--external">
                 <a class="work-card work-card--external" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="Ironlog — opens in a new tab">
                     <div class="work-card__media">
-                        <img src="assets/work-thumbs/ironlog.png" alt="" loading="lazy">
+                        <img src="assets/work-thumbs/ironlog.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
                     <div class="work-card__body">
                         <div class="work-card__meta">
@@ -417,7 +434,7 @@
 
                 <a class="work-card work-card--external" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="Partner Pulse — opens in a new tab">
                     <div class="work-card__media">
-                        <img src="assets/work-thumbs/partner-pulse.png" alt="" loading="lazy">
+                        <img src="assets/work-thumbs/partner-pulse.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
                     <div class="work-card__body">
                         <div class="work-card__meta">
@@ -435,7 +452,7 @@
 
                 <a class="work-card work-card--external" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer" aria-label="Wiseforge — opens in a new tab">
                     <div class="work-card__media">
-                        <img src="assets/work-thumbs/wiseforge.png" alt="" loading="lazy">
+                        <img src="assets/work-thumbs/wiseforge.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
                     <div class="work-card__body">
                         <div class="work-card__meta">
@@ -545,11 +562,12 @@
                 </article>
 
                 <article class="skill-card">
-                    <h3 class="skill-header">Education</h3>
+                    <h3 class="skill-header">Education &amp; certifications</h3>
                     <div class="skill-pills">
                         <span class="skill-pill">Bachelor degree</span>
                         <span class="skill-pill">Business Management</span>
                         <span class="skill-pill">Wilmington University</span>
+                        <!-- TODO: add a cert pill when available, e.g. "Microsoft PL-300 (Power BI)" or "Snowflake SnowPro Core" — closes the gap with cert-holding peers. -->
                     </div>
                 </article>
             </div>

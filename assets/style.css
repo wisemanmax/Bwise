@@ -744,6 +744,47 @@ header {
     margin-block-end: var(--space-xs);
 }
 
+.stat-number--text {
+    font-size: clamp(20px, 3.4vw, 24px);
+    letter-spacing: -0.01em;
+}
+
+.quote-strip {
+    margin-block-start: var(--space-2xl);
+    padding: var(--space-xl) var(--space-lg);
+    border-inline-start: 4px solid var(--primary);
+    background: var(--surface-2, rgba(102, 126, 234, 0.06));
+    border-radius: var(--radius-md);
+}
+
+.quote-strip__quote {
+    margin: 0;
+    font-style: italic;
+    color: var(--text-main);
+}
+
+.quote-strip__quote p {
+    margin: 0 0 var(--space-md);
+    font-size: var(--text-lg);
+    line-height: 1.5;
+}
+
+.quote-strip__cite {
+    display: flex;
+    flex-direction: column;
+    font-style: normal;
+    font-size: var(--text-sm);
+}
+
+.quote-strip__name {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.quote-strip__role {
+    color: var(--text-muted);
+}
+
 .stat-label {
     font-size: var(--text-sm);
     font-weight: 500;
