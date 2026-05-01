@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#0b1220">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <style>
     /* ============================================================
        Design tokens
@@ -841,6 +842,129 @@
     }
     .empty i { font-size: 22px; color: var(--text-4); }
 
+    /* Active filter chip rail */
+    .active-filters {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      margin-top: 12px;
+      min-height: 28px;
+    }
+    .active-filters:empty { display: none; }
+    .filter-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 26px; padding: 0 6px 0 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-ring);
+      color: var(--accent-2);
+      font-size: 12px; font-weight: 600;
+      border-radius: 999px;
+      animation: chipIn .2s ease;
+    }
+    @keyframes chipIn {
+      from { opacity: 0; transform: scale(.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .filter-chip .label { color: var(--text-3); font-weight: 500; }
+    .filter-chip button {
+      width: 18px; height: 18px; display: grid; place-items: center;
+      border-radius: 999px; color: var(--accent-2);
+      transition: background .12s, color .12s;
+    }
+    .filter-chip button:hover { background: rgba(242,200,17,0.18); color: #fff; }
+
+    /* Slicer popover */
+    .pop {
+      position: absolute; z-index: 1500;
+      min-width: 220px; max-width: 320px;
+      background: var(--bg-2);
+      border: 1px solid var(--border-3);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-lg);
+      padding: 8px;
+      opacity: 0; transform: translateY(-4px) scale(.98);
+      pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease;
+    }
+    .pop.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .pop__head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 8px 8px;
+      border-bottom: 1px solid var(--border-1); margin-bottom: 6px;
+    }
+    .pop__title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--text-3); }
+    .pop__clear { font-size: 11.5px; color: var(--text-3); padding: 2px 6px; border-radius: 4px; }
+    .pop__clear:hover { background: var(--surface-3); color: var(--text-1); }
+    .pop__list { display: flex; flex-direction: column; gap: 1px; max-height: 280px; overflow-y: auto; }
+    .pop__opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 10px; border-radius: var(--r-sm);
+      color: var(--text-2); font-size: 13px;
+      cursor: pointer; user-select: none;
+    }
+    .pop__opt:hover { background: var(--surface-2); color: var(--text-1); }
+    .pop__opt input { appearance: none; -webkit-appearance: none; margin: 0;
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1.5px solid var(--border-3); background: transparent;
+      display: grid; place-items: center;
+      transition: background .12s, border-color .12s;
+    }
+    .pop__opt input:checked { background: var(--accent); border-color: var(--accent); }
+    .pop__opt input:checked::after {
+      content: '\2713'; color: #111; font-weight: 800; font-size: 11px;
+    }
+    .pop__opt .badge {
+      margin-left: auto; font-family: var(--font-mono); font-size: 11px;
+      color: var(--text-4); padding: 1px 7px; border-radius: 999px;
+      background: var(--surface-2); border: 1px solid var(--border-1);
+    }
+
+    /* Skeleton */
+    .skel {
+      position: relative; overflow: hidden;
+      background: var(--surface-2); border-radius: var(--r-sm);
+    }
+    .skel::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+      animation: shimmer 1.4s linear infinite;
+    }
+    @keyframes shimmer {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+    .chart-skel {
+      position: absolute; inset: 8px 12px;
+      border-radius: var(--r-sm);
+    }
+
+    /* Cross-filter highlight on cards */
+    .report.is-dim { opacity: 0.38; filter: saturate(0.6); }
+    .report.is-hidden { display: none; }
+
+    /* Sort indicators */
+    table.data thead th[data-key] { position: relative; }
+    table.data thead th .sort-i.fa-sort-up,
+    table.data thead th .sort-i.fa-sort-down { opacity: 1; color: var(--accent); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-2);
+      border: 1px solid var(--border-3);
+      color: var(--text-1);
+      padding: 10px 16px; border-radius: var(--r-md);
+      box-shadow: var(--shadow-lg);
+      font-size: 13px; font-weight: 600;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      z-index: 1600;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .toast.is-on {
+      opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto;
+    }
+    .toast i { color: var(--accent); }
+
     /* Responsive */
     @media (max-width: 1180px) {
       .kpi-strip { grid-template-columns: repeat(3, minmax(0,1fr)); }
@@ -994,38 +1118,39 @@
     <!-- Slicer bar -->
     <section class="slicers" aria-label="Filters">
       <div class="slicers__group" role="group" aria-label="Date range">
-        <div class="seg" role="tablist" aria-label="Date range">
-          <button class="is-active" type="button">Today</button>
-          <button type="button">7d</button>
-          <button type="button">30d</button>
-          <button type="button">QTD</button>
-          <button type="button">YTD</button>
-          <button type="button">Custom</button>
+        <div class="seg" id="rangeSeg" role="tablist" aria-label="Date range">
+          <button type="button" data-range="1">Today</button>
+          <button class="is-active" type="button" data-range="7">7d</button>
+          <button type="button" data-range="30">30d</button>
+          <button type="button" data-range="90">QTD</button>
+          <button type="button" data-range="365">YTD</button>
         </div>
       </div>
 
       <div class="slicers__group">
-        <button class="slicer" type="button" aria-haspopup="listbox">
+        <button class="slicer" type="button" aria-haspopup="listbox" data-dim="bu" data-label="Business unit" data-icon="fas fa-building">
           <i class="fas fa-building"></i> Business unit · <span class="slicer__value">All</span>
           <i class="fas fa-chevron-down"></i>
         </button>
-        <button class="slicer is-active" type="button" aria-haspopup="listbox">
-          <i class="fas fa-location-dot"></i> Region · <span class="slicer__value">Northeast</span>
+        <button class="slicer" type="button" aria-haspopup="listbox" data-dim="region" data-label="Region" data-icon="fas fa-location-dot">
+          <i class="fas fa-location-dot"></i> Region · <span class="slicer__value">All</span>
           <i class="fas fa-chevron-down"></i>
         </button>
-        <button class="slicer" type="button" aria-haspopup="listbox">
+        <button class="slicer" type="button" aria-haspopup="listbox" data-dim="segment" data-label="Segment" data-icon="fas fa-layer-group">
           <i class="fas fa-layer-group"></i> Segment · <span class="slicer__value">All</span>
           <i class="fas fa-chevron-down"></i>
         </button>
-        <button class="slicer" type="button" aria-haspopup="listbox">
-          <i class="fas fa-flag"></i> Status · <span class="slicer__value">Live</span>
+        <button class="slicer" type="button" aria-haspopup="listbox" data-dim="status" data-label="Status" data-icon="fas fa-flag">
+          <i class="fas fa-flag"></i> Status · <span class="slicer__value">All</span>
           <i class="fas fa-chevron-down"></i>
         </button>
       </div>
 
       <div class="slicers__spacer"></div>
-      <button class="slicer-clear" type="button"><i class="fas fa-rotate-left"></i> Reset</button>
+      <button class="slicer-clear" type="button" id="resetFilters"><i class="fas fa-rotate-left"></i> Reset</button>
     </section>
+
+    <div class="active-filters" id="activeFilters" aria-live="polite"></div>
 
     <!-- KPI Strip -->
     <div class="section-head">
@@ -1087,167 +1212,15 @@
       </div>
     </div>
 
-    <section class="reports" id="reportGrid" aria-label="Reports">
-
-      <!-- Report 1 -->
-      <article class="report" data-cat="collections" tabindex="0">
-        <div class="report__thumb">
-          <span class="report__cat"><span class="swatch" style="--cat-color:#f2c811"></span> Collections</span>
-          <span class="report__live">Live</span>
-          <canvas data-chart="collections-trend"></canvas>
-        </div>
-        <div class="report__body">
-          <div class="report__title">
-            <span>Collections Performance</span>
-            <button class="fav-btn is-on" aria-label="Toggle favorite" aria-pressed="true"><i class="fas fa-star"></i></button>
-          </div>
-          <p class="report__desc">MTD collections, contact rate, agent productivity and recovery curves across all queues.</p>
-          <div class="report__stats">
-            <div class="report__stat"><span class="v">$1.24M</span><span class="l">MTD</span></div>
-            <div class="report__stat"><span class="v">82.7%</span><span class="l">Goal</span></div>
-            <div class="report__stat"><span class="v">94.2%</span><span class="l">Contact</span></div>
-            <div class="report__stat"><span class="v">2,847</span><span class="l">Accounts</span></div>
-          </div>
-        </div>
-        <footer class="report__foot">
-          <span class="report__owners">
-            <span class="av">BW</span><span class="av">JM</span><span class="av">RS</span>
-          </span>
-          <span class="report__time"><i class="far fa-clock"></i> 3 min ago</span>
-        </footer>
-      </article>
-
-      <!-- Report 2 -->
-      <article class="report" data-cat="credit" tabindex="0" id="cat-credit">
-        <div class="report__thumb">
-          <span class="report__cat"><span class="swatch" style="--cat-color:#3b82f6"></span> Credit</span>
-          <span class="report__live report__live--scheduled">Scheduled</span>
-          <canvas data-chart="credit-bar"></canvas>
-        </div>
-        <div class="report__body">
-          <div class="report__title">
-            <span>Credit Approval Analytics</span>
-            <button class="fav-btn" aria-label="Toggle favorite" aria-pressed="false"><i class="far fa-star"></i></button>
-          </div>
-          <p class="report__desc">Underwriting throughput, auto-decision rates and adverse action mix by FICO band.</p>
-          <div class="report__stats">
-            <div class="report__stat"><span class="v">68%</span><span class="l">Approve</span></div>
-            <div class="report__stat"><span class="v">4.2 min</span><span class="l">TTD</span></div>
-            <div class="report__stat"><span class="v">1,243</span><span class="l">Apps</span></div>
-            <div class="report__stat"><span class="v">82%</span><span class="l">Auto</span></div>
-          </div>
-        </div>
-        <footer class="report__foot">
-          <span class="report__owners"><span class="av">BW</span><span class="av">AL</span></span>
-          <span class="report__time"><i class="far fa-clock"></i> 12 min ago</span>
-        </footer>
-      </article>
-
-      <!-- Report 3 -->
-      <article class="report" data-cat="fraud" tabindex="0" id="cat-fraud">
-        <div class="report__thumb">
-          <span class="report__cat"><span class="swatch" style="--cat-color:#ef4444"></span> Fraud &amp; Risk</span>
-          <span class="report__live">Live</span>
-          <canvas data-chart="fraud-doughnut"></canvas>
-        </div>
-        <div class="report__body">
-          <div class="report__title">
-            <span>Fraud Detection Metrics</span>
-            <button class="fav-btn" aria-label="Toggle favorite" aria-pressed="false"><i class="far fa-star"></i></button>
-          </div>
-          <p class="report__desc">Real-time scoring outcomes, model precision, prevented loss and case backlog.</p>
-          <div class="report__stats">
-            <div class="report__stat"><span class="v">0.8%</span><span class="l">Fraud rate</span></div>
-            <div class="report__stat"><span class="v">94.2%</span><span class="l">Precision</span></div>
-            <div class="report__stat"><span class="v">127</span><span class="l">Open cases</span></div>
-            <div class="report__stat"><span class="v">$48K</span><span class="l">Saved</span></div>
-          </div>
-        </div>
-        <footer class="report__foot">
-          <span class="report__owners"><span class="av">BW</span><span class="av">DR</span><span class="av">PT</span></span>
-          <span class="report__time"><i class="far fa-clock"></i> Just now</span>
-        </footer>
-      </article>
-
-      <!-- Report 4 -->
-      <article class="report" data-cat="servicing" tabindex="0" id="cat-servicing">
-        <div class="report__thumb">
-          <span class="report__cat"><span class="swatch" style="--cat-color:#14b8a6"></span> Servicing</span>
-          <span class="report__live report__live--scheduled">Weekly</span>
-          <canvas data-chart="csat-line"></canvas>
-        </div>
-        <div class="report__body">
-          <div class="report__title">
-            <span>Servicing CSAT Score</span>
-            <button class="fav-btn is-on" aria-label="Toggle favorite" aria-pressed="true"><i class="fas fa-star"></i></button>
-          </div>
-          <p class="report__desc">Customer experience trends, first-call resolution and agent handle time benchmarks.</p>
-          <div class="report__stats">
-            <div class="report__stat"><span class="v">4.6 / 5</span><span class="l">CSAT</span></div>
-            <div class="report__stat"><span class="v">94%</span><span class="l">FCR</span></div>
-            <div class="report__stat"><span class="v">8.2 min</span><span class="l">AHT</span></div>
-            <div class="report__stat"><span class="v">3,421</span><span class="l">Touches</span></div>
-          </div>
-        </div>
-        <footer class="report__foot">
-          <span class="report__owners"><span class="av">BW</span><span class="av">SK</span></span>
-          <span class="report__time"><i class="far fa-clock"></i> 1 hr ago</span>
-        </footer>
-      </article>
-
-      <!-- Report 5 -->
-      <article class="report" data-cat="compliance" tabindex="0" id="cat-compliance">
-        <div class="report__thumb">
-          <span class="report__cat"><span class="swatch" style="--cat-color:#8b5cf6"></span> Compliance</span>
-          <span class="report__live report__live--scheduled">Monthly</span>
-          <canvas data-chart="compliance-radar"></canvas>
-        </div>
-        <div class="report__body">
-          <div class="report__title">
-            <span>Compliance Scorecard</span>
-            <button class="fav-btn" aria-label="Toggle favorite" aria-pressed="false"><i class="far fa-star"></i></button>
-          </div>
-          <p class="report__desc">FDCPA, CFPB, TCPA, FCRA and state regulation coverage with audit readiness signals.</p>
-          <div class="report__stats">
-            <div class="report__stat"><span class="v">96.8%</span><span class="l">Score</span></div>
-            <div class="report__stat"><span class="v">342</span><span class="l">Audits</span></div>
-            <div class="report__stat"><span class="v">3</span><span class="l">Open</span></div>
-            <div class="report__stat"><span class="v">98%</span><span class="l">Training</span></div>
-          </div>
-        </div>
-        <footer class="report__foot">
-          <span class="report__owners"><span class="av">BW</span><span class="av">MK</span><span class="av">JR</span></span>
-          <span class="report__time"><i class="far fa-clock"></i> 4 hr ago</span>
-        </footer>
-      </article>
-
-      <!-- Report 6 -->
-      <article class="report" data-cat="collections" tabindex="0">
-        <div class="report__thumb">
-          <span class="report__cat"><span class="swatch" style="--cat-color:#10b981"></span> Portfolio</span>
-          <span class="report__live">Live</span>
-          <canvas data-chart="portfolio-bar"></canvas>
-        </div>
-        <div class="report__body">
-          <div class="report__title">
-            <span>Portfolio Health</span>
-            <button class="fav-btn" aria-label="Toggle favorite" aria-pressed="false"><i class="far fa-star"></i></button>
-          </div>
-          <p class="report__desc">Delinquency aging, recovery curves and concentration risk across the active book.</p>
-          <div class="report__stats">
-            <div class="report__stat"><span class="v">3.2%</span><span class="l">Default</span></div>
-            <div class="report__stat"><span class="v">43.7%</span><span class="l">Recovery</span></div>
-            <div class="report__stat"><span class="v">$8.4M</span><span class="l">Book</span></div>
-            <div class="report__stat"><span class="v">12,847</span><span class="l">Accounts</span></div>
-          </div>
-        </div>
-        <footer class="report__foot">
-          <span class="report__owners"><span class="av">BW</span><span class="av">EV</span></span>
-          <span class="report__time"><i class="far fa-clock"></i> 22 min ago</span>
-        </footer>
-      </article>
-
+    <section class="reports" id="reportGrid" aria-label="Reports" aria-busy="true">
+      <!-- Cards rendered by JS from REPORTS data -->
     </section>
+    <div class="empty" id="reportsEmpty" hidden>
+      <i class="fas fa-circle-info"></i>
+      <strong>No reports match your filters</strong>
+      <span>Try clearing one or more slicers, or broadening the date range.</span>
+      <button class="btn btn--ghost btn--sm" id="resetFiltersEmpty"><i class="fas fa-rotate-left"></i> Reset filters</button>
+    </div>
 
     <!-- Active report viewer -->
     <section class="viewer" aria-label="Executive Summary report">
@@ -1329,88 +1302,9 @@
                     <th data-key="status">Status <i class="fas fa-sort sort-i"></i></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="b-name">Collections</span></td>
-                    <td class="num">$1.24M</td>
-                    <td class="num">$1.50M</td>
-                    <td>
-                      <div style="display:flex;align-items:center;gap:10px">
-                        <div class="progress" style="flex:1;max-width:180px"><span style="width:82.7%"></span></div>
-                        <span class="num">82.7%</span>
-                      </div>
-                    </td>
-                    <td><span class="trend up"><i class="fas fa-arrow-up"></i> +8.7%</span></td>
-                    <td><span class="pill pill--info">On track</span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="b-name">Credit Underwriting</span></td>
-                    <td class="num">1,243 apps</td>
-                    <td class="num">1,200 apps</td>
-                    <td>
-                      <div style="display:flex;align-items:center;gap:10px">
-                        <div class="progress" style="flex:1;max-width:180px"><span style="width:100%"></span></div>
-                        <span class="num">103.6%</span>
-                      </div>
-                    </td>
-                    <td><span class="trend up"><i class="fas fa-arrow-up"></i> +12.3%</span></td>
-                    <td><span class="pill pill--ok">Exceeding</span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="b-name">Fraud Prevention</span></td>
-                    <td class="num">0.8% rate</td>
-                    <td class="num">&lt; 1.0%</td>
-                    <td>
-                      <div style="display:flex;align-items:center;gap:10px">
-                        <div class="progress" style="flex:1;max-width:180px"><span style="width:100%"></span></div>
-                        <span class="num">120%</span>
-                      </div>
-                    </td>
-                    <td><span class="trend up"><i class="fas fa-arrow-up"></i> +5.2%</span></td>
-                    <td><span class="pill pill--ok">Exceeding</span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="b-name">Customer Service</span></td>
-                    <td class="num">4.6 / 5</td>
-                    <td class="num">4.5 / 5</td>
-                    <td>
-                      <div style="display:flex;align-items:center;gap:10px">
-                        <div class="progress" style="flex:1;max-width:180px"><span style="width:100%"></span></div>
-                        <span class="num">102.2%</span>
-                      </div>
-                    </td>
-                    <td><span class="trend up"><i class="fas fa-arrow-up"></i> +1.8%</span></td>
-                    <td><span class="pill pill--ok">Exceeding</span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="b-name">Compliance</span></td>
-                    <td class="num">96.8</td>
-                    <td class="num">95.0</td>
-                    <td>
-                      <div style="display:flex;align-items:center;gap:10px">
-                        <div class="progress" style="flex:1;max-width:180px"><span style="width:100%"></span></div>
-                        <span class="num">101.9%</span>
-                      </div>
-                    </td>
-                    <td><span class="trend up"><i class="fas fa-arrow-up"></i> +0.9%</span></td>
-                    <td><span class="pill pill--ok">Excellent</span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="b-name">Recovery Ops</span></td>
-                    <td class="num">$418K</td>
-                    <td class="num">$500K</td>
-                    <td>
-                      <div style="display:flex;align-items:center;gap:10px">
-                        <div class="progress" style="flex:1;max-width:180px"><span style="width:83.6%"></span></div>
-                        <span class="num">83.6%</span>
-                      </div>
-                    </td>
-                    <td><span class="trend down"><i class="fas fa-arrow-down"></i> −2.1%</span></td>
-                    <td><span class="pill pill--warn">Watch</span></td>
-                  </tr>
-                </tbody>
+                <tbody id="unitsBody"><!-- rendered by JS --></tbody>
                 <tfoot>
-                  <tr><td colspan="6">Showing 6 of 6 · Aggregated across selected slicers</td></tr>
+                  <tr><td colspan="6" id="unitsFooter">Loading…</td></tr>
                 </tfoot>
               </table>
             </div>
@@ -1526,13 +1420,700 @@
   </div>
 </aside>
 
+<div class="toast" id="toast" role="status" aria-live="polite"><i class="fas fa-circle-check"></i><span id="toastMsg">Filter applied</span></div>
+
 <script>
-  /* Minimal interactions for the UI scaffold:
-     - tab switching
-     - drawer open/close on report click
-     - search field focus shortcut
-     Charts/data wiring will come next. */
-  (function () {
+  /* ============================================================
+     Data layer
+     ============================================================ */
+  const COLORS = {
+    accent: '#f2c811', accent2: '#ffd633',
+    info: '#3b82f6', success: '#10b981', warn: '#f59e0b', danger: '#ef4444',
+    violet: '#8b5cf6', teal: '#14b8a6', text2: '#c5cfdf', text3: '#8a97ad',
+    text4: '#5b6781', grid: 'rgba(148,163,184,0.10)', surface: '#0f1729'
+  };
+  const CAT_COLOR = {
+    collections: COLORS.accent, credit: COLORS.info, fraud: COLORS.danger,
+    servicing: COLORS.teal, compliance: COLORS.violet, portfolio: COLORS.success
+  };
+  const CAT_LABEL = {
+    collections: 'Collections', credit: 'Credit', fraud: 'Fraud & Risk',
+    servicing: 'Servicing', compliance: 'Compliance', portfolio: 'Portfolio'
+  };
+
+  // Source of truth for the report grid
+  const REPORTS = [
+    {
+      id: 'r-coll', title: 'Collections Performance', cat: 'collections',
+      desc: 'MTD collections, contact rate, agent productivity and recovery curves across all queues.',
+      bu: 'Collections', region: ['Northeast','Southeast','Midwest','West'], segment: ['Prime','Near-prime','Subprime'],
+      status: 'Live', updatedMin: 3, owners: ['BW','JM','RS'],
+      stats: [['$1.24M','MTD'],['82.7%','Goal'],['94.2%','Contact'],['2,847','Accounts']],
+      thumb: 'line-area',
+      series: [280,285,295,310,302,318,325,335,330,348,355,372]
+    },
+    {
+      id: 'r-credit', title: 'Credit Approval Analytics', cat: 'credit',
+      desc: 'Underwriting throughput, auto-decision rates and adverse action mix by FICO band.',
+      bu: 'Credit & Underwriting', region: ['Northeast','Midwest','West'], segment: ['Prime','Near-prime'],
+      status: 'Scheduled', updatedMin: 12, owners: ['BW','AL'],
+      stats: [['68%','Approve'],['4.2 min','TTD'],['1,243','Apps'],['82%','Auto']],
+      thumb: 'bar',
+      series: [234,267,251,289,242,275,288]
+    },
+    {
+      id: 'r-fraud', title: 'Fraud Detection Metrics', cat: 'fraud',
+      desc: 'Real-time scoring outcomes, model precision, prevented loss and case backlog.',
+      bu: 'Fraud & Risk', region: ['Northeast','Southeast','Midwest','West'], segment: ['Prime','Near-prime','Subprime'],
+      status: 'Live', updatedMin: 0, owners: ['BW','DR','PT'],
+      stats: [['0.8%','Fraud rate'],['94.2%','Precision'],['127','Open cases'],['$48K','Saved']],
+      thumb: 'doughnut',
+      series: [94,5.2,0.8]
+    },
+    {
+      id: 'r-csat', title: 'Servicing CSAT Score', cat: 'servicing',
+      desc: 'Customer experience trends, first-call resolution and agent handle time benchmarks.',
+      bu: 'Servicing', region: ['Northeast','Southeast'], segment: ['Prime','Near-prime'],
+      status: 'Weekly', updatedMin: 60, owners: ['BW','SK'],
+      stats: [['4.6 / 5','CSAT'],['94%','FCR'],['8.2 min','AHT'],['3,421','Touches']],
+      thumb: 'line',
+      series: [4.2,4.3,4.4,4.4,4.5,4.5,4.5,4.6,4.6]
+    },
+    {
+      id: 'r-comp', title: 'Compliance Scorecard', cat: 'compliance',
+      desc: 'FDCPA, CFPB, TCPA, FCRA and state regulation coverage with audit readiness signals.',
+      bu: 'Compliance', region: ['Northeast','Southeast','Midwest','West'], segment: ['Prime','Near-prime','Subprime'],
+      status: 'Monthly', updatedMin: 240, owners: ['BW','MK','JR'],
+      stats: [['96.8%','Score'],['342','Audits'],['3','Open'],['98%','Training']],
+      thumb: 'radar',
+      series: [98,97,95,96,97]
+    },
+    {
+      id: 'r-port', title: 'Portfolio Health', cat: 'portfolio',
+      desc: 'Delinquency aging, recovery curves and concentration risk across the active book.',
+      bu: 'Servicing', region: ['Northeast','Southeast','Midwest','West'], segment: ['Prime','Near-prime','Subprime'],
+      status: 'Live', updatedMin: 22, owners: ['BW','EV'],
+      stats: [['3.2%','Default'],['43.7%','Recovery'],['$8.4M','Book'],['12,847','Accounts']],
+      thumb: 'bar-stack',
+      series: [8240,2450,1420,737]
+    }
+  ];
+
+  const TABLE_ROWS = [
+    { name: 'Collections',         performance: 1240000, perfLabel: '$1.24M',     target: 1500000, targetLabel: '$1.50M',  achievement: 0.827, trend: 8.7, status: 'On track' },
+    { name: 'Credit Underwriting', performance: 1243,    perfLabel: '1,243 apps', target: 1200,    targetLabel: '1,200 apps', achievement: 1.036, trend: 12.3, status: 'Exceeding' },
+    { name: 'Fraud Prevention',    performance: 0.8,     perfLabel: '0.8% rate',  target: 1.0,     targetLabel: '< 1.0%',  achievement: 1.20,  trend: 5.2, status: 'Exceeding' },
+    { name: 'Customer Service',    performance: 4.6,     perfLabel: '4.6 / 5',    target: 4.5,     targetLabel: '4.5 / 5', achievement: 1.022, trend: 1.8, status: 'Exceeding' },
+    { name: 'Compliance',          performance: 96.8,    perfLabel: '96.8',       target: 95.0,    targetLabel: '95.0',    achievement: 1.019, trend: 0.9, status: 'Excellent' },
+    { name: 'Recovery Ops',        performance: 418000,  perfLabel: '$418K',      target: 500000,  targetLabel: '$500K',   achievement: 0.836, trend: -2.1, status: 'Watch' }
+  ];
+  const PILL_FOR_STATUS = { 'On track':'pill--info', 'Exceeding':'pill--ok', 'Excellent':'pill--ok', 'Watch':'pill--warn', 'Off track':'pill--bad' };
+
+  /* ============================================================
+     Filter state
+     ============================================================ */
+  const filters = {
+    range: 7,
+    bu: new Set(),
+    region: new Set(),
+    segment: new Set(),
+    status: new Set(),
+    search: '',
+    fav: new Set(JSON.parse(localStorage.getItem('pbi.favs') || '[]'))
+  };
+  const dimOptions = (key) => {
+    const set = new Set();
+    REPORTS.forEach(r => {
+      const v = r[key];
+      if (Array.isArray(v)) v.forEach(x => set.add(x)); else set.add(v);
+    });
+    return Array.from(set).sort();
+  };
+  const DIM_META = {
+    bu:      { label: 'Business unit', icon: 'fas fa-building',     opts: dimOptions('bu') },
+    region:  { label: 'Region',        icon: 'fas fa-location-dot', opts: dimOptions('region') },
+    segment: { label: 'Segment',       icon: 'fas fa-layer-group',  opts: dimOptions('segment') },
+    status:  { label: 'Status',        icon: 'fas fa-flag',         opts: dimOptions('status') }
+  };
+
+  /* ============================================================
+     Chart.js theming + helpers
+     ============================================================ */
+  function setChartDefaults() {
+    if (!window.Chart) return;
+    Chart.defaults.color = COLORS.text2;
+    Chart.defaults.borderColor = COLORS.grid;
+    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    Chart.defaults.font.size = 11.5;
+    Chart.defaults.plugins.tooltip.backgroundColor = '#0b1220';
+    Chart.defaults.plugins.tooltip.titleColor = '#f1f5fb';
+    Chart.defaults.plugins.tooltip.bodyColor = '#c5cfdf';
+    Chart.defaults.plugins.tooltip.borderColor = 'rgba(148,163,184,0.28)';
+    Chart.defaults.plugins.tooltip.borderWidth = 1;
+    Chart.defaults.plugins.tooltip.padding = 10;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+    Chart.defaults.plugins.legend.labels.color = COLORS.text2;
+    Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    Chart.defaults.plugins.legend.labels.padding = 12;
+    Chart.defaults.animation.duration = 600;
+    Chart.defaults.animation.easing = 'easeOutQuart';
+  }
+  function gridOpts() {
+    return { color: COLORS.grid, borderColor: 'rgba(148,163,184,0.18)', tickColor: 'transparent' };
+  }
+  function gradient(ctx, color, alphaTop = 0.35, alphaBottom = 0) {
+    const h = ctx.canvas.height;
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, hexA(color, alphaTop));
+    g.addColorStop(1, hexA(color, alphaBottom));
+    return g;
+  }
+  function hexA(hex, a) {
+    const h = hex.replace('#','');
+    const n = h.length === 3 ? h.split('').map(c=>c+c).join('') : h;
+    const r = parseInt(n.slice(0,2), 16), g = parseInt(n.slice(2,4), 16), b = parseInt(n.slice(4,6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  }
+
+  // Lazy chart factory: takes a canvas + builder, defers init until visible
+  const chartRegistry = new Map();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const cv = e.target;
+        const init = cv.__init;
+        if (init && !cv.__initialized) {
+          cv.__initialized = true;
+          requestAnimationFrame(() => init(cv));
+        }
+        observer.unobserve(cv);
+      }
+    });
+  }, { rootMargin: '120px' });
+  function lazy(cv, init) {
+    if (!cv) return;
+    cv.__init = init;
+    observer.observe(cv);
+  }
+
+  /* ============================================================
+     Sparklines (KPI strip)
+     ============================================================ */
+  function renderSparklines() {
+    document.querySelectorAll('canvas.kpi__spark').forEach(cv => {
+      lazy(cv, (canvas) => {
+        const data = (canvas.dataset.spark || '').split(',').map(Number);
+        const ctx = canvas.getContext('2d');
+        const accent = getComputedStyle(canvas.closest('.kpi'))
+          .getPropertyValue('--kpi-accent').trim() || COLORS.accent;
+        const c = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: data.map((_, i) => i),
+            datasets: [{
+              data, borderColor: accent, borderWidth: 1.6,
+              backgroundColor: gradient(ctx, accent, 0.32, 0),
+              tension: 0.42, fill: true, pointRadius: 0,
+              pointHoverRadius: 4, pointHoverBackgroundColor: accent,
+              pointHoverBorderColor: '#0b1220', pointHoverBorderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'nearest' },
+            plugins: {
+              legend: { display: false },
+              tooltip: { displayColors: false, callbacks: { title: () => '', label: ctx => `${ctx.parsed.y}` } }
+            },
+            scales: { x: { display: false }, y: { display: false } },
+            elements: { line: { capBezierPoints: true } }
+          }
+        });
+        chartRegistry.set(canvas, c);
+      });
+    });
+  }
+
+  /* ============================================================
+     Report card thumbnails
+     ============================================================ */
+  function buildThumbChart(canvas, report) {
+    const ctx = canvas.getContext('2d');
+    const cat = report.cat;
+    const accent = CAT_COLOR[cat] || COLORS.accent;
+    let cfg;
+    switch (report.thumb) {
+      case 'line-area':
+      case 'line': {
+        cfg = {
+          type: 'line',
+          data: { labels: report.series.map((_,i)=>i+1), datasets: [{
+            data: report.series, borderColor: accent, borderWidth: 1.8,
+            backgroundColor: gradient(ctx, accent, 0.30, 0),
+            tension: 0.4, fill: true, pointRadius: 0
+          }]},
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { x: { display: false }, y: { display: false } } }
+        };
+        break;
+      }
+      case 'bar': {
+        cfg = {
+          type: 'bar',
+          data: { labels: report.series.map((_,i)=>i+1), datasets: [{
+            data: report.series, backgroundColor: hexA(accent, 0.55),
+            borderColor: accent, borderWidth: 1, borderRadius: 4,
+            barPercentage: 0.7, categoryPercentage: 0.8
+          }]},
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { x: { display: false }, y: { display: false } } }
+        };
+        break;
+      }
+      case 'doughnut': {
+        cfg = {
+          type: 'doughnut',
+          data: { labels: ['Legit','Review','Fraud'], datasets: [{
+            data: report.series,
+            backgroundColor: [hexA(COLORS.success,0.85), hexA(COLORS.warn,0.85), hexA(COLORS.danger,0.9)],
+            borderColor: '#0f1729', borderWidth: 2
+          }]},
+          options: { responsive: true, maintainAspectRatio: false, cutout: '65%',
+            plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+        };
+        break;
+      }
+      case 'radar': {
+        cfg = {
+          type: 'radar',
+          data: { labels: ['FDCPA','CFPB','TCPA','FCRA','State'], datasets: [{
+            data: report.series, borderColor: accent, borderWidth: 1.5,
+            backgroundColor: hexA(accent, 0.18),
+            pointRadius: 0
+          }]},
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { r: { display: false, suggestedMin: 80, suggestedMax: 100, grid: { color: COLORS.grid }, angleLines: { color: COLORS.grid } } } }
+        };
+        break;
+      }
+      case 'bar-stack': {
+        const colors = [COLORS.success, COLORS.accent, COLORS.warn, COLORS.danger];
+        cfg = {
+          type: 'bar',
+          data: { labels: ['0-30','31-60','61-90','90+'], datasets: [{
+            data: report.series,
+            backgroundColor: report.series.map((_,i)=>hexA(colors[i],0.85)),
+            borderRadius: 4, borderSkipped: false,
+            barPercentage: 0.7, categoryPercentage: 0.8
+          }]},
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { x: { display: false }, y: { display: false } } }
+        };
+        break;
+      }
+    }
+    const c = new Chart(ctx, cfg);
+    chartRegistry.set(canvas, c);
+  }
+
+  /* ============================================================
+     Report grid render + filtering
+     ============================================================ */
+  function timeAgo(min) {
+    if (min === 0) return 'Just now';
+    if (min < 60) return min + ' min ago';
+    if (min < 60 * 24) return Math.round(min / 60) + ' hr ago';
+    return Math.round(min / 1440) + ' d ago';
+  }
+  function statusPill(s) {
+    return s === 'Live' ? '<span class="report__live">Live</span>' :
+                          `<span class="report__live report__live--scheduled">${s}</span>`;
+  }
+  function matches(report) {
+    if (filters.bu.size && !filters.bu.has(report.bu)) return false;
+    const reg = Array.isArray(report.region) ? report.region : [report.region];
+    if (filters.region.size && !reg.some(r => filters.region.has(r))) return false;
+    const seg = Array.isArray(report.segment) ? report.segment : [report.segment];
+    if (filters.segment.size && !seg.some(s => filters.segment.has(s))) return false;
+    if (filters.status.size && !filters.status.has(report.status)) return false;
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      const hay = (report.title + ' ' + report.desc + ' ' + report.bu + ' ' + report.cat).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }
+  function renderReports() {
+    const grid = document.getElementById('reportGrid');
+    const empty = document.getElementById('reportsEmpty');
+    grid.innerHTML = '';
+    let count = 0;
+    REPORTS.forEach(r => {
+      if (!matches(r)) return;
+      count++;
+      const card = document.createElement('article');
+      card.className = 'report';
+      card.tabIndex = 0;
+      card.dataset.id = r.id;
+      card.dataset.cat = r.cat;
+      const isFav = filters.fav.has(r.id);
+      card.innerHTML = `
+        <div class="report__thumb">
+          <span class="report__cat"><span class="swatch" style="--cat-color:${CAT_COLOR[r.cat]}"></span> ${CAT_LABEL[r.cat]}</span>
+          ${statusPill(r.status)}
+          <canvas></canvas>
+        </div>
+        <div class="report__body">
+          <div class="report__title">
+            <span>${r.title}</span>
+            <button class="fav-btn ${isFav ? 'is-on' : ''}" aria-label="Toggle favorite" aria-pressed="${isFav}">
+              <i class="${isFav ? 'fas' : 'far'} fa-star"></i>
+            </button>
+          </div>
+          <p class="report__desc">${r.desc}</p>
+          <div class="report__stats">
+            ${r.stats.map(([v,l]) => `<div class="report__stat"><span class="v">${v}</span><span class="l">${l}</span></div>`).join('')}
+          </div>
+        </div>
+        <footer class="report__foot">
+          <span class="report__owners">${r.owners.map(o => `<span class="av">${o}</span>`).join('')}</span>
+          <span class="report__time"><i class="far fa-clock"></i> ${timeAgo(r.updatedMin)}</span>
+        </footer>`;
+      grid.appendChild(card);
+
+      const cv = card.querySelector('canvas');
+      lazy(cv, () => buildThumbChart(cv, r));
+    });
+
+    document.getElementById('reportsCount').textContent = `${count} of ${REPORTS.length}`;
+    empty.hidden = count > 0;
+    grid.setAttribute('aria-busy', 'false');
+  }
+
+  /* ============================================================
+     Slicer popovers
+     ============================================================ */
+  let openPop = null;
+  function closePop() {
+    if (!openPop) return;
+    openPop.el.classList.remove('is-open');
+    openPop.btn.setAttribute('aria-expanded', 'false');
+    openPop = null;
+  }
+  function buildPop(btn) {
+    const dim = btn.dataset.dim;
+    const meta = DIM_META[dim];
+    const pop = document.createElement('div');
+    pop.className = 'pop';
+    pop.setAttribute('role', 'listbox');
+    pop.innerHTML = `
+      <div class="pop__head">
+        <span class="pop__title">${meta.label}</span>
+        <button class="pop__clear" type="button">Clear</button>
+      </div>
+      <div class="pop__list">
+        ${meta.opts.map(o => {
+          const checked = filters[dim].has(o);
+          return `<label class="pop__opt"><input type="checkbox" ${checked ? 'checked' : ''} value="${o}">
+            <span>${o}</span>
+            <span class="badge">${REPORTS.filter(r => {
+              const v = r[dim]; return Array.isArray(v) ? v.includes(o) : v === o;
+            }).length}</span>
+          </label>`;
+        }).join('')}
+      </div>`;
+    document.body.appendChild(pop);
+
+    pop.querySelector('.pop__clear').addEventListener('click', () => {
+      filters[dim].clear();
+      pop.querySelectorAll('input').forEach(i => i.checked = false);
+      onFiltersChanged();
+    });
+    pop.querySelectorAll('input').forEach(i => i.addEventListener('change', () => {
+      if (i.checked) filters[dim].add(i.value); else filters[dim].delete(i.value);
+      onFiltersChanged();
+    }));
+    return pop;
+  }
+  function openSlicer(btn) {
+    if (openPop && openPop.btn === btn) { closePop(); return; }
+    closePop();
+    const pop = btn.__pop || (btn.__pop = buildPop(btn));
+    const r = btn.getBoundingClientRect();
+    pop.style.left = (window.scrollX + r.left) + 'px';
+    pop.style.top  = (window.scrollY + r.bottom + 6) + 'px';
+    pop.style.minWidth = Math.max(220, r.width) + 'px';
+    pop.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    openPop = { el: pop, btn };
+  }
+
+  function refreshSlicerLabels() {
+    document.querySelectorAll('.slicer[data-dim]').forEach(btn => {
+      const dim = btn.dataset.dim;
+      const set = filters[dim];
+      const val = btn.querySelector('.slicer__value');
+      if (set.size === 0) { val.textContent = 'All'; btn.classList.remove('is-active'); }
+      else if (set.size === 1) { val.textContent = Array.from(set)[0]; btn.classList.add('is-active'); }
+      else { val.textContent = set.size + ' selected'; btn.classList.add('is-active'); }
+    });
+  }
+
+  /* ============================================================
+     Active filter chips
+     ============================================================ */
+  function renderChips() {
+    const host = document.getElementById('activeFilters');
+    host.innerHTML = '';
+    const dims = ['bu','region','segment','status'];
+    dims.forEach(d => {
+      Array.from(filters[d]).forEach(v => {
+        const chip = document.createElement('span');
+        chip.className = 'filter-chip';
+        chip.innerHTML = `<span class="label">${DIM_META[d].label}:</span> ${v}
+          <button type="button" aria-label="Remove ${v}"><i class="fas fa-xmark"></i></button>`;
+        chip.querySelector('button').addEventListener('click', () => {
+          filters[d].delete(v); onFiltersChanged();
+        });
+        host.appendChild(chip);
+      });
+    });
+    if (filters.search) {
+      const chip = document.createElement('span');
+      chip.className = 'filter-chip';
+      chip.innerHTML = `<span class="label">Search:</span> "${filters.search}"
+        <button type="button" aria-label="Clear search"><i class="fas fa-xmark"></i></button>`;
+      chip.querySelector('button').addEventListener('click', () => {
+        filters.search = ''; document.getElementById('globalSearch').value = ''; onFiltersChanged();
+      });
+      host.appendChild(chip);
+    }
+  }
+
+  function onFiltersChanged() {
+    refreshSlicerLabels();
+    renderChips();
+    renderReports();
+    renderTable();
+    flashToast(activeFilterCount() ? 'Filters applied' : 'Filters reset');
+  }
+  function activeFilterCount() {
+    return ['bu','region','segment','status'].reduce((n,d)=>n + filters[d].size, 0) + (filters.search ? 1 : 0);
+  }
+
+  /* ============================================================
+     Table render + sort + filter
+     ============================================================ */
+  let sort = { key: 'achievement', dir: -1 };
+  function renderTable() {
+    const tbody = document.getElementById('unitsBody');
+    const foot  = document.getElementById('unitsFooter');
+    const q = (document.getElementById('tableFilter')?.value || '').toLowerCase();
+    let rows = TABLE_ROWS.slice();
+    if (q) rows = rows.filter(r => (r.name + ' ' + r.status).toLowerCase().includes(q));
+    rows.sort((a,b) => {
+      const av = a[sort.key], bv = b[sort.key];
+      const cmp = (typeof av === 'number' && typeof bv === 'number')
+        ? av - bv
+        : String(av).localeCompare(String(bv), undefined, { numeric: true });
+      return cmp * sort.dir;
+    });
+    tbody.innerHTML = rows.map(r => {
+      const pct = Math.min(1, r.achievement);
+      const trendCls = r.trend >= 0 ? 'up' : 'down';
+      const trendIcn = r.trend >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+      const trendVal = (r.trend >= 0 ? '+' : '−') + Math.abs(r.trend).toFixed(1) + '%';
+      return `<tr>
+        <td><span class="b-name">${r.name}</span></td>
+        <td class="num">${r.perfLabel}</td>
+        <td class="num">${r.targetLabel}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="progress" style="flex:1;max-width:180px"><span style="width:${(pct*100).toFixed(1)}%"></span></div>
+            <span class="num">${(r.achievement*100).toFixed(1)}%</span>
+          </div>
+        </td>
+        <td><span class="trend ${trendCls}"><i class="fas ${trendIcn}"></i> ${trendVal}</span></td>
+        <td><span class="pill ${PILL_FOR_STATUS[r.status]}">${r.status}</span></td>
+      </tr>`;
+    }).join('') || `<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--text-3)">No rows match your filter.</td></tr>`;
+    foot.textContent = `Showing ${rows.length} of ${TABLE_ROWS.length} · Sorted by ${sort.key} ${sort.dir === 1 ? 'asc' : 'desc'}`;
+    document.querySelectorAll('#unitsTable thead th').forEach(th => {
+      const k = th.dataset.key;
+      const i = th.querySelector('.sort-i');
+      th.classList.toggle('is-sorted', k === sort.key);
+      if (i) i.className = 'sort-i fas ' + (k === sort.key ? (sort.dir === 1 ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort');
+    });
+  }
+
+  /* ============================================================
+     Viewer charts (Overview/Operations/Financial/Quality panes)
+     ============================================================ */
+  function buildViewerCharts() {
+    const map = {
+      'rev-vs-target': cv => new Chart(cv, {
+        type: 'bar',
+        data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+          datasets: [
+            { type: 'bar', label: 'Revenue', data: [9.2,9.6,10.1,10.4,10.8,11.0,11.2,11.5,11.8,12.0,12.2,12.4],
+              backgroundColor: hexA(COLORS.accent, 0.85), borderRadius: 6, borderSkipped: false },
+            { type: 'line', label: 'Target', data: [9.5,9.8,10.0,10.4,10.8,11.2,11.5,11.8,12.0,12.3,12.6,13.0],
+              borderColor: COLORS.info, backgroundColor: COLORS.info, borderDash: [5,4],
+              borderWidth: 2, tension: 0.3, pointRadius: 3, pointBackgroundColor: COLORS.info }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false,
+          interaction: { intersect: false, mode: 'index' },
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            y: { ticks: { callback: v => '$' + v + 'M' }, grid: gridOpts() },
+            x: { grid: { display: false } } }
+        }
+      }),
+      'mix-doughnut': cv => new Chart(cv, {
+        type: 'doughnut',
+        data: { labels: ['Collections','Credit','Fraud','Servicing','Compliance'],
+          datasets: [{
+            data: [32, 26, 12, 18, 12],
+            backgroundColor: [COLORS.accent, COLORS.info, COLORS.danger, COLORS.teal, COLORS.violet].map(c => hexA(c, 0.9)),
+            borderColor: COLORS.surface, borderWidth: 2
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%',
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, padding: 10 } },
+                     tooltip: { callbacks: { label: c => `${c.label}: ${c.parsed}%` } } } }
+      }),
+      'ops-aht': cv => {
+        const ctx = cv.getContext('2d');
+        return new Chart(cv, {
+          type: 'line',
+          data: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+            datasets: [{ label: 'AHT (min)', data: [4.6,4.4,4.3,4.2,4.1,4.4,4.5],
+              borderColor: COLORS.info, backgroundColor: gradient(ctx, COLORS.info, 0.25, 0),
+              tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: COLORS.info }]
+          },
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { suggestedMin: 3.5, grid: gridOpts() }, x: { grid: { display: false } } } }
+        });
+      },
+      'ops-auto': cv => {
+        const ctx = cv.getContext('2d');
+        return new Chart(cv, {
+          type: 'line',
+          data: { labels: ['W1','W2','W3','W4','W5','W6','W7','W8'],
+            datasets: [{ label: 'Auto-decision', data: [76,78,79,80,80,81,82,82],
+              borderColor: COLORS.success, backgroundColor: gradient(ctx, COLORS.success, 0.25, 0),
+              tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: COLORS.success }]
+          },
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { ticks: { callback: v => v + '%' }, grid: gridOpts() }, x: { grid: { display: false } } } }
+        });
+      },
+      'ops-throughput': cv => new Chart(cv, {
+        type: 'bar',
+        data: { labels: ['8','9','10','11','12','1p','2p','3p','4p','5p','6p'],
+          datasets: [{ label: 'Apps processed',
+            data: [86, 142, 184, 196, 158, 126, 188, 204, 192, 162, 92],
+            backgroundColor: hexA(COLORS.accent, 0.7), borderColor: COLORS.accent, borderWidth: 1,
+            borderRadius: 4, borderSkipped: false }]
+        },
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { grid: gridOpts() }, x: { grid: { display: false } } } }
+      }),
+      'fin-waterfall': cv => new Chart(cv, {
+        type: 'bar',
+        data: {
+          labels: ['Open','New', 'Recovery','Charge-off','Refunds','Close'],
+          datasets: [{
+            data: [10.4, 2.6, 0.8, -0.9, -0.5, 12.4],
+            backgroundColor: [COLORS.text3, COLORS.success, COLORS.success, COLORS.danger, COLORS.warn, COLORS.accent].map(c => hexA(c,0.85)),
+            borderRadius: 6, borderSkipped: false
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `$${c.parsed.y.toFixed(2)}M` } } },
+          scales: { y: { ticks: { callback: v => '$' + v + 'M' }, grid: gridOpts() }, x: { grid: { display: false } } } }
+      }),
+      'fin-margin': cv => new Chart(cv, {
+        type: 'doughnut',
+        data: { labels: ['Servicing fees','Recovery','Interest','Other'],
+          datasets: [{
+            data: [42, 26, 22, 10],
+            backgroundColor: [COLORS.accent, COLORS.success, COLORS.info, COLORS.violet].map(c => hexA(c,0.9)),
+            borderColor: COLORS.surface, borderWidth: 2
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%',
+          plugins: { legend: { position: 'bottom' } } }
+      }),
+      'q-compliance': cv => new Chart(cv, {
+        type: 'radar',
+        data: { labels: ['FDCPA','CFPB','TCPA','FCRA','State'],
+          datasets: [
+            { label: 'Current', data: [98,97,95,96,97], borderColor: COLORS.violet,
+              backgroundColor: hexA(COLORS.violet, 0.18), pointRadius: 3, pointBackgroundColor: COLORS.violet },
+            { label: 'Last quarter', data: [95,94,92,93,95], borderColor: hexA(COLORS.text3,0.7),
+              backgroundColor: hexA(COLORS.text3, 0.10), borderDash: [4,3], pointRadius: 0 }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
+          scales: { r: { suggestedMin: 80, suggestedMax: 100,
+            grid: { color: COLORS.grid }, angleLines: { color: COLORS.grid },
+            pointLabels: { color: COLORS.text2 }, ticks: { display: false } } } }
+      }),
+      'q-qa': cv => {
+        const ctx = cv.getContext('2d');
+        return new Chart(cv, {
+          type: 'line',
+          data: { labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+            datasets: [{ label: 'QA score', data: [82,84,85,86,87,87],
+              borderColor: COLORS.violet, backgroundColor: gradient(ctx, COLORS.violet, 0.28, 0),
+              tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: COLORS.violet }]
+          },
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { suggestedMin: 75, suggestedMax: 100, grid: gridOpts() }, x: { grid: { display: false } } } }
+        });
+      }
+    };
+
+    document.querySelectorAll('canvas[data-chart]').forEach(cv => {
+      const key = cv.dataset.chart;
+      if (!map[key]) return;
+      lazy(cv, () => map[key](cv));
+    });
+  }
+
+  /* ============================================================
+     Tabs, drawer, favorites, search, toast, range
+     ============================================================ */
+  function flashToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('is-on');
+    clearTimeout(t.__h);
+    t.__h = setTimeout(() => t.classList.remove('is-on'), 1500);
+  }
+  function debounce(fn, ms) { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setChartDefaults();
+    renderSparklines();
+    renderReports();
+    renderTable();
+    buildViewerCharts();
+    renderChips();
+    refreshSlicerLabels();
+
     // Tabs
     const tabs = document.querySelectorAll('.tab');
     const panes = document.querySelectorAll('.pane');
@@ -1542,26 +2123,47 @@
       t.classList.add('is-active');
       t.setAttribute('aria-selected', 'true');
       const pane = document.getElementById('pane-' + t.dataset.pane);
-      if (pane) pane.classList.add('is-active');
+      if (pane) {
+        pane.classList.add('is-active');
+        // Some charts only get observed once visible — give them a resize nudge
+        requestAnimationFrame(() => {
+          pane.querySelectorAll('canvas[data-chart]').forEach(cv => {
+            const c = chartRegistry.get(cv); if (c) c.resize();
+          });
+        });
+      }
     }));
 
     // Drawer
     const drawer = document.getElementById('drawer');
-    const mask = document.getElementById('drawerMask');
+    const mask   = document.getElementById('drawerMask');
     const closeBtn = document.getElementById('drawerClose');
-    const titleEl = document.getElementById('drawerTitle');
-    const bodyEl = document.getElementById('drawerBody');
-
+    const titleEl  = document.getElementById('drawerTitle');
+    const bodyEl   = document.getElementById('drawerBody');
     function openDrawer(card) {
-      const title = card.querySelector('.report__title span')?.textContent || 'Report';
-      const desc = card.querySelector('.report__desc')?.textContent || '';
-      titleEl.textContent = title;
-      bodyEl.innerHTML =
-        '<p style="color:var(--text-3);line-height:1.6">' + desc + '</p>' +
-        '<div style="margin-top:14px;padding:14px;border:1px solid var(--border-2);border-radius:12px;background:var(--surface-2)">' +
-          '<div style="font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.1em;font-weight:700">Drill-through</div>' +
-          '<p style="margin-top:6px;color:var(--text-2)">Detailed visuals, slicers and row-level data will load here when wired to the dataset.</p>' +
-        '</div>';
+      const id = card.dataset.id;
+      const r = REPORTS.find(x => x.id === id);
+      if (!r) return;
+      titleEl.textContent = r.title;
+      bodyEl.innerHTML = `
+        <p style="color:var(--text-3);line-height:1.65">${r.desc}</p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px">
+          ${r.stats.map(([v,l]) => `
+            <div style="padding:10px 12px;border:1px solid var(--border-2);border-radius:10px;background:var(--surface-2)">
+              <div style="font-family:var(--font-mono);font-weight:700;font-size:18px">${v}</div>
+              <div style="font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.08em;font-weight:600">${l}</div>
+            </div>`).join('')}
+        </div>
+        <div style="margin-top:14px;padding:14px;border:1px solid var(--border-2);border-radius:12px;background:var(--surface-2)">
+          <div style="font-size:11px;color:var(--text-4);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:8px">Lineage</div>
+          <div style="display:flex;align-items:center;gap:8px;color:var(--text-2);font-size:13px"><i class="fas fa-snowflake" style="color:#67e8f9"></i> Snowflake · ${r.bu.toUpperCase().replace(/\\s+/g,'_')}_V3</div>
+          <div style="margin-top:6px;color:var(--text-3);font-size:12.5px">Refresh ${r.status === 'Live' ? 'continuous' : r.status.toLowerCase()} · Owners ${r.owners.join(', ')} · Updated ${timeAgo(r.updatedMin)}</div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn--soft btn--sm"><i class="fas fa-arrow-up-right-from-square"></i> Open report</button>
+          <button class="btn btn--ghost btn--sm"><i class="fas fa-bookmark"></i> Bookmark</button>
+          <button class="btn btn--ghost btn--sm"><i class="fas fa-share-alt"></i> Share</button>
+        </div>`;
       drawer.classList.add('is-open'); mask.classList.add('is-open');
       drawer.setAttribute('aria-hidden', 'false');
     }
@@ -1569,48 +2171,100 @@
       drawer.classList.remove('is-open'); mask.classList.remove('is-open');
       drawer.setAttribute('aria-hidden', 'true');
     }
-    document.querySelectorAll('.report').forEach(card => {
-      card.addEventListener('click', e => {
-        if (e.target.closest('.fav-btn')) return;
-        openDrawer(card);
-      });
-      card.addEventListener('keydown', e => {
-        if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.fav-btn')) {
-          e.preventDefault(); openDrawer(card);
-        }
-      });
+    document.getElementById('reportGrid').addEventListener('click', e => {
+      const card = e.target.closest('.report'); if (!card) return;
+      if (e.target.closest('.fav-btn')) return;
+      openDrawer(card);
+    });
+    document.getElementById('reportGrid').addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('report')) {
+        e.preventDefault(); openDrawer(e.target);
+      }
     });
     closeBtn.addEventListener('click', closeDrawer);
     mask.addEventListener('click', closeDrawer);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
-    // Favorite toggle
-    document.querySelectorAll('.fav-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        const on = btn.classList.toggle('is-on');
-        btn.setAttribute('aria-pressed', String(on));
-        const i = btn.querySelector('i');
-        if (i) i.className = on ? 'fas fa-star' : 'far fa-star';
-      });
+    // Favorites (delegated, persisted)
+    document.getElementById('reportGrid').addEventListener('click', e => {
+      const btn = e.target.closest('.fav-btn'); if (!btn) return;
+      e.stopPropagation();
+      const card = btn.closest('.report');
+      const id = card.dataset.id;
+      const on = !filters.fav.has(id);
+      if (on) filters.fav.add(id); else filters.fav.delete(id);
+      btn.classList.toggle('is-on', on);
+      btn.setAttribute('aria-pressed', String(on));
+      const i = btn.querySelector('i');
+      i.className = on ? 'fas fa-star' : 'far fa-star';
+      localStorage.setItem('pbi.favs', JSON.stringify(Array.from(filters.fav)));
+      flashToast(on ? 'Added to favorites' : 'Removed from favorites');
     });
 
-    // "/" focuses search
+    // Slicer popovers
+    document.querySelectorAll('.slicer[data-dim]').forEach(btn => {
+      btn.addEventListener('click', e => { e.stopPropagation(); openSlicer(btn); });
+    });
+    document.addEventListener('click', e => {
+      if (openPop && !openPop.el.contains(e.target) && !openPop.btn.contains(e.target)) closePop();
+    });
+
+    // Reset filters
+    function resetAll() {
+      ['bu','region','segment','status'].forEach(d => filters[d].clear());
+      filters.search = ''; document.getElementById('globalSearch').value = '';
+      // Also rebuild any open popovers' checkboxes
+      document.querySelectorAll('.pop input').forEach(i => i.checked = false);
+      onFiltersChanged();
+    }
+    document.getElementById('resetFilters').addEventListener('click', resetAll);
+    document.getElementById('resetFiltersEmpty').addEventListener('click', resetAll);
+
+    // Date-range segmented (visual + future hook)
+    document.querySelectorAll('#rangeSeg button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#rangeSeg button').forEach(x => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      filters.range = +b.dataset.range || 7;
+      flashToast('Range: ' + b.textContent.trim());
+    }));
+
+    // Layout segmented (visual)
+    document.querySelectorAll('.section-head .seg button').forEach(b => b.addEventListener('click', () => {
+      b.parentElement.querySelectorAll('button').forEach(x => { x.classList.remove('is-active'); x.setAttribute('aria-pressed','false'); });
+      b.classList.add('is-active'); b.setAttribute('aria-pressed','true');
+    }));
+
+    // Global search
     const search = document.getElementById('globalSearch');
+    search.addEventListener('input', debounce(() => {
+      filters.search = search.value.trim();
+      onFiltersChanged();
+    }, 160));
     document.addEventListener('keydown', e => {
       if (e.key === '/' && document.activeElement !== search && !e.target.closest('input,textarea,select')) {
         e.preventDefault(); search.focus();
       }
+      if (e.key === 'Escape') { closeDrawer(); closePop(); }
     });
 
-    // Segmented buttons (date range, layout) — visual toggle only for now
-    document.querySelectorAll('.seg').forEach(seg => {
-      seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-        seg.querySelectorAll('button').forEach(x => { x.classList.remove('is-active'); x.setAttribute('aria-pressed', 'false'); });
-        b.classList.add('is-active'); b.setAttribute('aria-pressed', 'true');
-      }));
+    // Table sort
+    document.querySelectorAll('#unitsTable thead th[data-key]').forEach(th => {
+      th.addEventListener('click', () => {
+        const k = th.dataset.key;
+        if (sort.key === k) sort.dir = -sort.dir;
+        else { sort.key = k; sort.dir = (k === 'name' || k === 'status') ? 1 : -1; }
+        renderTable();
+      });
     });
-  })();
+
+    // Table filter
+    const tf = document.getElementById('tableFilter');
+    if (tf) tf.addEventListener('input', debounce(renderTable, 120));
+
+    // Hero refresh button (visual)
+    document.querySelector('.icon-btn[aria-label="Refresh"]')?.addEventListener('click', () => {
+      flashToast('Dataset refreshed');
+    });
+  });
 </script>
 
 </body>
