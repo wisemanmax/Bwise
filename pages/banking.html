@@ -1056,6 +1056,120 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 
 /* signature font for check (no external) */
 .sig{font-family:var(--serif);font-style:italic;font-weight:500}
+
+/* ============ SLIDERS ============ */
+.limit-card{margin:14px 18px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}
+.limit-card + .limit-card{margin-top:0}
+.limit-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:6px}
+.limit-row .meta b{display:block;font-size:14.5px;font-weight:700;color:var(--ink)}
+.limit-row .meta span{font-size:12px;color:var(--muted);font-weight:500}
+.limit-val{font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.limit-val small{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--muted);display:block;margin-top:2px;letter-spacing:.04em;text-align:right}
+.slider{
+  -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+  background:linear-gradient(to right, var(--navy) 0%, var(--navy) var(--p,50%), var(--bg-3) var(--p,50%), var(--bg-3) 100%);
+  outline:none;cursor:pointer;margin:14px 0 6px;
+}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:grab}
+.slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.18);cursor:grab}
+.slider-ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--muted);font-weight:600;margin-top:2px}
+
+.region-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-top:1px solid var(--line-2)}
+.region-row:first-child{border-top:0}
+.region-flag{
+  width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+  background:var(--bg-2);color:var(--navy);font-family:var(--serif);font-weight:700;font-size:14px;flex-shrink:0;
+  border:1px solid var(--line);
+}
+.region-meta{flex:1}
+.region-meta b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.region-meta span{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px;display:block}
+
+/* ============ STATEMENT VIEWER ============ */
+.stmt-preview{
+  margin:0 0 14px;background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:18px 18px 14px;color:#1a2632;
+  box-shadow:0 4px 14px -4px rgba(0,0,0,.08);
+}
+.stmt-preview .head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e6eaee;padding-bottom:12px;margin-bottom:12px}
+.stmt-preview .brand{font-family:var(--serif);font-weight:600;font-size:18px;color:#0b3358}
+.stmt-preview .meta{text-align:right;font-size:11px;color:#6b7a87;line-height:1.5}
+.stmt-preview .meta b{color:#0e1924}
+.stmt-preview h4{margin:8px 0 6px;font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#6b7a87}
+.stmt-preview .summary{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:11.5px;color:#1a2632;margin-bottom:8px}
+.stmt-preview .summary div{display:flex;justify-content:space-between}
+.stmt-preview .summary b{font-family:var(--mono);font-weight:600}
+.stmt-preview .summary .pos{color:#0e7c4a}
+.stmt-preview .summary .neg{color:#b91c1c}
+.stmt-preview table{width:100%;font-size:11px;color:#1a2632;border-collapse:collapse}
+.stmt-preview th{text-align:left;font-size:9.5px;color:#6b7a87;text-transform:uppercase;letter-spacing:.06em;padding:6px 0 4px;border-bottom:1px solid #e6eaee;font-weight:700}
+.stmt-preview td{padding:5px 0;border-bottom:1px solid #f0f3f6;font-family:var(--mono);font-weight:500}
+.stmt-preview td.neg{color:#b91c1c}
+.stmt-preview td.pos{color:#0e7c4a}
+.stmt-preview td.name{font-family:var(--sans);font-weight:600;color:#0e1924}
+.stmt-preview .tot{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:8px;padding-top:8px;border-top:2px solid #1a2632}
+[data-theme="dark"] .stmt-preview{background:#fff;color:#1a2632}
+
+/* ============ INSIGHTS BARS ============ */
+.bars-week{display:flex;align-items:flex-end;gap:6px;height:96px;padding:8px 4px 0;margin:6px 0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.bar-fill{
+  width:100%;border-radius:6px 6px 2px 2px;
+  background:linear-gradient(180deg, var(--navy) 0%, var(--navy-3) 100%);
+  position:relative;transition:height .25s ease;
+}
+.bar-col.today .bar-fill{background:linear-gradient(180deg, var(--red) 0%, var(--red-2) 100%)}
+.bar-col.weekend .bar-fill{opacity:.55}
+.bar-day{font-size:10px;font-weight:600;color:var(--muted)}
+.bar-col.today .bar-day{color:var(--red);font-weight:700}
+
+.merch-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line-2)}
+.merch-row:first-child{border-top:0}
+.merch-icon{width:34px;height:34px;border-radius:9px;color:#fff;font-family:var(--serif);font-weight:600;font-size:14px;display:grid;place-items:center;flex-shrink:0}
+.merch-meta{flex:1;min-width:0}
+.merch-meta b{font-size:13.5px;font-weight:700;color:var(--ink);display:block}
+.merch-meta span{font-size:11.5px;color:var(--muted);font-weight:500}
+.merch-amt{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink)}
+
+/* ============ FORM/PROFILE ============ */
+.form-grid{padding:14px 18px;display:flex;flex-direction:column;gap:14px}
+.field-group label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}
+.field-group .hint{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.45}
+.checkbox-list .li .switch{margin-left:auto}
+
+/* ============ SCHEDULED ============ */
+.sch-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid var(--line-2);cursor:pointer}
+.sch-row:first-child{border-top:0}
+.sch-icon{width:42px;height:42px;border-radius:50%;background:rgba(11,51,88,.08);color:var(--navy);display:grid;place-items:center;flex-shrink:0}
+[data-theme="dark"] .sch-icon{background:rgba(74,143,209,.14)}
+.sch-icon svg{width:18px;height:18px}
+.sch-meta{flex:1;min-width:0}
+.sch-meta b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.sch-meta span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+.sch-amt{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--ink)}
+.sch-amt small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--pos);margin-top:1px;font-family:var(--sans);text-transform:uppercase}
+
+/* ============ HELP ARTICLE ============ */
+.article-hero{padding:18px 22px 0}
+.article-hero .breadcrumb{font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.article-hero h2{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.02em;color:var(--ink);margin:8px 0 4px;line-height:1.2}
+.article-hero .meta{font-size:12px;color:var(--muted);font-weight:500}
+.article-body{padding:14px 22px 30px;font-size:14px;color:var(--ink-2);line-height:1.65}
+.article-body h3{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--ink);margin:18px 0 6px;letter-spacing:-.01em}
+.article-body p{margin:8px 0}
+.article-body ul{padding-left:20px;margin:6px 0}
+.article-body li{margin:4px 0}
+.article-callout{margin:12px 0;padding:12px 14px;border-left:3px solid var(--navy);background:var(--bg-2);font-size:13px;border-radius:0 10px 10px 0}
+
+/* ============ GENERIC SCREEN HEADER ICON BUTTON ============ */
+.nav-header .right{margin-left:auto;display:flex;gap:2px}
+
+/* small chip pill helper */
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:99px;text-transform:uppercase}
+.tag.green{background:var(--pos-2);color:var(--pos)}
+.tag.amber{background:#fdf3d8;color:#8a6a2c}
+.tag.red{background:rgba(200,50,44,.12);color:var(--red-2)}
+[data-theme="dark"] .tag.amber{background:rgba(200,155,60,.18);color:#e2c47a}
 </style>
 
 </head>
@@ -1212,6 +1326,7 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
       <div class="val" id="dailyVal">$61.57</div>
     </div>
   </div>
+  <div class="bars-week" id="weekBars"></div>
   <div class="ins-bar">
     <i class="food" style="width:32%"></i>
     <i class="shop" style="width:24%"></i>
@@ -1458,33 +1573,33 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
       </div>
       <div class="switch danger" id="freezeSwitch" onclick="toggleFreeze()"></div>
     </div>
-    <div class="ctrl-row">
+    <div class="ctrl-row" onclick="openCardLimits()" style="cursor:pointer">
       <div class="ctrl-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6 V12 L16 14"/></svg>
       </div>
       <div class="ctrl-meta">
-        <b>Spending limit</b>
-        <span>$2,500 daily</span>
+        <b>Spending limits</b>
+        <span id="ctrlLimitSummary">$2,500 daily · $800 ATM</span>
       </div>
       <span class="li-trail">›</span>
     </div>
-    <div class="ctrl-row">
+    <div class="ctrl-row" onclick="openCardInternational()" style="cursor:pointer">
       <div class="ctrl-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/><circle cx="12" cy="12" r="10"/></svg>
       </div>
       <div class="ctrl-meta">
         <b>International transactions</b>
-        <span>Allowed in 3 regions</span>
+        <span id="ctrlIntlSummary">Allowed in 3 regions</span>
       </div>
       <span class="li-trail">›</span>
     </div>
-    <div class="ctrl-row">
-      <div class="ctrl-icon">
+    <div class="ctrl-row" onclick="openCardReport()" style="cursor:pointer">
+      <div class="ctrl-icon" style="color:var(--red);background:rgba(200,50,44,.1)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8 L8 16 M8 8 L16 16"/></svg>
       </div>
       <div class="ctrl-meta">
         <b>Report lost or stolen</b>
-        <span>Replace immediately</span>
+        <span>Freeze and replace</span>
       </div>
       <span class="li-trail">›</span>
     </div>
@@ -1544,8 +1659,8 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
     <div class="list">
       <div class="li" onclick="startZelle()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg></span><div class="li-meta"><b>Send & receive money</b><span>Transfers, Zelle, wires</span></div><span class="li-trail">›</span></div>
       <div class="li" onclick="go('cards');setTab('cards')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/></svg></span><div class="li-meta"><b>Card management</b><span>Freeze, replace, report</span></div><span class="li-trail">›</span></div>
-      <div class="li" onclick="toast('Disputes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8 V12 M12 16 V16.01"/></svg></span><div class="li-meta"><b>Disputes & fraud</b><span>Report unauthorized activity</span></div><span class="li-trail">›</span></div>
-      <div class="li" onclick="toast('Statements & taxes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 H16 L20 7 V21 H6 Z"/></svg></span><div class="li-meta"><b>Statements & taxes</b><span>Tax docs, paperless</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="openArticle('disputes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8 V12 M12 16 V16.01"/></svg></span><div class="li-meta"><b>Disputes & fraud</b><span>Report unauthorized activity</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="openArticle('taxes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 H16 L20 7 V21 H6 Z"/></svg></span><div class="li-meta"><b>Statements & taxes</b><span>Tax docs, paperless</span></div><span class="li-trail">›</span></div>
     </div>
     <div class="section-h">Get in touch</div>
     <div class="list">
@@ -1574,24 +1689,24 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
     </div>
     <div class="section-h">Account</div>
     <div class="list">
-      <div class="li" onclick="toast('Personal info')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21 v-2 a4 4 0 0 0 -4 -4 H8 a4 4 0 0 0 -4 4 v2"/></svg></span><div class="li-meta"><b>Personal information</b><span>Name, address, phone</span></div><span class="li-trail">›</span></div>
-      <div class="li" onclick="toast('Linked accounts')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13 a5 5 0 0 0 7.54 .54 l3 -3 a5 5 0 0 0 -7.07 -7.07 l-1.72 1.71"/><path d="M14 11 a5 5 0 0 0 -7.54 -.54 l-3 3 a5 5 0 0 0 7.07 7.07 l1.71 -1.71"/></svg></span><div class="li-meta"><b>Linked accounts</b><span>External banks & cards</span></div><span class="li-trail">›</span></div>
-      <div class="li" onclick="toast('Beneficiaries')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21 v-2 a4 4 0 0 0 -4 -4 H5 a4 4 0 0 0 -4 4 v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21 v-2 a4 4 0 0 0 -3 -3.87"/><path d="M16 3.13 a4 4 0 0 1 0 7.75"/></svg></span><div class="li-meta"><b>Beneficiaries</b><span>2 on file</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="openPersonalInfo()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M20 21 v-2 a4 4 0 0 0 -4 -4 H8 a4 4 0 0 0 -4 4 v2"/></svg></span><div class="li-meta"><b>Personal information</b><span>Name, address, phone</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="openLinkedAccounts()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13 a5 5 0 0 0 7.54 .54 l3 -3 a5 5 0 0 0 -7.07 -7.07 l-1.72 1.71"/><path d="M14 11 a5 5 0 0 0 -7.54 -.54 l-3 3 a5 5 0 0 0 7.07 7.07 l1.71 -1.71"/></svg></span><div class="li-meta"><b>Linked accounts</b><span id="linkedSummary">External banks & cards</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="openBeneficiaries()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21 v-2 a4 4 0 0 0 -4 -4 H5 a4 4 0 0 0 -4 4 v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21 v-2 a4 4 0 0 0 -3 -3.87"/><path d="M16 3.13 a4 4 0 0 1 0 7.75"/></svg></span><div class="li-meta"><b>Beneficiaries</b><span id="beneSummary">2 on file</span></div><span class="li-trail">›</span></div>
     </div>
 
 ```
 <div class="section-h">Security</div>
 <div class="list">
-  <div class="li" onclick="toast('Change passcode')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11 V7 a5 5 0 0 1 10 0 v4"/></svg></span><div class="li-meta"><b>Passcode</b><span>Last changed 8 days ago</span></div><span class="li-trail">›</span></div>
-  <div class="li"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1 a10 10 0 0 0 -7.5 16.65 L12 23 l7.5 -5.35 A10 10 0 0 0 12 1 z"/></svg></span><div class="li-meta"><b>Face ID</b><span>Enabled</span></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
-  <div class="li"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6 V12 L16 14"/></svg></span><div class="li-meta"><b>Auto sign-out</b><span>After 5 minutes</span></div><span class="li-trail">›</span></div>
+  <div class="li" onclick="changePasscode()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11 V7 a5 5 0 0 1 10 0 v4"/></svg></span><div class="li-meta"><b>Passcode</b><span id="passcodeMeta">Last changed Apr 22, 2026</span></div><span class="li-trail">›</span></div>
+  <div class="li" onclick="toggleFaceId(this)"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1 a10 10 0 0 0 -7.5 16.65 L12 23 l7.5 -5.35 A10 10 0 0 0 12 1 z"/></svg></span><div class="li-meta"><b>Face ID</b><span id="bioLabel">Enabled</span></div><div class="switch on" id="bioSwitch" onclick="event.stopPropagation()"></div></div>
+  <div class="li" onclick="openAutoSignOut()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6 V12 L16 14"/></svg></span><div class="li-meta"><b>Auto sign-out</b><span id="signOutMeta">After 5 minutes</span></div><span class="li-trail">›</span></div>
 </div>
 
 <div class="section-h">Preferences</div>
 <div class="list">
   <div class="li"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79 A9 9 0 1 1 11.21 3 a7 7 0 0 0 9.79 9.79 z"/></svg></span><div class="li-meta"><b>Dark mode</b><span id="darkLabel">Off</span></div><div class="switch" id="darkSwitch" onclick="toggleTheme(); this.classList.toggle('on')"></div></div>
-  <div class="li" onclick="toast('Push notifications')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/></svg></span><div class="li-meta"><b>Notifications</b><span>Customize alerts</span></div><span class="li-trail">›</span></div>
-  <div class="li" onclick="toast('Language')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/></svg></span><div class="li-meta"><b>Language</b><span>English (US)</span></div><span class="li-trail">›</span></div>
+  <div class="li" onclick="openNotifPrefs()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/></svg></span><div class="li-meta"><b>Notifications</b><span id="notifPrefSummary">Customize alerts</span></div><span class="li-trail">›</span></div>
+  <div class="li" onclick="openLanguage()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/></svg></span><div class="li-meta"><b>Language</b><span id="langLabel">English (US)</span></div><span class="li-trail">›</span></div>
 </div>
 
 <div style="padding:8px 18px 36px"><button class="btn btn-ghost" style="color:var(--red)" onclick="signOut()">Sign out</button></div>
@@ -1772,6 +1887,194 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
   </div>
 </section>
 
+<!-- ============ CARD LIMITS ============ -->
+
+<section class="screen enter-right" id="cardLimits">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('cardLimits','cards')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Spending limits</h2>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">Set per-day caps on your Meridian Reserve card. Limits reset at midnight local time.</p></div>
+    <div id="limitsBody"></div>
+  </div>
+</section>
+
+<!-- ============ CARD INTERNATIONAL ============ -->
+
+<section class="screen enter-right" id="cardInternational">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('cardInternational','cards')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>International</h2>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">Allow purchases by region. Card declines when used outside enabled areas — call us if you’re traveling unexpectedly.</p></div>
+    <div class="list" id="regionsList"></div>
+    <div class="section-h">Travel notice</div>
+    <div class="list">
+      <div class="li" onclick="travelNoticeFlow()">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16 L12 8 L22 16 M2 20 H22"/><path d="M9 8 L9 4 H15 L15 8"/></svg></span>
+        <div class="li-meta"><b>File a travel notice</b><span>Tell us where you’ll be using the card</span></div>
+        <span class="li-trail">›</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REPORT LOST / STOLEN ============ -->
+
+<section class="screen enter-right" id="cardReport">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('cardReport','cards')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Report card</h2>
+    </header>
+    <div id="reportBody"></div>
+  </div>
+</section>
+
+<!-- ============ SCHEDULED TRANSFERS ============ -->
+
+<section class="screen enter-right" id="scheduled">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('scheduled','home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Scheduled & recurring</h2>
+      <button class="back-btn" onclick="startTransfer('send');setTimeout(()=>{document.getElementById('xferScheduleToggle')?.click()},300)" aria-label="New">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M5 12 H19"/></svg>
+      </button>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">Transfers and bills you've set to run automatically.</p></div>
+    <div class="section-h">Upcoming transfers</div>
+    <div id="schList"></div>
+    <div class="section-h">Recurring bills</div>
+    <div id="schBills"></div>
+  </div>
+</section>
+
+<!-- ============ PERSONAL INFO ============ -->
+
+<section class="screen enter-right" id="personalInfo">
+  <div class="scroll" id="personalInfoScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('personalInfo','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Personal information</h2>
+    </header>
+    <div id="profileForm"></div>
+    <div class="btn-foot" style="position:sticky;bottom:0;border-top:1px solid var(--line-2);background:var(--bg)">
+      <button class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LINKED ACCOUNTS ============ -->
+
+<section class="screen enter-right" id="linkedAccounts">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('linkedAccounts','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Linked accounts</h2>
+      <button class="back-btn" onclick="addLinkedAccount()" aria-label="Add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M5 12 H19"/></svg>
+      </button>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">External banks and brokerages you've linked for transfers and balance views.</p></div>
+    <div id="linkedList"></div>
+  </div>
+</section>
+
+<!-- ============ BENEFICIARIES ============ -->
+
+<section class="screen enter-right" id="beneficiaries">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('beneficiaries','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Beneficiaries</h2>
+      <button class="back-btn" onclick="addBeneficiary()" aria-label="Add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M5 12 H19"/></svg>
+      </button>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">Payable-on-death (POD) beneficiaries for your accounts. Shares must add to 100%.</p></div>
+    <div id="beneList"></div>
+    <div id="beneTotal" style="padding:14px 18px;font-size:13px;font-weight:600;color:var(--ink)"></div>
+  </div>
+</section>
+
+<!-- ============ NOTIFICATION PREFS ============ -->
+
+<section class="screen enter-right" id="notifPrefs">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('notifPrefs','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Notifications</h2>
+    </header>
+    <div id="notifPrefsBody"></div>
+  </div>
+</section>
+
+<!-- ============ LANGUAGE ============ -->
+
+<section class="screen enter-right" id="language">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('language','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Language</h2>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">Choose your display language. Account and statement language is set in branch.</p></div>
+    <div class="list" id="langList"></div>
+  </div>
+</section>
+
+<!-- ============ AUTO SIGN-OUT ============ -->
+
+<section class="screen enter-right" id="autoSignOut">
+  <div class="scroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('autoSignOut','profile')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Auto sign-out</h2>
+    </header>
+    <div style="padding:0 18px"><p style="margin:6px 0 8px;font-size:13.5px;color:var(--muted);font-weight:500">Sign out automatically after a period of inactivity.</p></div>
+    <div class="list" id="signOutList"></div>
+  </div>
+</section>
+
+<!-- ============ HELP ARTICLE ============ -->
+
+<section class="screen enter-right" id="helpArticle">
+  <div class="scroll" id="helpArticleScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('helpArticle','help')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2 id="articleTitle">Article</h2>
+      <button class="back-btn" onclick="toast('Saved to bookmarks')" aria-label="Save">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21 L12 16 L5 21 V5 a2 2 0 0 1 2 -2 H17 a2 2 0 0 1 2 2 z"/></svg>
+      </button>
+    </header>
+    <div id="helpArticleBody"></div>
+  </div>
+</section>
+
 <!-- ============ SHEET / SCRIM ============ -->
 
 <div class="scrim" id="scrim" onclick="closeSheet()"></div>
@@ -1793,7 +2096,7 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 /* ============================================================
    DATA + PERSISTENCE
    ============================================================ */
-const STORAGE_KEY = 'meridian.v2';
+const STORAGE_KEY = 'meridian.v3';
 const defaultState = {
   user: { name: 'B. Wise', avatar: 'B' },
   theme: 'light',
@@ -1811,7 +2114,7 @@ const defaultState = {
     { id:'n5', unread:false, title:'Welcome to Meridian',        body:'Your account is set up and ready to go.', time:'2 weeks ago' },
   ],
   accounts: [
-    { id:'a1', kind:'checking', type:'Main',     name:'Main Checking',         mask:'•• 4827', number:'1184826527', routing:'031176110', swift:'MRDNUS33', balance: 4287.42, spendable: 4012.18, aside: 275.24, color:'navy',    opened:'Jan 2024' },
+    { id:'a1', kind:'checking', type:'Main',     name:'Main Checking',         mask:'•• 4827', number:'1184826527', routing:'031176110', swift:'MRDNUS33', balance: 732677.78, spendable: 732402.54, aside: 275.24, color:'navy',    opened:'Jan 2024' },
     { id:'a2', kind:'savings',  type:'High-yield', name:'Performance Savings',  mask:'•• 6310', number:'7700631009', routing:'031176110', swift:'MRDNUS33', balance: 12450.00, spendable: 12450.00, aside: 0,      color:'savings', opened:'Mar 2024', apy:4.30 },
     { id:'a3', kind:'credit',   type:'Credit card', name:'Meridian Reserve',    mask:'•• 9045', number:'4732 6014 8819 9045', routing:'',          swift:'',         balance: -317.84,  spendable: 0,        aside: 0,      color:'credit',  opened:'May 2024', limit: 8000, apr: 19.74, due: 'May 18' },
     { id:'a4', kind:'checking', type:'Goal',     name:'Vacation Fund',           mask:'•• 0938', number:'1184820938', routing:'031176110', swift:'MRDNUS33', balance: 1123.45,  spendable: 0,        aside: 1123.45, color:'navy',    opened:'Aug 2024', goal:3000 },
@@ -1865,10 +2168,50 @@ const defaultState = {
     { id:'z5', name:'Dani T.',         handle:'dani@example.com',          tag:'',          color:2, last:0    },
   ],
   searches: [],          /* recent search strings */
-  scheduledTransfers: [],
+  scheduledTransfers: [
+    { id:'sch-1', fromId:'a1', toId:'a2', amount:500.00, freq:'monthly', nextDate:'May  1', memo:'Auto-savings' },
+    { id:'sch-2', fromId:'a1', toId:'a4', amount:100.00, freq:'biweekly', nextDate:'May  9', memo:'Vacation goal' },
+  ],
   billPayments: [],
   hiddenTx: [],          /* tx ids the user has hidden */
-  txOverrides: {}        /* { txId: { cat, hidden, note } } */
+  txOverrides: {},       /* { txId: { cat, hidden, note } } */
+  cardLimits: { daily: 2500, atm: 800, online: 2000, contactless: true, magstripe: false },
+  cardRegions: [
+    { id:'na', name:'North America',    sub:'US, Canada, Mexico',                allowed:true  },
+    { id:'eu', name:'Europe',           sub:'Schengen + UK, Ireland, Switzerland', allowed:true },
+    { id:'ap', name:'Asia Pacific',     sub:'Japan, Korea, Australia, NZ',       allowed:true  },
+    { id:'sa', name:'South America',    sub:'Brazil, Argentina, Chile, etc.',    allowed:false },
+    { id:'af', name:'Africa',           sub:'All countries',                     allowed:false },
+    { id:'me', name:'Middle East',      sub:'GCC + Israel, Turkey',              allowed:false },
+  ],
+  beneficiaries: [
+    { id:'b1', name:'Alex Wise',     relation:'Spouse',  share:60, ssn:'•• 4291' },
+    { id:'b2', name:'Jamie Wise',    relation:'Child',   share:40, ssn:'•• 0832' },
+  ],
+  linkedAccounts: [
+    { id:'la1', bank:'Chase', name:'Total Checking',     mask:'•• 9921', balance:1245.10, status:'verified' },
+    { id:'la2', bank:'Vanguard', name:'Brokerage',       mask:'•• 0188', balance:48210.55, status:'verified' },
+    { id:'la3', bank:'Coinbase', name:'USD Wallet',      mask:'•• 7314', balance: 320.00,  status:'pending'  },
+  ],
+  profile: {
+    legalName: 'Bryce Wise',
+    preferredName: 'B. Wise',
+    email: 'bryce@example.com',
+    phone: '(302) 555-0177',
+    address: '142 N Greenfield Rd, Newark, DE 19711',
+    dob: '•• / •• / 1996',
+    ssn: '••• -•• - 4471'
+  },
+  notifPrefs: {
+    deposits: true, withdrawals: true, lowBalance: true, lowBalanceThreshold: 100,
+    cardActivity: true, internationalActivity: true, fraudAlerts: true,
+    statements: true, marketing: false, productUpdates: true,
+    push: true, email: true, sms: false
+  },
+  language: 'en-US',
+  signOutAfter: 5,         /* minutes */
+  passcodeChangedAt: 'Apr 22, 2026',
+  cardReplacements: []
 };
 
 function loadState(){
@@ -1915,7 +2258,7 @@ function maskAmt(s){ return s.replace(/[0-9]/g,'•') }
 /* ============================================================
    SCREEN ROUTER
    ============================================================ */
-const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle'];
+const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle','cardLimits','cardInternational','cardReport','scheduled','personalInfo','linkedAccounts','beneficiaries','notifPrefs','language','autoSignOut','helpArticle'];
 let current = 'splash';
 
 function go(toId){
@@ -2067,8 +2410,10 @@ function renderHome(){
   renderActions();
 
   // quick links
+  const schedCount = (state.scheduledTransfers||[]).length + (state.payees||[]).filter(p=>p.autopay).length;
   document.getElementById('quickLinks').innerHTML = `
-    <div class="ql-item" onclick="go('cards')"><span class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/></svg></span><div class="ql-meta"><b>Manage your card</b><span>Freeze, replace, controls</span></div><span class="ql-arrow">›</span></div>
+    <div class="ql-item" onclick="go('scheduled');renderScheduled()"><span class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2 V6 M8 2 V6 M3 10 H21"/></svg></span><div class="ql-meta"><b>Scheduled & recurring</b><span>${schedCount} on autopilot</span></div><span class="ql-arrow">›</span></div>
+    <div class="ql-item" onclick="go('cards')"><span class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/></svg></span><div class="ql-meta"><b>Manage your card</b><span>Freeze, limits, replace</span></div><span class="ql-arrow">›</span></div>
     <div class="ql-item" onclick="go('notifications')"><span class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/></svg></span><div class="ql-meta"><b>Notifications</b><span>${unread} unread alert${unread===1?'':'s'}</span></div><span class="ql-arrow">›</span></div>
     <div class="ql-item" onclick="go('help')"><span class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9 a3 3 0 0 1 5.83 1 c0 2 -3 3 -3 3"/></svg></span><div class="ql-meta"><b>Get help</b><span>Talk to a banker, FAQs</span></div><span class="ql-arrow">›</span></div>
   `;
@@ -2356,15 +2701,16 @@ function renderStatements(){
   const list = document.getElementById('stmtList');
   list.innerHTML = months.map((m,i) => {
     const year = i < 3 ? yr : yr-1;
+    const days = m==='February'?28:30;
     return `
-      <div class="stmt-row" onclick="toast('Downloading ${m} statement')">
+      <div class="stmt-row" onclick="openStatement('${m}', ${year}, ${days})">
         <div class="stmt-icon">PDF</div>
         <div class="stmt-meta">
           <b>${m} ${year}</b>
-          <span>Statement period 1–${m==='February'?'28':'30'} ${m} ${year}</span>
+          <span>Statement period 1–${days} ${m} ${year}</span>
         </div>
         <span class="li-trail">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15 V19 a2 2 0 0 1 -2 2 H5 a2 2 0 0 1 -2 -2 V15"/><path d="M7 10 L12 15 L17 10"/><path d="M12 15 V3"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18 L15 12 L9 6"/></svg>
         </span>
       </div>`;
   }).join('');
@@ -3441,14 +3787,823 @@ function addZelleSubmit(){
 }
 
 /* ============================================================
+   WEEK CHART (home insights)
+   ============================================================ */
+function renderWeekBars(){
+  const el = document.getElementById('weekBars'); if(!el) return;
+  // sample week of spending in $
+  const week = [42,128,68,210,154,84,38];
+  const days = ['M','T','W','T','F','S','S'];
+  const today = new Date().getDay(); // 0 Sun..6 Sat
+  const todayIdx = (today + 6) % 7;  // 0 Mon..6 Sun
+  const max = Math.max(...week);
+  el.innerHTML = week.map((v,i) => {
+    const h = Math.max(8, Math.round(v/max*82));
+    const isToday = i === todayIdx;
+    const isWeekend = i >= 5;
+    return `
+      <div class="bar-col ${isToday?'today':''} ${isWeekend?'weekend':''}">
+        <div class="bar-fill" style="height:${h}px" title="$${v}"></div>
+        <div class="bar-day">${days[i]}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   CARD LIMITS
+   ============================================================ */
+function openCardLimits(){
+  renderCardLimits();
+  go('cardLimits');
+}
+function renderCardLimits(){
+  const L = state.cardLimits;
+  const body = document.getElementById('limitsBody');
+  body.innerHTML = `
+    <div class="limit-card">
+      <div class="limit-row">
+        <div class="meta"><b>Daily purchases</b><span>All in-store and online</span></div>
+        <div class="limit-val">$${fmt(L.daily)}<small>per day</small></div>
+      </div>
+      <input type="range" min="100" max="10000" step="100" value="${L.daily}" class="slider" id="lDaily" />
+      <div class="slider-ticks"><span>$100</span><span>$5,000</span><span>$10,000</span></div>
+    </div>
+
+    <div class="limit-card" style="margin-top:14px">
+      <div class="limit-row">
+        <div class="meta"><b>ATM withdrawal</b><span>Cash from any Meridian or Allpoint ATM</span></div>
+        <div class="limit-val">$${fmt(L.atm)}<small>per day</small></div>
+      </div>
+      <input type="range" min="0" max="2000" step="50" value="${L.atm}" class="slider" id="lATM" />
+      <div class="slider-ticks"><span>$0</span><span>$1,000</span><span>$2,000</span></div>
+    </div>
+
+    <div class="limit-card" style="margin-top:14px">
+      <div class="limit-row">
+        <div class="meta"><b>Online & contactless</b><span>Card-not-present + tap-to-pay</span></div>
+        <div class="limit-val">$${fmt(L.online)}<small>per day</small></div>
+      </div>
+      <input type="range" min="0" max="10000" step="100" value="${L.online}" class="slider" id="lOnline" />
+      <div class="slider-ticks"><span>$0</span><span>$5,000</span><span>$10,000</span></div>
+    </div>
+
+    <div class="list" style="margin-top:14px">
+      <div class="li" onclick="toggleLimitFlag('contactless', this)">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12 a9 9 0 0 1 18 0"/><path d="M6 12 a6 6 0 0 1 12 0"/><path d="M9 12 a3 3 0 0 1 6 0"/></svg></span>
+        <div class="li-meta"><b>Contactless payments</b><span>Apple Pay, Google Pay, tap-to-pay</span></div>
+        <div class="switch ${L.contactless?'on':''}" data-flag="contactless"></div>
+      </div>
+      <div class="li" onclick="toggleLimitFlag('magstripe', this)">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11 H22"/></svg></span>
+        <div class="li-meta"><b>Magnetic stripe</b><span>Less secure — leave off unless needed</span></div>
+        <div class="switch ${L.magstripe?'on':''}" data-flag="magstripe"></div>
+      </div>
+    </div>
+
+    <div style="padding:18px 18px 36px"><button class="btn btn-primary" onclick="saveLimits()">Save limits</button></div>
+  `;
+  // wire sliders
+  ['lDaily','lATM','lOnline'].forEach(id => {
+    const inp = document.getElementById(id);
+    const upd = () => {
+      const max = +inp.max, min = +inp.min, val = +inp.value;
+      inp.style.setProperty('--p', ((val-min)/(max-min)*100).toFixed(1)+'%');
+      const valEl = inp.previousElementSibling.querySelector('.limit-val');
+      valEl.firstChild.nodeValue = '$'+fmt(val);
+    };
+    inp.addEventListener('input', upd);
+    upd();
+  });
+}
+function toggleLimitFlag(flag, el){
+  const sw = el.querySelector('.switch');
+  state.cardLimits[flag] = !state.cardLimits[flag];
+  sw.classList.toggle('on', state.cardLimits[flag]);
+  saveState();
+}
+function saveLimits(){
+  state.cardLimits.daily  = +document.getElementById('lDaily').value;
+  state.cardLimits.atm    = +document.getElementById('lATM').value;
+  state.cardLimits.online = +document.getElementById('lOnline').value;
+  saveState();
+  updateCardSummaries();
+  toast('Limits updated');
+  back('cardLimits','cards');
+}
+function updateCardSummaries(){
+  const L = state.cardLimits;
+  const r = document.getElementById('ctrlLimitSummary');
+  if(r) r.textContent = `$${fmt(L.daily)} daily · $${fmt(L.atm)} ATM`;
+  const i = document.getElementById('ctrlIntlSummary');
+  if(i){
+    const allowed = state.cardRegions.filter(x=>x.allowed).length;
+    i.textContent = allowed === 0 ? 'Disabled — US only' : `Allowed in ${allowed} region${allowed===1?'':'s'}`;
+  }
+}
+
+/* ============================================================
+   CARD INTERNATIONAL
+   ============================================================ */
+function openCardInternational(){
+  renderRegions();
+  go('cardInternational');
+}
+function renderRegions(){
+  const list = document.getElementById('regionsList');
+  list.innerHTML = state.cardRegions.map(r => `
+    <div class="region-row" onclick="toggleRegion('${r.id}', this)">
+      <div class="region-flag">${r.id.toUpperCase()}</div>
+      <div class="region-meta"><b>${escapeHtml(r.name)}</b><span>${escapeHtml(r.sub)}</span></div>
+      <div class="switch ${r.allowed?'on':''}"></div>
+    </div>
+  `).join('');
+}
+function toggleRegion(id, el){
+  const r = state.cardRegions.find(x => x.id === id); if(!r) return;
+  r.allowed = !r.allowed;
+  el.querySelector('.switch').classList.toggle('on', r.allowed);
+  saveState(); updateCardSummaries();
+}
+function travelNoticeFlow(){
+  document.getElementById('sheetTitle').textContent = 'File a travel notice';
+  document.getElementById('sheetBody').innerHTML = `
+    <p style="font-size:13.5px;color:var(--muted);font-weight:500;margin:0 0 14px;line-height:1.5">Tell us where you'll be using your card so legitimate purchases aren't declined.</p>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Destination</div><input class="field" id="trvDest" placeholder="Country or region" /></div>
+    <div class="field-row" style="margin-bottom:14px">
+      <div class="form-section" style="margin:0"><div class="form-label">Start</div><input class="field" type="date" id="trvStart" /></div>
+      <div class="form-section" style="margin:0"><div class="form-label">End</div><input class="field" type="date" id="trvEnd" /></div>
+    </div>
+    <button class="btn btn-primary" onclick="submitTravelNotice()">Submit notice</button>
+  `;
+  openSheetRaw();
+}
+function submitTravelNotice(){
+  const dest = document.getElementById('trvDest').value.trim();
+  if(!dest){ toast('Add a destination'); return; }
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Travel notice filed', body:`We'll keep purchases to ${dest} active.`, time:'just now' });
+  saveState();
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Travel notice on file</div>
+      <div class="success-meta">Bon voyage, ${escapeHtml(state.user.name)}.</div>
+      <div style="margin-top:24px"><button class="btn btn-primary" onclick="closeSheet()">Done</button></div>
+    </div>
+  `;
+  renderHome(); renderNotifications();
+}
+
+/* ============================================================
+   REPORT LOST / STOLEN
+   ============================================================ */
+let reportReason = null;
+function openCardReport(){
+  reportReason = null;
+  renderReportStep1();
+  go('cardReport');
+}
+function renderReportStep1(){
+  document.getElementById('reportBody').innerHTML = `
+    <div style="padding:6px 18px 4px"><p style="font-size:13.5px;color:var(--muted);font-weight:500;line-height:1.5">We'll freeze your card immediately and send a replacement to the address on file.</p></div>
+    <div class="list">
+      <div class="li" onclick="reportReason='lost';renderReportStep2()">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21 -4.3 -4.3"/></svg></span>
+        <div class="li-meta"><b>I lost my card</b><span>I might still find it</span></div>
+        <span class="li-trail">›</span>
+      </div>
+      <div class="li" onclick="reportReason='stolen';renderReportStep2()">
+        <span class="li-icon" style="color:var(--red);background:rgba(200,50,44,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9 V13 M12 17 V17.01"/><path d="M10.29 3.86 L1.82 18 a2 2 0 0 0 1.71 3 H20.47 a2 2 0 0 0 1.71 -3 L13.71 3.86 a2 2 0 0 0 -3.42 0z"/></svg></span>
+        <div class="li-meta"><b style="color:var(--red)">My card was stolen</b><span>Cancel and reissue</span></div>
+        <span class="li-trail">›</span>
+      </div>
+      <div class="li" onclick="reportReason='damaged';renderReportStep2()">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11 H22 M9 19 L15 19"/></svg></span>
+        <div class="li-meta"><b>My card is damaged</b><span>Won't read or has cracks</span></div>
+        <span class="li-trail">›</span>
+      </div>
+    </div>
+  `;
+}
+function renderReportStep2(){
+  const stolen = reportReason === 'stolen';
+  const reasonText = reportReason === 'lost' ? 'lost' : reportReason === 'stolen' ? 'stolen' : 'damaged';
+  document.getElementById('reportBody').innerHTML = `
+    <div style="padding:18px 22px 4px;text-align:center">
+      <div style="width:64px;height:64px;border-radius:50%;background:${stolen?'rgba(200,50,44,.12)':'rgba(11,51,88,.08)'};display:grid;place-items:center;color:${stolen?'var(--red)':'var(--navy)'};margin:0 auto 12px">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11 H22"/></svg>
+      </div>
+      <h2 style="font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.02em;margin:0;color:var(--ink)">Confirm card report</h2>
+      <p style="font-size:13.5px;color:var(--muted);font-weight:500;margin:8px auto 0;max-width:300px;line-height:1.5">By confirming, we will <b style="color:var(--ink)">${stolen?'cancel':'freeze'}</b> your Meridian Reserve •• 9045 ${reasonText} card and ship a new one to <b style="color:var(--ink)">142 N Greenfield Rd, Newark, DE 19711</b>.</p>
+    </div>
+
+    <div class="list" style="margin:14px 18px">
+      <div class="kv-row" style="padding:14px 16px"><span class="lbl">Reason</span><span class="val">${escapeHtml(reasonText)}</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">New card arrives</span><span class="val">${stolen?'Today via courier':'3–5 business days'}</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Replacement fee</span><span class="val" style="color:var(--pos)">$0.00</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Recurring charges</span><span class="val">Auto-updated</span></div>
+    </div>
+
+    <div style="padding:14px 18px 36px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn ${stolen?'btn-danger':'btn-primary'}" onclick="confirmCardReport()">${stolen?'Cancel and reissue':'Freeze and reissue'}</button>
+      <button class="btn btn-ghost" onclick="renderReportStep1()">Change reason</button>
+    </div>
+  `;
+}
+function confirmCardReport(){
+  state.freezeOn = true;
+  document.getElementById('freezeStatus').textContent = 'Card is frozen — purchases declined';
+  document.getElementById('freezeSwitch').classList.add('on');
+  const id = 'rpl-'+Date.now();
+  state.cardReplacements.unshift({ id, reason:reportReason, ordered:new Date().toISOString().slice(0,10) });
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Card replacement ordered', body:`Your new Meridian Reserve card is on its way.`, time:'just now' });
+  saveState();
+  document.getElementById('reportBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Card report filed</div>
+      <div class="success-meta">Replacement arrives ${reportReason==='stolen'?'today by courier':'in 3–5 business days'}.<br/>Confirmation #${id.toUpperCase()}</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;padding:0 18px">
+        <button class="btn btn-primary" onclick="back('cardReport','cards')">Done</button>
+      </div>
+    </div>
+  `;
+  renderHome(); renderNotifications();
+}
+
+/* ============================================================
+   STATEMENT VIEWER (sheet)
+   ============================================================ */
+function openStatement(month, year, days){
+  const acct = activeId ? accountById(activeId) : state.accounts[0];
+  // mock summary
+  const opening = +(acct.balance - 1240).toFixed(2);
+  const closing = acct.balance;
+  const credits = 4280.50;
+  const debits  = 3040.50;
+  const fees = 0;
+  const sample = [
+    { d: month+' 02', n:'Direct Deposit',     a:  2150.00 },
+    { d: month+' 04', n:'Wawa #423',          a:   -42.18 },
+    { d: month+' 07', n:'Spotify Premium',    a:   -11.99 },
+    { d: month+' 10', n:'Amazon',             a:   -89.42 },
+    { d: month+' 12', n:'Delmarva Power',     a:  -142.00 },
+    { d: month+' 14', n:'Chipotle',           a:   -14.27 },
+    { d: month+' 17', n:'Direct Deposit',     a:  2150.00 },
+    { d: month+' 20', n:'Target',             a:  -107.83 },
+    { d: month+' 22', n:'Transfer to Savings',a:  -500.00 },
+    { d: month+' 24', n:'Comcast',            a:  -125.00 },
+    { d: month+' 27', n:'DoorDash',           a:   -28.74 },
+  ];
+  document.getElementById('sheetTitle').textContent = `${month} ${year} statement`;
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="stmt-preview">
+      <div class="head">
+        <div>
+          <div class="brand">Meridian</div>
+          <div style="font-size:10.5px;color:#6b7a87;letter-spacing:.06em;text-transform:uppercase;margin-top:2px">Account statement</div>
+        </div>
+        <div class="meta">
+          <b>${escapeHtml(acct.name)}</b><br/>
+          ${escapeHtml(acct.mask)}<br/>
+          ${escapeHtml(month)} 1 – ${days} ${year}
+        </div>
+      </div>
+      <h4>Summary</h4>
+      <div class="summary">
+        <div><span>Opening balance</span><b>$${fmt(opening)}</b></div>
+        <div><span>Closing balance</span><b>$${fmt(closing)}</b></div>
+        <div><span>Total credits</span><b class="pos">+ $${fmt(credits)}</b></div>
+        <div><span>Total debits</span><b class="neg">– $${fmt(debits)}</b></div>
+        <div><span>Fees charged</span><b>$${fmt(fees)}</b></div>
+        <div><span>Interest earned</span><b class="pos">+ $${fmt(8.72)}</b></div>
+      </div>
+      <h4>Activity (top items)</h4>
+      <table>
+        <tr><th>Date</th><th>Description</th><th style="text-align:right">Amount</th></tr>
+        ${sample.map(s => `<tr>
+          <td>${escapeHtml(s.d)}</td>
+          <td class="name">${escapeHtml(s.n)}</td>
+          <td class="${s.a<0?'neg':'pos'}" style="text-align:right">${s.a<0?'– $':'+ $'}${fmt(Math.abs(s.a))}</td>
+        </tr>`).join('')}
+      </table>
+      <div class="tot"><span>Net change</span><span style="color:#0e7c4a">+ $${fmt(credits-debits)}</span></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="closeSheet();toast('Statement downloaded')">Download PDF</button>
+      <button class="btn btn-ghost" onclick="closeSheet();toast('Statement shared')">Share</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+
+/* ============================================================
+   SCHEDULED & RECURRING
+   ============================================================ */
+function renderScheduled(){
+  const list = document.getElementById('schList');
+  if(!list) return;
+  if(!state.scheduledTransfers.length){
+    list.innerHTML = '<div class="empty" style="padding:14px 18px">No scheduled transfers.</div>';
+  } else {
+    list.innerHTML = state.scheduledTransfers.map(s => {
+      const from = accountById(s.fromId), to = accountById(s.toId);
+      if(!from || !to) return '';
+      return `
+        <div class="sch-row" onclick="editScheduled('${s.id}')">
+          <div class="sch-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2 V6 M8 2 V6 M3 10 H21"/></svg></div>
+          <div class="sch-meta">
+            <b>${escapeHtml(from.name.split(' ')[0])} → ${escapeHtml(to.name.split(' ')[0])}</b>
+            <span>${escapeHtml(s.freq[0].toUpperCase()+s.freq.slice(1))} · next ${escapeHtml(s.nextDate)}${s.memo?' · '+escapeHtml(s.memo):''}</span>
+          </div>
+          <div class="sch-amt">$${fmt(s.amount)}<small>upcoming</small></div>
+        </div>
+      `;
+    }).join('');
+  }
+  const bills = document.getElementById('schBills');
+  if(bills){
+    const auto = state.payees.filter(p => p.autopay);
+    if(!auto.length){ bills.innerHTML = '<div class="empty" style="padding:14px 18px">No autopay bills.</div>'; }
+    else {
+      bills.innerHTML = auto.map(p => `
+        <div class="sch-row" onclick="openPayeeFlow('${p.id}');go('payBill')">
+          <div class="payee-logo" style="background:${p.logoColor};width:42px;height:42px;border-radius:50%;font-size:15px">${escapeHtml(p.name.charAt(0))}</div>
+          <div class="sch-meta"><b>${escapeHtml(p.name)}</b><span>${escapeHtml(p.category)} · next ${escapeHtml(p.next)}</span></div>
+          <div class="sch-amt">$${fmt(p.last)}<small>autopay</small></div>
+        </div>
+      `).join('');
+    }
+  }
+}
+function editScheduled(id){
+  const s = state.scheduledTransfers.find(x => x.id === id); if(!s) return;
+  document.getElementById('sheetTitle').textContent = 'Edit scheduled transfer';
+  const from = accountById(s.fromId), to = accountById(s.toId);
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="kv-list">
+      <div class="kv-row"><span class="lbl">From</span><span class="val">${escapeHtml(from.name)}<span style="color:var(--muted);font-weight:500"> ${escapeHtml(from.mask)}</span></span></div>
+      <div class="kv-row"><span class="lbl">To</span><span class="val">${escapeHtml(to.name)}<span style="color:var(--muted);font-weight:500"> ${escapeHtml(to.mask)}</span></span></div>
+      <div class="kv-row"><span class="lbl">Amount</span><span class="val">$${fmt(s.amount)}</span></div>
+      <div class="kv-row"><span class="lbl">Frequency</span><span class="val">${escapeHtml(s.freq)}</span></div>
+      <div class="kv-row"><span class="lbl">Next</span><span class="val">${escapeHtml(s.nextDate)}</span></div>
+      <div class="kv-row"><span class="lbl">Memo</span><span class="val">${escapeHtml(s.memo||'—')}</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+      <button class="btn btn-primary" onclick="runScheduledNow('${id}')">Run now</button>
+      <button class="btn btn-ghost" onclick="cancelScheduled('${id}')" style="color:var(--red)">Cancel transfer</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function runScheduledNow(id){
+  const s = state.scheduledTransfers.find(x => x.id === id); if(!s) return;
+  const from = accountById(s.fromId), to = accountById(s.toId);
+  from.balance = +(from.balance - s.amount).toFixed(2);
+  from.spendable = +(from.spendable - s.amount).toFixed(2);
+  to.balance = +(to.balance + s.amount).toFixed(2);
+  if(to.kind !== 'credit') to.spendable = +(to.spendable + s.amount).toFixed(2);
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  const ts = Date.now();
+  state.txByAccount[from.id] = [{ id:'t-sch-'+ts+'-o', day:today, date:today+', 2026', time:'just now', cat:'Transfer', name:`Transfer to ${to.name.split(' ')[0]}`, sub:s.memo||to.mask, amt:-s.amount, c:2, status:'Posted', loc:{city:'Internal transfer',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[from.id]||[])];
+  state.txByAccount[to.id] = [{ id:'t-sch-'+ts+'-i', day:today, date:today+', 2026', time:'just now', cat:'Transfer', name:`Transfer from ${from.name.split(' ')[0]}`, sub:s.memo||from.mask, amt:+s.amount, c:4, status:'Posted', loc:{city:'Internal transfer',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[to.id]||[])];
+  toast('Transfer ran'); closeSheet(); renderHome(); renderScheduled();
+}
+function cancelScheduled(id){
+  if(!confirm('Cancel this scheduled transfer?')) return;
+  state.scheduledTransfers = state.scheduledTransfers.filter(s => s.id !== id);
+  saveState(); closeSheet(); toast('Scheduled transfer canceled'); renderScheduled(); renderHome();
+}
+
+/* ============================================================
+   PERSONAL INFO
+   ============================================================ */
+function openPersonalInfo(){
+  renderProfileForm();
+  go('personalInfo');
+}
+function renderProfileForm(){
+  const p = state.profile;
+  document.getElementById('profileForm').innerHTML = `
+    <div class="form-grid">
+      <div class="field-group">
+        <label>Legal name</label>
+        <input class="field" id="pfLegal" value="${escapeHtml(p.legalName)}" />
+        <div class="hint">Must match your government ID. Contact us to change.</div>
+      </div>
+      <div class="field-group">
+        <label>Preferred name</label>
+        <input class="field" id="pfPref" value="${escapeHtml(p.preferredName)}" />
+      </div>
+      <div class="field-group">
+        <label>Email</label>
+        <input class="field" id="pfEmail" type="email" value="${escapeHtml(p.email)}" />
+      </div>
+      <div class="field-group">
+        <label>Mobile phone</label>
+        <input class="field" id="pfPhone" type="tel" value="${escapeHtml(p.phone)}" />
+      </div>
+      <div class="field-group">
+        <label>Mailing address</label>
+        <textarea class="field" id="pfAddr" rows="3" style="resize:none">${escapeHtml(p.address)}</textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Date of birth</label>
+          <input class="field" value="${escapeHtml(p.dob)}" disabled />
+        </div>
+        <div class="field-group">
+          <label>SSN</label>
+          <input class="field" value="${escapeHtml(p.ssn)}" disabled />
+        </div>
+      </div>
+      <div class="hint" style="margin-top:-4px">DOB and SSN can only be updated in person at a branch.</div>
+    </div>
+  `;
+}
+function saveProfile(){
+  state.profile.legalName     = document.getElementById('pfLegal').value.trim();
+  state.profile.preferredName = document.getElementById('pfPref').value.trim();
+  state.profile.email         = document.getElementById('pfEmail').value.trim();
+  state.profile.phone         = document.getElementById('pfPhone').value.trim();
+  state.profile.address       = document.getElementById('pfAddr').value.trim();
+  state.user.name             = state.profile.preferredName || state.user.name;
+  state.user.avatar           = state.user.name.charAt(0).toUpperCase();
+  saveState();
+  // also update visible elements
+  document.getElementById('profileName').textContent = state.user.name;
+  document.getElementById('avatar').textContent = state.user.avatar;
+  toast('Profile saved');
+  back('personalInfo','profile');
+}
+
+/* ============================================================
+   LINKED ACCOUNTS
+   ============================================================ */
+function openLinkedAccounts(){
+  renderLinkedList();
+  go('linkedAccounts');
+}
+function renderLinkedList(){
+  const list = document.getElementById('linkedList');
+  list.innerHTML = state.linkedAccounts.map(a => {
+    const tag = a.status === 'verified' ? '<span class="tag green">Verified</span>' : '<span class="tag amber">Verifying</span>';
+    return `
+      <div class="payee-row" onclick="manageLinked('${a.id}')">
+        <div class="payee-logo" style="background:${linkedColor(a.bank)}">${escapeHtml(a.bank.charAt(0))}</div>
+        <div class="payee-meta"><b>${escapeHtml(a.bank)} ${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)} · $${fmt(a.balance)} ${tag}</span></div>
+        <span style="color:var(--muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+      </div>
+    `;
+  }).join('') || '<div class="empty" style="padding:14px 18px">No linked accounts yet.</div>';
+  const sum = document.getElementById('linkedSummary');
+  if(sum) sum.textContent = `${state.linkedAccounts.length} external · 1 brokerage`;
+}
+function linkedColor(bank){
+  const map = { Chase:'#1f4570', Vanguard:'#a82420', Coinbase:'#0e7c4a', Fidelity:'#5e3a8c', Schwab:'#0e7c4a' };
+  return map[bank] || '#0b3358';
+}
+function manageLinked(id){
+  const a = state.linkedAccounts.find(x => x.id === id); if(!a) return;
+  document.getElementById('sheetTitle').textContent = a.bank + ' ' + a.name;
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="kv-list">
+      <div class="kv-row"><span class="lbl">Account</span><span class="val">${escapeHtml(a.mask)}</span></div>
+      <div class="kv-row"><span class="lbl">Balance</span><span class="val">$${fmt(a.balance)}</span></div>
+      <div class="kv-row"><span class="lbl">Status</span><span class="val">${a.status==='verified'?'<span class="tag green">Verified</span>':'<span class="tag amber">Verifying</span>'}</span></div>
+    </div>
+    <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="closeSheet();startTransfer('send')">Transfer to/from</button>
+      <button class="btn btn-ghost" onclick="closeSheet();toast('Refreshed')">Refresh balance</button>
+      <button class="btn btn-ghost" style="color:var(--red)" onclick="unlinkAccount('${id}')">Unlink account</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function unlinkAccount(id){
+  if(!confirm('Unlink this account?')) return;
+  state.linkedAccounts = state.linkedAccounts.filter(x => x.id !== id); saveState();
+  closeSheet(); renderLinkedList(); toast('Account unlinked');
+}
+function addLinkedAccount(){
+  document.getElementById('sheetTitle').textContent = 'Link an external account';
+  document.getElementById('sheetBody').innerHTML = `
+    <p style="font-size:13.5px;color:var(--muted);font-weight:500;margin:0 0 12px;line-height:1.5">Search 11,000+ banks. We'll verify with two micro-deposits within 1 business day.</p>
+    <input class="field" id="newBankName" placeholder="Search your bank…" />
+    <div class="list" style="margin:14px 0 0">
+      ${['Chase','Bank of America','Wells Fargo','Citibank','Capital One','Ally Bank','Vanguard','Fidelity','Coinbase'].map(b => `
+        <div class="li" onclick="confirmAddLinked('${b}')"><span class="li-icon" style="background:${linkedColor(b)};color:#fff">${b.charAt(0)}</span><div class="li-meta"><b>${b}</b></div><span class="li-trail">›</span></div>
+      `).join('')}
+    </div>
+  `;
+  openSheetRaw();
+}
+function confirmAddLinked(bank){
+  const id = 'la-'+Date.now();
+  state.linkedAccounts.push({ id, bank, name:'External account', mask:'•• '+Math.floor(Math.random()*9000+1000), balance:0, status:'pending' });
+  saveState();
+  closeSheet(); renderLinkedList(); toast(bank + ' linked — verifying');
+}
+
+/* ============================================================
+   BENEFICIARIES
+   ============================================================ */
+function openBeneficiaries(){
+  renderBeneficiaries();
+  go('beneficiaries');
+}
+function renderBeneficiaries(){
+  const list = document.getElementById('beneList');
+  list.innerHTML = state.beneficiaries.map(b => `
+    <div class="payee-row" onclick="editBeneficiary('${b.id}')">
+      <div class="payee-logo" style="background:linear-gradient(135deg,var(--navy),var(--navy-3))">${escapeHtml(b.name.charAt(0))}</div>
+      <div class="payee-meta"><b>${escapeHtml(b.name)}</b><span>${escapeHtml(b.relation)} · SSN ${escapeHtml(b.ssn)}</span></div>
+      <div class="payee-trail"><b>${b.share}%</b><span>share</span></div>
+    </div>
+  `).join('') || '<div class="empty" style="padding:14px 18px">No beneficiaries.</div>';
+  const total = state.beneficiaries.reduce((s,b)=>s+b.share, 0);
+  const t = document.getElementById('beneTotal');
+  if(t) t.innerHTML = `Total share: <b style="color:${total===100?'var(--pos)':'var(--red)'}">${total}%</b>${total===100?' ✓':' — must be 100%'}`;
+  const sm = document.getElementById('beneSummary');
+  if(sm) sm.textContent = `${state.beneficiaries.length} on file`;
+}
+function editBeneficiary(id){
+  const b = state.beneficiaries.find(x => x.id === id); if(!b) return;
+  document.getElementById('sheetTitle').textContent = 'Edit beneficiary';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Full name</div><input class="field" id="bnName" value="${escapeHtml(b.name)}" /></div>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Relation</div><input class="field" id="bnRel" value="${escapeHtml(b.relation)}" /></div>
+    <div class="form-section" style="margin-bottom:14px"><div class="form-label">Share (%)</div><input class="field" id="bnShare" type="number" min="0" max="100" value="${b.share}" /></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="saveBeneficiary('${id}')">Save</button>
+      <button class="btn btn-ghost" style="color:var(--red)" onclick="removeBeneficiary('${id}')">Remove</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function saveBeneficiary(id){
+  const b = state.beneficiaries.find(x => x.id === id); if(!b) return;
+  b.name = document.getElementById('bnName').value.trim();
+  b.relation = document.getElementById('bnRel').value.trim();
+  b.share = +document.getElementById('bnShare').value || 0;
+  saveState(); closeSheet(); renderBeneficiaries(); toast('Beneficiary updated');
+}
+function removeBeneficiary(id){
+  if(!confirm('Remove this beneficiary?')) return;
+  state.beneficiaries = state.beneficiaries.filter(x => x.id !== id); saveState();
+  closeSheet(); renderBeneficiaries(); toast('Beneficiary removed');
+}
+function addBeneficiary(){
+  document.getElementById('sheetTitle').textContent = 'Add beneficiary';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Full name</div><input class="field" id="bnName" placeholder="Jane Doe" /></div>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Relation</div><input class="field" id="bnRel" placeholder="Spouse, Child, Sibling…" /></div>
+    <div class="form-section" style="margin-bottom:14px"><div class="form-label">Share (%)</div><input class="field" id="bnShare" type="number" min="0" max="100" placeholder="0" /></div>
+    <button class="btn btn-primary" onclick="addBeneficiarySubmit()">Add</button>
+  `;
+  openSheetRaw();
+}
+function addBeneficiarySubmit(){
+  const name = document.getElementById('bnName').value.trim();
+  const rel  = document.getElementById('bnRel').value.trim();
+  const sh   = +document.getElementById('bnShare').value || 0;
+  if(!name){ toast('Name required'); return; }
+  state.beneficiaries.push({ id:'b-'+Date.now(), name, relation:rel||'—', share:sh, ssn:'•• ----' });
+  saveState(); closeSheet(); renderBeneficiaries(); toast('Beneficiary added');
+}
+
+/* ============================================================
+   NOTIFICATION PREFS
+   ============================================================ */
+function openNotifPrefs(){
+  renderNotifPrefs();
+  go('notifPrefs');
+}
+function renderNotifPrefs(){
+  const N = state.notifPrefs;
+  const sw = (key,label,sub) => `
+    <div class="li" data-key="${key}">
+      <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/></svg></span>
+      <div class="li-meta"><b>${label}</b><span>${sub}</span></div>
+      <div class="switch ${N[key]?'on':''}"></div>
+    </div>`;
+  document.getElementById('notifPrefsBody').innerHTML = `
+    <div class="section-h">Money movement</div>
+    <div class="list checkbox-list">
+      ${sw('deposits','Deposits','Direct deposits, transfers in')}
+      ${sw('withdrawals','Withdrawals','ATM, transfers out, bills')}
+      ${sw('lowBalance','Low balance','When checking falls below '+ '$'+fmt(N.lowBalanceThreshold))}
+    </div>
+    <div class="section-h">Card & security</div>
+    <div class="list checkbox-list">
+      ${sw('cardActivity','Card activity','Every purchase')}
+      ${sw('internationalActivity','International activity','Outside your enabled regions')}
+      ${sw('fraudAlerts','Fraud alerts','Critical — always recommended')}
+    </div>
+    <div class="section-h">Documents & marketing</div>
+    <div class="list checkbox-list">
+      ${sw('statements','Statement ready','When monthly statements post')}
+      ${sw('productUpdates','Product updates','New features and tips')}
+      ${sw('marketing','Promotional offers','Personalized deals & rewards')}
+    </div>
+    <div class="section-h">Channels</div>
+    <div class="list checkbox-list">
+      ${sw('push','Push','In-app and OS notifications')}
+      ${sw('email','Email','Sent to '+escapeHtml(state.profile.email))}
+      ${sw('sms','SMS','Text to '+escapeHtml(state.profile.phone))}
+    </div>
+    <div style="padding:18px 18px 36px"><button class="btn btn-ghost" onclick="resetNotifPrefs()">Reset to defaults</button></div>
+  `;
+  document.querySelectorAll('#notifPrefsBody .li[data-key]').forEach(el => el.addEventListener('click', ()=>{
+    const k = el.dataset.key;
+    state.notifPrefs[k] = !state.notifPrefs[k];
+    el.querySelector('.switch').classList.toggle('on', state.notifPrefs[k]);
+    saveState(); updateNotifSummary();
+  }));
+}
+function resetNotifPrefs(){
+  state.notifPrefs = { deposits:true, withdrawals:true, lowBalance:true, lowBalanceThreshold:100, cardActivity:true, internationalActivity:true, fraudAlerts:true, statements:true, marketing:false, productUpdates:true, push:true, email:true, sms:false };
+  saveState(); renderNotifPrefs(); toast('Reset to defaults');
+}
+function updateNotifSummary(){
+  const N = state.notifPrefs;
+  const ch = ['push','email','sms'].filter(k => N[k]);
+  const el = document.getElementById('notifPrefSummary');
+  if(el) el.textContent = ch.length ? `Via ${ch.join(', ')}` : 'All notifications off';
+}
+
+/* ============================================================
+   LANGUAGE
+   ============================================================ */
+const LANGS = [
+  { id:'en-US', name:'English', sub:'United States' },
+  { id:'en-GB', name:'English', sub:'United Kingdom' },
+  { id:'es-US', name:'Español', sub:'Estados Unidos' },
+  { id:'fr-CA', name:'Français', sub:'Canada' },
+  { id:'pt-BR', name:'Português', sub:'Brasil' },
+  { id:'zh-CN', name:'中文', sub:'简体' },
+  { id:'ja-JP', name:'日本語', sub:'日本' },
+];
+function openLanguage(){
+  document.getElementById('langList').innerHTML = LANGS.map(l => `
+    <div class="li" onclick="setLanguage('${l.id}','${escapeHtml(l.name)}')">
+      <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/></svg></span>
+      <div class="li-meta"><b>${escapeHtml(l.name)}</b><span>${escapeHtml(l.sub)}</span></div>
+      <span class="li-trail">${state.language===l.id?'✓':''}</span>
+    </div>
+  `).join('');
+  go('language');
+}
+function setLanguage(id, name){
+  state.language = id; saveState();
+  const el = document.getElementById('langLabel');
+  if(el) el.textContent = name + ' (' + id.split('-')[1] + ')';
+  toast('Language updated');
+  back('language','profile');
+}
+
+/* ============================================================
+   AUTO SIGN-OUT
+   ============================================================ */
+function openAutoSignOut(){
+  const opts = [1, 5, 10, 15, 30];
+  document.getElementById('signOutList').innerHTML = opts.map(m => `
+    <div class="li" onclick="setSignOut(${m})">
+      <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6 V12 L16 14"/></svg></span>
+      <div class="li-meta"><b>After ${m} minute${m===1?'':'s'}</b></div>
+      <span class="li-trail">${state.signOutAfter===m?'✓':''}</span>
+    </div>
+  `).join('');
+  go('autoSignOut');
+}
+function setSignOut(m){
+  state.signOutAfter = m; saveState();
+  const el = document.getElementById('signOutMeta');
+  if(el) el.textContent = `After ${m} minute${m===1?'':'s'}`;
+  back('autoSignOut','profile');
+  resetIdleTimer();
+}
+
+/* ============================================================
+   IDLE TIMER (auto sign-out)
+   ============================================================ */
+let idleTimer = null;
+function resetIdleTimer(){
+  clearTimeout(idleTimer);
+  if(!state.signedIn || current === 'lock') return;
+  idleTimer = setTimeout(()=>{
+    state.signedIn = false; saveState();
+    toast('Signed out for security');
+    lockShow();
+  }, state.signOutAfter * 60 * 1000);
+}
+['click','touchstart','keydown','scroll'].forEach(ev => document.addEventListener(ev, resetIdleTimer, { passive:true }));
+
+/* ============================================================
+   FACE ID TOGGLE / PASSCODE CHANGE
+   ============================================================ */
+function toggleFaceId(el){
+  state.bioEnabled = !state.bioEnabled; saveState();
+  const sw = document.getElementById('bioSwitch');
+  sw.classList.toggle('on', state.bioEnabled);
+  document.getElementById('bioLabel').textContent = state.bioEnabled ? 'Enabled' : 'Disabled';
+}
+function changePasscode(){
+  if(!confirm('Set a new 6-digit passcode?')) return;
+  state.pin = null; state.passcodeChangedAt = new Date().toLocaleDateString('en-US',{month:'short', day:'numeric', year:'numeric'});
+  saveState();
+  const m = document.getElementById('passcodeMeta');
+  if(m) m.textContent = 'Last changed ' + state.passcodeChangedAt;
+  lockShow();
+}
+
+/* ============================================================
+   HELP ARTICLES
+   ============================================================ */
+const ARTICLES = {
+  disputes: {
+    title:'Disputes & fraud',
+    crumb:'Card management',
+    read:'4 min read',
+    body:`
+      <p>If you spot a charge you didn't make or that doesn't match what you expected, file a dispute right from the transaction screen. Most cases close within 10 business days, and we'll provisionally credit eligible disputes within 24 hours.</p>
+      <h3>Before you dispute</h3>
+      <ul>
+        <li>Try the merchant first — many issues are resolved faster directly.</li>
+        <li>Check whether you're sharing the card with anyone (subscriptions in another household member's name often look unfamiliar).</li>
+        <li>Have your statement and any communications ready.</li>
+      </ul>
+      <div class="article-callout"><b>Heads up:</b> if you suspect your card was compromised, freeze it first from the Cards tab, then file the dispute.</div>
+      <h3>What we'll need</h3>
+      <ul>
+        <li>The transaction date and amount</li>
+        <li>Your dispute reason (we'll prompt you)</li>
+        <li>Any supporting receipts or messages</li>
+      </ul>
+      <h3>How long it takes</h3>
+      <p>Most disputes resolve in 7–10 business days. Complex chargebacks (e.g., goods not received) can take up to 90 days under federal rules. You'll see updates in this app and by email.</p>
+    `
+  },
+  taxes: {
+    title:'Statements & taxes',
+    crumb:'Documents',
+    read:'3 min read',
+    body:`
+      <p>Your monthly statements live in <b>Activity → Statements</b>. We keep 7 years online and can ship paper copies on request.</p>
+      <h3>Tax documents</h3>
+      <ul>
+        <li><b>1099-INT</b> — interest of $10 or more from your savings account, posted by January 31.</li>
+        <li><b>1099-MISC</b> — referral bonuses or other miscellaneous income above $600.</li>
+        <li><b>1098</b> — only mailed if you have a Meridian mortgage (not currently available).</li>
+      </ul>
+      <h3>Going paperless</h3>
+      <p>Tap your profile → Notifications → toggle off "Statement ready" — and we'll keep delivering them inside the app, just not by mail.</p>
+      <div class="article-callout">Need a statement printed and notarized? Visit any branch with a valid ID.</div>
+    `
+  }
+};
+function openArticle(id){
+  const a = ARTICLES[id]; if(!a) return;
+  document.getElementById('articleTitle').textContent = a.title.length > 22 ? a.title.slice(0,22)+'…' : a.title;
+  document.getElementById('helpArticleBody').innerHTML = `
+    <div class="article-hero">
+      <div class="breadcrumb">${escapeHtml(a.crumb)}</div>
+      <h2>${escapeHtml(a.title)}</h2>
+      <div class="meta">${escapeHtml(a.read)} · Updated ${escapeHtml(state.passcodeChangedAt||'recently')}</div>
+    </div>
+    <div class="article-body">${a.body}</div>
+    <div style="padding:0 22px 36px;display:flex;gap:10px">
+      <button class="btn btn-ghost" onclick="toast('Helpful — thanks!')">👍 Helpful</button>
+      <button class="btn btn-ghost" onclick="toast('We\\'ll improve this')">👎 Not helpful</button>
+    </div>
+  `;
+  go('helpArticle');
+}
+
+/* ============================================================
    BOOT
    ============================================================ */
 function boot(){
   applyTheme();
   renderOnboard();
   renderHome();
+  renderWeekBars();
   renderStatements();
   renderNotifications();
+  updateCardSummaries();
+  updateNotifSummary();
+  // sync bio switch
+  const bioSw = document.getElementById('bioSwitch');
+  if(bioSw) bioSw.classList.toggle('on', state.bioEnabled);
+  const bioLb = document.getElementById('bioLabel');
+  if(bioLb) bioLb.textContent = state.bioEnabled ? 'Enabled' : 'Disabled';
+  const pcMeta = document.getElementById('passcodeMeta');
+  if(pcMeta) pcMeta.textContent = 'Last changed ' + (state.passcodeChangedAt || 'recently');
+  const soMeta = document.getElementById('signOutMeta');
+  if(soMeta) soMeta.textContent = `After ${state.signOutAfter} minute${state.signOutAfter===1?'':'s'}`;
+  const lkSum = document.getElementById('linkedSummary');
+  if(lkSum) lkSum.textContent = `${state.linkedAccounts.length} external account${state.linkedAccounts.length===1?'':'s'}`;
+  const beSum = document.getElementById('beneSummary');
+  if(beSum) beSum.textContent = `${state.beneficiaries.length} on file`;
   // home scroll shadow
   ['homeScroll','detailScroll','transferScroll'].forEach(id=>{
     const sc = document.getElementById(id);
