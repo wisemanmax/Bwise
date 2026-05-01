@@ -759,6 +759,303 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 /* PIN setup variant */
 #lock.setup{background:radial-gradient(120% 80% at 50% 0%, var(--navy-3) 0%, var(--navy-2) 60%, #060f19 100%)}
 .setup-step{font-size:11px;letter-spacing:.16em;font-weight:700;opacity:.65;text-transform:uppercase;margin-bottom:10px}
+
+/* ============ TRANSACTION DETAIL ============ */
+.tx-detail-amt{
+  text-align:center;font-family:var(--serif);font-weight:600;
+  font-size:42px;letter-spacing:-.025em;color:var(--ink);
+  font-variant-numeric:tabular-nums;margin:8px 0 4px;line-height:1.05;
+}
+.tx-detail-amt.pos{color:var(--pos)}
+.tx-detail-merchant{text-align:center;font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.tx-detail-meta{text-align:center;font-size:12.5px;color:var(--muted);font-weight:500;letter-spacing:.01em}
+.tx-status-pill{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--pos-2);color:var(--pos)}
+.tx-status-pill.pending{background:#fdf3d8;color:#8a6a2c}
+[data-theme="dark"] .tx-status-pill.pending{background:rgba(200,155,60,.18);color:#e2c47a}
+.tx-status-pill.failed{background:rgba(200,50,44,.14);color:var(--red-2)}
+
+.map-mock{
+  margin:14px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  height:140px;position:relative;
+  background:
+    linear-gradient(135deg, rgba(11,51,88,.06) 0%, rgba(11,51,88,.02) 100%),
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(11,51,88,.06) 22px 23px),
+    repeating-linear-gradient(90deg, transparent 0 22px, rgba(11,51,88,.06) 22px 23px),
+    var(--bg-2);
+}
+[data-theme="dark"] .map-mock{
+  background:
+    linear-gradient(135deg, rgba(74,143,209,.05) 0%, rgba(74,143,209,.02) 100%),
+    repeating-linear-gradient(0deg, transparent 0 22px, rgba(74,143,209,.06) 22px 23px),
+    repeating-linear-gradient(90deg, transparent 0 22px, rgba(74,143,209,.06) 22px 23px),
+    var(--bg-2);
+}
+.map-mock::before{
+  content:"";position:absolute;left:18%;top:30%;width:64%;height:2px;
+  background:repeating-linear-gradient(90deg, var(--navy-soft) 0 6px, transparent 6px 10px);
+  opacity:.55;
+}
+.map-mock::after{
+  content:"";position:absolute;left:42%;top:22%;width:18%;height:36%;
+  background:rgba(200,50,44,.10);border:1px solid rgba(200,50,44,.4);border-radius:6px;
+}
+.map-pin{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);
+  width:26px;height:26px;border-radius:50% 50% 50% 0;
+  background:var(--red);transform-origin:bottom center;
+  transform:translate(-50%,-100%) rotate(-45deg);
+  box-shadow:0 6px 14px -4px rgba(200,50,44,.5);
+  display:grid;place-items:center;
+}
+.map-pin::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff;transform:rotate(45deg)}
+.map-loc-label{
+  position:absolute;left:50%;bottom:10px;transform:translateX(-50%);
+  background:var(--bg);border:1px solid var(--line);
+  padding:5px 12px;border-radius:99px;font-size:11.5px;font-weight:600;color:var(--ink);
+  box-shadow:var(--shadow-sm);white-space:nowrap;
+}
+
+.tx-actions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 6px}
+.tx-act{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px 6px;border:1px solid var(--line);border-radius:12px;background:var(--bg);
+  cursor:pointer;color:var(--ink);transition:background .15s ease;
+}
+.tx-act:active{background:var(--bg-2)}
+.tx-act svg{width:20px;height:20px;color:var(--navy)}
+.tx-act.danger svg{color:var(--red)}
+.tx-act span{font-size:11.5px;font-weight:600;line-height:1.2;text-align:center}
+
+.kv-list{margin:6px 0 0}
+.kv-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line-2);gap:10px}
+.kv-row:first-child{border-top:0}
+.kv-row .lbl{font-size:12.5px;color:var(--muted);font-weight:600;letter-spacing:.02em;flex-shrink:0}
+.kv-row .val{font-size:13.5px;font-weight:600;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.kv-row .val .copy{
+  width:26px;height:26px;border-radius:7px;background:var(--bg-2);
+  display:grid;place-items:center;border:0;cursor:pointer;color:var(--navy);
+  transition:background .15s ease;
+}
+.kv-row .val .copy:active{background:var(--bg-3)}
+.kv-row .val .copy svg{width:13px;height:13px}
+
+/* ============ ACCOUNT DETAILS SCREEN ============ */
+.detail-banner{
+  margin:12px 18px 4px;padding:14px 16px;border-radius:14px;
+  background:var(--bg-2);border:1px solid var(--line-2);
+  display:flex;align-items:center;gap:12px;
+}
+.detail-banner .ico{width:36px;height:36px;border-radius:10px;background:rgba(11,51,88,.08);display:grid;place-items:center;color:var(--navy);flex-shrink:0}
+[data-theme="dark"] .detail-banner .ico{background:rgba(74,143,209,.14)}
+.detail-banner .ico svg{width:18px;height:18px}
+.detail-banner .meta{flex:1}
+.detail-banner .meta b{font-size:13.5px;font-weight:700;color:var(--ink)}
+.detail-banner .meta span{display:block;font-size:12px;color:var(--muted);margin-top:1px;font-weight:500}
+.detail-banner .show-toggle{font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;padding:6px 10px;border-radius:8px;background:transparent;border:0}
+.detail-banner .show-toggle:active{background:rgba(11,51,88,.08)}
+
+.acct-card-hero{
+  margin:14px 18px;padding:20px;border-radius:18px;color:#fff;
+  background:linear-gradient(135deg, var(--navy-3) 0%, var(--navy-2) 100%);
+  position:relative;overflow:hidden;box-shadow:var(--shadow-md);
+}
+.acct-card-hero::before{
+  content:"";position:absolute;top:-40%;right:-25%;width:65%;height:130%;
+  background:linear-gradient(135deg, transparent 45%, rgba(200,50,44,.55) 50%, rgba(200,50,44,.85) 60%, transparent 65%);
+  border-radius:50%;pointer-events:none;
+}
+.acct-card-hero.savings{background:linear-gradient(135deg, #1a4870 0%, #0e2c47 100%)}
+.acct-card-hero.savings::before{background:linear-gradient(135deg, transparent 45%, rgba(200,155,60,.55) 50%, rgba(200,155,60,.85) 60%, transparent 65%);}
+.acct-card-hero.credit{background:linear-gradient(135deg, #2a2438 0%, #181321 100%)}
+.acct-card-hero .ah-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;opacity:.75;position:relative;z-index:1}
+.acct-card-hero .ah-name{font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:-.01em;margin-top:2px;position:relative;z-index:1}
+.acct-card-hero .ah-mask{font-family:var(--mono);font-size:13px;opacity:.85;margin-top:8px;letter-spacing:.06em;position:relative;z-index:1}
+
+.detail-section-h{padding:18px 22px 6px;font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+
+/* ============ SEARCH ============ */
+.search-bar{
+  margin:12px 18px;display:flex;align-items:center;gap:10px;
+  padding:12px 14px;background:var(--bg-2);border:1px solid var(--line);
+  border-radius:12px;
+}
+.search-bar svg{color:var(--muted);width:17px;height:17px;flex-shrink:0}
+.search-bar input{flex:1;background:transparent;border:0;outline:0;font-family:var(--sans);font-size:14.5px;color:var(--ink);font-weight:500}
+.search-bar input::placeholder{color:var(--muted-2)}
+.search-bar .clear{background:none;border:0;color:var(--muted);cursor:pointer;padding:4px;display:none}
+.search-bar.has-text .clear{display:grid;place-items:center}
+
+.search-empty{padding:42px 30px;text-align:center;color:var(--muted)}
+.search-empty .ico{width:56px;height:56px;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;margin:0 auto 12px;color:var(--muted-2)}
+.search-empty .ico svg{width:26px;height:26px}
+.search-empty b{display:block;color:var(--ink);font-size:15px;font-weight:700;margin-bottom:4px}
+.search-empty span{font-size:13px;font-weight:500}
+
+.recent-search{margin:6px 0 12px}
+.recent-row{display:flex;align-items:center;gap:12px;padding:11px 18px;cursor:pointer;border-top:1px solid var(--line-2)}
+.recent-row:first-child{border-top:0}
+.recent-row svg{color:var(--muted);width:16px;height:16px}
+.recent-row b{font-size:14px;font-weight:600;color:var(--ink);flex:1}
+.recent-row .x{color:var(--muted);background:none;border:0;cursor:pointer;padding:4px}
+
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px}
+.cat-tile{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--bg)}
+.cat-tile:active{background:var(--bg-2)}
+.cat-tile .swatch{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:#fff}
+.cat-tile .swatch svg{width:15px;height:15px}
+.cat-tile b{font-size:13.5px;font-weight:700;color:var(--ink)}
+.cat-tile span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+
+/* ============ DEPOSIT CHECK ============ */
+.dep-amount{
+  margin:10px 18px 14px;background:var(--bg-2);border:1px solid var(--line);
+  border-radius:14px;padding:18px;text-align:center;
+}
+.dep-amount .currency{font-family:var(--serif);font-size:18px;color:var(--muted);vertical-align:top;display:inline-block;margin-top:10px;margin-right:3px}
+.dep-amount input{
+  background:transparent;border:0;outline:0;
+  font-family:var(--serif);font-weight:600;font-size:42px;letter-spacing:-.02em;
+  color:var(--ink);font-variant-numeric:tabular-nums;text-align:center;
+  width:65%;max-width:240px;
+}
+.dep-amount input::placeholder{color:var(--muted-2)}
+
+.capture-card{
+  margin:0 18px 14px;border-radius:18px;overflow:hidden;
+  border:1px solid var(--line);background:var(--bg);
+}
+.capture-step{
+  padding:14px 18px;background:var(--bg-2);border-bottom:1px solid var(--line-2);
+  display:flex;align-items:center;gap:12px;
+}
+.capture-step .num{
+  width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;
+  font-family:var(--serif);font-weight:600;font-size:13px;display:grid;place-items:center;flex-shrink:0;
+}
+.capture-step.done .num{background:var(--pos)}
+.capture-step b{font-size:13.5px;font-weight:700;color:var(--ink)}
+.capture-step span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+.capture-step .status{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--pos)}
+.capture-step.todo .status{color:var(--muted)}
+
+.capture-frame{
+  position:relative;aspect-ratio:1.7/1;background:#0d1620;color:#fff;
+  display:grid;place-items:center;cursor:pointer;overflow:hidden;
+}
+.capture-frame.done{cursor:default}
+.capture-frame .corner{position:absolute;width:22px;height:22px;border:2px solid #fff;opacity:.85}
+.capture-frame .corner.tl{top:14px;left:14px;border-right:0;border-bottom:0;border-radius:6px 0 0 0}
+.capture-frame .corner.tr{top:14px;right:14px;border-left:0;border-bottom:0;border-radius:0 6px 0 0}
+.capture-frame .corner.bl{bottom:14px;left:14px;border-right:0;border-top:0;border-radius:0 0 0 6px}
+.capture-frame .corner.br{bottom:14px;right:14px;border-left:0;border-top:0;border-radius:0 0 6px 0}
+.capture-frame .hint{font-size:13px;font-weight:600;letter-spacing:.02em;opacity:.85;text-align:center;padding:0 24px}
+.capture-frame .shutter{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  width:50px;height:50px;border-radius:50%;border:3px solid #fff;
+  background:rgba(255,255,255,.2);cursor:pointer;
+}
+.capture-frame .shutter::after{content:"";display:block;width:100%;height:100%;border-radius:50%;background:#fff;transform:scale(.78);transition:transform .15s}
+.capture-frame .shutter:active::after{transform:scale(.7)}
+
+.capture-frame.done{
+  background:#fff;color:#0d1620;
+}
+.check-art{
+  width:88%;height:80%;background:#fff;border:1px solid #cbd5e0;border-radius:6px;
+  position:relative;padding:10px;font-family:var(--mono);color:#1a2632;
+  box-shadow:0 4px 16px -6px rgba(0,0,0,.3);
+}
+.check-art .bank{position:absolute;top:8px;left:10px;font-family:var(--serif);font-weight:600;font-size:11px;color:#0b3358}
+.check-art .ck-num{position:absolute;top:8px;right:10px;font-size:9px;color:#6b7a87}
+.check-art .pay-line{position:absolute;left:10px;right:90px;top:36px;border-bottom:1px solid #1a2632;font-size:9px;padding-bottom:1px;color:#1a2632}
+.check-art .amt-box{position:absolute;right:10px;top:30px;width:78px;border:1px solid #1a2632;height:18px;display:grid;place-items:center;font-size:10px}
+.check-art .micr{position:absolute;left:10px;right:10px;bottom:6px;font-size:11px;letter-spacing:.18em;color:#1a2632;text-align:center}
+.check-art.back .endorse{position:absolute;left:10px;right:10px;top:18px;border-top:1px solid #1a2632;border-bottom:1px solid #1a2632;height:46px;font-size:8px;text-align:center;padding-top:2px;color:#6b7a87}
+.check-art.back .sig-line{position:absolute;left:14px;right:14px;top:30px;font-family:'Caveat', var(--serif), cursive;font-size:14px;color:#1a4870;font-style:italic}
+
+.dep-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid var(--line-2)}
+.dep-row:first-child{border-top:0}
+.dep-row b{font-size:13.5px;font-weight:700;color:var(--ink);flex:1}
+.dep-row .val{font-size:13px;color:var(--ink);font-weight:600}
+
+/* ============ BILL PAY ============ */
+.payee-list{margin:8px 0 16px}
+.payee-row{
+  display:flex;align-items:center;gap:14px;padding:14px 18px;
+  border-top:1px solid var(--line-2);cursor:pointer;
+}
+.payee-row:first-child{border-top:0}
+.payee-logo{
+  width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+  font-family:var(--serif);font-weight:700;font-size:16px;color:#fff;flex-shrink:0;
+}
+.payee-meta{flex:1;min-width:0}
+.payee-meta b{font-size:14.5px;font-weight:700;color:var(--ink);display:block}
+.payee-meta span{font-size:12px;color:var(--muted);font-weight:500;display:block;margin-top:2px}
+.payee-trail{text-align:right}
+.payee-trail b{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--ink);display:block}
+.payee-trail span{font-size:11px;color:var(--muted);font-weight:600}
+.payee-tag{display:inline-block;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:700;background:var(--pos-2);color:var(--pos);margin-top:3px;letter-spacing:.04em}
+.payee-tag.due{background:rgba(200,50,44,.12);color:var(--red-2)}
+
+.add-payee{
+  margin:14px 18px;padding:14px 16px;border:1.5px dashed var(--line);
+  border-radius:12px;display:flex;align-items:center;gap:12px;cursor:pointer;
+}
+.add-payee:active{background:var(--bg-3)}
+.add-payee .plus{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:600;font-size:18px;line-height:1;padding-bottom:2px;flex-shrink:0}
+.add-payee b{font-size:14.5px;font-weight:700;color:var(--ink)}
+.add-payee span{font-size:12px;color:var(--muted);font-weight:500;display:block}
+
+.field{
+  display:block;width:100%;padding:13px 14px;background:var(--bg);
+  border:1px solid var(--line);border-radius:12px;
+  font-family:var(--sans);font-size:14px;color:var(--ink);outline:0;
+}
+.field:focus{border-color:var(--navy)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.recur-row{display:flex;gap:8px;flex-wrap:wrap}
+.recur-row .opt{
+  flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px;
+  text-align:center;font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer;background:var(--bg);
+}
+.recur-row .opt.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* ============ ZELLE ============ */
+.zelle-hero{
+  margin:14px 18px;padding:18px 20px;border-radius:16px;color:#fff;
+  background:linear-gradient(135deg, #6c1bcf 0%, #401080 100%);
+  position:relative;overflow:hidden;
+}
+.zelle-hero::before{
+  content:"";position:absolute;right:-14px;top:-14px;font-size:120px;font-weight:800;color:rgba(255,255,255,.06);line-height:1;font-family:var(--serif)
+}
+.zelle-hero h3{margin:0;font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.01em;position:relative}
+.zelle-hero p{margin:4px 0 0;font-size:12.5px;opacity:.9;font-weight:500;position:relative}
+
+.contact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:14px 18px}
+.contact-cell{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+.contact-avatar{
+  width:54px;height:54px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;
+  font-family:var(--serif);font-weight:600;font-size:20px;
+}
+.contact-avatar.add{background:var(--bg-2);color:var(--navy);border:1.5px dashed var(--line);font-size:24px}
+.contact-cell span{font-size:11.5px;font-weight:600;color:var(--ink);text-align:center;line-height:1.2;max-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.contact-row{
+  display:flex;align-items:center;gap:14px;padding:13px 18px;
+  border-top:1px solid var(--line-2);cursor:pointer;
+}
+.contact-row:first-child{border-top:0}
+.contact-row .avi{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--serif);font-weight:600;font-size:15px;flex-shrink:0}
+.contact-row .meta{flex:1;min-width:0}
+.contact-row .meta b{font-size:14.5px;font-weight:700;color:var(--ink);display:block}
+.contact-row .meta span{font-size:12px;color:var(--muted);font-weight:500;display:block;margin-top:1px}
+
+/* signature font for check (no external) */
+.sig{font-family:var(--serif);font-style:italic;font-weight:500}
 </style>
 
 </head>
@@ -999,7 +1296,7 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg>
     <span>Transfer</span>
   </div>
-  <div class="qa" onclick="toast('Send with Zelle')">
+  <div class="qa" onclick="startZelle()">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 3 V6 H7 L17 18 H13 V21 H11 V18 H7 L17 6 H13 V3 Z"/></svg>
     <span>Zelle®</span>
   </div>
@@ -1012,7 +1309,7 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 <div class="card-section">
   <div class="card-head">
     <h3>Transactions</h3>
-    <a onclick="toast('Search transactions')">Search</a>
+    <a onclick="startSearch()">Search</a>
   </div>
   <div class="filter-row" id="filterRow"></div>
   <div id="txList"></div>
@@ -1245,8 +1542,8 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
     </div>
     <div class="section-h">Popular topics</div>
     <div class="list">
-      <div class="li" onclick="toast('Send & receive money')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg></span><div class="li-meta"><b>Send & receive money</b><span>Transfers, Zelle, wires</span></div><span class="li-trail">›</span></div>
-      <div class="li" onclick="toast('Card management')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/></svg></span><div class="li-meta"><b>Card management</b><span>Freeze, replace, report</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="startZelle()"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg></span><div class="li-meta"><b>Send & receive money</b><span>Transfers, Zelle, wires</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="go('cards');setTab('cards')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/></svg></span><div class="li-meta"><b>Card management</b><span>Freeze, replace, report</span></div><span class="li-trail">›</span></div>
       <div class="li" onclick="toast('Disputes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8 V12 M12 16 V16.01"/></svg></span><div class="li-meta"><b>Disputes & fraud</b><span>Report unauthorized activity</span></div><span class="li-trail">›</span></div>
       <div class="li" onclick="toast('Statements & taxes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3 H16 L20 7 V21 H6 Z"/></svg></span><div class="li-meta"><b>Statements & taxes</b><span>Tax docs, paperless</span></div><span class="li-trail">›</span></div>
     </div>
@@ -1304,6 +1601,177 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
   <nav class="tabbar"></nav>
 </section>
 
+<!-- ============ ACCOUNT DETAILS ============ -->
+
+<section class="screen enter-right" id="acctDetails">
+  <div class="scroll" id="acctDetailsScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('acctDetails','detail')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Account details</h2>
+      <button class="back-btn" onclick="shareAccountDetails()" aria-label="Share">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 V20 a2 2 0 0 0 2 2 H18 a2 2 0 0 0 2 -2 V12"/><path d="M16 6 L12 2 L8 6"/><path d="M12 2 V15"/></svg>
+      </button>
+    </header>
+
+    <div id="acctDetailsBody"></div>
+  </div>
+</section>
+
+<!-- ============ SEARCH ============ -->
+
+<section class="screen enter-right" id="search">
+  <div class="scroll" id="searchScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('search','detail')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Search</h2>
+    </header>
+    <div class="search-bar" id="searchBar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21 -4.3 -4.3"/></svg>
+      <input id="searchInput" placeholder="Search merchants, amounts, notes…" autocomplete="off" />
+      <button class="clear" onclick="clearSearch()" aria-label="Clear"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 L6 18 M6 6 L18 18"/></svg></button>
+    </div>
+    <div id="searchResults"></div>
+  </div>
+</section>
+
+<!-- ============ DEPOSIT CHECK ============ -->
+
+<section class="screen enter-right" id="deposit">
+  <div class="scroll" id="depositScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('deposit','home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Deposit a check</h2>
+    </header>
+
+    <div class="form" style="padding-top:8px">
+      <div class="form-section">
+        <div class="form-label">Deposit to</div>
+        <div class="acct-pick" id="depAcctPick" onclick="depPickAccount()">
+          <div class="swatch"></div>
+          <div class="info">
+            <b id="depAcctName">—</b>
+            <span id="depAcctMask">—</span>
+            <span class="bal" id="depAcctBal">$0.00 available</span>
+          </div>
+          <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">Amount</div>
+        <div class="dep-amount">
+          <span class="currency">$</span>
+          <input type="text" inputmode="decimal" id="depAmtInput" placeholder="0.00" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">Capture both sides</div>
+        <div class="capture-card">
+          <div class="capture-step todo" id="depFrontStep" onclick="captureCheck('front')">
+            <div class="num">1</div>
+            <div>
+              <b>Front of check</b>
+              <span>Position inside the frame, then tap shutter</span>
+            </div>
+            <div class="status" id="depFrontStatus">Tap to start</div>
+          </div>
+          <div class="capture-frame" id="depFrontFrame" onclick="captureCheck('front')">
+            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+            <div class="hint">Tap to take photo of the FRONT</div>
+          </div>
+        </div>
+
+        <div class="capture-card" style="margin-top:10px">
+          <div class="capture-step todo" id="depBackStep" onclick="captureCheck('back')">
+            <div class="num">2</div>
+            <div>
+              <b>Back of check</b>
+              <span>Sign and write “For Mobile Deposit Only”</span>
+            </div>
+            <div class="status" id="depBackStatus">Locked</div>
+          </div>
+          <div class="capture-frame" id="depBackFrame" onclick="captureCheck('back')" style="opacity:.5;pointer-events:none">
+            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+            <div class="hint">Capture the front first</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">Memo (optional)</div>
+        <input type="text" class="memo-input" id="depMemo" placeholder="Birthday check, refund, etc." maxlength="40" />
+      </div>
+
+      <p style="font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5;margin:4px 2px">Funds typically available next business day. Daily mobile deposit limit: <b style="color:var(--ink)">$5,000</b>. Endorsement required on the back.</p>
+    </div>
+  </div>
+
+  <div class="btn-foot">
+    <button class="btn btn-primary" id="depSubmit" onclick="reviewDeposit()" disabled>Review deposit</button>
+  </div>
+</section>
+
+<!-- ============ BILL PAY ============ -->
+
+<section class="screen enter-right" id="payBill">
+  <div class="scroll" id="payBillScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('payBill','home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Pay bills</h2>
+    </header>
+
+    <div style="padding:0 18px"><p style="margin:6px 0 6px;font-size:13.5px;color:var(--muted);font-weight:500">Pay any company or person you owe. Same-day for verified billers, 1–3 days for new ones.</p></div>
+
+    <div class="add-payee" onclick="addPayeeFlow()">
+      <span class="plus">+</span>
+      <div>
+        <b>Add a new payee</b>
+        <span>Find your biller or add manually</span>
+      </div>
+      <span style="margin-left:auto;color:var(--muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+    </div>
+
+    <div class="section-h">Your payees</div>
+    <div class="payee-list" id="payeeList"></div>
+  </div>
+</section>
+
+<!-- ============ ZELLE ============ -->
+
+<section class="screen enter-right" id="zelle">
+  <div class="scroll" id="zelleScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('zelle','home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Zelle®</h2>
+      <button class="back-btn" onclick="addZelleFlow()" aria-label="Add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M5 12 H19"/></svg>
+      </button>
+    </header>
+
+    <div class="zelle-hero">
+      <h3>Send money in minutes</h3>
+      <p>Use a U.S. mobile number or email — funds arrive in seconds for enrolled recipients.</p>
+    </div>
+
+    <div class="section-h">Frequent</div>
+    <div class="contact-grid" id="zelleFrequent"></div>
+
+    <div class="section-h">All contacts</div>
+    <div id="zelleAll"></div>
+  </div>
+</section>
+
 <!-- ============ SHEET / SCRIM ============ -->
 
 <div class="scrim" id="scrim" onclick="closeSheet()"></div>
@@ -1325,7 +1793,7 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 /* ============================================================
    DATA + PERSISTENCE
    ============================================================ */
-const STORAGE_KEY = 'meridian.v1';
+const STORAGE_KEY = 'meridian.v2';
 const defaultState = {
   user: { name: 'B. Wise', avatar: 'B' },
   theme: 'light',
@@ -1343,43 +1811,64 @@ const defaultState = {
     { id:'n5', unread:false, title:'Welcome to Meridian',        body:'Your account is set up and ready to go.', time:'2 weeks ago' },
   ],
   accounts: [
-    { id:'a1', kind:'checking', type:'Main',     name:'Main Checking',         mask:'•• 4827', balance: 2000000.00, spendable: 2000000.00, aside: 0, color:'navy'    },
-    { id:'a2', kind:'savings',  type:'High-yield', name:'Performance Savings',  mask:'•• 6310', balance: 12450.00, spendable: 12450.00, aside: 0, color:'savings' },
-    { id:'a3', kind:'credit',   type:'Credit card', name:'Meridian Reserve',    mask:'•• 9045', balance: -317.84,  spendable: 0, aside: 0, color:'credit'  },
-    { id:'a4', kind:'checking', type:'Goal', name:'Vacation Fund',              mask:'•• 0938', balance: 1123.45,  spendable: 0, aside: 1123.45, color:'navy' },
+    { id:'a1', kind:'checking', type:'Main',     name:'Main Checking',         mask:'•• 4827', number:'1184826527', routing:'031176110', swift:'MRDNUS33', balance: 4287.42, spendable: 4012.18, aside: 275.24, color:'navy',    opened:'Jan 2024' },
+    { id:'a2', kind:'savings',  type:'High-yield', name:'Performance Savings',  mask:'•• 6310', number:'7700631009', routing:'031176110', swift:'MRDNUS33', balance: 12450.00, spendable: 12450.00, aside: 0,      color:'savings', opened:'Mar 2024', apy:4.30 },
+    { id:'a3', kind:'credit',   type:'Credit card', name:'Meridian Reserve',    mask:'•• 9045', number:'4732 6014 8819 9045', routing:'',          swift:'',         balance: -317.84,  spendable: 0,        aside: 0,      color:'credit',  opened:'May 2024', limit: 8000, apr: 19.74, due: 'May 18' },
+    { id:'a4', kind:'checking', type:'Goal',     name:'Vacation Fund',           mask:'•• 0938', number:'1184820938', routing:'031176110', swift:'MRDNUS33', balance: 1123.45,  spendable: 0,        aside: 1123.45, color:'navy',    opened:'Aug 2024', goal:3000 },
   ],
   txByAccount: {
     a1: [
-      { day:'Apr 29', cat:'Income',   name:'Direct Deposit',     sub:'Sallie Mae Bank',  amt:  2150.00, c:4 },
-      { day:'Apr 28', cat:'Food',     name:'Wawa',               sub:'Card purchase',    amt:   -42.18, c:1 },
-      { day:'Apr 27', cat:'Bills',    name:'Spotify Premium',    sub:'Recurring',        amt:   -11.99, c:5 },
-      { day:'Apr 26', cat:'Shopping', name:'Amazon',             sub:'Card purchase',    amt:   -89.42, c:6 },
-      { day:'Apr 25', cat:'Food',     name:'DoorDash',           sub:'Card purchase',    amt:   -28.74, c:3 },
-      { day:'Apr 24', cat:'Bills',    name:'Comcast',            sub:'Auto-pay',         amt:  -125.00, c:5 },
-      { day:'Apr 22', cat:'Transfer', name:'Transfer to Savings',sub:'To Performance Sav.', amt: -500.00, c:2 },
-      { day:'Apr 20', cat:'Food',     name:'Chipotle',           sub:'Card purchase',    amt:   -14.27, c:1 },
-      { day:'Apr 18', cat:'Shopping', name:'Target',             sub:'Card purchase',    amt:  -107.83, c:6 },
-      { day:'Apr 15', cat:'Bills',    name:'Electric',           sub:'Delmarva Power',   amt:  -142.00, c:5 },
+      { id:'t-101', day:'Apr 29', date:'Apr 29, 2026', time:'8:14 AM', cat:'Income',   name:'Direct Deposit',     sub:'Sallie Mae Bank',  amt:  2150.00, c:4, status:'Posted',  loc:{ city:'ACH credit',         state:'',  lat:0, lng:0 }, method:'ACH' },
+      { id:'t-102', day:'Apr 28', date:'Apr 28, 2026', time:'7:42 AM', cat:'Food',     name:'Wawa #423',          sub:'Card purchase',    amt:   -42.18, c:1, status:'Posted',  loc:{ city:'Bear',               state:'DE', lat:39.6248, lng:-75.6582 }, method:'Card' },
+      { id:'t-103', day:'Apr 27', date:'Apr 27, 2026', time:'6:00 AM', cat:'Bills',    name:'Spotify Premium',    sub:'Recurring',        amt:   -11.99, c:5, status:'Posted',  loc:{ city:'Stockholm',          state:'',  lat:0, lng:0 }, method:'Card' },
+      { id:'t-104', day:'Apr 26', date:'Apr 26, 2026', time:'9:21 PM', cat:'Shopping', name:'Amazon',             sub:'Card purchase',    amt:   -89.42, c:6, status:'Posted',  loc:{ city:'Online',             state:'',  lat:0, lng:0 }, method:'Card' },
+      { id:'t-105', day:'Apr 25', date:'Apr 25, 2026', time:'7:48 PM', cat:'Food',     name:'DoorDash',           sub:'Card purchase',    amt:   -28.74, c:3, status:'Posted',  loc:{ city:'Newark',             state:'DE', lat:39.6837, lng:-75.7497 }, method:'Card' },
+      { id:'t-106', day:'Apr 24', date:'Apr 24, 2026', time:'12:01 AM',cat:'Bills',    name:'Comcast',            sub:'Auto-pay',         amt:  -125.00, c:5, status:'Posted',  loc:{ city:'Philadelphia',       state:'PA', lat:0, lng:0 }, method:'ACH' },
+      { id:'t-107', day:'Apr 22', date:'Apr 22, 2026', time:'2:14 PM', cat:'Transfer', name:'Transfer to Savings',sub:'To Performance Sav.', amt: -500.00, c:2, status:'Posted',  loc:{ city:'Internal transfer',  state:'',  lat:0, lng:0 }, method:'Internal' },
+      { id:'t-108', day:'Apr 20', date:'Apr 20, 2026', time:'12:48 PM',cat:'Food',     name:'Chipotle',           sub:'Card purchase',    amt:   -14.27, c:1, status:'Posted',  loc:{ city:'Wilmington',         state:'DE', lat:39.7459, lng:-75.5466 }, method:'Card' },
+      { id:'t-109', day:'Apr 18', date:'Apr 18, 2026', time:'4:33 PM', cat:'Shopping', name:'Target',             sub:'Card purchase',    amt:  -107.83, c:6, status:'Posted',  loc:{ city:'Christiana',         state:'DE', lat:39.6601, lng:-75.6557 }, method:'Card' },
+      { id:'t-110', day:'Apr 15', date:'Apr 15, 2026', time:'11:02 AM',cat:'Bills',    name:'Delmarva Power',     sub:'Electric • Auto-pay', amt: -142.00, c:5, status:'Posted',  loc:{ city:'Newark',             state:'DE', lat:39.6837, lng:-75.7497 }, method:'ACH' },
+      { id:'t-111', day:'Apr 12', date:'Apr 12, 2026', time:'1:24 PM', cat:'Income',   name:'Zelle from Mom',     sub:'Brunch :)',        amt:    60.00, c:4, status:'Posted',  loc:{ city:'Zelle',              state:'',  lat:0, lng:0 }, method:'Zelle' },
+      { id:'t-112', day:'Apr 10', date:'Apr 10, 2026', time:'7:55 PM', cat:'Food',     name:'Local Diner',        sub:'Card purchase',    amt:   -36.50, c:1, status:'Posted',  loc:{ city:'Newark',             state:'DE', lat:39.6837, lng:-75.7497 }, method:'Card' },
     ],
     a2: [
-      { day:'Apr 25', cat:'Income',   name:'Interest paid',      sub:'4.30% APY',        amt:    44.21, c:4 },
-      { day:'Apr 22', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   500.00, c:2 },
-      { day:'Mar 25', cat:'Income',   name:'Interest paid',      sub:'4.30% APY',        amt:    42.18, c:4 },
-      { day:'Mar 12', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:  1000.00, c:2 },
+      { id:'t-201', day:'Apr 25', date:'Apr 25, 2026', time:'12:00 AM',cat:'Income',   name:'Interest paid',      sub:'4.30% APY',        amt:    44.21, c:4, status:'Posted',  loc:{ city:'Meridian Bank',      state:'',  lat:0, lng:0 }, method:'Interest' },
+      { id:'t-202', day:'Apr 22', date:'Apr 22, 2026', time:'2:14 PM', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   500.00, c:2, status:'Posted',  loc:{ city:'Internal transfer',  state:'',  lat:0, lng:0 }, method:'Internal' },
+      { id:'t-203', day:'Mar 25', date:'Mar 25, 2026', time:'12:00 AM',cat:'Income',   name:'Interest paid',      sub:'4.30% APY',        amt:    42.18, c:4, status:'Posted',  loc:{ city:'Meridian Bank',      state:'',  lat:0, lng:0 }, method:'Interest' },
+      { id:'t-204', day:'Mar 12', date:'Mar 12, 2026', time:'10:08 AM',cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:  1000.00, c:2, status:'Posted',  loc:{ city:'Internal transfer',  state:'',  lat:0, lng:0 }, method:'Internal' },
     ],
     a3: [
-      { day:'Apr 28', cat:'Food',     name:'Cheesecake Factory', sub:'Card purchase',    amt:   -68.40, c:1 },
-      { day:'Apr 26', cat:'Shopping', name:'Apple',              sub:'Card purchase',    amt:  -129.00, c:6 },
-      { day:'Apr 24', cat:'Bills',    name:'Audible',            sub:'Recurring',        amt:   -14.95, c:5 },
-      { day:'Apr 21', cat:'Income',   name:'Payment received',   sub:'Thank you',        amt:   200.00, c:4 },
-      { day:'Apr 18', cat:'Food',     name:'Starbucks',          sub:'Card purchase',    amt:    -7.49, c:1 },
+      { id:'t-301', day:'Apr 28', date:'Apr 28, 2026', time:'7:32 PM', cat:'Food',     name:'Cheesecake Factory', sub:'Card purchase',    amt:   -68.40, c:1, status:'Pending', loc:{ city:'Christiana',         state:'DE', lat:39.6601, lng:-75.6557 }, method:'Card' },
+      { id:'t-302', day:'Apr 26', date:'Apr 26, 2026', time:'11:14 AM',cat:'Shopping', name:'Apple',              sub:'Card purchase',    amt:  -129.00, c:6, status:'Posted',  loc:{ city:'Online',             state:'',  lat:0, lng:0 }, method:'Card' },
+      { id:'t-303', day:'Apr 24', date:'Apr 24, 2026', time:'12:00 AM',cat:'Bills',    name:'Audible',            sub:'Recurring',        amt:   -14.95, c:5, status:'Posted',  loc:{ city:'Online',             state:'',  lat:0, lng:0 }, method:'Card' },
+      { id:'t-304', day:'Apr 21', date:'Apr 21, 2026', time:'9:00 AM', cat:'Income',   name:'Payment received',   sub:'Thank you',        amt:   200.00, c:4, status:'Posted',  loc:{ city:'ACH credit',         state:'',  lat:0, lng:0 }, method:'ACH' },
+      { id:'t-305', day:'Apr 18', date:'Apr 18, 2026', time:'7:45 AM', cat:'Food',     name:'Starbucks',          sub:'Card purchase',    amt:    -7.49, c:1, status:'Posted',  loc:{ city:'Newark',             state:'DE', lat:39.6837, lng:-75.7497 }, method:'Card' },
     ],
     a4: [
-      { day:'Apr 22', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   100.00, c:2 },
-      { day:'Apr 09', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   100.00, c:2 },
-      { day:'Mar 22', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   200.00, c:2 },
+      { id:'t-401', day:'Apr 22', date:'Apr 22, 2026', time:'2:14 PM', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   100.00, c:2, status:'Posted',  loc:{ city:'Internal transfer',  state:'',  lat:0, lng:0 }, method:'Internal' },
+      { id:'t-402', day:'Apr 09', date:'Apr 09, 2026', time:'9:30 AM', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   100.00, c:2, status:'Posted',  loc:{ city:'Internal transfer',  state:'',  lat:0, lng:0 }, method:'Internal' },
+      { id:'t-403', day:'Mar 22', date:'Mar 22, 2026', time:'2:00 PM', cat:'Transfer', name:'Transfer in',        sub:'From Checking',    amt:   200.00, c:2, status:'Posted',  loc:{ city:'Internal transfer',  state:'',  lat:0, lng:0 }, method:'Internal' },
     ],
-  }
+  },
+  payees: [
+    { id:'p1', name:'Comcast',         category:'Internet & cable',   account:'•• 8821', logoColor:'#a82420', last: 125.00, autopay:true,  next:'May 24' },
+    { id:'p2', name:'Delmarva Power',  category:'Electric utility',   account:'•• 4419', logoColor:'#c89b3c', last: 142.00, autopay:true,  next:'May 15' },
+    { id:'p3', name:'Verizon Wireless',category:'Mobile',             account:'•• 7720', logoColor:'#b91c1c', last:  78.00, autopay:false, next:'May 10' },
+    { id:'p4', name:'Geico',           category:'Auto insurance',     account:'•• 0035', logoColor:'#0e7c4a', last: 152.50, autopay:false, next:'May 12' },
+    { id:'p5', name:'Capital One Auto',category:'Auto loan',          account:'•• 1199', logoColor:'#1f4570', last: 384.21, autopay:true,  next:'May  5' },
+  ],
+  zelleContacts: [
+    { id:'z1', name:'Mom',             handle:'mom@meridian.demo',         tag:'frequent', color:1, last:60   },
+    { id:'z2', name:'Alex Rivera',     handle:'(302) 555-0144',            tag:'frequent', color:3, last:25   },
+    { id:'z3', name:'Jordan P.',       handle:'jordan.p@workmail.com',     tag:'recent',   color:5, last:120  },
+    { id:'z4', name:'Sam K.',          handle:'(484) 555-0192',            tag:'recent',   color:6, last:18.50},
+    { id:'z5', name:'Dani T.',         handle:'dani@example.com',          tag:'',          color:2, last:0    },
+  ],
+  searches: [],          /* recent search strings */
+  scheduledTransfers: [],
+  billPayments: [],
+  hiddenTx: [],          /* tx ids the user has hidden */
+  txOverrides: {}        /* { txId: { cat, hidden, note } } */
 };
 
 function loadState(){
@@ -1426,7 +1915,7 @@ function maskAmt(s){ return s.replace(/[0-9]/g,'•') }
 /* ============================================================
    SCREEN ROUTER
    ============================================================ */
-const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile'];
+const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle'];
 let current = 'splash';
 
 function go(toId){
@@ -1604,8 +2093,10 @@ function renderActions(){
   row.querySelectorAll('.action').forEach(el => {
     el.addEventListener('click', ()=>{
       const k = el.dataset.key;
-      if(k==='transfer' || k==='pay'){ startTransfer('send'); }
-      else if(k==='deposit'){ toast('Deposit a check') }
+      if(k==='transfer'){ startTransfer('send'); }
+      else if(k==='pay'){ startBillPay(); }
+      else if(k==='deposit'){ startDeposit(); }
+      else if(k==='zelle'){ startZelle(); }
       else{ toast(el.querySelector('span').textContent) }
     });
   });
@@ -1637,24 +2128,34 @@ function openAccount(id){
 
 function renderTransactions(id){
   const list = document.getElementById('txList');
-  let txs = (state.txByAccount[id] || []);
-  if(activeFilter !== 'All') txs = txs.filter(t => t.cat === activeFilter);
+  let txs = (state.txByAccount[id] || []).filter(t => !(state.txOverrides[t.id] && state.txOverrides[t.id].hidden));
+  if(activeFilter !== 'All') txs = txs.filter(t => effectiveCat(t) === activeFilter);
   if(!txs.length){ list.innerHTML = '<div class="empty">No transactions to show.</div>'; return; }
   let html='', day='';
   txs.forEach(t => {
     if(t.day !== day){ html += `<div class="tx-day">${t.day}</div>`; day = t.day; }
     const initial = t.name.trim().charAt(0).toUpperCase();
+    const pending = t.status === 'Pending' ? '<span style="color:var(--muted);font-weight:600;font-size:11px;margin-left:6px">· Pending</span>' : '';
     html += `
-      <div class="tx" onclick="toast('Transaction details')">
+      <div class="tx" data-tx="${t.id}" data-acct="${id}">
         <div class="tx-icon tx-c-${t.c||1}">${initial}</div>
         <div class="tx-meta">
-          <div class="tx-name">${t.name}</div>
-          <div class="tx-sub">${t.sub}</div>
+          <div class="tx-name">${escapeHtml(t.name)}${pending}</div>
+          <div class="tx-sub">${escapeHtml(t.sub)}</div>
         </div>
         <div class="tx-amt ${t.amt>=0?'pos':'neg'}">${fmtSigned(t.amt)}</div>
       </div>`;
   });
   list.innerHTML = html;
+  list.querySelectorAll('.tx').forEach(el => el.addEventListener('click', ()=> openTxDetail(el.dataset.acct, el.dataset.tx)));
+}
+
+function effectiveCat(t){
+  const o = state.txOverrides[t.id];
+  return (o && o.cat) || t.cat;
+}
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 }
 
 /* ============================================================
@@ -1767,8 +2268,9 @@ function confirmTransfer(){
   if(to.kind !== 'credit') to.spendable = +(to.spendable + v).toFixed(2);
   // log transactions
   const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
-  state.txByAccount[from.id] = [{ day:today, cat:'Transfer', name:`Transfer to ${to.name.split(' ')[0]}`, sub:to.mask, amt:-v, c:2 }, ...(state.txByAccount[from.id]||[])];
-  state.txByAccount[to.id]   = [{ day:today, cat:'Transfer', name:`Transfer from ${from.name.split(' ')[0]}`, sub:from.mask, amt:v, c:4 }, ...(state.txByAccount[to.id]||[])];
+  const ts = Date.now();
+  state.txByAccount[from.id] = [{ id:'t-tr-'+ts+'-o', day:today, date:today+', 2026', time:'just now', cat:'Transfer', name:`Transfer to ${to.name.split(' ')[0]}`, sub:to.mask, amt:-v, c:2, status:'Posted', loc:{city:'Internal transfer',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[from.id]||[])];
+  state.txByAccount[to.id]   = [{ id:'t-tr-'+ts+'-i', day:today, date:today+', 2026', time:'just now', cat:'Transfer', name:`Transfer from ${from.name.split(' ')[0]}`, sub:from.mask, amt:v, c:4, status:'Posted', loc:{city:'Internal transfer',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[to.id]||[])];
   // notification
   state.notifications.unshift({ id:'tx-'+Date.now(), unread:true, title:'Transfer complete', body:`${fmtMoney(v)} from ${from.name} to ${to.name}.`, time:'just now' });
   saveState();
@@ -1812,7 +2314,7 @@ function openSheet(kind){
     body.innerHTML = `
       <div class="list" style="margin:0">
         <div class="li" onclick="closeSheet();go('statements')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3 H16 L20 7 V21 H6 Z"/></svg></span><div class="li-meta"><b>Statements & documents</b></div><span class="li-trail">›</span></div>
-        <div class="li" onclick="closeSheet();toast('Account details')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16 V12 M12 8 V8.01"/></svg></span><div class="li-meta"><b>Account details</b><span>Routing & account number</span></div><span class="li-trail">›</span></div>
+        <div class="li" onclick="closeSheet();openAcctDetails(activeId)"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16 V12 M12 8 V8.01"/></svg></span><div class="li-meta"><b>Account details</b><span>Routing & account number</span></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Set up direct deposit')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21 V11 M7 16 L12 21 L17 16"/></svg></span><div class="li-meta"><b>Set up direct deposit</b></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Rename account')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4 H4 V20 H20 V13"/><path d="M18.5 2.5 a2.12 2.12 0 0 1 3 3 L12 15 L8 16 L9 12 z"/></svg></span><div class="li-meta"><b>Rename account</b></div><span class="li-trail">›</span></div>
         <div class="li" onclick="closeSheet();toast('Close account')" style="color:var(--red)"><span class="li-icon" style="color:var(--red);background:rgba(200,50,44,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6 H21 M19 6 V20 a2 2 0 0 1 -2 2 H7 a2 2 0 0 1 -2 -2 V6 M8 6 V4 a2 2 0 0 1 2 -2 h4 a2 2 0 0 1 2 2 v2"/></svg></span><div class="li-meta"><b style="color:var(--red)">Close account</b></div></div>
@@ -2097,6 +2599,845 @@ function toast(msg){
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
   clearTimeout(toastTimer); toastTimer = setTimeout(()=> el.classList.remove('show'), 1500);
+}
+
+/* ============================================================
+   COPY HELPER
+   ============================================================ */
+async function copyText(s){
+  try{
+    if(navigator.clipboard?.writeText){ await navigator.clipboard.writeText(s); }
+    else{
+      const ta = document.createElement('textarea'); ta.value = s;
+      ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+    }
+    toast('Copied to clipboard');
+  }catch(e){ toast('Copy failed') }
+}
+const COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15 H4 a2 2 0 0 1 -2 -2 V4 a2 2 0 0 1 2 -2 h9 a2 2 0 0 1 2 2 v1"/></svg>';
+
+/* ============================================================
+   TRANSACTION DETAIL SHEET
+   ============================================================ */
+function findTx(acctId, txId){
+  return (state.txByAccount[acctId]||[]).find(t => t.id === txId);
+}
+function openTxDetail(acctId, txId){
+  const t = findTx(acctId, txId); if(!t) return;
+  const acct = accountById(acctId);
+  const ov = state.txOverrides[t.id] || {};
+  const cat = ov.cat || t.cat;
+  const note = ov.note || '';
+  const isPos = t.amt >= 0;
+  const isPending = t.status === 'Pending';
+  const hasMap = t.loc && t.loc.lat && t.loc.lng;
+  const initial = t.name.trim().charAt(0).toUpperCase();
+  document.getElementById('sheetTitle').textContent = 'Transaction';
+  document.getElementById('sheetBody').innerHTML = `
+    <div style="display:flex;justify-content:center;margin-top:6px">
+      <div class="tx-icon tx-c-${t.c||1}" style="width:54px;height:54px;font-size:22px;border-radius:14px">${initial}</div>
+    </div>
+    <div class="tx-detail-amt ${isPos?'pos':''}">${isPos?'+ ':'– '}$${fmt(Math.abs(t.amt))}</div>
+    <div class="tx-detail-merchant">${escapeHtml(t.name)}</div>
+    <div class="tx-detail-meta">${escapeHtml(t.date || t.day)} · ${escapeHtml(t.time || '')} · ${escapeHtml(t.method || 'Card')}</div>
+    <div style="text-align:center"><span class="tx-status-pill ${isPending?'pending':''}">${escapeHtml(t.status || 'Posted')}</span></div>
+
+    ${hasMap ? `
+    <div class="map-mock">
+      <div class="map-pin"></div>
+      <div class="map-loc-label">${escapeHtml(t.loc.city)}${t.loc.state?', '+escapeHtml(t.loc.state):''}</div>
+    </div>` : ''}
+
+    <div class="tx-actions-grid">
+      <button class="tx-act" onclick="recategorizeTx('${acctId}','${txId}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6 H21 M6 12 H18 M9 18 H15"/></svg>
+        <span>Category</span>
+      </button>
+      <button class="tx-act" onclick="splitTx('${acctId}','${txId}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7 H8 L13 17 H21 M3 17 H8 L13 7 H21"/></svg>
+        <span>Split</span>
+      </button>
+      <button class="tx-act" onclick="receiptTx('${acctId}','${txId}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3 H17 V21 L14 19 L11 21 L8 19 L5 21 Z"/><path d="M8 8 H14 M8 12 H14"/></svg>
+        <span>Receipt</span>
+      </button>
+      <button class="tx-act danger" onclick="disputeTx('${acctId}','${txId}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9 V13 M12 17 V17.01"/><path d="M10.29 3.86 L1.82 18 a2 2 0 0 0 1.71 3 H20.47 a2 2 0 0 0 1.71 -3 L13.71 3.86 a2 2 0 0 0 -3.42 0z"/></svg>
+        <span>Dispute</span>
+      </button>
+    </div>
+
+    <div class="kv-list">
+      <div class="kv-row"><span class="lbl">Account</span><span class="val">${escapeHtml(acct.name)} <span style="color:var(--muted);font-weight:500">${escapeHtml(acct.mask)}</span></span></div>
+      <div class="kv-row"><span class="lbl">Category</span><span class="val">${escapeHtml(cat)} <button class="copy" onclick="recategorizeTx('${acctId}','${txId}')" aria-label="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4 H4 V20 H20 V13"/><path d="M18.5 2.5 a2.12 2.12 0 0 1 3 3 L12 15 L8 16 L9 12 z"/></svg></button></span></div>
+      <div class="kv-row"><span class="lbl">Method</span><span class="val">${escapeHtml(t.method || '—')}</span></div>
+      <div class="kv-row"><span class="lbl">Reference</span><span class="val">${escapeHtml(t.id.replace('t-','MRD'))}<button class="copy" onclick="copyText('${t.id.replace('t-','MRD')}')" aria-label="Copy">${COPY_SVG}</button></span></div>
+      ${note ? `<div class="kv-row"><span class="lbl">Note</span><span class="val">${escapeHtml(note)}</span></div>` : ''}
+    </div>
+
+    <div style="display:flex;gap:10px;margin:14px 0 6px">
+      <button class="btn btn-ghost" onclick="hideTx('${acctId}','${txId}')">${ov.hidden?'Unhide':'Hide'} from feed</button>
+      <button class="btn btn-ghost" onclick="searchSimilar('${acctId}','${txId}')">More like this</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function recategorizeTx(acctId, txId){
+  const t = findTx(acctId, txId); if(!t) return;
+  const cats = ['Food','Shopping','Bills','Transfer','Income','Travel','Health','Other'];
+  document.getElementById('sheetTitle').textContent = 'Choose category';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="list" style="margin:0">
+      ${cats.map(c => `<div class="li" onclick="setCat('${acctId}','${txId}','${c}')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span><div class="li-meta"><b>${c}</b></div><span class="li-trail">${effectiveCat(t)===c?'✓':''}</span></div>`).join('')}
+    </div>
+  `;
+}
+function setCat(acctId, txId, cat){
+  state.txOverrides[txId] = { ...(state.txOverrides[txId]||{}), cat };
+  saveState();
+  toast('Category updated');
+  openTxDetail(acctId, txId);
+  if(activeId) renderTransactions(activeId);
+}
+function splitTx(acctId, txId){
+  const t = findTx(acctId, txId); if(!t) return;
+  const half = Math.abs(t.amt)/2;
+  document.getElementById('sheetTitle').textContent = 'Split with someone';
+  document.getElementById('sheetBody').innerHTML = `
+    <p style="font-size:13px;color:var(--muted);font-weight:500;margin:0 0 12px">Send a Zelle® request for half of <b style="color:var(--ink)">$${fmt(Math.abs(t.amt))}</b> ($${fmt(half)} each).</p>
+    <div id="splitContacts"></div>
+    <button class="btn btn-primary" style="margin-top:14px" onclick="closeSheet();go('zelle');toast('Pick a contact to request from')">Request via Zelle®</button>
+  `;
+  document.getElementById('splitContacts').innerHTML = state.zelleContacts.slice(0,3).map(c => `
+    <div class="contact-row" onclick="closeSheet();zelleFlow('${c.id}','request',${half.toFixed(2)})">
+      <div class="avi tx-c-${c.color}">${c.name.charAt(0)}</div>
+      <div class="meta"><b>${escapeHtml(c.name)}</b><span>Request $${fmt(half)}</span></div>
+      <span style="color:var(--muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+    </div>
+  `).join('');
+}
+function receiptTx(acctId, txId){
+  const t = findTx(acctId, txId); if(!t) return;
+  document.getElementById('sheetTitle').textContent = 'Receipt';
+  const ref = t.id.replace('t-','MRD');
+  document.getElementById('sheetBody').innerHTML = `
+    <div style="background:#fff;border:1px dashed var(--line);border-radius:14px;padding:18px 16px;font-family:var(--mono);color:#1a2632">
+      <div style="text-align:center;font-family:var(--serif);font-weight:600;font-size:18px;color:#0b3358">Meridian</div>
+      <div style="text-align:center;font-size:11px;color:#6b7a87;margin-bottom:14px">Electronic receipt</div>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;margin:3px 0"><span>Merchant</span><b>${escapeHtml(t.name)}</b></div>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;margin:3px 0"><span>Date</span><b>${escapeHtml(t.date || t.day)} ${escapeHtml(t.time||'')}</b></div>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;margin:3px 0"><span>Method</span><b>${escapeHtml(t.method || '—')}</b></div>
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;margin:3px 0"><span>Reference</span><b>${ref}</b></div>
+      <div style="border-top:1px dashed #cbd5e0;margin:10px 0"></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px"><span>Total</span><b>${fmtSigned(t.amt)}</b></div>
+      <div style="text-align:center;font-size:10px;color:#94a2ad;margin-top:14px">Thank you</div>
+    </div>
+    <button class="btn btn-primary" style="margin-top:14px" onclick="copyText('${ref}');closeSheet();toast('Receipt downloaded')">Download PDF</button>
+  `;
+}
+function disputeTx(acctId, txId){
+  const t = findTx(acctId, txId); if(!t) return;
+  document.getElementById('sheetTitle').textContent = 'Dispute this charge';
+  document.getElementById('sheetBody').innerHTML = `
+    <p style="font-size:13.5px;color:var(--muted);font-weight:500;margin:0 0 12px;line-height:1.5">Disputing <b style="color:var(--ink)">${escapeHtml(t.name)}</b> for <b style="color:var(--ink)">${fmtSigned(t.amt)}</b>. We'll open a case and get back to you within 10 business days.</p>
+    <div class="list" style="margin:0">
+      <div class="li" onclick="confirmDispute('${acctId}','${txId}','I don\\'t recognize this charge')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9 L15 15 M15 9 L9 15"/></svg></span><div class="li-meta"><b>I don't recognize this charge</b></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="confirmDispute('${acctId}','${txId}','I was charged the wrong amount')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8 V12 M12 16 V16.01"/></svg></span><div class="li-meta"><b>Wrong amount charged</b></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="confirmDispute('${acctId}','${txId}','Duplicate charge')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><rect x="3" y="3" width="13" height="13" rx="2"/></svg></span><div class="li-meta"><b>Duplicate charge</b></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="confirmDispute('${acctId}','${txId}','I never received the goods/service')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16 V8 a2 2 0 0 0 -1 -1.73 L13 2.27 a2 2 0 0 0 -2 0 L4 6.27 A2 2 0 0 0 3 8 v8 a2 2 0 0 0 1 1.73 l7 4 a2 2 0 0 0 2 0 l7 -4 A2 2 0 0 0 21 16 z"/></svg></span><div class="li-meta"><b>Goods/service not received</b></div><span class="li-trail">›</span></div>
+    </div>
+  `;
+}
+function confirmDispute(acctId, txId, reason){
+  const caseNum = 'CASE-' + Math.floor(Math.random()*900000+100000);
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Dispute opened', body:`We're reviewing your case ${caseNum}. Reason: ${reason}.`, time:'just now' });
+  saveState();
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Dispute submitted</div>
+      <div class="success-meta">Case ${caseNum}<br/>We'll email updates as we investigate.</div>
+      <div style="margin-top:24px"><button class="btn btn-primary" onclick="closeSheet()">Done</button></div>
+    </div>
+  `;
+  renderHome(); renderNotifications();
+}
+function hideTx(acctId, txId){
+  const ov = state.txOverrides[txId] || {};
+  ov.hidden = !ov.hidden;
+  state.txOverrides[txId] = ov;
+  saveState();
+  toast(ov.hidden ? 'Hidden from feed' : 'Restored');
+  closeSheet();
+  if(activeId) renderTransactions(activeId);
+}
+function searchSimilar(acctId, txId){
+  const t = findTx(acctId, txId); if(!t) return;
+  closeSheet();
+  startSearch(t.name.split(/\s|#/)[0]);
+}
+
+/* ============================================================
+   ACCOUNT DETAILS SCREEN
+   ============================================================ */
+let acctDetailsId = null;
+let acctDetailsReveal = false;
+function openAcctDetails(id){
+  acctDetailsId = id; acctDetailsReveal = false;
+  renderAcctDetails();
+  go('acctDetails');
+}
+function renderAcctDetails(){
+  const a = accountById(acctDetailsId); if(!a) return;
+  const isCredit = a.kind === 'credit';
+  const mask = (s) => acctDetailsReveal ? s : (s ? s.replace(/[0-9](?=[0-9]{4})/g,'•').replace(/(.{4})/g,'$1 ').trim() : '—');
+  const body = document.getElementById('acctDetailsBody');
+  body.innerHTML = `
+    <div class="acct-card-hero ${a.color}">
+      <div class="ah-type">${escapeHtml(a.type)}</div>
+      <div class="ah-name">${escapeHtml(a.name)}</div>
+      <div class="ah-mask">${escapeHtml(a.mask)}</div>
+      <div style="position:relative;z-index:1;margin-top:14px;font-family:var(--serif);font-weight:600;font-size:24px;letter-spacing:-.02em">${fmtMoney(a.balance)}<span style="font-family:var(--sans);font-size:10.5px;font-weight:600;opacity:.8;letter-spacing:.1em;text-transform:uppercase;margin-left:8px">${isCredit?'Current balance':'Available'}</span></div>
+    </div>
+
+    <div class="detail-banner">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11 V7 a5 5 0 0 1 10 0 v4"/></svg></div>
+      <div class="meta">
+        <b>${acctDetailsReveal?'Numbers visible':'Numbers hidden'}</b>
+        <span>${acctDetailsReveal?'Anyone seeing your screen can read them':'Tap to reveal full account info'}</span>
+      </div>
+      <button class="show-toggle" onclick="acctDetailsReveal=!acctDetailsReveal;renderAcctDetails()">${acctDetailsReveal?'Hide':'Show'}</button>
+    </div>
+
+    ${isCredit ? `
+      <div class="detail-section-h">Card</div>
+      <div class="list">
+        <div class="kv-row" style="padding:14px 16px"><span class="lbl">Card number</span><span class="val">${mask(a.number.replace(/\s/g,''))}<button class="copy" onclick="copyText('${a.number.replace(/\s/g,'')}')" aria-label="Copy">${COPY_SVG}</button></span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Credit limit</span><span class="val">$${fmt(a.limit||0)}</span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">APR</span><span class="val">${a.apr||0}%</span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Next payment due</span><span class="val">${a.due||'—'}</span></div>
+      </div>
+    ` : `
+      <div class="detail-section-h">Account numbers</div>
+      <div class="list">
+        <div class="kv-row" style="padding:14px 16px"><span class="lbl">Account number</span><span class="val">${mask(a.number)}<button class="copy" onclick="copyText('${a.number}')" aria-label="Copy">${COPY_SVG}</button></span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Routing (ACH)</span><span class="val">${mask(a.routing)}<button class="copy" onclick="copyText('${a.routing}')" aria-label="Copy">${COPY_SVG}</button></span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">SWIFT/BIC</span><span class="val">${escapeHtml(a.swift||'—')}<button class="copy" onclick="copyText('${a.swift||''}')" aria-label="Copy">${COPY_SVG}</button></span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Wire routing</span><span class="val">${mask(a.routing)}<button class="copy" onclick="copyText('${a.routing}')" aria-label="Copy">${COPY_SVG}</button></span></div>
+        ${a.apy ? `<div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">APY</span><span class="val" style="color:var(--pos)">${a.apy}%</span></div>` : ''}
+        ${a.goal ? `<div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Goal</span><span class="val">${fmtMoney(a.aside)} of $${fmt(a.goal)}</span></div>` : ''}
+      </div>
+
+      <div class="detail-section-h">Bank info</div>
+      <div class="list">
+        <div class="kv-row" style="padding:14px 16px"><span class="lbl">Bank name</span><span class="val">Meridian Bank, N.A.</span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Bank address</span><span class="val" style="text-align:right">100 W 10th St, Suite 800<br/>Wilmington, DE 19801</span></div>
+        <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Opened</span><span class="val">${escapeHtml(a.opened||'—')}</span></div>
+      </div>
+    `}
+
+    <div style="padding:14px 18px 32px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-ghost" onclick="shareAccountDetails()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 V20 a2 2 0 0 0 2 2 H18 a2 2 0 0 0 2 -2 V12"/><path d="M16 6 L12 2 L8 6"/><path d="M12 2 V15"/></svg>Share account info</button>
+      <button class="btn btn-ghost" onclick="copyAllAcctInfo()">Copy all to clipboard</button>
+    </div>
+  `;
+}
+function shareAccountDetails(){
+  const a = accountById(acctDetailsId); if(!a) return;
+  const text = buildAcctText(a);
+  if(navigator.share){
+    navigator.share({ title: a.name, text }).catch(()=>{});
+  } else {
+    copyText(text);
+  }
+}
+function copyAllAcctInfo(){
+  const a = accountById(acctDetailsId); if(!a) return;
+  copyText(buildAcctText(a));
+}
+function buildAcctText(a){
+  if(a.kind === 'credit'){
+    return `${a.name}\nCard: ${a.number}\nLimit: $${fmt(a.limit||0)}\nAPR: ${a.apr}%`;
+  }
+  return `${a.name}\nAccount #: ${a.number}\nRouting (ACH): ${a.routing}\nSWIFT/BIC: ${a.swift}\nBank: Meridian Bank, N.A.\n100 W 10th St, Wilmington, DE 19801`;
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+function startSearch(prefill){
+  const inp = document.getElementById('searchInput');
+  inp.value = prefill || '';
+  document.getElementById('searchBar').classList.toggle('has-text', !!inp.value);
+  renderSearchResults(inp.value);
+  go('search');
+  setTimeout(()=> inp.focus(), 220);
+}
+function clearSearch(){
+  const inp = document.getElementById('searchInput');
+  inp.value = '';
+  document.getElementById('searchBar').classList.remove('has-text');
+  renderSearchResults('');
+  inp.focus();
+}
+function renderSearchResults(q){
+  const wrap = document.getElementById('searchResults');
+  q = (q||'').trim().toLowerCase();
+  if(!q){
+    const recent = state.searches.slice(0,5);
+    wrap.innerHTML = `
+      ${recent.length ? `
+        <div class="section-h">Recent searches</div>
+        <div class="recent-search">
+          ${recent.map(s => `
+            <div class="recent-row" onclick="startSearch('${escapeHtml(s)}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15 14"/></svg>
+              <b>${escapeHtml(s)}</b>
+              <button class="x" onclick="event.stopPropagation();removeRecent('${escapeHtml(s)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 L6 18 M6 6 L18 18"/></svg></button>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+      <div class="section-h">Browse by category</div>
+      <div class="cat-grid" style="margin-bottom:24px">
+        <div class="cat-tile" onclick="startSearch('Food')"><div class="swatch" style="background:var(--navy)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11 H21 V21 H3 Z"/></svg></div><div><b>Food</b><span>Restaurants & dining</span></div></div>
+        <div class="cat-tile" onclick="startSearch('Shopping')"><div class="swatch" style="background:var(--gold)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 L3 6 V20 a2 2 0 0 0 2 2 H19 a2 2 0 0 0 2 -2 V6 L18 2 Z"/></svg></div><div><b>Shopping</b><span>Retail & online</span></div></div>
+        <div class="cat-tile" onclick="startSearch('Bills')"><div class="swatch" style="background:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div><b>Bills</b><span>Recurring payments</span></div></div>
+        <div class="cat-tile" onclick="startSearch('Transfer')"><div class="swatch" style="background:#5e3a8c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8 H17 L14 5"/><path d="M20 16 H7 L10 19"/></svg></div><div><b>Transfers</b><span>Internal & external</span></div></div>
+      </div>
+    `;
+    return;
+  }
+  // Search across the active account's tx
+  const id = activeId || state.accounts[0].id;
+  const all = state.txByAccount[id] || [];
+  const num = parseFloat(q.replace(/[^0-9.]/g,''));
+  const matches = all.filter(t => {
+    const hay = `${t.name} ${t.sub} ${t.cat} ${t.method} ${t.loc?.city||''} ${t.loc?.state||''}`.toLowerCase();
+    if(hay.includes(q)) return true;
+    if(!isNaN(num) && Math.abs(Math.abs(t.amt) - num) < 0.01) return true;
+    return false;
+  });
+  if(!matches.length){
+    wrap.innerHTML = `
+      <div class="search-empty">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21 -4.3 -4.3"/></svg></div>
+        <b>No matches</b>
+        <span>Try a merchant name, category, or amount.</span>
+      </div>`;
+    return;
+  }
+  let html = '', day = '';
+  matches.forEach(t => {
+    if(t.day !== day){ html += `<div class="tx-day">${t.day}</div>`; day = t.day; }
+    const initial = t.name.trim().charAt(0).toUpperCase();
+    html += `
+      <div class="tx" onclick="closeSearchAndOpen('${id}','${t.id}')">
+        <div class="tx-icon tx-c-${t.c||1}">${initial}</div>
+        <div class="tx-meta">
+          <div class="tx-name">${highlight(t.name, q)}</div>
+          <div class="tx-sub">${highlight(t.sub, q)} · ${escapeHtml(t.loc?.city||'')}</div>
+        </div>
+        <div class="tx-amt ${t.amt>=0?'pos':'neg'}">${fmtSigned(t.amt)}</div>
+      </div>`;
+  });
+  wrap.innerHTML = `<div style="padding:8px 18px 4px;font-size:12px;color:var(--muted);font-weight:600">${matches.length} match${matches.length===1?'':'es'}</div>` + html;
+}
+function highlight(s, q){
+  s = String(s||'');
+  if(!q) return escapeHtml(s);
+  const idx = s.toLowerCase().indexOf(q);
+  if(idx < 0) return escapeHtml(s);
+  return escapeHtml(s.slice(0,idx)) + '<mark style="background:rgba(200,155,60,.35);color:inherit;padding:0 2px;border-radius:3px">' + escapeHtml(s.slice(idx, idx+q.length)) + '</mark>' + escapeHtml(s.slice(idx+q.length));
+}
+function closeSearchAndOpen(acctId, txId){
+  // remember query
+  const q = document.getElementById('searchInput').value.trim();
+  if(q && !state.searches.includes(q)){ state.searches.unshift(q); state.searches = state.searches.slice(0,8); saveState(); }
+  back('search','detail');
+  setTimeout(()=> openTxDetail(acctId, txId), 250);
+}
+function removeRecent(q){
+  state.searches = state.searches.filter(s => s !== q); saveState();
+  renderSearchResults('');
+}
+document.addEventListener('input', e => {
+  if(e.target.id === 'searchInput'){
+    document.getElementById('searchBar').classList.toggle('has-text', !!e.target.value);
+    renderSearchResults(e.target.value);
+  }
+  if(e.target.id === 'depAmtInput'){
+    let v = e.target.value.replace(/[^0-9.]/g,'');
+    const parts = v.split('.'); if(parts.length>2) v = parts[0]+'.'+parts.slice(1).join('');
+    if(parts[1] && parts[1].length>2) v = parts[0]+'.'+parts[1].slice(0,2);
+    e.target.value = v;
+    DEP.amount = v;
+    validateDeposit();
+  }
+});
+
+/* ============================================================
+   DEPOSIT CHECK
+   ============================================================ */
+const DEP = { acct:null, amount:'', front:false, back:false, memo:'' };
+function startDeposit(){
+  const a = state.accounts.find(x => x.kind !== 'credit') || state.accounts[0];
+  DEP.acct = a.id; DEP.amount = ''; DEP.front = false; DEP.back = false; DEP.memo = '';
+  document.getElementById('depAmtInput').value = '';
+  document.getElementById('depMemo').value = '';
+  renderDeposit();
+  go('deposit');
+}
+function depPickAccount(){
+  document.getElementById('sheetTitle').textContent = 'Deposit to';
+  document.getElementById('sheetBody').innerHTML = state.accounts.filter(a => a.kind !== 'credit').map(a => `
+    <div class="acct-pick ${a.color==='savings'?'gold':a.color==='credit'?'dark':''}" style="margin-bottom:10px" onclick="DEP.acct='${a.id}';renderDeposit();closeSheet()">
+      <div class="swatch"></div>
+      <div class="info"><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)}</span><span class="bal">${fmtMoney(a.balance)} available</span></div>
+    </div>
+  `).join('');
+  openSheetRaw();
+}
+function renderDeposit(){
+  const a = accountById(DEP.acct);
+  document.getElementById('depAcctName').textContent = a.name;
+  document.getElementById('depAcctMask').textContent = a.mask;
+  document.getElementById('depAcctBal').textContent = fmtMoney(a.balance) + ' available';
+  document.querySelector('#depAcctPick .swatch').className = 'swatch ' + (a.color==='savings'?'gold':a.color==='credit'?'dark':'');
+  // step states
+  setStep('Front', DEP.front, false);
+  setStep('Back',  DEP.back,  !DEP.front);
+  // back frame enabled?
+  const backFrame = document.getElementById('depBackFrame');
+  if(DEP.front && !DEP.back){ backFrame.style.opacity=''; backFrame.style.pointerEvents=''; backFrame.querySelector('.hint').textContent = 'Tap to take photo of the BACK'; }
+  else if(!DEP.front){ backFrame.style.opacity='.5'; backFrame.style.pointerEvents='none'; backFrame.querySelector('.hint').textContent = 'Capture the front first'; }
+  validateDeposit();
+}
+function setStep(side, done, locked){
+  const stepEl = document.getElementById('dep'+side+'Step');
+  const status = document.getElementById('dep'+side+'Status');
+  stepEl.classList.toggle('done', done);
+  stepEl.classList.toggle('todo', !done);
+  status.textContent = done ? 'Captured ✓' : (locked ? 'Locked' : 'Tap to start');
+  status.style.color = done ? 'var(--pos)' : 'var(--muted)';
+  // render the captured artwork
+  const frame = document.getElementById('dep'+side+'Frame');
+  if(done){
+    frame.classList.add('done');
+    const a = accountById(DEP.acct);
+    const amt = parseFloat(DEP.amount||0).toFixed(2);
+    frame.innerHTML = side === 'Front' ? `
+      <div class="check-art">
+        <div class="bank">First Federal</div>
+        <div class="ck-num">No. 4129</div>
+        <div class="pay-line">Pay to: ${escapeHtml(state.user.name)}</div>
+        <div class="amt-box">$${amt}</div>
+        <div class="micr">⑆ 011000028 ⑆ 0123456789 ⑈ 4129</div>
+      </div>
+    ` : `
+      <div class="check-art back">
+        <div class="endorse">ENDORSE HERE — DO NOT WRITE BELOW LINE</div>
+        <div class="sig-line sig">${escapeHtml(state.user.name)}</div>
+        <div style="position:absolute;left:14px;right:14px;top:50px;font-size:9px;color:#1a2632">For Mobile Deposit Only — Meridian ${escapeHtml(a.mask)}</div>
+      </div>
+    `;
+  }
+}
+function captureCheck(side){
+  if(side === 'back' && !DEP.front) return;
+  const frame = document.getElementById('dep'+(side==='front'?'Front':'Back')+'Frame');
+  frame.style.background = '#fff';
+  frame.querySelector('.hint') && (frame.querySelector('.hint').textContent = '⏳ Reading micr line…');
+  setTimeout(()=>{
+    DEP[side] = true;
+    if(side === 'front' && !DEP.amount){
+      // auto-fill amount based on a guess if blank
+    }
+    renderDeposit();
+    if(navigator.vibrate) navigator.vibrate(20);
+    toast(side === 'front' ? 'Front captured' : 'Back captured');
+  }, 700);
+}
+function validateDeposit(){
+  const v = parseFloat(DEP.amount);
+  const ok = v > 0 && v <= 5000 && DEP.front && DEP.back;
+  document.getElementById('depSubmit').disabled = !ok;
+}
+function reviewDeposit(){
+  const a = accountById(DEP.acct);
+  const v = parseFloat(DEP.amount);
+  document.getElementById('sheetTitle').textContent = 'Confirm deposit';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="review-amount"><span class="cur">$</span>${fmt(v)}</div>
+    <div class="review-row"><span class="lbl">To</span><span class="val">${escapeHtml(a.name)}<span class="sub">${escapeHtml(a.mask)}</span></span></div>
+    <div class="review-row"><span class="lbl">Available</span><span class="val">Tomorrow by 9 AM<span class="sub">First $250 today</span></span></div>
+    <div class="review-row"><span class="lbl">Memo</span><span class="val">${escapeHtml(DEP.memo || '—')}</span></div>
+    <div class="review-row"><span class="lbl">Fee</span><span class="val" style="color:var(--pos)">$0.00</span></div>
+    <p style="margin:14px 0 4px;font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5">By confirming, you agree to retain the original check for 14 days, then destroy it. Don't redeposit.</p>
+    <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="confirmDeposit()">Submit deposit</button>
+      <button class="btn btn-ghost" onclick="closeSheet()">Edit</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function confirmDeposit(){
+  const a = accountById(DEP.acct);
+  const v = parseFloat(DEP.amount);
+  // 1st $250 immediate, rest next day — for the demo we just credit it all but mark $250 as today.
+  a.balance = +(a.balance + v).toFixed(2);
+  if(a.kind !== 'credit') a.spendable = +(a.spendable + Math.min(v, 250)).toFixed(2);
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  const txId = 't-dep-'+Date.now();
+  state.txByAccount[a.id] = [{
+    id:txId, day:today, date:today+', 2026', time:'just now',
+    cat:'Income', name:'Mobile check deposit', sub:DEP.memo || 'Check', amt:+v, c:4,
+    status:'Pending', loc:{city:'Mobile deposit',state:'',lat:0,lng:0}, method:'Check'
+  }, ...(state.txByAccount[a.id]||[])];
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Check deposit submitted', body:`${fmtMoney(v)} pending to ${a.name}. First $250 available now.`, time:'just now' });
+  saveState();
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Deposit submitted</div>
+      <div class="success-amt">${fmtMoney(v)}</div>
+      <div class="success-meta">Pending to ${escapeHtml(a.name)}<br/>Confirmation #MRD-${Math.floor(Math.random()*900000+100000)}</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" onclick="closeSheet();back('deposit','home')">Done</button>
+        <button class="btn btn-ghost" onclick="closeSheet();startDeposit()">Deposit another</button>
+      </div>
+    </div>
+  `;
+  renderHome(); renderNotifications();
+}
+
+/* ============================================================
+   BILL PAY
+   ============================================================ */
+let BILL = { payeeId:null, fromId:null, amount:'', date:'today', recur:'once', memo:'' };
+function startBillPay(){
+  renderPayees();
+  go('payBill');
+}
+function renderPayees(){
+  const list = document.getElementById('payeeList');
+  list.innerHTML = state.payees.map(p => {
+    const tag = p.autopay ? `<span class="payee-tag">Autopay</span>` : `<span class="payee-tag due">Due ${escapeHtml(p.next)}</span>`;
+    return `
+      <div class="payee-row" onclick="openPayeeFlow('${p.id}')">
+        <div class="payee-logo" style="background:${p.logoColor}">${escapeHtml(p.name.charAt(0))}</div>
+        <div class="payee-meta"><b>${escapeHtml(p.name)}</b><span>${escapeHtml(p.category)} · ${escapeHtml(p.account)}</span></div>
+        <div class="payee-trail"><b>$${fmt(p.last)}</b><span>last paid</span><br/>${tag}</div>
+      </div>
+    `;
+  }).join('');
+}
+function openPayeeFlow(id){
+  const p = state.payees.find(x => x.id === id); if(!p) return;
+  BILL = { payeeId:id, fromId: state.accounts.find(a=>a.kind==='checking').id, amount:String(p.last.toFixed(2)), date:'today', recur:'once', memo:'' };
+  document.getElementById('sheetTitle').textContent = 'Pay ' + p.name;
+  renderPayeeSheet();
+  openSheetRaw();
+}
+function renderPayeeSheet(){
+  const p = state.payees.find(x => x.id === BILL.payeeId);
+  const from = accountById(BILL.fromId);
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">From account</div>
+      <div class="acct-pick ${from.color==='savings'?'gold':''}" onclick="pickPayFromAccount()">
+        <div class="swatch"></div>
+        <div class="info"><b>${escapeHtml(from.name)}</b><span>${escapeHtml(from.mask)}</span><span class="bal">${fmtMoney(from.balance)} available</span></div>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+      </div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">Amount</div>
+      <div class="amount-input">
+        <span class="currency">$</span>
+        <input type="text" inputmode="decimal" id="billAmt" value="${escapeHtml(BILL.amount)}" />
+      </div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">Send on</div>
+      <div class="recur-row">
+        <div class="opt ${BILL.date==='today'?'active':''}" onclick="BILL.date='today';renderPayeeSheet()">Today</div>
+        <div class="opt ${BILL.date==='tomorrow'?'active':''}" onclick="BILL.date='tomorrow';renderPayeeSheet()">Tomorrow</div>
+        <div class="opt ${BILL.date==='due'?'active':''}" onclick="BILL.date='due';renderPayeeSheet()">${escapeHtml(p.next)} (due)</div>
+      </div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">Repeat</div>
+      <div class="recur-row">
+        <div class="opt ${BILL.recur==='once'?'active':''}" onclick="BILL.recur='once';renderPayeeSheet()">Once</div>
+        <div class="opt ${BILL.recur==='monthly'?'active':''}" onclick="BILL.recur='monthly';renderPayeeSheet()">Monthly</div>
+        <div class="opt ${BILL.recur==='biweekly'?'active':''}" onclick="BILL.recur='biweekly';renderPayeeSheet()">Bi-weekly</div>
+      </div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:18px">
+      <div class="form-label">Memo (optional)</div>
+      <input type="text" class="field" id="billMemo" value="${escapeHtml(BILL.memo)}" placeholder="Account 4419, May invoice…" />
+    </div>
+
+    <button class="btn btn-primary" id="billReview" onclick="reviewBillPay()">Review payment</button>
+  `;
+  document.getElementById('billAmt').addEventListener('input', e => {
+    let v = e.target.value.replace(/[^0-9.]/g,'');
+    const parts = v.split('.'); if(parts.length>2) v = parts[0]+'.'+parts.slice(1).join('');
+    if(parts[1] && parts[1].length>2) v = parts[0]+'.'+parts[1].slice(0,2);
+    e.target.value = v; BILL.amount = v;
+  });
+  document.getElementById('billMemo').addEventListener('input', e => BILL.memo = e.target.value);
+}
+function pickPayFromAccount(){
+  document.getElementById('sheetTitle').textContent = 'Pay from';
+  document.getElementById('sheetBody').innerHTML = state.accounts.filter(a => a.kind !== 'credit').map(a => `
+    <div class="acct-pick ${a.color==='savings'?'gold':''}" style="margin-bottom:10px" onclick="BILL.fromId='${a.id}';renderPayeeSheet()">
+      <div class="swatch"></div>
+      <div class="info"><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)}</span><span class="bal">${fmtMoney(a.balance)} available</span></div>
+    </div>
+  `).join('');
+}
+function reviewBillPay(){
+  const p = state.payees.find(x => x.id === BILL.payeeId);
+  const from = accountById(BILL.fromId);
+  const v = parseFloat(BILL.amount);
+  if(!(v>0) || v > from.balance){ toast('Check amount'); return; }
+  document.getElementById('sheetTitle').textContent = 'Confirm payment';
+  const sendLabel = BILL.date === 'today' ? 'Today' : BILL.date === 'tomorrow' ? 'Tomorrow' : p.next;
+  const recurLabel = BILL.recur === 'once' ? 'One-time' : BILL.recur === 'monthly' ? 'Every month' : 'Every 2 weeks';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="review-amount"><span class="cur">$</span>${fmt(v)}</div>
+    <div class="review-row"><span class="lbl">To</span><span class="val">${escapeHtml(p.name)}<span class="sub">${escapeHtml(p.account)}</span></span></div>
+    <div class="review-row"><span class="lbl">From</span><span class="val">${escapeHtml(from.name)}<span class="sub">${escapeHtml(from.mask)}</span></span></div>
+    <div class="review-row"><span class="lbl">Send</span><span class="val">${escapeHtml(sendLabel)}</span></div>
+    <div class="review-row"><span class="lbl">Repeat</span><span class="val">${escapeHtml(recurLabel)}</span></div>
+    <div class="review-row"><span class="lbl">Memo</span><span class="val">${escapeHtml(BILL.memo || '—')}</span></div>
+    <div class="review-row"><span class="lbl">Fee</span><span class="val" style="color:var(--pos)">$0.00</span></div>
+    <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="confirmBillPay()">Confirm payment</button>
+      <button class="btn btn-ghost" onclick="renderPayeeSheet()">Edit</button>
+    </div>
+  `;
+}
+function confirmBillPay(){
+  const p = state.payees.find(x => x.id === BILL.payeeId);
+  const from = accountById(BILL.fromId);
+  const v = parseFloat(BILL.amount);
+  from.balance = +(from.balance - v).toFixed(2);
+  from.spendable = +(from.spendable - v).toFixed(2);
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  const txId = 't-bp-'+Date.now();
+  state.txByAccount[from.id] = [{
+    id:txId, day:today, date:today+', 2026', time:'just now',
+    cat:'Bills', name:p.name, sub:'Bill payment · '+p.account, amt:-v, c:5, status:'Pending',
+    loc:{city:'Online',state:'',lat:0,lng:0}, method:'ACH'
+  }, ...(state.txByAccount[from.id]||[])];
+  p.last = v;
+  state.billPayments.unshift({ id:txId, payee:p.name, amount:v, date:today, recur:BILL.recur });
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Bill scheduled', body:`${fmtMoney(v)} to ${p.name} from ${from.name}.`, time:'just now' });
+  saveState();
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Payment scheduled</div>
+      <div class="success-amt">${fmtMoney(v)}</div>
+      <div class="success-meta">${escapeHtml(p.name)}<br/>Confirmation #BP-${Math.floor(Math.random()*900000+100000)}</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" onclick="closeSheet();back('payBill','home')">Done</button>
+        <button class="btn btn-ghost" onclick="closeSheet();startBillPay()">Pay another bill</button>
+      </div>
+    </div>
+  `;
+  renderPayees(); renderHome(); renderNotifications();
+}
+function addPayeeFlow(){
+  document.getElementById('sheetTitle').textContent = 'Add a payee';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Biller name</div><input class="field" id="newPayeeName" placeholder="Comcast, Amex, ConEd…" /></div>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Category</div><input class="field" id="newPayeeCat" placeholder="Internet, Credit card, Utility…" /></div>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Account number with biller</div><input class="field" id="newPayeeAcct" placeholder="Account / reference number" /></div>
+    <button class="btn btn-primary" onclick="addPayeeSubmit()">Add payee</button>
+  `;
+  openSheetRaw();
+}
+function addPayeeSubmit(){
+  const name = document.getElementById('newPayeeName').value.trim();
+  const cat  = document.getElementById('newPayeeCat').value.trim() || 'Other';
+  const acct = document.getElementById('newPayeeAcct').value.trim() || '••';
+  if(!name){ toast('Enter a biller name'); return; }
+  const id = 'p-'+Date.now();
+  const colors = ['#a82420','#1f4570','#0e7c4a','#5e3a8c','#c89b3c'];
+  state.payees.push({ id, name, category:cat, account:'•• '+acct.slice(-4).padStart(4,'X'), logoColor:colors[Math.floor(Math.random()*colors.length)], last:0, autopay:false, next:'Not scheduled' });
+  saveState(); renderPayees(); closeSheet(); toast('Payee added');
+}
+
+/* ============================================================
+   ZELLE
+   ============================================================ */
+let ZEL = { contactId:null, fromId:null, amount:'', memo:'', mode:'send' };
+function startZelle(){
+  renderZelle();
+  go('zelle');
+}
+function renderZelle(){
+  const freq = state.zelleContacts.filter(c => c.tag==='frequent');
+  const fEl = document.getElementById('zelleFrequent');
+  fEl.innerHTML = `
+    <div class="contact-cell" onclick="addZelleFlow()">
+      <div class="contact-avatar add">+</div>
+      <span>New</span>
+    </div>
+    ${freq.map(c => `
+      <div class="contact-cell" onclick="zelleFlow('${c.id}','send')">
+        <div class="contact-avatar tx-c-${c.color}">${escapeHtml(c.name.charAt(0))}</div>
+        <span>${escapeHtml(c.name.split(' ')[0])}</span>
+      </div>
+    `).join('')}
+  `;
+  document.getElementById('zelleAll').innerHTML = state.zelleContacts.map(c => `
+    <div class="contact-row" onclick="zelleFlow('${c.id}','send')">
+      <div class="avi tx-c-${c.color}">${escapeHtml(c.name.charAt(0))}</div>
+      <div class="meta"><b>${escapeHtml(c.name)}</b><span>${escapeHtml(c.handle)}${c.last?` · last $${fmt(c.last)}`:''}</span></div>
+      <span style="color:var(--muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+    </div>
+  `).join('');
+}
+function zelleFlow(id, mode, prefillAmt){
+  const c = state.zelleContacts.find(x => x.id === id); if(!c) return;
+  ZEL = { contactId:id, fromId: state.accounts.find(a=>a.kind==='checking').id, amount: prefillAmt? String(parseFloat(prefillAmt).toFixed(2)) : '', memo:'', mode:mode||'send' };
+  document.getElementById('sheetTitle').textContent = (mode==='request'?'Request from ':'Send to ') + c.name;
+  renderZelleSheet();
+  openSheetRaw();
+}
+function renderZelleSheet(){
+  const c = state.zelleContacts.find(x => x.id === ZEL.contactId);
+  const from = accountById(ZEL.fromId);
+  document.getElementById('sheetBody').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;padding:8px 0 14px">
+      <div class="avi tx-c-${c.color}" style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-family:var(--serif);font-weight:600;font-size:19px">${escapeHtml(c.name.charAt(0))}</div>
+      <div><b style="font-size:15px;color:var(--ink)">${escapeHtml(c.name)}</b><div style="font-size:12px;color:var(--muted);font-weight:500">${escapeHtml(c.handle)}</div></div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">${ZEL.mode==='request'?'Request':'Send'} amount</div>
+      <div class="amount-input" style="padding:18px 16px">
+        <span class="currency">$</span>
+        <input type="text" inputmode="decimal" id="zelAmt" value="${escapeHtml(ZEL.amount)}" placeholder="0.00" />
+      </div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:14px">
+      <div class="form-label">${ZEL.mode==='request'?'Request to':'Send from'}</div>
+      <div class="acct-pick ${from.color==='savings'?'gold':''}" onclick="pickZelleFrom()">
+        <div class="swatch"></div>
+        <div class="info"><b>${escapeHtml(from.name)}</b><span>${escapeHtml(from.mask)}</span><span class="bal">${fmtMoney(from.balance)} available</span></div>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+      </div>
+    </div>
+
+    <div class="form-section" style="margin-bottom:18px">
+      <div class="form-label">Memo (optional)</div>
+      <input type="text" class="field" id="zelMemo" value="${escapeHtml(ZEL.memo)}" placeholder="Brunch, rent…" maxlength="40" />
+    </div>
+
+    <p style="font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5;margin:0 0 12px">Zelle® is for sending money to people you trust. Once sent, payments can't usually be canceled.</p>
+
+    <button class="btn btn-primary" onclick="reviewZelle()">${ZEL.mode==='request'?'Review request':'Review transfer'}</button>
+  `;
+  document.getElementById('zelAmt').addEventListener('input', e => {
+    let v = e.target.value.replace(/[^0-9.]/g,'');
+    const parts = v.split('.'); if(parts.length>2) v = parts[0]+'.'+parts.slice(1).join('');
+    if(parts[1] && parts[1].length>2) v = parts[0]+'.'+parts[1].slice(0,2);
+    e.target.value = v; ZEL.amount = v;
+  });
+  document.getElementById('zelMemo').addEventListener('input', e => ZEL.memo = e.target.value);
+}
+function pickZelleFrom(){
+  document.getElementById('sheetTitle').textContent = 'Send from';
+  document.getElementById('sheetBody').innerHTML = state.accounts.filter(a => a.kind !== 'credit').map(a => `
+    <div class="acct-pick ${a.color==='savings'?'gold':''}" style="margin-bottom:10px" onclick="ZEL.fromId='${a.id}';renderZelleSheet()">
+      <div class="swatch"></div>
+      <div class="info"><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)}</span><span class="bal">${fmtMoney(a.balance)} available</span></div>
+    </div>
+  `).join('');
+}
+function reviewZelle(){
+  const c = state.zelleContacts.find(x => x.id === ZEL.contactId);
+  const from = accountById(ZEL.fromId);
+  const v = parseFloat(ZEL.amount);
+  if(!(v>0)){ toast('Enter an amount'); return; }
+  if(ZEL.mode==='send' && v > from.balance){ toast('Insufficient funds'); return; }
+  document.getElementById('sheetTitle').textContent = ZEL.mode==='request' ? 'Confirm request' : 'Confirm transfer';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="review-amount"><span class="cur">$</span>${fmt(v)}</div>
+    <div class="review-row"><span class="lbl">${ZEL.mode==='request'?'From':'To'}</span><span class="val">${escapeHtml(c.name)}<span class="sub">${escapeHtml(c.handle)}</span></span></div>
+    <div class="review-row"><span class="lbl">${ZEL.mode==='request'?'To':'From'}</span><span class="val">${escapeHtml(from.name)}<span class="sub">${escapeHtml(from.mask)}</span></span></div>
+    <div class="review-row"><span class="lbl">When</span><span class="val">In minutes<span class="sub">If recipient is enrolled</span></span></div>
+    <div class="review-row"><span class="lbl">Memo</span><span class="val">${escapeHtml(ZEL.memo || '—')}</span></div>
+    <div class="review-row"><span class="lbl">Fee</span><span class="val" style="color:var(--pos)">$0.00</span></div>
+    <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="confirmZelle()">${ZEL.mode==='request'?'Send request':'Send money'}</button>
+      <button class="btn btn-ghost" onclick="renderZelleSheet()">Edit</button>
+    </div>
+  `;
+}
+function confirmZelle(){
+  const c = state.zelleContacts.find(x => x.id === ZEL.contactId);
+  const from = accountById(ZEL.fromId);
+  const v = parseFloat(ZEL.amount);
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  if(ZEL.mode === 'send'){
+    from.balance = +(from.balance - v).toFixed(2);
+    from.spendable = +(from.spendable - v).toFixed(2);
+    const txId = 't-zl-'+Date.now();
+    state.txByAccount[from.id] = [{
+      id:txId, day:today, date:today+', 2026', time:'just now',
+      cat:'Transfer', name:'Zelle to '+c.name, sub:c.handle, amt:-v, c:c.color||5, status:'Posted',
+      loc:{city:'Zelle',state:'',lat:0,lng:0}, method:'Zelle'
+    }, ...(state.txByAccount[from.id]||[])];
+    c.last = v; c.tag = 'frequent';
+    state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Zelle® sent', body:`${fmtMoney(v)} to ${c.name}.`, time:'just now' });
+  } else {
+    state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Zelle® request sent', body:`Asked ${c.name} for ${fmtMoney(v)}. We'll notify you when they pay.`, time:'just now' });
+  }
+  saveState();
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">${ZEL.mode==='request'?'Request sent':'Money sent'}</div>
+      <div class="success-amt">${fmtMoney(v)}</div>
+      <div class="success-meta">${ZEL.mode==='request'?'Asked':'To'} ${escapeHtml(c.name)}<br/>Confirmation #ZL-${Math.floor(Math.random()*900000+100000)}</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" onclick="closeSheet();back('zelle','home')">Done</button>
+        <button class="btn btn-ghost" onclick="closeSheet();startZelle()">${ZEL.mode==='request'?'Request from someone else':'Send to someone else'}</button>
+      </div>
+    </div>
+  `;
+  renderZelle(); renderHome(); renderNotifications();
+}
+function addZelleFlow(){
+  document.getElementById('sheetTitle').textContent = 'Add Zelle® contact';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">Name</div><input class="field" id="newZelName" placeholder="Their name" /></div>
+    <div class="form-section" style="margin-bottom:12px"><div class="form-label">U.S. mobile or email</div><input class="field" id="newZelHandle" placeholder="(555) 555-1234 or name@email.com" /></div>
+    <p style="font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.5;margin:0 0 12px">If your contact isn't enrolled, they'll get an invite by text or email.</p>
+    <button class="btn btn-primary" onclick="addZelleSubmit()">Add contact</button>
+  `;
+  openSheetRaw();
+}
+function addZelleSubmit(){
+  const name = document.getElementById('newZelName').value.trim();
+  const handle = document.getElementById('newZelHandle').value.trim();
+  if(!name || !handle){ toast('Name and handle required'); return; }
+  const id = 'z-'+Date.now();
+  state.zelleContacts.unshift({ id, name, handle, tag:'recent', color: 1+Math.floor(Math.random()*6), last:0 });
+  saveState(); renderZelle(); closeSheet(); toast('Contact added');
 }
 
 /* ============================================================
