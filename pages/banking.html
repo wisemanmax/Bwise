@@ -3,9 +3,31 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1" />
-<meta name="theme-color" content="#0b3358" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no" />
+<meta name="theme-color" content="#0b3358" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0d1620" media="(prefers-color-scheme: dark)" />
+<meta name="color-scheme" content="light dark" />
 <title>Meridian — Banking</title>
+
+<!-- PWA / iOS Add-to-Home-Screen -->
+<link rel="manifest" href="banking-manifest.webmanifest" />
+<meta name="application-name" content="Meridian" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Meridian" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-TileColor" content="#0b3358" />
+<meta name="description" content="Meridian — banking, redrawn. Checking, savings, and card all in one place." />
+
+<link rel="icon" href="banking-icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" sizes="180x180" href="banking-icon.svg" />
+<link rel="apple-touch-icon" sizes="167x167" href="banking-icon.svg" />
+<link rel="apple-touch-icon" sizes="152x152" href="banking-icon.svg" />
+<link rel="apple-touch-icon" sizes="120x120" href="banking-icon.svg" />
+<link rel="apple-touch-icon" href="banking-icon.svg" />
+<link rel="mask-icon" href="banking-icon.svg" color="#0b3358" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -1171,6 +1193,74 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 .tag.red{background:rgba(200,50,44,.12);color:var(--red-2)}
 [data-theme="dark"] .tag.amber{background:rgba(200,155,60,.18);color:#e2c47a}
 
+/* ============ STANDALONE / PWA ============ */
+:root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --bar-h: 30px;       /* fake bar height in browser */
+}
+html.standalone, html.standalone body{
+  background:#000;
+}
+/* full-bleed frame on standalone — fills the device screen, follows the notch */
+html.standalone .frame{
+  margin:0 !important;
+  border-radius:0 !important;
+  max-width:100% !important;
+  min-height:100dvh;
+  max-height:none !important;
+  box-shadow:none;
+}
+@media (min-width:431px){
+  html.standalone .frame{ margin:0; border-radius:0; min-height:100dvh; max-height:none }
+}
+/* in standalone the iOS system status bar overlays the top, so use safe-area-inset-top
+   for header padding instead of our fake bar height */
+html.standalone .status-bar{ display:none !important }
+html.standalone .home-header{ padding-top:calc(14px + var(--safe-top)) }
+html.standalone .nav-header{  padding-top:calc(14px + var(--safe-top)) }
+html.standalone .detail-hero{ padding-top:calc(14px + var(--safe-top)) }
+html.standalone #lock .lock-top{ padding-top:calc(28px + var(--safe-top)) }
+html.standalone .splash-wrap{ padding-top:var(--safe-top) }
+html.standalone .onb-stage{ padding-top:calc(32px + var(--safe-top)) }
+/* tabbar already adds safe-area-inset-bottom */
+html.standalone .tabbar{ padding-bottom:calc(8px + var(--safe-bot)) }
+
+/* Block iOS callout / selection / pinch-to-zoom while still allowing inputs */
+*{ -webkit-touch-callout:none }
+input, textarea, [contenteditable="true"]{ -webkit-touch-callout:default; user-select:text; -webkit-user-select:text }
+body{ -webkit-user-select:none; user-select:none; touch-action:manipulation; -webkit-text-size-adjust:100% }
+
+/* Prevent rubber-band overscroll outside the active scroller */
+html, body{ overscroll-behavior:none; overflow:hidden }
+html.standalone, html.standalone body{ height:100dvh }
+
+/* Native-feeling button activation */
+button{ touch-action:manipulation }
+
+/* iOS install banner (only shown once when running in browser) */
+.ios-install{
+  position:absolute;left:14px;right:14px;bottom:calc(14px + var(--safe-bot));z-index:200;
+  background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:14px 16px;
+  display:none;align-items:center;gap:14px;box-shadow:var(--shadow-lg);
+}
+.ios-install.show{display:flex;animation:rise .35s cubic-bezier(.2,.7,.2,1)}
+.ios-install .ico{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);display:grid;place-items:center;color:#fff;flex-shrink:0;position:relative;overflow:hidden}
+.ios-install .ico::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg, transparent 50%, var(--red) 50%, var(--red) 60%, transparent 60%);opacity:.85}
+.ios-install .ico svg{width:24px;height:24px;position:relative;z-index:1}
+.ios-install .meta{flex:1;min-width:0}
+.ios-install .meta b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.25}
+.ios-install .meta span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:2px;line-height:1.4}
+.ios-install .meta b svg{width:13px;height:13px;display:inline-block;vertical-align:-2px;margin:0 2px}
+.ios-install .x{background:none;border:0;color:var(--muted);cursor:pointer;padding:6px;align-self:flex-start;margin-right:-6px}
+
+/* swipe-from-edge hint to nudge gesture discoverability on standalone */
+html.standalone .screen.has-back::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:18px;z-index:5;
+}
+
 /* ============ DEVICE STATUS BAR ============ */
 .status-bar{
   position:absolute;top:0;left:0;right:0;height:30px;z-index:80;
@@ -2288,6 +2378,22 @@ z-index:60;box-shadow:var(--shadow-lg);white-space:nowrap;max-width:90%;
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ============ iOS A2HS BANNER ============ -->
+<div class="ios-install" id="iosInstall" role="dialog" aria-label="Install Meridian">
+  <div class="ico">
+    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M10 34 L10 14 L24 28 L38 14 L38 34" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="meta">
+    <b>Install Meridian</b>
+    <span>Tap <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 V15 M7 7 L12 2 L17 7"/><path d="M5 12 V20 a2 2 0 0 0 2 2 H17 a2 2 0 0 0 2 -2 V12"/></svg> Share, then “Add to Home Screen”</span>
+  </div>
+  <button class="x" onclick="dismissInstall()" aria-label="Dismiss">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 L6 18 M6 6 L18 18"/></svg>
+  </button>
+</div>
 </div>
 
 <script>
@@ -5220,8 +5326,167 @@ setTimeout(()=>{
       lockClock();
       if(!state.pin) lockSetMode('setup'); else lockSetMode('verify');
     }
+    // seed an initial history entry so popstate has somewhere to go back to
+    try { history.replaceState({ screen: current, root: true }, ''); } catch(e){}
+    // jump to deep-link target if present (PWA shortcut)
+    const hash = (location.hash || '').slice(1);
+    if(hash && screens.includes(hash) && state.signedIn) go(hash);
   }, 320);
 }, 1500);
+
+/* ============================================================
+   PWA: standalone detection, history-based back, SW registration,
+   "Add to Home Screen" prompt
+   ============================================================ */
+(function pwa(){
+  /* --- Standalone detection --- */
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                    || window.navigator.standalone === true
+                    || document.referrer.startsWith('android-app://');
+  if(isStandalone){
+    document.documentElement.classList.add('standalone');
+  }
+  /* re-check if user enters/exits fullscreen / standalone mid-session */
+  window.matchMedia('(display-mode: standalone)').addEventListener?.('change', ev => {
+    document.documentElement.classList.toggle('standalone', ev.matches);
+  });
+
+  /* --- iOS detection (for A2HS hint) --- */
+  const ua = navigator.userAgent || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isSafari = isIOS && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+
+  /* --- A2HS banner (only on iOS Safari, only outside standalone, dismissable) --- */
+  function maybeShowInstall(){
+    if(isStandalone) return;
+    const dismissed = localStorage.getItem('meridian.installDismissed');
+    if(dismissed){
+      const ago = Date.now() - parseInt(dismissed, 10);
+      if(ago < 7*24*60*60*1000) return;            /* show again after 7 days */
+    }
+    if(!isIOS || !isSafari) return;
+    setTimeout(()=>{
+      const el = document.getElementById('iosInstall');
+      if(el) el.classList.add('show');
+    }, 4500);
+  }
+  window.dismissInstall = function(){
+    const el = document.getElementById('iosInstall');
+    if(el) el.classList.remove('show');
+    localStorage.setItem('meridian.installDismissed', String(Date.now()));
+  };
+
+  /* Chrome / Edge install prompt */
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    /* repurpose the iOS banner with native prompt on tap */
+    const el = document.getElementById('iosInstall');
+    if(!el) return;
+    if(localStorage.getItem('meridian.installDismissed')) return;
+    el.querySelector('.meta b').textContent = 'Install Meridian';
+    el.querySelector('.meta span').textContent = 'Tap to install on your home screen';
+    el.style.cursor = 'pointer';
+    el.onclick = async () => {
+      if(!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if(outcome === 'accepted') toast('Installing…');
+      deferredPrompt = null;
+      el.classList.remove('show');
+    };
+    setTimeout(()=> el.classList.add('show'), 4500);
+  });
+  window.addEventListener('appinstalled', () => {
+    window.dismissInstall && window.dismissInstall();
+    toast('Welcome to Meridian');
+  });
+  maybeShowInstall();
+
+  /* --- History-API based screen stack so iOS edge-swipe goes back --- */
+  const screenStack = [];
+  const ROOT_SCREENS = new Set(['lock','splash','onboarding','home']);
+  const _go4 = window.go;
+  const _back4 = window.back;
+
+  /* screens we never want to leave on the back stack */
+  const NO_STACK = new Set(['splash','lock','onboarding']);
+  window.go = function(toId){
+    if(toId !== current && toId !== 'splash' && !NO_STACK.has(current)){
+      screenStack.push(current);
+      try { history.pushState({ screen: toId, depth: screenStack.length }, '', '#'+toId); } catch(e){}
+    }
+    _go4(toId);
+  };
+  window.back = function(fromId, toId){
+    /* Pop our stack to keep it in sync with the browser stack */
+    if(screenStack.length && screenStack[screenStack.length-1] === toId) screenStack.pop();
+    _back4(fromId, toId);
+  };
+
+  window.addEventListener('popstate', e => {
+    const st = e.state || {};
+    /* never escape lock or splash via back */
+    if(current === 'lock' || current === 'splash'){
+      try { history.pushState({ screen: current, root:true }, '', '#'+current); } catch(_){}
+      return;
+    }
+    if(screenStack.length){
+      const prev = screenStack.pop();
+      _back4(current, prev);
+      updateStatusBarTone && updateStatusBarTone();
+    } else if(!ROOT_SCREENS.has(current)){
+      _back4(current, 'home');
+    } else {
+      /* at root — re-pin ourselves so the user can't pop out of the PWA */
+      try { history.pushState({ screen: current, root:true }, '', '#'+current); } catch(_){}
+    }
+  });
+
+  /* --- Service worker registration --- */
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('banking-sw.js', { scope: './' }).then(reg => {
+        /* poll for updates while running */
+        reg.update?.();
+        reg.addEventListener?.('updatefound', () => {
+          const sw = reg.installing;
+          sw && sw.addEventListener('statechange', () => {
+            if(sw.state === 'installed' && navigator.serviceWorker.controller){
+              /* there's a new version; activate it on next launch */
+              sw.postMessage('skipWaiting');
+            }
+          });
+        });
+      }).catch(()=>{ /* SW unsupported / offline / file:// — silent */ });
+    });
+  }
+
+  /* --- iOS double-tap zoom block (the meta covers most cases, but on
+       very old iOS this catches the rest) --- */
+  let lastTouch = 0;
+  document.addEventListener('touchend', e => {
+    const now = Date.now();
+    if(now - lastTouch < 300){ e.preventDefault(); }
+    lastTouch = now;
+  }, { passive:false });
+
+  /* --- visibility hooks: re-lock the app when backgrounded for a while --- */
+  let backgroundedAt = null;
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden){
+      backgroundedAt = Date.now();
+    } else if(backgroundedAt && state.pin && state.signedIn){
+      const ms = Date.now() - backgroundedAt;
+      backgroundedAt = null;
+      if(ms > 60_000 && current !== 'lock'){
+        state.signedIn = false; saveState();
+        if(typeof lockShow === 'function') lockShow();
+      }
+    }
+  });
+})();
 </script>
 
 </body>
