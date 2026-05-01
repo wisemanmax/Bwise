@@ -3954,8 +3954,9 @@ function pinSubmit(){
       LOCK.buffer = ''; lockShowDots();
     }
   } else if(LOCK.mode === 'setup'){
-    LOCK.firstPin = LOCK.buffer;
+    const first = LOCK.buffer;
     lockSetMode('confirm');
+    LOCK.firstPin = first;
   } else if(LOCK.mode === 'confirm'){
     if(LOCK.buffer === LOCK.firstPin){
       state.pin = LOCK.buffer;
