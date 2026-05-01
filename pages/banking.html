@@ -1456,6 +1456,183 @@ html.standalone .screen.has-back::before{
 .about-disclaimer{margin:14px 18px 30px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:11.5px;color:var(--muted);line-height:1.6}
 .about-disclaimer b{color:var(--ink-2)}
 
+/* ============ BILL REMINDER BANNER ============ */
+.bill-reminders{margin:0 18px 14px;display:flex;flex-direction:column;gap:8px}
+.bill-banner{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;
+  background:linear-gradient(135deg, rgba(200,155,60,.10) 0%, rgba(200,155,60,.04) 100%);
+  border:1px solid rgba(200,155,60,.4);cursor:pointer;
+}
+.bill-banner.urgent{
+  background:linear-gradient(135deg, rgba(200,50,44,.10) 0%, rgba(200,50,44,.04) 100%);
+  border-color:rgba(200,50,44,.45);
+}
+.bill-banner.autopay{
+  background:linear-gradient(135deg, rgba(14,124,74,.08) 0%, rgba(14,124,74,.02) 100%);
+  border-color:rgba(14,124,74,.35);
+}
+[data-theme="dark"] .bill-banner{background:linear-gradient(135deg, rgba(200,155,60,.18) 0%, rgba(200,155,60,.06) 100%)}
+[data-theme="dark"] .bill-banner.urgent{background:linear-gradient(135deg, rgba(200,50,44,.18) 0%, rgba(200,50,44,.05) 100%)}
+[data-theme="dark"] .bill-banner.autopay{background:linear-gradient(135deg, rgba(14,124,74,.16) 0%, rgba(14,124,74,.04) 100%)}
+.bill-banner .bb-logo{
+  width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+  color:#fff;font-family:var(--serif);font-weight:700;font-size:15px;flex-shrink:0;
+}
+.bill-banner .bb-meta{flex:1;min-width:0}
+.bill-banner .bb-meta b{display:block;font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.25}
+.bill-banner .bb-meta span{display:block;font-size:11.5px;color:var(--muted);font-weight:500;margin-top:1px}
+.bill-banner .bb-amt{
+  font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);
+  padding:5px 10px;border-radius:99px;background:rgba(255,255,255,.6);
+}
+[data-theme="dark"] .bill-banner .bb-amt{background:rgba(255,255,255,.06);color:var(--ink)}
+.bill-banner .bb-pill{
+  font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 8px;border-radius:99px;background:#fff;color:#8a6a2c;
+}
+.bill-banner.urgent .bb-pill{background:rgba(200,50,44,.14);color:var(--red-2)}
+.bill-banner.autopay .bb-pill{background:var(--pos-2);color:var(--pos)}
+.bill-banner .bb-x{
+  background:none;border:0;color:var(--muted);cursor:pointer;padding:6px;align-self:flex-start;margin:-6px -6px -6px 0;
+}
+
+/* ============ CREDIT SCORE WIDGET ============ */
+.score-card{
+  margin:18px 18px 8px;padding:18px 18px 14px;border-radius:18px;
+  background:var(--bg);border:1px solid var(--line);
+  cursor:pointer;position:relative;overflow:hidden;
+}
+.score-card .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.score-card .title{font-family:var(--serif);font-weight:600;font-size:15px;letter-spacing:-.01em;color:var(--ink);margin:0;display:flex;align-items:center;gap:6px}
+.score-card .delta{font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:99px}
+.score-card .delta.up{background:var(--pos-2);color:var(--pos)}
+.score-card .delta.down{background:rgba(200,50,44,.12);color:var(--red-2)}
+.score-card .body{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.score-num{
+  font-family:var(--serif);font-weight:600;font-size:46px;line-height:1;letter-spacing:-.03em;
+  color:var(--ink);font-variant-numeric:tabular-nums;
+}
+.score-num small{display:block;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+.score-bar{height:8px;border-radius:99px;overflow:hidden;background:var(--bg-3);position:relative}
+.score-bar .fill{
+  position:absolute;inset:0;border-radius:99px;
+  background:linear-gradient(90deg, #b91c1c 0%, #c89b3c 35%, #b8c84a 55%, #6cb24f 75%, #0e7c4a 100%);
+  clip-path:inset(0 calc(100% - var(--p, 50%)) 0 0);
+}
+.score-bar .pin{
+  position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;background:#fff;
+  border:2px solid var(--ink);transform:translateX(-50%);
+  box-shadow:0 1px 3px rgba(0,0,0,.18);
+}
+[data-theme="dark"] .score-bar .pin{background:var(--bg-2);border-color:var(--ink-2)}
+.score-bar-row{display:flex;justify-content:space-between;font-size:9.5px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;margin-top:8px}
+.score-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line-2);font-size:11.5px;color:var(--muted);font-weight:500}
+.score-foot b{font-family:var(--mono);color:var(--ink-2);font-weight:600}
+
+/* credit detail screen */
+.score-hero{
+  margin:14px 18px;padding:24px 22px;border-radius:18px;color:#fff;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  position:relative;overflow:hidden;text-align:center;
+}
+.score-hero::before{
+  content:"";position:absolute;top:-30%;right:-20%;width:60%;height:100%;
+  background:radial-gradient(circle, rgba(200,155,60,.25) 0%, transparent 70%);
+}
+.score-hero .lbl{font-size:11px;font-weight:700;opacity:.7;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+.score-hero .num{font-family:var(--serif);font-weight:600;font-size:64px;line-height:1;letter-spacing:-.04em;margin:6px 0;position:relative;z-index:1}
+.score-hero .range{font-size:14px;font-weight:600;opacity:.95;position:relative;z-index:1}
+.score-hero .ch{margin-top:10px;display:inline-block;font-size:12px;font-weight:700;padding:4px 11px;border-radius:99px;background:rgba(255,255,255,.18);position:relative;z-index:1}
+
+.score-spark{
+  margin:14px 18px;padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:var(--bg);
+}
+.spark{display:flex;align-items:flex-end;gap:4px;height:74px;margin-top:10px}
+.spark i{flex:1;background:linear-gradient(180deg, var(--navy-soft) 0%, var(--navy) 100%);border-radius:3px 3px 1px 1px;min-width:0;transition:height .3s ease}
+.spark i.now{background:linear-gradient(180deg, #c89b3c 0%, #a37e2a 100%)}
+.spark-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);font-weight:600;margin-top:6px}
+
+.factor-row{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-top:1px solid var(--line-2)}
+.factor-row:first-child{border-top:0}
+.factor-impact{
+  font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 7px;border-radius:99px;
+  background:var(--bg-3);color:var(--ink-2);text-transform:uppercase;flex-shrink:0;margin-top:2px;
+}
+.factor-impact.high{background:rgba(200,50,44,.12);color:var(--red-2)}
+.factor-impact.medium{background:rgba(200,155,60,.16);color:#8a6a2c}
+[data-theme="dark"] .factor-impact.medium{background:rgba(200,155,60,.22);color:#e2c47a}
+.factor-row .meta{flex:1;min-width:0}
+.factor-row .meta b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.factor-row .meta span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:2px;line-height:1.4}
+.factor-row .status{flex-shrink:0;font-size:11px;font-weight:700;color:var(--pos);margin-top:2px}
+.factor-row .status.fair{color:#8a6a2c}
+.factor-row .status.bad{color:var(--red-2)}
+
+/* ============ CC PAYMENT FLOW ============ */
+.cc-summary{
+  margin:14px 18px;padding:18px 20px;border-radius:18px;color:#fff;
+  background:linear-gradient(135deg, #2a2438 0%, #181321 100%);
+  position:relative;overflow:hidden;
+}
+.cc-summary::before{
+  content:"";position:absolute;top:-30%;right:-20%;width:55%;height:90%;
+  background:linear-gradient(135deg, transparent 45%, rgba(200,50,44,.45) 50%, transparent 65%);
+  border-radius:50%;
+}
+.cc-summary .lbl{font-size:11px;font-weight:700;opacity:.7;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1}
+.cc-summary .name{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.01em;margin-top:2px;position:relative;z-index:1}
+.cc-summary .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;position:relative;z-index:1}
+.cc-summary .cell .l{font-size:10.5px;font-weight:700;opacity:.65;letter-spacing:.08em;text-transform:uppercase}
+.cc-summary .cell .v{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:2px}
+.cc-summary .cell .v.big{font-size:22px}
+.cc-summary .due{font-size:11.5px;opacity:.85;margin-top:14px;position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center}
+.cc-summary .due b{font-weight:700;opacity:1}
+
+.pay-opts{margin:0 18px 14px;display:flex;flex-direction:column;gap:8px}
+.pay-opt{
+  display:flex;align-items:center;gap:14px;padding:14px 16px;
+  border:1.5px solid var(--line);border-radius:14px;background:var(--bg);cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+}
+.pay-opt:active{background:var(--bg-2)}
+.pay-opt.active{border-color:var(--navy);background:rgba(11,51,88,.04)}
+[data-theme="dark"] .pay-opt.active{background:rgba(74,143,209,.08)}
+.pay-opt .radio{
+  width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;
+  display:grid;place-items:center;transition:border-color .15s ease;
+}
+.pay-opt.active .radio{border-color:var(--navy)}
+.pay-opt.active .radio::after{
+  content:"";width:10px;height:10px;border-radius:50%;background:var(--navy);
+}
+.pay-opt .meta{flex:1;min-width:0}
+.pay-opt .meta b{display:block;font-size:14.5px;font-weight:700;color:var(--ink)}
+.pay-opt .meta span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:2px}
+.pay-opt .amt{font-family:var(--mono);font-size:14.5px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.pay-opt .amt small{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;color:var(--muted);text-align:right;margin-top:1px}
+.pay-opt.recommended b::after{
+  content:"Recommended";font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;background:var(--pos-2);color:var(--pos);
+  padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:1px;
+}
+
+/* ============ ROUND-UP ============ */
+.roundup-card{
+  margin:14px 18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);
+  display:flex;align-items:center;gap:14px;
+}
+.roundup-card .ic{
+  width:42px;height:42px;border-radius:11px;flex-shrink:0;
+  background:linear-gradient(135deg, rgba(200,155,60,.2), rgba(200,155,60,.05));
+  color:var(--gold);display:grid;place-items:center;
+}
+.roundup-card .ic svg{width:20px;height:20px}
+.roundup-card .meta{flex:1;min-width:0}
+.roundup-card .meta b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.roundup-card .meta span{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+.roundup-card .meta .accum{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);margin-top:4px}
+.roundup-card .meta .accum em{font-style:normal;color:var(--muted);font-weight:500}
+
 /* ============ DEVICE STATUS BAR ============ */
 .status-bar{
   position:absolute;top:0;left:0;right:0;height:30px;z-index:80;
@@ -1758,6 +1935,7 @@ html.standalone .screen.has-back::before{
 </div>
 
 <div class="last-updated" id="homeUpdated">Updated just now</div>
+<div class="bill-reminders" id="billReminders"></div>
 <div class="accounts stagger" id="accountsList"></div>
 
 <div class="open-acct" onclick="toast('Open a new account')">
@@ -1800,6 +1978,8 @@ html.standalone .screen.has-back::before{
     <span><i style="background:var(--muted-2)"></i>Other $296</span>
   </div>
 </div>
+
+<div id="scoreCardSlot"></div>
 
 <div style="padding:0 18px 4px"><h3 style="font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:-.01em;margin:8px 0 10px;color:var(--ink)">Quick links</h3></div>
 <div class="quick-list" id="quickLinks"></div>
@@ -1864,6 +2044,8 @@ html.standalone .screen.has-back::before{
 
 ```
 <div id="goalSlot"></div>
+<div id="ccPaySlot"></div>
+<div id="roundupSlot"></div>
 
 <div class="quick-actions">
   <div class="qa" onclick="startTransfer('request')">
@@ -2736,6 +2918,40 @@ html.standalone .screen.has-back::before{
   </div>
 </section>
 
+<!-- ============ CREDIT CARD PAYMENT ============ -->
+
+<section class="screen enter-right" id="ccPay">
+  <div class="scroll" id="ccPayScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('ccPay','detail')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Pay credit card</h2>
+    </header>
+    <div id="ccPayBody"></div>
+  </div>
+  <div class="btn-foot">
+    <button class="btn btn-primary" id="ccPayReview" onclick="reviewCcPay()" disabled>Review payment</button>
+  </div>
+</section>
+
+<!-- ============ CREDIT SCORE ============ -->
+
+<section class="screen enter-right" id="credit">
+  <div class="scroll" id="creditScroll">
+    <header class="nav-header">
+      <button class="back-btn" onclick="back('credit','home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18 L9 12 L15 6"/></svg>
+      </button>
+      <h2>Credit score</h2>
+      <button class="back-btn" onclick="toast('Refreshing from Experian…')" aria-label="Refresh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12 a9 9 0 1 1 -3 -7"/><path d="M21 4 V11 H14"/></svg>
+      </button>
+    </header>
+    <div id="creditBody"></div>
+  </div>
+</section>
+
 <!-- ============ SHEET / SCRIM ============ -->
 
 <div class="scrim" id="scrim" onclick="closeSheet()"></div>
@@ -2773,7 +2989,7 @@ html.standalone .screen.has-back::before{
 /* ============================================================
    DATA + PERSISTENCE
    ============================================================ */
-const STORAGE_KEY = 'meridian.v3';
+const STORAGE_KEY = 'meridian.v4';
 const defaultState = {
   user: { name: 'B. Wise', avatar: 'B' },
   theme: 'light',
@@ -2793,7 +3009,7 @@ const defaultState = {
   accounts: [
     { id:'a1', kind:'checking', type:'Main',     name:'Main Checking',         mask:'•• 4827', number:'1184826527', routing:'031176110', swift:'MRDNUS33', balance: 732677.78, spendable: 732402.54, aside: 275.24, color:'navy',    opened:'Jan 2024' },
     { id:'a2', kind:'savings',  type:'High-yield', name:'Performance Savings',  mask:'•• 6310', number:'7700631009', routing:'031176110', swift:'MRDNUS33', balance: 12450.00, spendable: 12450.00, aside: 0,      color:'savings', opened:'Mar 2024', apy:4.30 },
-    { id:'a3', kind:'credit',   type:'Credit card', name:'Meridian Reserve',    mask:'•• 9045', number:'4732 6014 8819 9045', routing:'',          swift:'',         balance: -317.84,  spendable: 0,        aside: 0,      color:'credit',  opened:'May 2024', limit: 8000, apr: 19.74, due: 'May 18' },
+    { id:'a3', kind:'credit',   type:'Credit card', name:'Meridian Reserve',    mask:'•• 9045', number:'4732 6014 8819 9045', routing:'',          swift:'',         balance: -317.84,  spendable: 0,        aside: 0,      color:'credit',  opened:'May 2024', limit: 8000, apr: 19.74, due: 'May 18', minPayment: 35.00, statementBalance: 287.40, lastPayment: { amount: 200.00, date: 'Apr 21' }, rewardsPoints: 14820 },
     { id:'a4', kind:'checking', type:'Goal',     name:'Vacation Fund',           mask:'•• 0938', number:'1184820938', routing:'031176110', swift:'MRDNUS33', balance: 1123.45,  spendable: 0,        aside: 1123.45, color:'navy',    opened:'Aug 2024', goal:3000 },
   ],
   txByAccount: {
@@ -2834,7 +3050,7 @@ const defaultState = {
     { id:'p1', name:'Comcast',         category:'Internet & cable',   account:'•• 8821', logoColor:'#a82420', last: 125.00, autopay:true,  next:'May 24' },
     { id:'p2', name:'Delmarva Power',  category:'Electric utility',   account:'•• 4419', logoColor:'#c89b3c', last: 142.00, autopay:true,  next:'May 15' },
     { id:'p3', name:'Verizon Wireless',category:'Mobile',             account:'•• 7720', logoColor:'#b91c1c', last:  78.00, autopay:false, next:'May 10' },
-    { id:'p4', name:'Geico',           category:'Auto insurance',     account:'•• 0035', logoColor:'#0e7c4a', last: 152.50, autopay:false, next:'May 12' },
+    { id:'p4', name:'Geico',           category:'Auto insurance',     account:'•• 0035', logoColor:'#0e7c4a', last: 152.50, autopay:false, next:'May  6' },
     { id:'p5', name:'Capital One Auto',category:'Auto loan',          account:'•• 1199', logoColor:'#1f4570', last: 384.21, autopay:true,  next:'May  5' },
   ],
   zelleContacts: [
@@ -2894,7 +3110,25 @@ const defaultState = {
     { id:'wr1', kind:'dom',  name:'Alex Rivera',     bank:'Wells Fargo',     account:'•• 8821', routing:'121000248', address:'123 Main St, Berkeley, CA' },
     { id:'wr2', kind:'intl', name:'Studio Verde Ltd', bank:'Banco Santander', iban:'ES91 2100 0418 4502 0005 1332', swift:'BSCHESMM', address:'Carrer de Pelai 12, Barcelona, Spain', country:'Spain' },
   ],
-  wireFees: { dom: 25, intl: 45, fxPct: 1.0, cutoff: '5:00 PM ET' }
+  wireFees: { dom: 25, intl: 45, fxPct: 1.0, cutoff: '5:00 PM ET' },
+  roundUps: { enabled: true, destAccountId: 'a4', accumulated: 14.62, monthAccumulated: 14.62, lifetimeSwept: 84.10, lastSweep: 'Apr 1, 2026' },
+  creditScore: {
+    score: 782,
+    range: 'Very Good',
+    change: +12,
+    lastUpdated: 'Apr 27, 2026',
+    nextUpdate: 'May 27, 2026',
+    bureau: 'Experian · FICO® 8',
+    factors: [
+      { id:'history',     label:'Payment history',       impact:'high',   status:'good',  detail:'No late payments in 7 years' },
+      { id:'utilization', label:'Credit utilization',    impact:'high',   status:'good',  detail:'4% used of $8,000 limit' },
+      { id:'age',         label:'Average account age',   impact:'medium', status:'fair',  detail:'2 yr 4 mo — older accounts help' },
+      { id:'mix',         label:'Credit mix',            impact:'low',    status:'good',  detail:'Revolving + installment + auto' },
+      { id:'inquiries',   label:'Hard inquiries',        impact:'low',    status:'good',  detail:'1 in last 24 months' },
+    ],
+    history: [758, 762, 760, 765, 768, 766, 770, 772, 770, 774, 776, 770, 782]   /* last 13 months */
+  },
+  ccPayments: []
 };
 
 function loadState(){
@@ -2941,7 +3175,7 @@ function maskAmt(s){ return s.replace(/[0-9]/g,'•') }
 /* ============================================================
    SCREEN ROUTER
    ============================================================ */
-const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle','cardLimits','cardInternational','cardReport','scheduled','personalInfo','linkedAccounts','beneficiaries','notifPrefs','language','autoSignOut','helpArticle','subs','wire','wallet','cardTracker','about'];
+const screens = ['splash','onboarding','lock','home','detail','transfer','cards','statements','notifications','help','profile','acctDetails','search','deposit','payBill','zelle','cardLimits','cardInternational','cardReport','scheduled','personalInfo','linkedAccounts','beneficiaries','notifPrefs','language','autoSignOut','helpArticle','subs','wire','wallet','cardTracker','about','ccPay','credit'];
 let current = 'splash';
 
 function go(toId){
@@ -3060,6 +3294,8 @@ function finishOnboard(){
    ============================================================ */
 function renderHome(){
   document.getElementById('greetName').textContent = state.user.name || 'friend';
+  renderBillReminders();
+  renderCreditScoreCard();
   // total
   const total = state.accounts.reduce((s,a)=> s + (a.kind==='credit' ? 0 : a.balance), 0);
   document.getElementById('totalAmt').textContent = state.hideBalances ? '$ • • • • •' : '$' + fmt(total);
@@ -3154,10 +3390,34 @@ function openAccount(id){
   }));
   // goal block (only for accounts with .goal)
   renderGoalSlot(id);
+  // CC pay button (credit accounts only)
+  renderCcPaySlot(id);
+  // Round-up row (main checking only)
+  renderRoundUpRow();
   // skeleton, then paint
   showSkelTx();
   go('detail');
   setTimeout(()=> renderTransactions(id), 280);
+}
+function renderCcPaySlot(id){
+  const slot = document.getElementById('ccPaySlot');
+  if(!slot) return;
+  const a = accountById(id);
+  if(!a || a.kind !== 'credit'){ slot.innerHTML = ''; return; }
+  const days = daysUntil(a.due);
+  const cls = days <= 2 ? 'urgent' : '';
+  slot.innerHTML = `
+    <div class="bill-reminders" style="margin-top:14px">
+      <div class="bill-banner ${cls}" onclick="startCcPay()">
+        <div class="bb-logo" style="background:#181321">${escapeHtml(a.name.charAt(0))}</div>
+        <div class="bb-meta">
+          <b>Make a payment</b>
+          <span>Statement balance $${fmt(a.statementBalance || Math.abs(a.balance))} · due ${escapeHtml(a.due)} (${days<=0?'today':days+' days'})</span>
+        </div>
+        <div class="bb-amt">Pay</div>
+      </div>
+    </div>
+  `;
 }
 
 function renderTransactions(id){
@@ -6218,6 +6478,475 @@ function copyDiagnostics(){
     'SW: '      + (document.getElementById('diagSW')?.textContent || '—') + '\n' +
     'When: '    + new Date().toISOString();
   copyText(text);
+}
+
+/* ============================================================
+   DEMO TODAY (anchor for due-date math)
+   ============================================================ */
+const DEMO_TODAY = new Date(2026, 4, 1);   /* May 1, 2026 */
+const MONTH_IDX = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+function parseMonthDay(s){
+  if(!s) return null;
+  const m = String(s).trim().match(/^([A-Za-z]+)\s+(\d{1,2})$/);
+  if(!m) return null;
+  const idx = MONTH_IDX.indexOf(m[1].toLowerCase().slice(0,3));
+  if(idx < 0) return null;
+  let dt = new Date(2026, idx, +m[2]);
+  if(dt < DEMO_TODAY && idx <= DEMO_TODAY.getMonth()) dt = new Date(2026, idx+12, +m[2]);
+  return dt;
+}
+function daysUntil(monthDay){
+  const dt = parseMonthDay(monthDay); if(!dt) return Infinity;
+  return Math.round((dt - DEMO_TODAY) / 86400000);
+}
+
+/* ============================================================
+   BILL REMINDER BANNER (home)
+   ============================================================ */
+function renderBillReminders(){
+  const slot = document.getElementById('billReminders');
+  if(!slot) return;
+  const dismissed = JSON.parse(localStorage.getItem('meridian.dismissedBills') || '[]');
+  const upcoming = (state.payees||[])
+    .map(p => ({ ...p, days: daysUntil(p.next) }))
+    .filter(p => !dismissed.includes(p.id))
+    .filter(p => p.days >= 0 && p.days <= 7)
+    .sort((a,b)=> a.days - b.days)
+    .slice(0,2);
+  /* also surface CC payment if statement is due in <= 7 days and not yet paid */
+  const cc = state.accounts.find(a => a.kind === 'credit');
+  if(cc && cc.due){
+    const ccDays = daysUntil(cc.due);
+    if(ccDays >= 0 && ccDays <= 7 && !dismissed.includes('cc-'+cc.id)){
+      upcoming.unshift({
+        id:'cc-'+cc.id, name:cc.name, account:cc.mask, logoColor:'#181321',
+        last: cc.statementBalance || Math.abs(cc.balance), autopay:false, next:cc.due, days:ccDays, isCC:true
+      });
+      if(upcoming.length > 2) upcoming.pop();
+    }
+  }
+  if(!upcoming.length){ slot.innerHTML = ''; return; }
+  slot.innerHTML = upcoming.map(p => {
+    const dueIn = p.days === 0 ? 'Due today' : p.days === 1 ? 'Due tomorrow' : `Due in ${p.days} days`;
+    const cls = p.autopay ? 'autopay' : (p.days <= 2 ? 'urgent' : '');
+    const pillTxt = p.autopay ? 'Autopay' : 'Action needed';
+    const onClick = p.isCC ? `startCcPay()` : `openPayeeFlow('${p.id}');go('payBill')`;
+    return `
+      <div class="bill-banner ${cls}" onclick="${onClick}">
+        <div class="bb-logo" style="background:${p.logoColor}">${escapeHtml(p.name.charAt(0))}</div>
+        <div class="bb-meta">
+          <b>${escapeHtml(p.name)}</b>
+          <span>${dueIn} · ${escapeHtml(p.next)} · <span class="bb-pill">${pillTxt}</span></span>
+        </div>
+        <div class="bb-amt">$${fmt(p.last)}</div>
+        <button class="bb-x" onclick="event.stopPropagation();dismissBillReminder('${p.id}')" aria-label="Dismiss">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 L6 18 M6 6 L18 18"/></svg>
+        </button>
+      </div>`;
+  }).join('');
+}
+function dismissBillReminder(id){
+  const arr = JSON.parse(localStorage.getItem('meridian.dismissedBills') || '[]');
+  if(!arr.includes(id)) arr.push(id);
+  localStorage.setItem('meridian.dismissedBills', JSON.stringify(arr));
+  renderBillReminders();
+}
+
+/* ============================================================
+   CREDIT SCORE
+   ============================================================ */
+function renderCreditScoreCard(){
+  const slot = document.getElementById('scoreCardSlot');
+  if(!slot) return;
+  const c = state.creditScore;
+  const minS = 300, maxS = 850;
+  const pct = Math.max(0, Math.min(100, ((c.score - minS) / (maxS - minS)) * 100));
+  const ch = c.change || 0;
+  const dir = ch > 0 ? 'up' : ch < 0 ? 'down' : '';
+  const sign = ch > 0 ? '▲ +' : ch < 0 ? '▼ ' : '';
+  slot.innerHTML = `
+    <div class="score-card" onclick="openCreditScore()">
+      <div class="head">
+        <h3 class="title">Credit score
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="9"/><path d="M12 8 V12 M12 16 V16.01"/></svg>
+        </h3>
+        ${ch !== 0 ? `<span class="delta ${dir}">${sign}${Math.abs(ch)} pts</span>` : ''}
+      </div>
+      <div class="body">
+        <div class="score-num">${c.score}<small>${escapeHtml(c.range)}</small></div>
+        <div>
+          <div class="score-bar">
+            <div class="fill" style="--p:${pct}%"></div>
+            <div class="pin" style="left:${pct}%"></div>
+          </div>
+          <div class="score-bar-row">
+            <span>300</span><span>670</span><span>850</span>
+          </div>
+        </div>
+      </div>
+      <div class="score-foot">
+        <span>Updated ${escapeHtml(c.lastUpdated)}</span>
+        <b>${escapeHtml(c.bureau)}</b>
+      </div>
+    </div>
+  `;
+}
+function openCreditScore(){
+  renderCreditScreen();
+  go('credit');
+}
+function renderCreditScreen(){
+  const c = state.creditScore;
+  const minS = 300, maxS = 850;
+  const sparkMin = Math.min(...c.history) - 5;
+  const sparkMax = Math.max(...c.history) + 5;
+  document.getElementById('creditBody').innerHTML = `
+    <div class="score-hero">
+      <div class="lbl">FICO® Score 8</div>
+      <div class="num">${c.score}</div>
+      <div class="range">${escapeHtml(c.range)}</div>
+      <div class="ch">${c.change>0?'▲ +':'▼ '}${Math.abs(c.change)} pts since last month</div>
+    </div>
+
+    <div class="score-spark">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><b style="font-family:var(--serif);font-weight:600;font-size:15px">12-month trend</b><div style="font-size:11.5px;color:var(--muted);font-weight:500">From ${c.history[0]} → ${c.score}</div></div>
+        <div style="font-family:var(--mono);font-size:12px;color:var(--pos);font-weight:700">+${c.score - c.history[0]} pts</div>
+      </div>
+      <div class="spark">
+        ${c.history.map((v,i) => {
+          const h = Math.max(8, ((v - sparkMin) / (sparkMax - sparkMin)) * 70);
+          return `<i class="${i===c.history.length-1?'now':''}" style="height:${h}px"></i>`;
+        }).join('')}
+      </div>
+      <div class="spark-row"><span>May '25</span><span>Nov '25</span><span>Apr '26</span></div>
+    </div>
+
+    <div class="section-h">What's affecting your score</div>
+    <div class="list" style="margin:8px 18px 14px">
+      ${c.factors.map(f => `
+        <div class="factor-row">
+          <span class="factor-impact ${f.impact}">${f.impact}</span>
+          <div class="meta"><b>${escapeHtml(f.label)}</b><span>${escapeHtml(f.detail)}</span></div>
+          <span class="status ${f.status==='good'?'':f.status}">${f.status==='good'?'Good ✓':f.status==='fair'?'Fair':'Needs work'}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="section-h">How to improve</div>
+    <div class="list" style="margin:8px 18px 14px">
+      <div class="li" onclick="openArticle('disputes')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8 V14 M9 11 L12 8 L15 11"/><circle cx="12" cy="12" r="9"/></svg></span><div class="li-meta"><b>Pay down credit card</b><span>Aim for &lt; 10% utilization</span></div><span class="li-trail">›</span></div>
+      <div class="li" onclick="toast('Setting up alerts')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0 -12 0c0 7 -3 9 -3 9 h18s-3 -2 -3 -9"/></svg></span><div class="li-meta"><b>Score change alerts</b><span>Get notified for changes ≥ 5 pts</span></div><div class="switch on"></div></div>
+      <div class="li" onclick="toast('Identity monitoring')"><span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1 a10 10 0 0 0 -7.5 16.65 L12 23 l7.5 -5.35 A10 10 0 0 0 12 1 z"/></svg></span><div class="li-meta"><b>Identity monitoring</b><span>Free with Meridian Select</span></div><span class="li-trail">›</span></div>
+    </div>
+
+    <div class="about-disclaimer" style="margin:6px 18px 30px">
+      Your FICO® Score 8 is provided by Experian and is updated monthly. Scores from other bureaus or models may differ. This is for educational purposes; lenders may use a different score when reviewing credit.
+    </div>
+  `;
+}
+
+/* ============================================================
+   CREDIT CARD PAYMENT FLOW
+   ============================================================ */
+let CCPAY = { fromId:null, ccId:null, choice:'statement', custom:'', date:'today' };
+function startCcPay(){
+  const cc = state.accounts.find(a => a.kind === 'credit'); if(!cc){ toast('No credit card'); return; }
+  const ch = state.accounts.find(a => a.kind === 'checking');
+  CCPAY = { fromId: ch.id, ccId: cc.id, choice:'statement', custom:'', date:'today' };
+  renderCcPayForm();
+  go('ccPay');
+}
+function renderCcPayForm(){
+  const cc = accountById(CCPAY.ccId);
+  const from = accountById(CCPAY.fromId);
+  const stmt = cc.statementBalance || Math.abs(cc.balance);
+  const min = cc.minPayment || 35;
+  const cur = Math.abs(cc.balance);
+  const utilPct = Math.round(cur / cc.limit * 100);
+
+  document.getElementById('ccPayBody').innerHTML = `
+    <div class="cc-summary">
+      <div class="lbl">Credit card</div>
+      <div class="name">${escapeHtml(cc.name)} ${escapeHtml(cc.mask)}</div>
+      <div class="grid">
+        <div class="cell">
+          <div class="l">Current balance</div>
+          <div class="v big">$${fmt(cur)}</div>
+        </div>
+        <div class="cell">
+          <div class="l">Available credit</div>
+          <div class="v">$${fmt(cc.limit - cur)}</div>
+        </div>
+      </div>
+      <div class="due"><span>Due <b>${escapeHtml(cc.due)}</b> · APR ${cc.apr}%</span><span>${utilPct}% utilization</span></div>
+    </div>
+
+    <div class="section-h">How much</div>
+    <div class="pay-opts">
+      <div class="pay-opt ${CCPAY.choice==='min'?'active':''}" data-c="min">
+        <span class="radio"></span>
+        <div class="meta"><b>Minimum due</b><span>Avoids late fee</span></div>
+        <div class="amt">$${fmt(min)}<small>$${fmt(min)} min</small></div>
+      </div>
+      <div class="pay-opt ${CCPAY.choice==='statement'?'active recommended':CCPAY.choice==='statement'?'active':''}${CCPAY.choice==='statement'?'':' recommended'}" data-c="statement">
+        <span class="radio"></span>
+        <div class="meta"><b>Statement balance</b><span>Avoids interest</span></div>
+        <div class="amt">$${fmt(stmt)}<small>last close</small></div>
+      </div>
+      <div class="pay-opt ${CCPAY.choice==='current'?'active':''}" data-c="current">
+        <span class="radio"></span>
+        <div class="meta"><b>Current balance</b><span>Pay everything you owe</span></div>
+        <div class="amt">$${fmt(cur)}<small>incl. pending</small></div>
+      </div>
+      <div class="pay-opt ${CCPAY.choice==='custom'?'active':''}" data-c="custom">
+        <span class="radio"></span>
+        <div class="meta">
+          <b>Other amount</b>
+          ${CCPAY.choice==='custom' ? `<input class="field" id="ccCustomAmt" inputmode="decimal" placeholder="0.00" value="${escapeHtml(CCPAY.custom)}" style="margin-top:8px;font-family:var(--mono);font-weight:700" />` : `<span>Choose any amount up to current</span>`}
+        </div>
+      </div>
+    </div>
+
+    <div class="section-h">From</div>
+    <div style="margin:0 18px 14px">
+      <div class="acct-pick ${from.color==='savings'?'gold':''}" onclick="pickCcFromAccount()">
+        <div class="swatch"></div>
+        <div class="info"><b>${escapeHtml(from.name)}</b><span>${escapeHtml(from.mask)}</span><span class="bal">${fmtMoney(from.balance)} available</span></div>
+        <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18 L15 12 L9 6"/></svg></span>
+      </div>
+    </div>
+
+    <div class="section-h">Pay on</div>
+    <div style="padding:0 18px 16px">
+      <div class="recur-row">
+        <div class="opt ${CCPAY.date==='today'?'active':''}" onclick="CCPAY.date='today';renderCcPayForm()">Today</div>
+        <div class="opt ${CCPAY.date==='tomorrow'?'active':''}" onclick="CCPAY.date='tomorrow';renderCcPayForm()">Tomorrow</div>
+        <div class="opt ${CCPAY.date==='due'?'active':''}" onclick="CCPAY.date='due';renderCcPayForm()">${escapeHtml(cc.due)} (due)</div>
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll('#ccPayBody .pay-opt').forEach(el => el.addEventListener('click', () => {
+    CCPAY.choice = el.dataset.c;
+    renderCcPayForm();
+    if(CCPAY.choice === 'custom') setTimeout(()=> document.getElementById('ccCustomAmt')?.focus(), 80);
+  }));
+  const ci = document.getElementById('ccCustomAmt');
+  if(ci){
+    ci.addEventListener('input', e => {
+      let v = e.target.value.replace(/[^0-9.]/g,'');
+      const parts = v.split('.'); if(parts.length>2) v = parts[0]+'.'+parts.slice(1).join('');
+      if(parts[1] && parts[1].length>2) v = parts[0]+'.'+parts[1].slice(0,2);
+      e.target.value = v; CCPAY.custom = v; validateCcPay();
+    });
+    ci.addEventListener('click', e => e.stopPropagation());
+  }
+  validateCcPay();
+}
+function ccPayAmount(){
+  const cc = accountById(CCPAY.ccId);
+  if(CCPAY.choice === 'min')       return cc.minPayment || 35;
+  if(CCPAY.choice === 'statement') return cc.statementBalance || Math.abs(cc.balance);
+  if(CCPAY.choice === 'current')   return Math.abs(cc.balance);
+  return parseFloat(CCPAY.custom || 0);
+}
+function validateCcPay(){
+  const v = ccPayAmount();
+  const from = accountById(CCPAY.fromId);
+  const ok = v > 0 && v <= from.balance;
+  document.getElementById('ccPayReview').disabled = !ok;
+}
+function pickCcFromAccount(){
+  document.getElementById('sheetTitle').textContent = 'Pay from';
+  document.getElementById('sheetBody').innerHTML = state.accounts.filter(a => a.kind !== 'credit').map(a => `
+    <div class="acct-pick ${a.color==='savings'?'gold':''}" style="margin-bottom:10px" onclick="CCPAY.fromId='${a.id}';renderCcPayForm();closeSheet()">
+      <div class="swatch"></div>
+      <div class="info"><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)}</span><span class="bal">${fmtMoney(a.balance)} available</span></div>
+    </div>
+  `).join('');
+  openSheetRaw();
+}
+function reviewCcPay(){
+  const cc = accountById(CCPAY.ccId);
+  const from = accountById(CCPAY.fromId);
+  const v = ccPayAmount();
+  const dateLbl = CCPAY.date === 'today' ? 'Today' : CCPAY.date === 'tomorrow' ? 'Tomorrow' : cc.due;
+  const choiceLbl = CCPAY.choice === 'min' ? 'Minimum due' : CCPAY.choice === 'statement' ? 'Statement balance' : CCPAY.choice === 'current' ? 'Current balance' : 'Custom amount';
+  document.getElementById('sheetTitle').textContent = 'Review payment';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="review-amount"><span class="cur">$</span>${fmt(v)}</div>
+    <div class="review-row"><span class="lbl">To</span><span class="val">${escapeHtml(cc.name)}<span class="sub">${escapeHtml(cc.mask)}</span></span></div>
+    <div class="review-row"><span class="lbl">From</span><span class="val">${escapeHtml(from.name)}<span class="sub">${escapeHtml(from.mask)}</span></span></div>
+    <div class="review-row"><span class="lbl">Pay option</span><span class="val">${escapeHtml(choiceLbl)}</span></div>
+    <div class="review-row"><span class="lbl">Send</span><span class="val">${escapeHtml(dateLbl)}</span></div>
+    <div class="review-row"><span class="lbl">Fee</span><span class="val" style="color:var(--pos)">$0.00</span></div>
+    ${ CCPAY.choice === 'min' ? `<p style="font-size:11.5px;color:var(--red-2);font-weight:600;margin:12px 0 4px;line-height:1.5">⚠ Paying only the minimum will accrue interest at ${cc.apr}% APR on the remaining $${fmt(Math.abs(cc.balance) - (cc.minPayment||35))}.</p>` : '' }
+    <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-primary" onclick="confirmCcPayWithStepUp()">Confirm payment</button>
+      <button class="btn btn-ghost" onclick="closeSheet()">Edit</button>
+    </div>
+  `;
+  openSheetRaw();
+}
+function confirmCcPayWithStepUp(){
+  const v = ccPayAmount();
+  if(v >= 1000){
+    closeSheet();
+    return setTimeout(()=> requireStepUp({
+      reason: `Confirm credit card payment of $${fmt(v)}.`,
+      onSuccess: doConfirmCcPay,
+      onCancel: ()=> reviewCcPay()
+    }), 320);
+  }
+  doConfirmCcPay();
+}
+function doConfirmCcPay(){
+  const cc = accountById(CCPAY.ccId);
+  const from = accountById(CCPAY.fromId);
+  const v = ccPayAmount();
+  /* debit checking */
+  from.balance = +(from.balance - v).toFixed(2);
+  from.spendable = +(from.spendable - v).toFixed(2);
+  /* reduce CC balance (CC balance is negative when amount owed; payment moves toward 0) */
+  cc.balance = +(cc.balance + v).toFixed(2);
+  cc.statementBalance = Math.max(0, (cc.statementBalance || 0) - v);
+  cc.lastPayment = { amount: v, date: new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'}) };
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  const ts = Date.now();
+  state.txByAccount[from.id] = [{ id:'t-cc-'+ts+'-o', day:today, date:today+', 2026', time:'just now', cat:'Bills', name:`Payment to ${cc.name}`, sub:`Card ${cc.mask}`, amt:-v, c:5, status:'Pending', loc:{city:'Internal payment',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[from.id]||[])];
+  state.txByAccount[cc.id] = [{ id:'t-cc-'+ts+'-i', day:today, date:today+', 2026', time:'just now', cat:'Income', name:'Payment received', sub:`Thank you · from ${from.name}`, amt:+v, c:4, status:'Posted', loc:{city:'Payment',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[cc.id]||[])];
+  state.ccPayments.unshift({ id:'cc-'+ts, amount:v, date:today });
+  state.notifications.unshift({ id:'n-'+Date.now(), unread:true, title:'Card payment scheduled', body:`${fmtMoney(v)} to ${cc.name} from ${from.name}.`, time:'just now' });
+  /* dismiss the cc bill banner since we just paid */
+  const arr = JSON.parse(localStorage.getItem('meridian.dismissedBills') || '[]');
+  if(!arr.includes('cc-'+cc.id)){ arr.push('cc-'+cc.id); localStorage.setItem('meridian.dismissedBills', JSON.stringify(arr)); }
+  saveState();
+  document.getElementById('sheetTitle').textContent = 'All set';
+  document.getElementById('sheetBody').innerHTML = `
+    <div class="success-stage">
+      <div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 L10 17 L19 7"/></svg></div>
+      <div class="success-title">Payment scheduled</div>
+      <div class="success-amt">${fmtMoney(v)}</div>
+      <div class="success-meta">${escapeHtml(cc.name)}<br/>Confirmation #CC-${Math.floor(Math.random()*900000+100000)}</div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" onclick="closeSheet();back('ccPay','detail')">Done</button>
+        <button class="btn btn-ghost" onclick="closeSheet();renderCcPayForm()">Make another payment</button>
+      </div>
+    </div>
+  `;
+  openSheetRaw();
+  renderHome(); renderNotifications();
+  if(activeId) renderTransactions(activeId);
+}
+
+/* ============================================================
+   ROUND-UP TO SAVINGS
+   ============================================================ */
+function computeRoundUps(){
+  /* sum (ceil(|amt|) - |amt|) over recent posted negative tx */
+  let total = 0;
+  for(const acctId of Object.keys(state.txByAccount)){
+    if(acctId !== state.accounts[0].id) continue;  /* main checking only */
+    for(const t of state.txByAccount[acctId]){
+      if(t.amt < 0 && t.status !== 'Pending' && t.method !== 'Internal' && t.method !== 'Wire'){
+        const abs = Math.abs(t.amt);
+        const up = +(Math.ceil(abs) - abs).toFixed(2);
+        if(up > 0 && up < 1) total += up;
+      }
+    }
+  }
+  return +total.toFixed(2);
+}
+function renderRoundUpRow(){
+  const slot = document.getElementById('roundupSlot');
+  if(!slot) return;
+  const r = state.roundUps;
+  if(activeId !== state.accounts[0].id){ slot.innerHTML = ''; return; }
+  const dest = accountById(r.destAccountId);
+  const accumulated = r.enabled ? computeRoundUps() : 0;
+  slot.innerHTML = `
+    <div class="roundup-card" onclick="openRoundUpSettings()">
+      <div class="ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8 V12 L15 14"/><path d="M5 5 L7 7 M19 5 L17 7"/></svg>
+      </div>
+      <div class="meta">
+        <b>Round-ups to savings</b>
+        <span>${r.enabled ? `Active · sweeping to ${escapeHtml(dest?.name || 'savings')}` : 'Off · save the change on every purchase'}</span>
+        ${r.enabled ? `<div class="accum">$${fmt(accumulated)} <em>this month · $${fmt(r.lifetimeSwept)} swept all-time</em></div>` : ''}
+      </div>
+      <div class="switch ${r.enabled?'on':''}" onclick="event.stopPropagation();toggleRoundUp(this)"></div>
+    </div>
+  `;
+}
+function toggleRoundUp(el){
+  state.roundUps.enabled = !state.roundUps.enabled;
+  saveState();
+  if(el) el.classList.toggle('on', state.roundUps.enabled);
+  renderRoundUpRow();
+  toast(state.roundUps.enabled ? 'Round-ups on' : 'Round-ups off');
+}
+function openRoundUpSettings(){
+  const r = state.roundUps;
+  const dest = accountById(r.destAccountId) || state.accounts[1];
+  document.getElementById('sheetTitle').textContent = 'Round-up to savings';
+  document.getElementById('sheetBody').innerHTML = `
+    <p style="font-size:13.5px;color:var(--muted);font-weight:500;line-height:1.5;margin:0 0 12px">Round every purchase up to the next dollar and sweep the change weekly to a savings account.</p>
+    <div class="list" style="margin:0">
+      <div class="li">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span>
+        <div class="li-meta"><b>Enabled</b><span>${r.enabled?'Sweeping weekly on Mondays':'Off'}</span></div>
+        <div class="switch ${r.enabled?'on':''}" onclick="toggleRoundUp(this);openRoundUpSettings()"></div>
+      </div>
+      <div class="li" onclick="pickRoundUpDest()">
+        <span class="li-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21 V11 L12 4 L21 11 V21 Z"/></svg></span>
+        <div class="li-meta"><b>Save to</b><span>${escapeHtml(dest.name)} ${escapeHtml(dest.mask)}</span></div>
+        <span class="li-trail">›</span>
+      </div>
+    </div>
+    <div class="section-h">This month so far</div>
+    <div class="list" style="margin:0">
+      <div class="kv-row" style="padding:14px 16px"><span class="lbl">Round-ups</span><span class="val" style="color:var(--gold);font-family:var(--mono)">$${fmt(computeRoundUps())}</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">Next sweep</span><span class="val">Mon, May 4</span></div>
+      <div class="kv-row" style="padding:14px 16px;border-top:1px solid var(--line-2)"><span class="lbl">All-time saved</span><span class="val">$${fmt(state.roundUps.lifetimeSwept)}</span></div>
+    </div>
+    <div style="padding:14px 0 6px"><button class="btn btn-ghost" onclick="sweepNow()">Sweep round-ups now</button></div>
+  `;
+  openSheetRaw();
+}
+function pickRoundUpDest(){
+  document.getElementById('sheetTitle').textContent = 'Save round-ups to';
+  document.getElementById('sheetBody').innerHTML = state.accounts.filter(a => a.kind !== 'credit' && a.id !== state.accounts[0].id).map(a => `
+    <div class="acct-pick ${a.color==='savings'?'gold':''}" style="margin-bottom:10px" onclick="state.roundUps.destAccountId='${a.id}';saveState();openRoundUpSettings()">
+      <div class="swatch"></div>
+      <div class="info"><b>${escapeHtml(a.name)}</b><span>${escapeHtml(a.mask)}</span><span class="bal">${fmtMoney(a.balance)} balance</span></div>
+    </div>
+  `).join('');
+}
+function sweepNow(){
+  const r = state.roundUps;
+  const total = computeRoundUps();
+  if(total <= 0){ toast('Nothing to sweep yet'); return; }
+  const from = state.accounts[0];
+  const to = accountById(r.destAccountId);
+  if(!to){ toast('Pick a destination first'); return; }
+  from.balance = +(from.balance - total).toFixed(2);
+  from.spendable = +(from.spendable - total).toFixed(2);
+  to.balance = +(to.balance + total).toFixed(2);
+  if(to.kind !== 'credit') to.spendable = +(to.spendable + total).toFixed(2);
+  if(to.aside !== undefined) to.aside = +((to.aside||0) + total).toFixed(2);
+  state.roundUps.lifetimeSwept = +(state.roundUps.lifetimeSwept + total).toFixed(2);
+  state.roundUps.lastSweep = new Date().toLocaleDateString('en-US',{month:'short', day:'numeric', year:'numeric'});
+  state.roundUps.monthAccumulated = 0;
+  /* mark a sweep tx (small amount) */
+  const today = new Date().toLocaleDateString('en-US',{month:'short', day:'2-digit'});
+  const ts = Date.now();
+  state.txByAccount[from.id] = [{ id:'t-rs-'+ts+'-o', day:today, date:today+', 2026', time:'just now', cat:'Transfer', name:'Round-up sweep', sub:`To ${to.name}`, amt:-total, c:2, status:'Posted', loc:{city:'Round-up',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[from.id]||[])];
+  state.txByAccount[to.id]   = [{ id:'t-rs-'+ts+'-i', day:today, date:today+', 2026', time:'just now', cat:'Income', name:'Round-up deposit', sub:`From ${from.name}`, amt:+total, c:4, status:'Posted', loc:{city:'Round-up',state:'',lat:0,lng:0}, method:'Internal' }, ...(state.txByAccount[to.id]||[])];
+  saveState();
+  closeSheet(); renderHome();
+  if(activeId) renderTransactions(activeId);
+  toast('Swept $'+fmt(total)+' to '+to.name);
 }
 
 /* ============================================================
