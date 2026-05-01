@@ -518,7 +518,12 @@
     .kpi__delta.up { color: #6ee7b7; }
     .kpi__delta.down { color: #fca5a5; }
     .kpi__spark {
+      position: relative;
       margin-top: 10px; height: 36px; width: 100%;
+    }
+    .kpi__spark > canvas {
+      position: absolute; inset: 0;
+      width: 100% !important; height: 100% !important;
     }
     .kpi__foot {
       margin-top: 8px; font-size: 11.5px; color: var(--text-4);
@@ -1540,7 +1545,7 @@
         <div class="kpi__head"><span>Revenue</span><span class="kpi__icon"><i class="fas fa-dollar-sign"></i></span></div>
         <div class="kpi__value">$12.4M</div>
         <div class="kpi__delta up"><i class="fas fa-arrow-trend-up"></i> +8.2% vs LM</div>
-        <canvas class="kpi__spark" data-spark="40,42,38,46,45,48,52,50,55,58,57,62"></canvas>
+        <div class="kpi__spark"><canvas data-spark="40,42,38,46,45,48,52,50,55,58,57,62"></canvas></div>
         <div class="kpi__foot"><span>Target $14M</span><span>89%</span></div>
       </article>
 
@@ -1548,7 +1553,7 @@
         <div class="kpi__head"><span>Active customers</span><span class="kpi__icon"><i class="fas fa-users"></i></span></div>
         <div class="kpi__value">18,423</div>
         <div class="kpi__delta up"><i class="fas fa-arrow-trend-up"></i> +3.4%</div>
-        <canvas class="kpi__spark" data-spark="160,162,164,166,168,170,172,175,177,179,181,184"></canvas>
+        <div class="kpi__spark"><canvas data-spark="160,162,164,166,168,170,172,175,177,179,181,184"></canvas></div>
         <div class="kpi__foot"><span>Churn 1.8%</span><span>NPS 62</span></div>
       </article>
 
@@ -1556,7 +1561,7 @@
         <div class="kpi__head"><span>Approval rate</span><span class="kpi__icon"><i class="fas fa-circle-check"></i></span></div>
         <div class="kpi__value">68%</div>
         <div class="kpi__delta up"><i class="fas fa-arrow-trend-up"></i> +1.6 pp</div>
-        <canvas class="kpi__spark" data-spark="62,63,64,65,64,66,67,67,67,68,68,68"></canvas>
+        <div class="kpi__spark"><canvas data-spark="62,63,64,65,64,66,67,67,67,68,68,68"></canvas></div>
         <div class="kpi__foot"><span>Auto 82%</span><span>SLA 99.1%</span></div>
       </article>
 
@@ -1564,7 +1569,7 @@
         <div class="kpi__head"><span>Default rate</span><span class="kpi__icon"><i class="fas fa-triangle-exclamation"></i></span></div>
         <div class="kpi__value">3.2%</div>
         <div class="kpi__delta down"><i class="fas fa-arrow-trend-up"></i> +0.3 pp</div>
-        <canvas class="kpi__spark" data-spark="2.6,2.7,2.7,2.8,2.9,2.9,3.0,3.0,3.1,3.1,3.2,3.2"></canvas>
+        <div class="kpi__spark"><canvas data-spark="2.6,2.7,2.7,2.8,2.9,2.9,3.0,3.0,3.1,3.1,3.2,3.2"></canvas></div>
         <div class="kpi__foot"><span>Threshold 3.5%</span><span>Watch</span></div>
       </article>
 
@@ -1572,7 +1577,7 @@
         <div class="kpi__head"><span>QA score</span><span class="kpi__icon"><i class="fas fa-star"></i></span></div>
         <div class="kpi__value">87.4</div>
         <div class="kpi__delta up"><i class="fas fa-arrow-trend-up"></i> +2.1</div>
-        <canvas class="kpi__spark" data-spark="82,82,83,84,84,85,85,86,86,87,87,87"></canvas>
+        <div class="kpi__spark"><canvas data-spark="82,82,83,84,84,85,85,86,86,87,87,87"></canvas></div>
         <div class="kpi__foot"><span>Audits 342</span><span>Open 3</span></div>
       </article>
     </section>
@@ -2155,7 +2160,7 @@
      Sparklines (KPI strip)
      ============================================================ */
   function renderSparklines() {
-    document.querySelectorAll('canvas.kpi__spark').forEach(cv => {
+    document.querySelectorAll('.kpi__spark > canvas').forEach(cv => {
       lazy(cv, (canvas) => {
         const data = (canvas.dataset.spark || '').split(',').map(Number);
         const ctx = canvas.getContext('2d');
