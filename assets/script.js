@@ -1158,6 +1158,481 @@ class LearningLibrary {
 LearningLibrary.cache = null;
 
 // ============================================================================
+// SITE TOUR
+// ============================================================================
+
+class SiteTour {
+  constructor() {
+    this.storageKey = 'byheir-tour-seen-v1';
+    this.steps = [
+      {
+        id: 'hero',
+        title: "Welcome — here's the 90-second tour",
+        body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities."
+      },
+      {
+        id: 'about',
+        title: "What I actually do",
+        body: "Power BI / Snowflake reporting at Sallie Mae plus full-stack tools when product gaps need filling. The bridge between BI, ops, compliance, and engineering."
+      },
+      {
+        id: 'experience',
+        title: "Seven years at Sallie Mae — with the receipts",
+        body: "Owns reporting for 1,000+ users, cut manual reporting 60% with Python automation, and architected an AI-augmented testing platform for Snowflake. The bullets behind the headline are right here."
+      },
+      {
+        id: 'projects-partnerpulse',
+        title: "PartnerPulse — solo, in production",
+        body: "A relationship-analytics PWA on a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers). One shared view of partner health and engagement.",
+        detailHref: 'https://partnerpulse.byheir.com',
+        detailLabel: "Visit PartnerPulse",
+        detailExternal: true
+      },
+      {
+        id: 'projects-builder',
+        title: "The Builder — CI/CD discipline for analytics",
+        body: "Multi-stage data validation with branch review, change auditing, and merge controls. Enterprise release practices applied to BI deliverables.",
+        detailHref: 'pages/the-builder.html',
+        detailLabel: "Read the case study"
+      },
+      {
+        id: 'work-demo',
+        title: "Operations Dashboard — click in and explore",
+        body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites. A working demo of how I think about operational tooling.",
+        detailHref: 'pages/dashboard.html',
+        detailLabel: "Open the demo"
+      },
+      {
+        id: 'work-external',
+        title: "Three live apps in production",
+        body: "Ironlog (analytics PWA suite), PartnerPulse, and Wiseforge (chat-to-deploy builder). Each link opens in a new tab so you don't lose your place in the tour."
+      },
+      {
+        id: 'skills',
+        title: "BI · SQL · Full-stack",
+        body: "The combination is the point — deep enough to ship enterprise reporting, deep enough to build the supporting apps myself."
+      },
+      {
+        id: 'code-samples',
+        title: "See how I write code",
+        body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview. Signal beyond the bullet points."
+      },
+      {
+        id: 'contact',
+        title: "Open to roles in regulated fintech",
+        body: "Senior engineering, BI / data-platform, or reporting-platform roles. Email is the fastest path."
+      },
+      {
+        isRecap: true,
+        title: "That's the tour.",
+        body: "Two ways forward: grab the résumé for a paper trail, or send a note — I usually reply the same day."
+      }
+    ];
+
+    this.currentIndex = -1;
+    this.active = false;
+    this.lastFocus = null;
+    this.elements = {};
+    this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.handleFocusTrap = this.handleFocusTrap.bind(this);
+    this._rafPending = false;
+    this.reposition = this.reposition.bind(this);
+
+    this.init();
+  }
+
+  reposition() {
+    if (!this.active) return;
+    if (this._rafPending) return;
+    this._rafPending = true;
+    requestAnimationFrame(() => {
+      this._rafPending = false;
+      const step = this.steps[this.currentIndex];
+      if (!step || step.isRecap || !step.id) return;
+      const target = document.querySelector(`[data-tour-id="${step.id}"]`);
+      if (target) this.placeAroundTarget(target);
+    });
+  }
+
+  // ---------------------------------------------------------------- lifecycle
+
+  init() {
+    this.buildPrompt();
+
+    const chip = safeQuery('[data-tour-trigger]');
+    if (chip) {
+      chip.hidden = false;
+      chip.addEventListener('click', () => this.start());
+      this.elements.chip = chip;
+    }
+
+    if (!this.hasBeenSeen()) {
+      // Wait for hero to settle before offering the tour
+      setTimeout(() => this.showPrompt(), 1400);
+    }
+  }
+
+  hasBeenSeen() {
+    try { return localStorage.getItem(this.storageKey) === '1'; }
+    catch (e) { return false; }
+  }
+
+  markSeen() {
+    try { localStorage.setItem(this.storageKey, '1'); } catch (e) {}
+  }
+
+  // ---------------------------------------------------------------- prompt
+
+  buildPrompt() {
+    const card = document.createElement('aside');
+    card.className = 'tour-prompt';
+    card.setAttribute('role', 'dialog');
+    card.setAttribute('aria-labelledby', 'tour-prompt-title');
+    card.setAttribute('aria-describedby', 'tour-prompt-body');
+    card.hidden = true;
+    card.innerHTML = `
+      <button type="button" class="tour-prompt__close" aria-label="Dismiss tour offer">×</button>
+      <p class="tour-prompt__eyebrow">First time here?</p>
+      <h2 id="tour-prompt-title" class="tour-prompt__title">Take the 90-second tour</h2>
+      <p id="tour-prompt-body" class="tour-prompt__body">A guided walkthrough of what I built, why, and where to dig deeper.</p>
+      <div class="tour-prompt__actions">
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--primary" data-tour-prompt-start>Start tour</button>
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--ghost" data-tour-prompt-decline>No thanks</button>
+      </div>
+    `;
+    document.body.appendChild(card);
+    this.elements.prompt = card;
+
+    card.querySelector('[data-tour-prompt-start]').addEventListener('click', () => this.start());
+    card.querySelector('[data-tour-prompt-decline]').addEventListener('click', () => this.dismissPrompt());
+    card.querySelector('.tour-prompt__close').addEventListener('click', () => this.dismissPrompt());
+  }
+
+  showPrompt() {
+    if (!this.elements.prompt || this.active) return;
+    this.elements.prompt.hidden = false;
+    requestAnimationFrame(() => {
+      this.elements.prompt.classList.add('is-visible');
+    });
+  }
+
+  dismissPrompt() {
+    if (!this.elements.prompt) return;
+    this.elements.prompt.classList.remove('is-visible');
+    setTimeout(() => {
+      if (this.elements.prompt) this.elements.prompt.hidden = true;
+    }, 250);
+    this.markSeen();
+    this.pulseChip();
+  }
+
+  pulseChip() {
+    if (!this.elements.chip) return;
+    this.elements.chip.classList.add('is-pulsing');
+    setTimeout(() => {
+      if (this.elements.chip) this.elements.chip.classList.remove('is-pulsing');
+    }, 4200);
+  }
+
+  // ---------------------------------------------------------------- overlay
+
+  buildOverlay() {
+    if (this.elements.overlay) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'tour-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    const spotlight = document.createElement('div');
+    spotlight.className = 'tour-spotlight';
+    spotlight.setAttribute('aria-hidden', 'true');
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tour-tooltip';
+    tooltip.setAttribute('role', 'dialog');
+    tooltip.setAttribute('aria-modal', 'true');
+    tooltip.setAttribute('aria-labelledby', 'tour-tooltip-title');
+    tooltip.setAttribute('aria-describedby', 'tour-tooltip-body');
+    tooltip.tabIndex = -1;
+    tooltip.innerHTML = `
+      <div class="tour-tooltip__head">
+        <span class="tour-tooltip__step" data-tour-step-counter>1 / ${this.steps.length}</span>
+        <button type="button" class="tour-tooltip__skip" data-tour-skip aria-label="Skip tour">Skip ✕</button>
+      </div>
+      <h3 id="tour-tooltip-title" class="tour-tooltip__title" data-tour-title></h3>
+      <p id="tour-tooltip-body" class="tour-tooltip__body" data-tour-body></p>
+      <a class="tour-tooltip__detail" data-tour-detail hidden>Open detail →</a>
+      <div class="tour-tooltip__recap" data-tour-recap hidden>
+        <a class="tour-tooltip__btn tour-tooltip__btn--primary" href="assets/byheir-wise-resume.pdf" download>Download résumé</a>
+        <a class="tour-tooltip__btn tour-tooltip__btn--ghost" href="mailto:byheirw@gmail.com">Email me</a>
+      </div>
+      <div class="tour-tooltip__progress" data-tour-progress aria-hidden="true"></div>
+      <div class="tour-tooltip__actions">
+        <button type="button" class="tour-tooltip__btn tour-tooltip__btn--ghost" data-tour-prev>Back</button>
+        <button type="button" class="tour-tooltip__btn tour-tooltip__btn--primary" data-tour-next>Next →</button>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(spotlight);
+    document.body.appendChild(tooltip);
+
+    this.elements.overlay = overlay;
+    this.elements.spotlight = spotlight;
+    this.elements.tooltip = tooltip;
+    this.elements.title = tooltip.querySelector('[data-tour-title]');
+    this.elements.body = tooltip.querySelector('[data-tour-body]');
+    this.elements.counter = tooltip.querySelector('[data-tour-step-counter]');
+    this.elements.detail = tooltip.querySelector('[data-tour-detail]');
+    this.elements.recap = tooltip.querySelector('[data-tour-recap]');
+    this.elements.prevBtn = tooltip.querySelector('[data-tour-prev]');
+    this.elements.nextBtn = tooltip.querySelector('[data-tour-next]');
+    this.elements.skipBtn = tooltip.querySelector('[data-tour-skip]');
+    this.elements.progress = tooltip.querySelector('[data-tour-progress]');
+
+    this.elements.prevBtn.addEventListener('click', () => this.prev());
+    this.elements.nextBtn.addEventListener('click', () => this.next());
+    this.elements.skipBtn.addEventListener('click', () => this.end(false));
+
+    this.elements.progress.innerHTML = this.steps
+      .map((_, i) => `<span class="tour-tooltip__dot" data-step-dot="${i}"></span>`)
+      .join('');
+
+    tooltip.addEventListener('keydown', this.handleFocusTrap);
+  }
+
+  // ---------------------------------------------------------------- navigation
+
+  start() {
+    if (this.active) return;
+    this.active = true;
+    this.dismissPrompt();
+    this.markSeen();
+    this.lastFocus = document.activeElement;
+    this.buildOverlay();
+    document.body.classList.add('tour-active');
+    document.addEventListener('keydown', this.handleKeydown);
+    window.addEventListener('resize', this.reposition);
+    window.addEventListener('scroll', this.reposition, { passive: true });
+    this.goTo(0);
+    announceToScreenReader('Tour started');
+  }
+
+  end(completed) {
+    if (!this.active) return;
+    this.active = false;
+
+    document.removeEventListener('keydown', this.handleKeydown);
+    window.removeEventListener('resize', this.reposition);
+    window.removeEventListener('scroll', this.reposition);
+    document.body.classList.remove('tour-active');
+
+    const { overlay, spotlight, tooltip } = this.elements;
+    [overlay, spotlight, tooltip].forEach(el => {
+      if (el) el.classList.remove('is-visible');
+    });
+
+    setTimeout(() => {
+      ['overlay', 'spotlight', 'tooltip'].forEach(key => {
+        const el = this.elements[key];
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+        this.elements[key] = null;
+      });
+    }, 260);
+
+    if (this.lastFocus && typeof this.lastFocus.focus === 'function') {
+      try { this.lastFocus.focus(); } catch (e) {}
+    }
+
+    announceToScreenReader(completed ? 'Tour complete' : 'Tour ended');
+  }
+
+  goTo(index) {
+    if (index < 0 || index >= this.steps.length) return;
+    this.currentIndex = index;
+    this.renderStep();
+    this.place();
+  }
+
+  next() {
+    if (this.currentIndex >= this.steps.length - 1) {
+      this.end(true);
+      return;
+    }
+    this.goTo(this.currentIndex + 1);
+  }
+
+  prev() {
+    if (this.currentIndex <= 0) return;
+    this.goTo(this.currentIndex - 1);
+  }
+
+  handleKeydown(e) {
+    if (!this.active) return;
+    switch (e.key) {
+      case 'Escape':
+        e.preventDefault();
+        this.end(false);
+        break;
+      case 'ArrowRight':
+      case 'PageDown':
+        e.preventDefault();
+        this.next();
+        break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault();
+        this.prev();
+        break;
+    }
+  }
+
+  handleFocusTrap(e) {
+    if (e.key !== 'Tab' || !this.elements.tooltip) return;
+    const focusables = Array.from(
+      this.elements.tooltip.querySelectorAll('a[href], button:not([disabled])')
+    ).filter(el => !el.hidden && el.offsetParent !== null);
+    if (focusables.length === 0) return;
+
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  // ---------------------------------------------------------------- rendering
+
+  renderStep() {
+    const step = this.steps[this.currentIndex];
+    if (!step) return;
+
+    this.elements.title.textContent = step.title;
+    this.elements.body.textContent = step.body;
+    this.elements.counter.textContent = `${this.currentIndex + 1} / ${this.steps.length}`;
+
+    if (step.detailHref && !step.isRecap) {
+      this.elements.detail.hidden = false;
+      this.elements.detail.textContent = (step.detailLabel || 'Open detail') +
+        (step.detailExternal ? ' ↗' : ' →');
+      this.elements.detail.href = step.detailHref;
+      if (step.detailExternal) {
+        this.elements.detail.target = '_blank';
+        this.elements.detail.rel = 'noopener noreferrer';
+      } else {
+        this.elements.detail.removeAttribute('target');
+        this.elements.detail.removeAttribute('rel');
+      }
+    } else {
+      this.elements.detail.hidden = true;
+    }
+
+    this.elements.recap.hidden = !step.isRecap;
+    this.elements.tooltip.classList.toggle('is-recap', !!step.isRecap);
+
+    this.elements.prevBtn.disabled = this.currentIndex === 0;
+    const isLast = this.currentIndex === this.steps.length - 1;
+    this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
+
+    Array.from(this.elements.progress.children).forEach((dot, i) => {
+      dot.classList.toggle('is-current', i === this.currentIndex);
+      dot.classList.toggle('is-done', i < this.currentIndex);
+    });
+
+    announceToScreenReader(`Step ${this.currentIndex + 1} of ${this.steps.length}: ${step.title}`);
+
+    requestAnimationFrame(() => {
+      if (this.elements.nextBtn) this.elements.nextBtn.focus();
+    });
+  }
+
+  place() {
+    if (!this.active || !this.elements.overlay) return;
+    const step = this.steps[this.currentIndex];
+    if (!step) return;
+
+    this.elements.tooltip.classList.add('is-visible');
+
+    if (step.isRecap || !step.id) {
+      this.elements.overlay.classList.add('is-visible');
+      this.elements.spotlight.classList.remove('is-visible');
+      this.elements.tooltip.classList.add('is-centered');
+      this.elements.tooltip.style.top = '';
+      this.elements.tooltip.style.left = '';
+      return;
+    }
+
+    this.elements.overlay.classList.remove('is-visible');
+    this.elements.tooltip.classList.remove('is-centered');
+
+    const target = document.querySelector(`[data-tour-id="${step.id}"]`);
+    if (!target) {
+      console.warn(`Tour target not found: ${step.id}`);
+      this.elements.overlay.classList.add('is-visible');
+      this.elements.spotlight.classList.remove('is-visible');
+      this.elements.tooltip.classList.add('is-centered');
+      return;
+    }
+
+    const behavior = this.reduceMotion ? 'auto' : 'smooth';
+    target.scrollIntoView({ block: 'center', behavior });
+
+    setTimeout(() => this.placeAroundTarget(target), this.reduceMotion ? 0 : 380);
+  }
+
+  placeAroundTarget(target) {
+    if (!this.active || !target) return;
+
+    const rect = target.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const padding = 12;
+
+    const top = Math.max(rect.top - padding, 12);
+    const bottom = Math.min(rect.bottom + padding, vh - 12);
+    const left = Math.max(rect.left - padding, 12);
+    const right = Math.min(rect.right + padding, vw - 12);
+    const height = Math.max(bottom - top, 40);
+    const width = Math.max(right - left, 40);
+
+    this.elements.spotlight.classList.add('is-visible');
+    this.elements.spotlight.style.top = `${top}px`;
+    this.elements.spotlight.style.left = `${left}px`;
+    this.elements.spotlight.style.width = `${width}px`;
+    this.elements.spotlight.style.height = `${height}px`;
+
+    const tipRect = this.elements.tooltip.getBoundingClientRect();
+    const tipWidth = tipRect.width || 360;
+    const tipHeight = tipRect.height || 220;
+    const gap = 16;
+
+    const spaceBelow = vh - bottom;
+    const spaceAbove = top;
+
+    let tipTop;
+    if (spaceBelow >= tipHeight + gap + 12) {
+      tipTop = bottom + gap;
+    } else if (spaceAbove >= tipHeight + gap + 12) {
+      tipTop = top - tipHeight - gap;
+    } else {
+      tipTop = Math.max(12, vh - tipHeight - 12);
+    }
+
+    let tipLeft = left + (width - tipWidth) / 2;
+    tipLeft = Math.max(12, Math.min(tipLeft, vw - tipWidth - 12));
+
+    this.elements.tooltip.style.top = `${tipTop}px`;
+    this.elements.tooltip.style.left = `${tipLeft}px`;
+  }
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -1186,6 +1661,11 @@ function init() {
       const library = new LearningLibrary(section);
       library.init();
     });
+
+    // Initialize site tour (only on pages with tour targets)
+    if (safeQuery('[data-tour-id]')) {
+      new SiteTour();
+    }
 
     // Monitor performance (development only)
     if (window.location.hostname === 'localhost') {

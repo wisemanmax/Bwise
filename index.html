@@ -76,11 +76,17 @@
                 <li><a href="#work">Work</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li class="nav-tour-item">
+                    <button type="button" class="nav-tour-chip" data-tour-trigger hidden>
+                        <span class="nav-tour-chip__dot" aria-hidden="true"></span>
+                        Take the tour
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <section class="hero-section" aria-labelledby="hero-title">
+    <section class="hero-section" aria-labelledby="hero-title" data-tour-id="hero">
         <div class="hero-inner">
             <div class="hero-label">
                 <span class="status-dot" aria-hidden="true"></span>
@@ -127,7 +133,7 @@
                 </p>
             </div>
 
-            <article class="featured-story">
+            <article class="featured-story" data-tour-id="about">
                 <div class="story-tag">Professional profile</div>
                 <h3 class="story-title">Engineer and BI platform owner in regulated student lending</h3>
                 <div class="story-meta">
@@ -166,7 +172,7 @@
             </div>
 
             <div class="experience-grid">
-                <article class="experience-card">
+                <article class="experience-card" data-tour-id="experience">
                     <div class="card-header">
                         <div class="card-title">Lead Business Execution Consultant — Data &amp; Reporting</div>
                         <div class="card-company">SLM Corporation (Sallie Mae Bank)</div>
@@ -216,7 +222,7 @@
             </div>
 
             <div class="experience-grid">
-                <article class="experience-card">
+                <article class="experience-card" data-tour-id="projects-partnerpulse">
                     <div class="card-header">
                         <div class="card-title">PartnerPulse — Partner Relationship Analytics Platform</div>
                         <div class="card-company">Sole builder · partnerpulse.byheir.com</div>
@@ -234,7 +240,7 @@
                     </div>
                 </article>
 
-                <article class="experience-card">
+                <article class="experience-card" data-tour-id="projects-builder">
                     <div class="card-header">
                         <div class="card-title">AI-Augmented Reporting &amp; Validation Platform (The Builder)</div>
                         <div class="card-company">Sole architect</div>
@@ -339,7 +345,7 @@
 
             <h3 class="work-row-title">Demos &amp; UI explorations <span class="work-row-title__hint">(built for this portfolio to show range)</span></h3>
             <div class="work-grid">
-                <a class="work-card work-card--wide" href="pages/dashboard.html" aria-label="Operations Dashboard demo">
+                <a class="work-card work-card--wide" href="pages/dashboard.html" aria-label="Operations Dashboard demo" data-tour-id="work-demo">
                     <div class="work-card__media">
                         <img src="assets/work-thumbs/case-study.png" alt="" loading="lazy" width="1200" height="675">
                     </div>
@@ -449,7 +455,7 @@
             </div>
 
             <h3 class="work-row-title">External apps <span class="work-row-title__hint">(live in production · open in a new tab)</span></h3>
-            <div class="work-grid work-grid--external">
+            <div class="work-grid work-grid--external" data-tour-id="work-external">
                 <a class="work-card work-card--external" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="Ironlog — opens in a new tab">
                     <div class="work-card__media">
                         <img src="assets/work-thumbs/ironlog.png" alt="" loading="lazy" width="1200" height="675">
@@ -514,7 +520,7 @@
                 </p>
             </div>
 
-            <div class="skills-container">
+            <div class="skills-container" data-tour-id="skills">
                 <article class="skill-card">
                     <h3 class="skill-header">BI &amp; Reporting</h3>
                     <div class="skill-pills">
@@ -608,7 +614,7 @@
                 </article>
             </div>
 
-            <div class="code-samples">
+            <div class="code-samples" data-tour-id="code-samples">
                 <h3 class="code-samples__title">Code samples</h3>
                 <p class="code-samples__subtitle">Bite-sized walkthroughs of the underlying stack — syntax, patterns, and a working preview on each page.</p>
                 <ul class="code-samples__list">
@@ -622,7 +628,7 @@
         </section>
 
         <section id="contact" class="container" aria-labelledby="contact-title">
-            <div class="contact-section">
+            <div class="contact-section" data-tour-id="contact">
                 <h2 id="contact-title" class="contact-title">Let's connect and build something impactful</h2>
                 <p class="contact-subtitle">
                     I'm looking for senior engineering, BI / data-platform, or reporting-platform roles in regulated fintech, student lending, or platform-heavy companies.
