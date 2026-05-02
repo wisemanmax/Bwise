@@ -3507,6 +3507,12 @@ table {
     min-width: 130px;
 }
 
+/* When the back button is shown (deep-dive recap), give it its own row
+   so résumé + email split the second row cleanly. */
+.tour-tooltip__recap [data-tour-recap-back]:not([hidden]) {
+    flex: 1 1 100%;
+}
+
 .tour-tooltip__progress {
     display: flex;
     gap: 6px;

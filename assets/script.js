@@ -1206,7 +1206,6 @@ class SiteTour {
         { page: '/', id: 'work-demo',
           title: "Operations Dashboard — click in and explore",
           body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites. A working demo of how I think about operational tooling.",
-          detailHref: '/pages/dashboard.html', detailLabel: "Open the demo",
           deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
         { page: '/', id: 'work-external',
           title: "Three live apps in production",
@@ -1279,6 +1278,15 @@ class SiteTour {
       chip.addEventListener('click', () => this.openPrompt());
       this.elements.chip = chip;
     }
+    this.updateChipText();
+
+    // ?tour=recruiter|full overrides the prompt — useful for sharing direct links
+    const urlMode = this.readUrlMode();
+    if (urlMode) {
+      this.clearState();
+      setTimeout(() => this.start(urlMode), this.reduceMotion ? 0 : 200);
+      return;
+    }
 
     const state = this.loadState();
     if (state && this.tourSets[state.mode]) {
@@ -1291,6 +1299,29 @@ class SiteTour {
       }
     } else if (!this.hasBeenSeen()) {
       setTimeout(() => this.openPrompt(), 1400);
+    }
+  }
+
+  readUrlMode() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const v = params.get('tour');
+      if (v === 'recruiter' || v === 'full') return v;
+    } catch (e) {}
+    return null;
+  }
+
+  updateChipText() {
+    const chip = this.elements.chip;
+    if (!chip) return;
+    const state = this.loadState();
+    const labelNode = chip.querySelector('[data-tour-chip-label]');
+    const targetText = state && this.tourSets[state.mode] ? 'Resume tour' : 'Take the tour';
+    if (labelNode) {
+      labelNode.textContent = targetText;
+    } else {
+      // Fallback if the markup hasn't been updated to use a labelled span
+      chip.textContent = targetText;
     }
   }
 
@@ -1482,6 +1513,7 @@ class SiteTour {
       if (this.elements.prompt) this.elements.prompt.hidden = true;
     }, 250);
     this.markSeen();
+    this.updateChipText();
     this.pulseChip();
     this.logEvent('tour_prompt_dismiss');
   }
@@ -1600,7 +1632,9 @@ class SiteTour {
     window.addEventListener('resize', this.reposition);
     window.addEventListener('scroll', this.reposition, { passive: true });
     this.logEvent('tour_start', { mode });
-    const idx = typeof startIndex === 'number' ? startIndex : 0;
+    const requested = typeof startIndex === 'number' ? startIndex : 0;
+    const idx = Math.max(0, Math.min(requested, this.steps.length - 1));
+    this.updateChipText();
     this.goTo(idx);
     announceToScreenReader(`${mode === 'recruiter' ? 'Recruiter' : (mode === 'dashboardDeepDive' ? 'Dashboard' : 'Full')} tour started`);
   }
@@ -1625,6 +1659,8 @@ class SiteTour {
       try { this.lastFocus.focus(); } catch (e) {}
     }
 
+    this.updateChipText();
+    if (completed) this.pulseChip();
     this.logEvent(completed ? 'tour_complete' : 'tour_skip');
     announceToScreenReader(completed ? 'Tour complete' : 'Tour ended');
   }
