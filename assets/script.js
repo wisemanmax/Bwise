@@ -1463,7 +1463,19 @@ class SiteTour {
 
   saveState(extras) {
     try {
+      // Preserve a stashed `parent` (set when entering a deep-dive) across
+      // routine state writes — otherwise every goTo within the deep-dive
+      // would erase the parent reference and we'd lose the resume point.
+      let prevParent = null;
+      try {
+        const raw = sessionStorage.getItem(this.stateKey);
+        if (raw) {
+          const prev = JSON.parse(raw);
+          if (prev && prev.parent) prevParent = prev.parent;
+        }
+      } catch (e) {}
       const payload = {
+        ...(prevParent ? { parent: prevParent } : {}),
         mode: this.mode,
         index: this.currentIndex,
         ...(extras || {})
@@ -1474,6 +1486,15 @@ class SiteTour {
 
   clearState() {
     try { sessionStorage.removeItem(this.stateKey); } catch (e) {}
+  }
+
+  // Returns the parent-tour reference stashed by enterDeepDive, or null.
+  getParent() {
+    const state = this.loadState();
+    if (state && state.parent && this.tourSets[state.parent.mode]) {
+      return state.parent;
+    }
+    return null;
   }
 
   logEvent(name, data) {
@@ -1713,6 +1734,12 @@ class SiteTour {
       const step = this.steps[this.currentIndex];
       if (!step || !step.recapBackHref) return;
       e.preventDefault();
+
+      // If a parent tour is waiting, route the user back into it rather than
+      // dumping them on the destination page with no tour state.
+      const parent = this.getParent();
+      if (parent && this.resumeParent(parent)) return;
+
       this.clearState();
       this.logEvent('tour_back_to_portfolio', { from: this.mode });
       this.navigateTo(step.recapBackHref);
@@ -1756,8 +1783,50 @@ class SiteTour {
     announceToScreenReader(`${mode === 'recruiter' ? 'Recruiter' : (mode === 'dashboardDeepDive' ? 'Dashboard' : 'Full')} tour started`);
   }
 
+  // Resume the parent tour at the step after where the user branched off.
+  // Used both when the deep-dive recap's Finish button is hit and when the
+  // recap "Back to portfolio" button is clicked.
+  resumeParent(parent) {
+    const targetSet = this.tourSets[parent.mode];
+    if (!targetSet) return false;
+    const nextIndex = Math.min(parent.index + 1, targetSet.length - 1);
+    const nextStep = targetSet[nextIndex];
+
+    // Move into the parent tour. Wipe the deep-dive's state record (which
+    // carries the parent reference) before saving the new clean parent state,
+    // so we don't accidentally chain into another resume.
+    this.mode = parent.mode;
+    this.steps = targetSet;
+    this.currentIndex = nextIndex;
+    this.clearState();
+
+    const onSamePage = !nextStep.page || this.pageMatches(nextStep.page);
+    if (!onSamePage) {
+      this.saveState({ autoResume: true });
+      this.logEvent('tour_deepdive_return', { mode: parent.mode, to: nextIndex, crossPage: true });
+      this.navigateTo(nextStep.page);
+      return true;
+    }
+
+    this.saveState();
+    this.rebuildProgress();
+    this.renderStep();
+    this.place();
+    this.logEvent('tour_deepdive_return', { mode: parent.mode, to: nextIndex });
+    announceToScreenReader(`Resuming tour at step ${nextIndex + 1} of ${targetSet.length}`);
+    return true;
+  }
+
   end(completed) {
     if (!this.active) return;
+
+    // Finishing a deep-dive that has a parent waiting? Resume the parent
+    // instead of tearing the tour down entirely. (Skip = end everything.)
+    if (completed) {
+      const parent = this.getParent();
+      if (parent && this.resumeParent(parent)) return;
+    }
+
     this.active = false;
     this.clearState();
 
@@ -1834,16 +1903,22 @@ class SiteTour {
     if (!step || !step.deepDive) return;
     const { mode } = step.deepDive;
     if (!this.tourSets[mode]) return;
+
+    // Stash the current tour as `parent` so we can resume it when the
+    // deep-dive ends.
+    const parent = { mode: this.mode, index: this.currentIndex };
+
     const targetSet = this.tourSets[mode];
     const firstStep = targetSet[0];
     this.mode = mode;
     this.steps = targetSet;
     this.currentIndex = 0;
-    this.saveState({ index: 0, autoResume: true });
-    this.logEvent('tour_deepdive_enter', { mode });
+    this.saveState({ index: 0, autoResume: true, parent });
+    this.logEvent('tour_deepdive_enter', { mode, parent });
     if (firstStep.page && !this.pageMatches(firstStep.page)) {
       this.navigateTo(firstStep.page);
     } else {
+      this.rebuildProgress();
       this.renderStep();
       this.place();
     }
@@ -1965,9 +2040,15 @@ class SiteTour {
     // Recap card
     this.elements.recap.hidden = !step.isRecap;
     this.elements.tooltip.classList.toggle('is-recap', !!step.isRecap);
+    const parentTour = step.isRecap ? this.getParent() : null;
     if (step.isRecap && step.recapBackHref) {
       this.elements.recapBackBtn.hidden = false;
-      this.elements.recapBackBtn.textContent = step.recapBackLabel || '← Back';
+      // When a parent tour is waiting, re-label this from "back to portfolio"
+      // to "resume tour" so the user knows it puts them back where they were.
+      const defaultLabel = step.recapBackLabel || '← Back';
+      this.elements.recapBackBtn.textContent = parentTour
+        ? `← Resume ${parentTour.mode === 'recruiter' ? 'recruiter snapshot' : 'full tour'}`
+        : defaultLabel;
       this.elements.recapBackBtn.href = step.recapBackHref;
     } else {
       this.elements.recapBackBtn.hidden = true;
@@ -1976,7 +2057,11 @@ class SiteTour {
     // Prev/Next buttons
     this.elements.prevBtn.disabled = this.currentIndex === 0;
     const isLast = this.currentIndex === this.steps.length - 1;
-    this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
+    if (isLast && parentTour) {
+      this.elements.nextBtn.textContent = 'Resume tour →';
+    } else {
+      this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
+    }
 
     // Skip and Finish do the same thing on the recap; hide Skip there so
     // Finish is the single explicit end-of-tour action.
