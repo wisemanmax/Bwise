@@ -1188,37 +1188,87 @@ class SiteTour {
       full: [
         { page: '/', id: 'hero',
           title: "Welcome — here's the 90-second tour",
-          body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities." },
+          body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities.",
+          details: [
+            "Use Next / Back, or arrow keys, to navigate",
+            "Skip anytime — resume from the tour chip",
+            "11 stops · ~90 seconds total"
+          ] },
         { page: '/', id: 'about',
           title: "What I actually do",
-          body: "Power BI / Snowflake reporting at Sallie Mae plus full-stack tools when product gaps need filling. The bridge between BI, ops, compliance, and engineering." },
+          body: "Power BI / Snowflake reporting at Sallie Mae, plus full-stack tools when product gaps need filling.",
+          details: [
+            "Bridge between BI, ops, compliance, and engineering",
+            "Production-grade data models and dashboards",
+            "Ship the supporting apps when no team exists"
+          ] },
         { page: '/', id: 'experience',
           title: "Seven years at Sallie Mae — with the receipts",
-          body: "Owns reporting for 1,000+ users, cut manual reporting 60% with Python automation, and architected an AI-augmented testing platform for Snowflake. The bullets behind the headline are right here." },
+          body: "Measurable impact, shipped systems. The bullets behind the headline are highlighted here.",
+          details: [
+            "1,000+ users on my reporting pipeline",
+            "60% manual reporting eliminated via Python automation",
+            "AI-augmented Snowflake testing platform — solo build"
+          ] },
         { page: '/', id: 'projects-partnerpulse',
           title: "PartnerPulse — solo, in production",
-          body: "A relationship-analytics PWA on a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers). One shared view of partner health and engagement.",
+          body: "A relationship-analytics PWA on a zero-infrastructure serverless stack: GitHub Pages + Cloudflare Workers.",
+          details: [
+            "One shared view of partner health and engagement",
+            "Edge functions for auth and data sync",
+            "Live for paying users today"
+          ],
           detailHref: 'https://partnerpulse.byheir.com', detailLabel: "Visit PartnerPulse", detailExternal: true },
         { page: '/', id: 'projects-builder',
           title: "The Builder — CI/CD discipline for analytics",
-          body: "Multi-stage data validation with branch review, change auditing, and merge controls. Enterprise release practices applied to BI deliverables.",
+          body: "Enterprise release practices applied to BI deliverables.",
+          details: [
+            "Multi-stage data validation with branch review",
+            "Change auditing and merge controls",
+            "The same engineering rigor analysts deserve"
+          ],
           detailHref: '/pages/the-builder.html', detailLabel: "Read the case study" },
         { page: '/', id: 'work-demo',
           title: "Operations Dashboard — click in and explore",
-          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites. A working demo of how I think about operational tooling.",
+          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites.",
+          details: [
+            "Saved-view chips filter every panel without reload",
+            "Exec brief, live workload, KPI quickview",
+            "Working demo of how I think about ops tooling"
+          ],
           deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
         { page: '/', id: 'work-external',
           title: "Three live apps in production",
-          body: "Ironlog (analytics PWA suite), PartnerPulse, and Wiseforge (chat-to-deploy builder). Each link opens in a new tab so you don't lose your place in the tour." },
+          body: "Each opens in a new tab so you don't lose your place in the tour.",
+          details: [
+            "IronLog — analytics PWA suite",
+            "PartnerPulse — partner relationship analytics",
+            "Wiseforge — chat-to-deploy site builder"
+          ] },
         { page: '/', id: 'skills',
           title: "BI · SQL · Full-stack",
-          body: "The combination is the point — deep enough to ship enterprise reporting, deep enough to build the supporting apps myself." },
+          body: "The combination is the point — deep enough to ship enterprise reporting and deep enough to build the apps around it.",
+          details: [
+            "BI: Power BI, Snowflake, semantic models",
+            "Full-stack: TypeScript, PWAs, Cloudflare Workers",
+            "Data: SQL at scale, Python automation, AI-assisted testing"
+          ] },
         { page: '/', id: 'code-samples',
           title: "See how I write code",
-          body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview. Signal beyond the bullet points." },
+          body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview.",
+          details: [
+            "Signal beyond bullet points on a résumé",
+            "Same patterns I use in production",
+            "Code and live result, side by side"
+          ] },
         { page: '/', id: 'contact',
           title: "Open to roles in regulated fintech",
-          body: "Senior engineering, BI / data-platform, or reporting-platform roles. Email is the fastest path." },
+          body: "Senior engineering, BI / data-platform, or reporting-platform roles.",
+          details: [
+            "Email is the fastest path",
+            "Résumé below for the paper trail",
+            "Same-day reply most weekdays"
+          ] },
         { page: '/', isRecap: true,
           title: "That's the tour.",
           body: "Two ways forward: grab the résumé for a paper trail, or send a note — I usually reply the same day." }
@@ -1226,22 +1276,51 @@ class SiteTour {
       recruiter: [
         { page: '/', id: 'hero',
           title: "The 60-second pitch",
-          body: "Seven-plus years in regulated fintech. BI platform owner. Full-stack engineer. Currently available." },
+          body: "Seven-plus years in regulated fintech. BI platform owner. Full-stack engineer. Currently available.",
+          details: [
+            "7 stops · ~60 seconds",
+            "Skip or finish anytime"
+          ] },
         { page: '/', id: 'experience',
           title: "The receipts",
-          body: "1,000+ users on my reporting · 60% manual reporting eliminated via Python · AI-augmented Snowflake testing platform — solo build. Plus seven years of compliance-grade delivery." },
+          body: "Seven years of compliance-grade delivery, with measurable outcomes.",
+          details: [
+            "1,000+ users on my reporting",
+            "60% manual reporting eliminated via Python",
+            "AI-augmented Snowflake testing platform — solo build"
+          ] },
         { page: '/', id: 'projects-partnerpulse',
           title: "Solo-shipped, in production",
-          body: "PartnerPulse, The Builder, and IronLog — three platforms architected and shipped end-to-end. Discovery to deploy. No team." },
+          body: "Three platforms architected and shipped end-to-end. Discovery to deploy. No team.",
+          details: [
+            "PartnerPulse — relationship analytics PWA",
+            "The Builder — CI/CD for analytics",
+            "IronLog — analytics PWA suite"
+          ] },
         { page: '/', id: 'work-external',
           title: "Live in production today",
-          body: "Three apps with real users right now: IronLog (PWA suite), PartnerPulse (analytics), Wiseforge (chat-to-deploy). Click any to verify." },
+          body: "Real users right now — click any to verify.",
+          details: [
+            "IronLog (PWA suite)",
+            "PartnerPulse (analytics)",
+            "Wiseforge (chat-to-deploy)"
+          ] },
         { page: '/', id: 'skills',
           title: "Senior IC across BI · SQL · Full-stack",
-          body: "Deep enough to ship enterprise reporting AND deep enough to build the apps around it. The combination is the differentiator." },
+          body: "Deep enough to ship enterprise reporting AND deep enough to build the apps around it.",
+          details: [
+            "Power BI, Snowflake, semantic models",
+            "TypeScript, PWAs, Cloudflare Workers",
+            "SQL at scale, Python automation"
+          ] },
         { page: '/', id: 'contact',
           title: "Open to senior roles in regulated fintech",
-          body: "Senior engineering, BI / data-platform, or reporting-platform leadership. Email gets the fastest reply; résumé is one click." },
+          body: "Senior engineering, BI / data-platform, or reporting-platform leadership.",
+          details: [
+            "Email gets the fastest reply",
+            "Résumé is one click",
+            "Same-day reply most weekdays"
+          ] },
         { page: '/', isRecap: true,
           title: "That's the snapshot.",
           body: "Grab the résumé for the paper trail or send a note — I usually reply same day." }
@@ -1249,16 +1328,36 @@ class SiteTour {
       dashboardDeepDive: [
         { page: '/pages/dashboard.html', id: 'dashboard-header',
           title: "Operations Dashboard — the command center",
-          body: "Reporting metadata up top, live KPI quickview to the right. Designed for ops leadership to see system state in one glance — built solo to demonstrate how I think about operational tooling." },
+          body: "Designed for ops leadership to see system state in one glance — built solo.",
+          details: [
+            "Reporting metadata up top",
+            "Live KPI quickview to the right",
+            "Hand-built to show how I think about ops tooling"
+          ] },
         { page: '/pages/dashboard.html', id: 'dashboard-views',
           title: "Saved views switch focus instantly",
-          body: "Click any chip to filter the entire dashboard by team, priority, or status — every panel below updates without a page reload." },
+          body: "Click any chip to filter the entire dashboard — every panel below updates without a page reload.",
+          details: [
+            "Filter by team, priority, or status",
+            "Zero round-trips — pure client-side state",
+            "URL-shareable view if needed"
+          ] },
         { page: '/pages/dashboard.html', id: 'dashboard-brief',
           title: "Exec-ready summary",
-          body: "The kind of one-pager I write for leadership weekly. Headlines first, supporting bullets, all updating with the underlying data." },
+          body: "The kind of one-pager I write for leadership weekly.",
+          details: [
+            "Headlines first, supporting bullets after",
+            "All numbers update with the active filter",
+            "Print-friendly layout under the hood"
+          ] },
         { page: '/pages/dashboard.html', id: 'dashboard-workload',
           title: "Live workload across squads",
-          body: "Status colors, progress bars, meta. Every card reflects the active filters above — same pattern I use for production ops dashboards at work." },
+          body: "Status colors, progress bars, meta — every card reflects the active filters above.",
+          details: [
+            "Same pattern I use for production ops dashboards",
+            "Accessible color choices, not just signal-by-hue",
+            "Cards stay scannable as data grows"
+          ] },
         { page: '/pages/dashboard.html', isRecap: true,
           recapBackHref: '/', recapBackLabel: "← Back to portfolio",
           title: "That's the demo.",
@@ -1280,11 +1379,16 @@ class SiteTour {
     }
     this.updateChipText();
 
-    // ?tour=recruiter|full overrides the prompt — useful for sharing direct links
+    // ?tour=recruiter|full|dashboardDeepDive (optionally &step=N) overrides the
+    // prompt — useful for sharing direct links into a specific step.
     const urlMode = this.readUrlMode();
     if (urlMode) {
       this.clearState();
-      setTimeout(() => this.start(urlMode), this.reduceMotion ? 0 : 200);
+      const startIdx = this.readUrlStep();
+      setTimeout(
+        () => this.start(urlMode, startIdx == null ? undefined : startIdx),
+        this.reduceMotion ? 0 : 200
+      );
       return;
     }
 
@@ -1306,7 +1410,18 @@ class SiteTour {
     try {
       const params = new URLSearchParams(window.location.search);
       const v = params.get('tour');
-      if (v === 'recruiter' || v === 'full') return v;
+      if (v === 'recruiter' || v === 'full' || v === 'dashboardDeepDive') return v;
+    } catch (e) {}
+    return null;
+  }
+
+  readUrlStep() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get('step');
+      if (raw == null) return null;
+      const v = parseInt(raw, 10);
+      if (Number.isFinite(v) && v >= 1) return v - 1; // 1-based to 0-based
     } catch (e) {}
     return null;
   }
@@ -1348,7 +1463,19 @@ class SiteTour {
 
   saveState(extras) {
     try {
+      // Preserve a stashed `parent` (set when entering a deep-dive) across
+      // routine state writes — otherwise every goTo within the deep-dive
+      // would erase the parent reference and we'd lose the resume point.
+      let prevParent = null;
+      try {
+        const raw = sessionStorage.getItem(this.stateKey);
+        if (raw) {
+          const prev = JSON.parse(raw);
+          if (prev && prev.parent) prevParent = prev.parent;
+        }
+      } catch (e) {}
       const payload = {
+        ...(prevParent ? { parent: prevParent } : {}),
         mode: this.mode,
         index: this.currentIndex,
         ...(extras || {})
@@ -1359,6 +1486,15 @@ class SiteTour {
 
   clearState() {
     try { sessionStorage.removeItem(this.stateKey); } catch (e) {}
+  }
+
+  // Returns the parent-tour reference stashed by enterDeepDive, or null.
+  getParent() {
+    const state = this.loadState();
+    if (state && state.parent && this.tourSets[state.parent.mode]) {
+      return state.parent;
+    }
+    return null;
   }
 
   logEvent(name, data) {
@@ -1554,6 +1690,7 @@ class SiteTour {
       </div>
       <h3 id="tour-tooltip-title" class="tour-tooltip__title" data-tour-title></h3>
       <p id="tour-tooltip-body" class="tour-tooltip__body" data-tour-body></p>
+      <ul class="tour-tooltip__details" data-tour-details hidden></ul>
       <a class="tour-tooltip__detail" data-tour-detail hidden>Open detail →</a>
       <button type="button" class="tour-tooltip__deepdive" data-tour-deepdive hidden></button>
       <div class="tour-tooltip__recap" data-tour-recap hidden>
@@ -1577,6 +1714,7 @@ class SiteTour {
     this.elements.tooltip = tooltip;
     this.elements.title = tooltip.querySelector('[data-tour-title]');
     this.elements.body = tooltip.querySelector('[data-tour-body]');
+    this.elements.details = tooltip.querySelector('[data-tour-details]');
     this.elements.counter = tooltip.querySelector('[data-tour-step-counter]');
     this.elements.modeBadge = tooltip.querySelector('[data-tour-mode-badge]');
     this.elements.detail = tooltip.querySelector('[data-tour-detail]');
@@ -1596,6 +1734,12 @@ class SiteTour {
       const step = this.steps[this.currentIndex];
       if (!step || !step.recapBackHref) return;
       e.preventDefault();
+
+      // If a parent tour is waiting, route the user back into it rather than
+      // dumping them on the destination page with no tour state.
+      const parent = this.getParent();
+      if (parent && this.resumeParent(parent)) return;
+
       this.clearState();
       this.logEvent('tour_back_to_portfolio', { from: this.mode });
       this.navigateTo(step.recapBackHref);
@@ -1639,8 +1783,50 @@ class SiteTour {
     announceToScreenReader(`${mode === 'recruiter' ? 'Recruiter' : (mode === 'dashboardDeepDive' ? 'Dashboard' : 'Full')} tour started`);
   }
 
+  // Resume the parent tour at the step after where the user branched off.
+  // Used both when the deep-dive recap's Finish button is hit and when the
+  // recap "Back to portfolio" button is clicked.
+  resumeParent(parent) {
+    const targetSet = this.tourSets[parent.mode];
+    if (!targetSet) return false;
+    const nextIndex = Math.min(parent.index + 1, targetSet.length - 1);
+    const nextStep = targetSet[nextIndex];
+
+    // Move into the parent tour. Wipe the deep-dive's state record (which
+    // carries the parent reference) before saving the new clean parent state,
+    // so we don't accidentally chain into another resume.
+    this.mode = parent.mode;
+    this.steps = targetSet;
+    this.currentIndex = nextIndex;
+    this.clearState();
+
+    const onSamePage = !nextStep.page || this.pageMatches(nextStep.page);
+    if (!onSamePage) {
+      this.saveState({ autoResume: true });
+      this.logEvent('tour_deepdive_return', { mode: parent.mode, to: nextIndex, crossPage: true });
+      this.navigateTo(nextStep.page);
+      return true;
+    }
+
+    this.saveState();
+    this.rebuildProgress();
+    this.renderStep();
+    this.place();
+    this.logEvent('tour_deepdive_return', { mode: parent.mode, to: nextIndex });
+    announceToScreenReader(`Resuming tour at step ${nextIndex + 1} of ${targetSet.length}`);
+    return true;
+  }
+
   end(completed) {
     if (!this.active) return;
+
+    // Finishing a deep-dive that has a parent waiting? Resume the parent
+    // instead of tearing the tour down entirely. (Skip = end everything.)
+    if (completed) {
+      const parent = this.getParent();
+      if (parent && this.resumeParent(parent)) return;
+    }
+
     this.active = false;
     this.clearState();
 
@@ -1673,7 +1859,7 @@ class SiteTour {
     });
     if (immediate) {
       // Also clear references to inner nodes so buildOverlay rebuilds cleanly
-      ['title', 'body', 'counter', 'modeBadge', 'detail', 'deepDiveBtn', 'recap',
+      ['title', 'body', 'details', 'counter', 'modeBadge', 'detail', 'deepDiveBtn', 'recap',
        'recapBackBtn', 'prevBtn', 'nextBtn', 'skipBtn', 'progress'].forEach(k => {
         this.elements[k] = null;
       });
@@ -1717,16 +1903,22 @@ class SiteTour {
     if (!step || !step.deepDive) return;
     const { mode } = step.deepDive;
     if (!this.tourSets[mode]) return;
+
+    // Stash the current tour as `parent` so we can resume it when the
+    // deep-dive ends.
+    const parent = { mode: this.mode, index: this.currentIndex };
+
     const targetSet = this.tourSets[mode];
     const firstStep = targetSet[0];
     this.mode = mode;
     this.steps = targetSet;
     this.currentIndex = 0;
-    this.saveState({ index: 0, autoResume: true });
-    this.logEvent('tour_deepdive_enter', { mode });
+    this.saveState({ index: 0, autoResume: true, parent });
+    this.logEvent('tour_deepdive_enter', { mode, parent });
     if (firstStep.page && !this.pageMatches(firstStep.page)) {
       this.navigateTo(firstStep.page);
     } else {
+      this.rebuildProgress();
       this.renderStep();
       this.place();
     }
@@ -1793,6 +1985,21 @@ class SiteTour {
     this.elements.body.textContent = step.body;
     this.elements.counter.textContent = `${this.currentIndex + 1} / ${this.steps.length}`;
 
+    // Optional bullet details — populated via DOM API to keep content escaped
+    if (this.elements.details) {
+      this.elements.details.innerHTML = '';
+      if (Array.isArray(step.details) && step.details.length) {
+        step.details.forEach(text => {
+          const li = document.createElement('li');
+          li.textContent = text;
+          this.elements.details.appendChild(li);
+        });
+        this.elements.details.hidden = false;
+      } else {
+        this.elements.details.hidden = true;
+      }
+    }
+
     // Mode badge
     if (this.mode === 'recruiter') {
       this.elements.modeBadge.hidden = false;
@@ -1833,9 +2040,15 @@ class SiteTour {
     // Recap card
     this.elements.recap.hidden = !step.isRecap;
     this.elements.tooltip.classList.toggle('is-recap', !!step.isRecap);
+    const parentTour = step.isRecap ? this.getParent() : null;
     if (step.isRecap && step.recapBackHref) {
       this.elements.recapBackBtn.hidden = false;
-      this.elements.recapBackBtn.textContent = step.recapBackLabel || '← Back';
+      // When a parent tour is waiting, re-label this from "back to portfolio"
+      // to "resume tour" so the user knows it puts them back where they were.
+      const defaultLabel = step.recapBackLabel || '← Back';
+      this.elements.recapBackBtn.textContent = parentTour
+        ? `← Resume ${parentTour.mode === 'recruiter' ? 'recruiter snapshot' : 'full tour'}`
+        : defaultLabel;
       this.elements.recapBackBtn.href = step.recapBackHref;
     } else {
       this.elements.recapBackBtn.hidden = true;
@@ -1844,7 +2057,15 @@ class SiteTour {
     // Prev/Next buttons
     this.elements.prevBtn.disabled = this.currentIndex === 0;
     const isLast = this.currentIndex === this.steps.length - 1;
-    this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
+    if (isLast && parentTour) {
+      this.elements.nextBtn.textContent = 'Resume tour →';
+    } else {
+      this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
+    }
+
+    // Skip and Finish do the same thing on the recap; hide Skip there so
+    // Finish is the single explicit end-of-tour action.
+    if (this.elements.skipBtn) this.elements.skipBtn.hidden = !!step.isRecap;
 
     // Progress dots
     Array.from(this.elements.progress.children).forEach((dot, i) => {
@@ -1870,6 +2091,7 @@ class SiteTour {
       this.elements.overlay.classList.add('is-visible');
       this.elements.spotlight.classList.remove('is-visible');
       this.elements.tooltip.classList.add('is-centered');
+      this.elements.tooltip.classList.remove('has-arrow', 'tour-arrow--up', 'tour-arrow--down');
       this.elements.tooltip.style.top = '';
       this.elements.tooltip.style.left = '';
       return;
@@ -1884,13 +2106,60 @@ class SiteTour {
       this.elements.overlay.classList.add('is-visible');
       this.elements.spotlight.classList.remove('is-visible');
       this.elements.tooltip.classList.add('is-centered');
+      this.elements.tooltip.classList.remove('has-arrow', 'tour-arrow--up', 'tour-arrow--down');
       return;
     }
 
-    const behavior = this.reduceMotion ? 'auto' : 'smooth';
-    target.scrollIntoView({ block: 'center', behavior });
+    this.scrollTargetIntoView(target);
+    this.waitForScrollIdle(target, () => this.placeAroundTarget(target));
+  }
 
-    setTimeout(() => this.placeAroundTarget(target), this.reduceMotion ? 0 : 380);
+  // Scroll the highlighted element into a sensible viewport slot.
+  // On phones the tooltip is pinned to the bottom 12px, so centering the
+  // target hides it behind the tooltip — push it to the upper third instead.
+  scrollTargetIntoView(target) {
+    const behavior = this.reduceMotion ? 'auto' : 'smooth';
+    const isMobile = window.innerWidth <= 640;
+    const rect = target.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const targetAbsTop = rect.top + window.pageYOffset;
+
+    let offset;
+    if (isMobile) {
+      // Park top of target at ~18% of viewport, leaving room for the
+      // bottom-pinned tooltip card.
+      offset = Math.max(72, Math.round(vh * 0.18));
+    } else {
+      // Centered when it fits; otherwise leave a healthy top margin.
+      offset = Math.max(80, Math.round((vh - rect.height) / 2));
+    }
+
+    window.scrollTo({ top: Math.max(0, targetAbsTop - offset), behavior });
+  }
+
+  // Wait until the target's rect has been stable for two consecutive frames
+  // before placing the tooltip — replaces the old fixed 380ms timeout.
+  waitForScrollIdle(target, callback) {
+    if (this.reduceMotion) { callback(); return; }
+    let lastTop = null;
+    let stable = 0;
+    let frames = 0;
+    const maxFrames = 60; // ~1s safety cap @ 60fps
+    const tick = () => {
+      if (!this.active) return;
+      frames++;
+      const top = target.getBoundingClientRect().top;
+      if (lastTop !== null && Math.abs(top - lastTop) < 0.5) {
+        stable++;
+        if (stable >= 2) { callback(); return; }
+      } else {
+        stable = 0;
+      }
+      lastTop = top;
+      if (frames >= maxFrames) { callback(); return; }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
 
   placeAroundTarget(target) {
@@ -1923,12 +2192,16 @@ class SiteTour {
     const spaceAbove = top;
 
     let tipTop;
+    let placement; // 'below' | 'above' | 'pinned'
     if (spaceBelow >= tipHeight + gap + 12) {
       tipTop = bottom + gap;
+      placement = 'below';
     } else if (spaceAbove >= tipHeight + gap + 12) {
       tipTop = top - tipHeight - gap;
+      placement = 'above';
     } else {
       tipTop = Math.max(12, vh - tipHeight - 12);
+      placement = 'pinned';
     }
 
     let tipLeft = left + (width - tipWidth) / 2;
@@ -1936,6 +2209,40 @@ class SiteTour {
 
     this.elements.tooltip.style.top = `${tipTop}px`;
     this.elements.tooltip.style.left = `${tipLeft}px`;
+
+    this.updateArrow(placement, { top, bottom, left, right, tipTop, tipHeight });
+  }
+
+  // Drives the small caret on the tooltip pointing at the spotlight.
+  // Direction: 'up' if tooltip is below the spotlight, 'down' if above.
+  // Horizontal position: the spotlight's center, clamped inside the tooltip.
+  updateArrow(placement, geom) {
+    const tt = this.elements.tooltip;
+    if (!tt) return;
+    tt.classList.remove('has-arrow', 'tour-arrow--up', 'tour-arrow--down');
+
+    let direction;
+    if (placement === 'below') {
+      direction = 'up';
+    } else if (placement === 'above') {
+      direction = 'down';
+    } else {
+      // Pinned (no vertical room either side) — arrow points toward whichever
+      // side the spotlight sits on relative to the tooltip.
+      const spotCenterY = (geom.top + geom.bottom) / 2;
+      direction = spotCenterY < geom.tipTop ? 'up' : 'down';
+    }
+
+    requestAnimationFrame(() => {
+      if (!this.active || !this.elements.tooltip) return;
+      const actual = this.elements.tooltip.getBoundingClientRect();
+      const spotCenterX = (geom.left + geom.right) / 2;
+      const minX = 20;
+      const maxX = Math.max(minX + 1, actual.width - 20);
+      const arrowX = Math.max(minX, Math.min(spotCenterX - actual.left, maxX));
+      this.elements.tooltip.style.setProperty('--arrow-x', `${arrowX}px`);
+      this.elements.tooltip.classList.add('has-arrow', `tour-arrow--${direction}`);
+    });
   }
 }
 
