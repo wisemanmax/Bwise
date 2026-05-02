@@ -1881,39 +1881,6 @@ function buildSparklines(loans, windowDays) {
   return series;
 }
 
-function Sparkline({ values, color, inverse }) {
-  // Empty state — flat dashed line
-  if (!values || values.length === 0 || values.every(v => v === 0)) {
-    return <div className="sparkline-empty"></div>;
-  }
-
-  const W = 100, H = 26, PAD = 2;
-  const max = Math.max(...values);
-  const min = Math.min(...values);
-  const range = Math.max(max - min, max * 0.001 || 0.001);
-
-  const points = values.map((v, i) => {
-    const x = (i / (values.length - 1)) * W;
-    const y = H - PAD - ((v - min) / range) * (H - 2 * PAD);
-    return [x, y];
-  });
-
-  const pathD = points.map(([x, y], i) =>
-    (i === 0 ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2)).join(' ');
-  const areaD = pathD + ' L ' + W + ' ' + H + ' L 0 ' + H + ' Z';
-
-  const last = points[points.length - 1];
-
-  return (
-    <svg className="sparkline" viewBox={'0 0 ' + W + ' ' + H} preserveAspectRatio="none">
-      <path d={areaD} fill={color} fillOpacity="0.12" />
-      <path d={pathD} stroke={color} strokeWidth="1.5" fill="none"
-        vectorEffect="non-scaling-stroke" />
-      <circle cx={last[0]} cy={last[1]} r="1.8" fill={color} vectorEffect="non-scaling-stroke" />
-    </svg>
-  );
-}
-
 // ============================================================
 // ANOMALY DETECTION (±2σ)
 // ============================================================
@@ -2373,7 +2340,9 @@ function detectAnomaly(series) {
 let _sparkUid = 0;
 function Sparkline({ values, color, width = 110, height = 28 }) {
   const id = useMemo(() => 'sl' + (++_sparkUid), []);
-  if (!values || values.length === 0) return null;
+  if (!values || values.length === 0 || values.every(v => v === 0)) {
+    return <div className="sparkline-empty"></div>;
+  }
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || 1;
