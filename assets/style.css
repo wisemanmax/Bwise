@@ -3405,7 +3405,41 @@ table {
     transform: translateY(8px);
     transition: opacity 0.22s ease, transform 0.22s ease, top var(--transition), left var(--transition);
     pointer-events: auto;
+    --arrow-x: 50%;
 }
+
+/* Caret connecting the tooltip to the spotlight. Triangle made from borders
+   so it inherits no background gradient mismatch. */
+.tour-tooltip::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 9px solid transparent;
+    pointer-events: none;
+    display: none;
+    left: var(--arrow-x);
+    margin-left: -9px;
+    transition: left var(--transition);
+}
+
+.tour-tooltip.has-arrow::before { display: block; }
+
+/* Tooltip below spotlight → caret on top edge, points up */
+.tour-tooltip.tour-arrow--up::before {
+    top: -18px;
+    border-bottom-color: #0f172a;
+}
+
+/* Tooltip above spotlight → caret on bottom edge, points down */
+.tour-tooltip.tour-arrow--down::before {
+    bottom: -18px;
+    top: auto;
+    border-top-color: #1e293b;
+}
+
+/* No arrow on the centered recap card — there's no spotlight to point at */
+.tour-tooltip.is-centered::before { display: none; }
 
 .tour-tooltip.is-visible {
     opacity: 1;
@@ -3558,7 +3592,14 @@ table {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+/* On the recap, the bottom action row is just "Back" (Finish is implied by
+   the résumé / email CTAs above). Tighten its top border so it reads as a
+   continuation of the recap card. */
+.tour-tooltip.is-recap .tour-tooltip__actions {
+    margin-top: 4px;
 }
 
 .tour-tooltip__recap .tour-tooltip__btn {
@@ -3656,6 +3697,10 @@ table {
         bottom: 12px;
         top: auto !important;
     }
+
+    /* Tooltip is always pinned to the bottom on mobile — only an upward
+       caret is meaningful; a downward one would render off-screen. */
+    .tour-tooltip.tour-arrow--down::before { display: none; }
 
     .tour-tooltip.is-centered {
         left: 12px !important;

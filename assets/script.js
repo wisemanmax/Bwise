@@ -1379,11 +1379,16 @@ class SiteTour {
     }
     this.updateChipText();
 
-    // ?tour=recruiter|full overrides the prompt — useful for sharing direct links
+    // ?tour=recruiter|full|dashboardDeepDive (optionally &step=N) overrides the
+    // prompt — useful for sharing direct links into a specific step.
     const urlMode = this.readUrlMode();
     if (urlMode) {
       this.clearState();
-      setTimeout(() => this.start(urlMode), this.reduceMotion ? 0 : 200);
+      const startIdx = this.readUrlStep();
+      setTimeout(
+        () => this.start(urlMode, startIdx == null ? undefined : startIdx),
+        this.reduceMotion ? 0 : 200
+      );
       return;
     }
 
@@ -1405,7 +1410,18 @@ class SiteTour {
     try {
       const params = new URLSearchParams(window.location.search);
       const v = params.get('tour');
-      if (v === 'recruiter' || v === 'full') return v;
+      if (v === 'recruiter' || v === 'full' || v === 'dashboardDeepDive') return v;
+    } catch (e) {}
+    return null;
+  }
+
+  readUrlStep() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get('step');
+      if (raw == null) return null;
+      const v = parseInt(raw, 10);
+      if (Number.isFinite(v) && v >= 1) return v - 1; // 1-based to 0-based
     } catch (e) {}
     return null;
   }
@@ -1962,6 +1978,10 @@ class SiteTour {
     const isLast = this.currentIndex === this.steps.length - 1;
     this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
 
+    // Skip and Finish do the same thing on the recap; hide Skip there so
+    // Finish is the single explicit end-of-tour action.
+    if (this.elements.skipBtn) this.elements.skipBtn.hidden = !!step.isRecap;
+
     // Progress dots
     Array.from(this.elements.progress.children).forEach((dot, i) => {
       dot.classList.toggle('is-current', i === this.currentIndex);
@@ -1986,6 +2006,7 @@ class SiteTour {
       this.elements.overlay.classList.add('is-visible');
       this.elements.spotlight.classList.remove('is-visible');
       this.elements.tooltip.classList.add('is-centered');
+      this.elements.tooltip.classList.remove('has-arrow', 'tour-arrow--up', 'tour-arrow--down');
       this.elements.tooltip.style.top = '';
       this.elements.tooltip.style.left = '';
       return;
@@ -2000,13 +2021,60 @@ class SiteTour {
       this.elements.overlay.classList.add('is-visible');
       this.elements.spotlight.classList.remove('is-visible');
       this.elements.tooltip.classList.add('is-centered');
+      this.elements.tooltip.classList.remove('has-arrow', 'tour-arrow--up', 'tour-arrow--down');
       return;
     }
 
-    const behavior = this.reduceMotion ? 'auto' : 'smooth';
-    target.scrollIntoView({ block: 'center', behavior });
+    this.scrollTargetIntoView(target);
+    this.waitForScrollIdle(target, () => this.placeAroundTarget(target));
+  }
 
-    setTimeout(() => this.placeAroundTarget(target), this.reduceMotion ? 0 : 380);
+  // Scroll the highlighted element into a sensible viewport slot.
+  // On phones the tooltip is pinned to the bottom 12px, so centering the
+  // target hides it behind the tooltip — push it to the upper third instead.
+  scrollTargetIntoView(target) {
+    const behavior = this.reduceMotion ? 'auto' : 'smooth';
+    const isMobile = window.innerWidth <= 640;
+    const rect = target.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const targetAbsTop = rect.top + window.pageYOffset;
+
+    let offset;
+    if (isMobile) {
+      // Park top of target at ~18% of viewport, leaving room for the
+      // bottom-pinned tooltip card.
+      offset = Math.max(72, Math.round(vh * 0.18));
+    } else {
+      // Centered when it fits; otherwise leave a healthy top margin.
+      offset = Math.max(80, Math.round((vh - rect.height) / 2));
+    }
+
+    window.scrollTo({ top: Math.max(0, targetAbsTop - offset), behavior });
+  }
+
+  // Wait until the target's rect has been stable for two consecutive frames
+  // before placing the tooltip — replaces the old fixed 380ms timeout.
+  waitForScrollIdle(target, callback) {
+    if (this.reduceMotion) { callback(); return; }
+    let lastTop = null;
+    let stable = 0;
+    let frames = 0;
+    const maxFrames = 60; // ~1s safety cap @ 60fps
+    const tick = () => {
+      if (!this.active) return;
+      frames++;
+      const top = target.getBoundingClientRect().top;
+      if (lastTop !== null && Math.abs(top - lastTop) < 0.5) {
+        stable++;
+        if (stable >= 2) { callback(); return; }
+      } else {
+        stable = 0;
+      }
+      lastTop = top;
+      if (frames >= maxFrames) { callback(); return; }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
 
   placeAroundTarget(target) {
@@ -2039,12 +2107,16 @@ class SiteTour {
     const spaceAbove = top;
 
     let tipTop;
+    let placement; // 'below' | 'above' | 'pinned'
     if (spaceBelow >= tipHeight + gap + 12) {
       tipTop = bottom + gap;
+      placement = 'below';
     } else if (spaceAbove >= tipHeight + gap + 12) {
       tipTop = top - tipHeight - gap;
+      placement = 'above';
     } else {
       tipTop = Math.max(12, vh - tipHeight - 12);
+      placement = 'pinned';
     }
 
     let tipLeft = left + (width - tipWidth) / 2;
@@ -2052,6 +2124,40 @@ class SiteTour {
 
     this.elements.tooltip.style.top = `${tipTop}px`;
     this.elements.tooltip.style.left = `${tipLeft}px`;
+
+    this.updateArrow(placement, { top, bottom, left, right, tipTop, tipHeight });
+  }
+
+  // Drives the small caret on the tooltip pointing at the spotlight.
+  // Direction: 'up' if tooltip is below the spotlight, 'down' if above.
+  // Horizontal position: the spotlight's center, clamped inside the tooltip.
+  updateArrow(placement, geom) {
+    const tt = this.elements.tooltip;
+    if (!tt) return;
+    tt.classList.remove('has-arrow', 'tour-arrow--up', 'tour-arrow--down');
+
+    let direction;
+    if (placement === 'below') {
+      direction = 'up';
+    } else if (placement === 'above') {
+      direction = 'down';
+    } else {
+      // Pinned (no vertical room either side) — arrow points toward whichever
+      // side the spotlight sits on relative to the tooltip.
+      const spotCenterY = (geom.top + geom.bottom) / 2;
+      direction = spotCenterY < geom.tipTop ? 'up' : 'down';
+    }
+
+    requestAnimationFrame(() => {
+      if (!this.active || !this.elements.tooltip) return;
+      const actual = this.elements.tooltip.getBoundingClientRect();
+      const spotCenterX = (geom.left + geom.right) / 2;
+      const minX = 20;
+      const maxX = Math.max(minX + 1, actual.width - 20);
+      const arrowX = Math.max(minX, Math.min(spotCenterX - actual.left, maxX));
+      this.elements.tooltip.style.setProperty('--arrow-x', `${arrowX}px`);
+      this.elements.tooltip.classList.add('has-arrow', `tour-arrow--${direction}`);
+    });
   }
 }
 
