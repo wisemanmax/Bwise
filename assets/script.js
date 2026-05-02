@@ -1163,72 +1163,12 @@ LearningLibrary.cache = null;
 
 class SiteTour {
   constructor() {
-    this.storageKey = 'byheir-tour-seen-v1';
-    this.steps = [
-      {
-        id: 'hero',
-        title: "Welcome — here's the 90-second tour",
-        body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities."
-      },
-      {
-        id: 'about',
-        title: "What I actually do",
-        body: "Power BI / Snowflake reporting at Sallie Mae plus full-stack tools when product gaps need filling. The bridge between BI, ops, compliance, and engineering."
-      },
-      {
-        id: 'experience',
-        title: "Seven years at Sallie Mae — with the receipts",
-        body: "Owns reporting for 1,000+ users, cut manual reporting 60% with Python automation, and architected an AI-augmented testing platform for Snowflake. The bullets behind the headline are right here."
-      },
-      {
-        id: 'projects-partnerpulse',
-        title: "PartnerPulse — solo, in production",
-        body: "A relationship-analytics PWA on a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers). One shared view of partner health and engagement.",
-        detailHref: 'https://partnerpulse.byheir.com',
-        detailLabel: "Visit PartnerPulse",
-        detailExternal: true
-      },
-      {
-        id: 'projects-builder',
-        title: "The Builder — CI/CD discipline for analytics",
-        body: "Multi-stage data validation with branch review, change auditing, and merge controls. Enterprise release practices applied to BI deliverables.",
-        detailHref: 'pages/the-builder.html',
-        detailLabel: "Read the case study"
-      },
-      {
-        id: 'work-demo',
-        title: "Operations Dashboard — click in and explore",
-        body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites. A working demo of how I think about operational tooling.",
-        detailHref: 'pages/dashboard.html',
-        detailLabel: "Open the demo"
-      },
-      {
-        id: 'work-external',
-        title: "Three live apps in production",
-        body: "Ironlog (analytics PWA suite), PartnerPulse, and Wiseforge (chat-to-deploy builder). Each link opens in a new tab so you don't lose your place in the tour."
-      },
-      {
-        id: 'skills',
-        title: "BI · SQL · Full-stack",
-        body: "The combination is the point — deep enough to ship enterprise reporting, deep enough to build the supporting apps myself."
-      },
-      {
-        id: 'code-samples',
-        title: "See how I write code",
-        body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview. Signal beyond the bullet points."
-      },
-      {
-        id: 'contact',
-        title: "Open to roles in regulated fintech",
-        body: "Senior engineering, BI / data-platform, or reporting-platform roles. Email is the fastest path."
-      },
-      {
-        isRecap: true,
-        title: "That's the tour.",
-        body: "Two ways forward: grab the résumé for a paper trail, or send a note — I usually reply the same day."
-      }
-    ];
+    this.seenKey = 'byheir-tour-seen-v1';
+    this.stateKey = 'byheir-tour-state-v1';
+    this.tourSets = SiteTour.buildTourSets();
 
+    this.mode = null;
+    this.steps = [];
     this.currentIndex = -1;
     this.active = false;
     this.lastFocus = null;
@@ -1237,23 +1177,95 @@ class SiteTour {
 
     this.handleKeydown = this.handleKeydown.bind(this);
     this.handleFocusTrap = this.handleFocusTrap.bind(this);
-    this._rafPending = false;
     this.reposition = this.reposition.bind(this);
+    this._rafPending = false;
 
     this.init();
   }
 
-  reposition() {
-    if (!this.active) return;
-    if (this._rafPending) return;
-    this._rafPending = true;
-    requestAnimationFrame(() => {
-      this._rafPending = false;
-      const step = this.steps[this.currentIndex];
-      if (!step || step.isRecap || !step.id) return;
-      const target = document.querySelector(`[data-tour-id="${step.id}"]`);
-      if (target) this.placeAroundTarget(target);
-    });
+  static buildTourSets() {
+    return {
+      full: [
+        { page: '/', id: 'hero',
+          title: "Welcome — here's the 90-second tour",
+          body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities." },
+        { page: '/', id: 'about',
+          title: "What I actually do",
+          body: "Power BI / Snowflake reporting at Sallie Mae plus full-stack tools when product gaps need filling. The bridge between BI, ops, compliance, and engineering." },
+        { page: '/', id: 'experience',
+          title: "Seven years at Sallie Mae — with the receipts",
+          body: "Owns reporting for 1,000+ users, cut manual reporting 60% with Python automation, and architected an AI-augmented testing platform for Snowflake. The bullets behind the headline are right here." },
+        { page: '/', id: 'projects-partnerpulse',
+          title: "PartnerPulse — solo, in production",
+          body: "A relationship-analytics PWA on a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers). One shared view of partner health and engagement.",
+          detailHref: 'https://partnerpulse.byheir.com', detailLabel: "Visit PartnerPulse", detailExternal: true },
+        { page: '/', id: 'projects-builder',
+          title: "The Builder — CI/CD discipline for analytics",
+          body: "Multi-stage data validation with branch review, change auditing, and merge controls. Enterprise release practices applied to BI deliverables.",
+          detailHref: '/pages/the-builder.html', detailLabel: "Read the case study" },
+        { page: '/', id: 'work-demo',
+          title: "Operations Dashboard — click in and explore",
+          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites. A working demo of how I think about operational tooling.",
+          detailHref: '/pages/dashboard.html', detailLabel: "Open the demo",
+          deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
+        { page: '/', id: 'work-external',
+          title: "Three live apps in production",
+          body: "Ironlog (analytics PWA suite), PartnerPulse, and Wiseforge (chat-to-deploy builder). Each link opens in a new tab so you don't lose your place in the tour." },
+        { page: '/', id: 'skills',
+          title: "BI · SQL · Full-stack",
+          body: "The combination is the point — deep enough to ship enterprise reporting, deep enough to build the supporting apps myself." },
+        { page: '/', id: 'code-samples',
+          title: "See how I write code",
+          body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview. Signal beyond the bullet points." },
+        { page: '/', id: 'contact',
+          title: "Open to roles in regulated fintech",
+          body: "Senior engineering, BI / data-platform, or reporting-platform roles. Email is the fastest path." },
+        { page: '/', isRecap: true,
+          title: "That's the tour.",
+          body: "Two ways forward: grab the résumé for a paper trail, or send a note — I usually reply the same day." }
+      ],
+      recruiter: [
+        { page: '/', id: 'hero',
+          title: "The 60-second pitch",
+          body: "Seven-plus years in regulated fintech. BI platform owner. Full-stack engineer. Currently available." },
+        { page: '/', id: 'experience',
+          title: "The receipts",
+          body: "1,000+ users on my reporting · 60% manual reporting eliminated via Python · AI-augmented Snowflake testing platform — solo build. Plus seven years of compliance-grade delivery." },
+        { page: '/', id: 'projects-partnerpulse',
+          title: "Solo-shipped, in production",
+          body: "PartnerPulse, The Builder, and IronLog — three platforms architected and shipped end-to-end. Discovery to deploy. No team." },
+        { page: '/', id: 'work-external',
+          title: "Live in production today",
+          body: "Three apps with real users right now: IronLog (PWA suite), PartnerPulse (analytics), Wiseforge (chat-to-deploy). Click any to verify." },
+        { page: '/', id: 'skills',
+          title: "Senior IC across BI · SQL · Full-stack",
+          body: "Deep enough to ship enterprise reporting AND deep enough to build the apps around it. The combination is the differentiator." },
+        { page: '/', id: 'contact',
+          title: "Open to senior roles in regulated fintech",
+          body: "Senior engineering, BI / data-platform, or reporting-platform leadership. Email gets the fastest reply; résumé is one click." },
+        { page: '/', isRecap: true,
+          title: "That's the snapshot.",
+          body: "Grab the résumé for the paper trail or send a note — I usually reply same day." }
+      ],
+      dashboardDeepDive: [
+        { page: '/pages/dashboard.html', id: 'dashboard-header',
+          title: "Operations Dashboard — the command center",
+          body: "Reporting metadata up top, live KPI quickview to the right. Designed for ops leadership to see system state in one glance — built solo to demonstrate how I think about operational tooling." },
+        { page: '/pages/dashboard.html', id: 'dashboard-views',
+          title: "Saved views switch focus instantly",
+          body: "Click any chip to filter the entire dashboard by team, priority, or status — every panel below updates without a page reload." },
+        { page: '/pages/dashboard.html', id: 'dashboard-brief',
+          title: "Exec-ready summary",
+          body: "The kind of one-pager I write for leadership weekly. Headlines first, supporting bullets, all updating with the underlying data." },
+        { page: '/pages/dashboard.html', id: 'dashboard-workload',
+          title: "Live workload across squads",
+          body: "Status colors, progress bars, meta. Every card reflects the active filters above — same pattern I use for production ops dashboards at work." },
+        { page: '/pages/dashboard.html', isRecap: true,
+          recapBackHref: '/', recapBackLabel: "← Back to portfolio",
+          title: "That's the demo.",
+          body: "This whole dashboard is part of the portfolio — clickable, interactive, hand-built. Head back home for the rest, or take the résumé." }
+      ]
+    };
   }
 
   // ---------------------------------------------------------------- lifecycle
@@ -1264,23 +1276,90 @@ class SiteTour {
     const chip = safeQuery('[data-tour-trigger]');
     if (chip) {
       chip.hidden = false;
-      chip.addEventListener('click', () => this.start());
+      chip.addEventListener('click', () => this.openPrompt());
       this.elements.chip = chip;
     }
 
-    if (!this.hasBeenSeen()) {
-      // Wait for hero to settle before offering the tour
-      setTimeout(() => this.showPrompt(), 1400);
+    const state = this.loadState();
+    if (state && this.tourSets[state.mode]) {
+      if (state.autoResume) {
+        // Cross-page nav we initiated — resume immediately
+        setTimeout(() => this.start(state.mode, state.index), this.reduceMotion ? 0 : 200);
+      } else {
+        // Page reload or external return — offer resume
+        setTimeout(() => this.openPrompt(), 600);
+      }
+    } else if (!this.hasBeenSeen()) {
+      setTimeout(() => this.openPrompt(), 1400);
     }
   }
 
   hasBeenSeen() {
-    try { return localStorage.getItem(this.storageKey) === '1'; }
+    try { return localStorage.getItem(this.seenKey) === '1'; }
     catch (e) { return false; }
   }
 
   markSeen() {
-    try { localStorage.setItem(this.storageKey, '1'); } catch (e) {}
+    try { localStorage.setItem(this.seenKey, '1'); } catch (e) {}
+  }
+
+  loadState() {
+    try {
+      const raw = sessionStorage.getItem(this.stateKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed.mode !== 'string') return null;
+      return parsed;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  saveState(extras) {
+    try {
+      const payload = {
+        mode: this.mode,
+        index: this.currentIndex,
+        ...(extras || {})
+      };
+      sessionStorage.setItem(this.stateKey, JSON.stringify(payload));
+    } catch (e) {}
+  }
+
+  clearState() {
+    try { sessionStorage.removeItem(this.stateKey); } catch (e) {}
+  }
+
+  logEvent(name, data) {
+    try {
+      console.info(`[tour] ${name}`, { mode: this.mode, index: this.currentIndex, ...(data || {}) });
+    } catch (e) {}
+  }
+
+  // ---------------------------------------------------------------- routing
+
+  currentPath() {
+    let p = window.location.pathname || '/';
+    if (p === '' || p === '/') return '/index.html';
+    if (p.endsWith('/')) return p + 'index.html';
+    return p;
+  }
+
+  normalizePage(stepPage) {
+    if (!stepPage || stepPage === '/' || stepPage === 'index.html') return '/index.html';
+    if (stepPage.startsWith('/')) return stepPage;
+    return '/' + stepPage;
+  }
+
+  pageMatches(stepPage) {
+    const want = this.normalizePage(stepPage);
+    const here = this.currentPath();
+    return here === want || here.endsWith(want);
+  }
+
+  navigateTo(stepPage) {
+    const target = this.normalizePage(stepPage);
+    window.location.assign(target);
   }
 
   // ---------------------------------------------------------------- prompt
@@ -1292,30 +1371,108 @@ class SiteTour {
     card.setAttribute('aria-labelledby', 'tour-prompt-title');
     card.setAttribute('aria-describedby', 'tour-prompt-body');
     card.hidden = true;
-    card.innerHTML = `
-      <button type="button" class="tour-prompt__close" aria-label="Dismiss tour offer">×</button>
-      <p class="tour-prompt__eyebrow">First time here?</p>
-      <h2 id="tour-prompt-title" class="tour-prompt__title">Take the 90-second tour</h2>
-      <p id="tour-prompt-body" class="tour-prompt__body">A guided walkthrough of what I built, why, and where to dig deeper.</p>
-      <div class="tour-prompt__actions">
-        <button type="button" class="tour-prompt__btn tour-prompt__btn--primary" data-tour-prompt-start>Start tour</button>
-        <button type="button" class="tour-prompt__btn tour-prompt__btn--ghost" data-tour-prompt-decline>No thanks</button>
-      </div>
-    `;
     document.body.appendChild(card);
     this.elements.prompt = card;
-
-    card.querySelector('[data-tour-prompt-start]').addEventListener('click', () => this.start());
-    card.querySelector('[data-tour-prompt-decline]').addEventListener('click', () => this.dismissPrompt());
-    card.querySelector('.tour-prompt__close').addEventListener('click', () => this.dismissPrompt());
   }
 
-  showPrompt() {
-    if (!this.elements.prompt || this.active) return;
+  renderPickerPrompt() {
+    if (!this.elements.prompt) return;
+    this.elements.prompt.classList.remove('is-resume');
+    this.elements.prompt.innerHTML = `
+      <button type="button" class="tour-prompt__close" aria-label="Dismiss tour offer">×</button>
+      <p class="tour-prompt__eyebrow">First time here?</p>
+      <h2 id="tour-prompt-title" class="tour-prompt__title">Take a guided tour</h2>
+      <p id="tour-prompt-body" class="tour-prompt__body">Built solo. Same engine, two formats — pick the one that fits your time.</p>
+      <div class="tour-prompt__actions tour-prompt__actions--stacked">
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--primary" data-tour-action="start-recruiter">
+          <strong>Recruiter snapshot</strong>
+          <span class="tour-prompt__btn-hint">~60 seconds · headlines + metrics</span>
+        </button>
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--ghost" data-tour-action="start-full">
+          <strong>Full tour</strong>
+          <span class="tour-prompt__btn-hint">~90 seconds · every section, with deep-dive option</span>
+        </button>
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--text" data-tour-action="dismiss">Not now</button>
+      </div>
+    `;
+    this.bindPromptActions();
+  }
+
+  renderResumePrompt(state) {
+    if (!this.elements.prompt) return;
+    const set = this.tourSets[state.mode] || [];
+    const total = set.length;
+    const stepNum = Math.min(Math.max(state.index + 1, 1), total);
+    const modeLabel = state.mode === 'recruiter'
+      ? 'Recruiter snapshot'
+      : (state.mode === 'dashboardDeepDive' ? 'Dashboard deep-dive' : 'Full tour');
+
+    this.elements.prompt.classList.add('is-resume');
+    this.elements.prompt.innerHTML = `
+      <button type="button" class="tour-prompt__close" aria-label="Dismiss">×</button>
+      <p class="tour-prompt__eyebrow">Tour in progress</p>
+      <h2 id="tour-prompt-title" class="tour-prompt__title">Resume where you left off?</h2>
+      <p id="tour-prompt-body" class="tour-prompt__body">${modeLabel} · step <strong>${stepNum} of ${total}</strong></p>
+      <div class="tour-prompt__actions tour-prompt__actions--stacked">
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--primary" data-tour-action="resume">Resume tour →</button>
+        <button type="button" class="tour-prompt__btn tour-prompt__btn--text" data-tour-action="end-resume">End tour</button>
+      </div>
+    `;
+    this.bindPromptActions();
+  }
+
+  bindPromptActions() {
+    if (!this.elements.prompt) return;
+    this.elements.prompt.querySelectorAll('[data-tour-action]').forEach(btn => {
+      btn.addEventListener('click', () => this.handlePromptAction(btn.dataset.tourAction));
+    });
+    const close = this.elements.prompt.querySelector('.tour-prompt__close');
+    if (close) close.addEventListener('click', () => this.dismissPrompt());
+  }
+
+  handlePromptAction(action) {
+    switch (action) {
+      case 'start-recruiter':
+        this.start('recruiter');
+        break;
+      case 'start-full':
+        this.start('full');
+        break;
+      case 'resume': {
+        const state = this.loadState();
+        if (state && this.tourSets[state.mode]) {
+          this.start(state.mode, state.index);
+          this.logEvent('tour_resume');
+        } else {
+          this.renderPickerPrompt();
+        }
+        break;
+      }
+      case 'end-resume':
+        this.clearState();
+        this.dismissPrompt();
+        this.logEvent('tour_end_from_resume');
+        break;
+      case 'dismiss':
+      default:
+        this.dismissPrompt();
+        break;
+    }
+  }
+
+  openPrompt() {
+    if (this.active) return;
+    const state = this.loadState();
+    if (state && this.tourSets[state.mode]) {
+      this.renderResumePrompt(state);
+    } else {
+      this.renderPickerPrompt();
+    }
     this.elements.prompt.hidden = false;
     requestAnimationFrame(() => {
       this.elements.prompt.classList.add('is-visible');
     });
+    this.logEvent('tour_prompt_show');
   }
 
   dismissPrompt() {
@@ -1326,6 +1483,7 @@ class SiteTour {
     }, 250);
     this.markSeen();
     this.pulseChip();
+    this.logEvent('tour_prompt_dismiss');
   }
 
   pulseChip() {
@@ -1358,14 +1516,17 @@ class SiteTour {
     tooltip.tabIndex = -1;
     tooltip.innerHTML = `
       <div class="tour-tooltip__head">
-        <span class="tour-tooltip__step" data-tour-step-counter>1 / ${this.steps.length}</span>
+        <span class="tour-tooltip__step" data-tour-step-counter>1 / 1</span>
+        <span class="tour-tooltip__mode" data-tour-mode-badge hidden></span>
         <button type="button" class="tour-tooltip__skip" data-tour-skip aria-label="Skip tour">Skip ✕</button>
       </div>
       <h3 id="tour-tooltip-title" class="tour-tooltip__title" data-tour-title></h3>
       <p id="tour-tooltip-body" class="tour-tooltip__body" data-tour-body></p>
       <a class="tour-tooltip__detail" data-tour-detail hidden>Open detail →</a>
+      <button type="button" class="tour-tooltip__deepdive" data-tour-deepdive hidden></button>
       <div class="tour-tooltip__recap" data-tour-recap hidden>
-        <a class="tour-tooltip__btn tour-tooltip__btn--primary" href="assets/byheir-wise-resume.pdf" download>Download résumé</a>
+        <a class="tour-tooltip__btn tour-tooltip__btn--ghost" data-tour-recap-back hidden></a>
+        <a class="tour-tooltip__btn tour-tooltip__btn--primary" href="/assets/byheir-wise-resume.pdf" download>Download résumé</a>
         <a class="tour-tooltip__btn tour-tooltip__btn--ghost" href="mailto:byheirw@gmail.com">Email me</a>
       </div>
       <div class="tour-tooltip__progress" data-tour-progress aria-hidden="true"></div>
@@ -1385,8 +1546,11 @@ class SiteTour {
     this.elements.title = tooltip.querySelector('[data-tour-title]');
     this.elements.body = tooltip.querySelector('[data-tour-body]');
     this.elements.counter = tooltip.querySelector('[data-tour-step-counter]');
+    this.elements.modeBadge = tooltip.querySelector('[data-tour-mode-badge]');
     this.elements.detail = tooltip.querySelector('[data-tour-detail]');
+    this.elements.deepDiveBtn = tooltip.querySelector('[data-tour-deepdive]');
     this.elements.recap = tooltip.querySelector('[data-tour-recap]');
+    this.elements.recapBackBtn = tooltip.querySelector('[data-tour-recap-back]');
     this.elements.prevBtn = tooltip.querySelector('[data-tour-prev]');
     this.elements.nextBtn = tooltip.querySelector('[data-tour-next]');
     this.elements.skipBtn = tooltip.querySelector('[data-tour-skip]');
@@ -1395,34 +1559,56 @@ class SiteTour {
     this.elements.prevBtn.addEventListener('click', () => this.prev());
     this.elements.nextBtn.addEventListener('click', () => this.next());
     this.elements.skipBtn.addEventListener('click', () => this.end(false));
-
-    this.elements.progress.innerHTML = this.steps
-      .map((_, i) => `<span class="tour-tooltip__dot" data-step-dot="${i}"></span>`)
-      .join('');
+    this.elements.deepDiveBtn.addEventListener('click', () => this.enterDeepDive());
+    this.elements.recapBackBtn.addEventListener('click', (e) => {
+      const step = this.steps[this.currentIndex];
+      if (!step || !step.recapBackHref) return;
+      e.preventDefault();
+      this.clearState();
+      this.logEvent('tour_back_to_portfolio', { from: this.mode });
+      this.navigateTo(step.recapBackHref);
+    });
 
     tooltip.addEventListener('keydown', this.handleFocusTrap);
   }
 
+  rebuildProgress() {
+    if (!this.elements.progress) return;
+    this.elements.progress.innerHTML = this.steps
+      .map((_, i) => `<span class="tour-tooltip__dot" data-step-dot="${i}"></span>`)
+      .join('');
+  }
+
   // ---------------------------------------------------------------- navigation
 
-  start() {
-    if (this.active) return;
+  start(mode, startIndex) {
+    if (!this.tourSets[mode]) return;
+    if (this.active) {
+      this._teardownOverlay(true);
+    }
+    this.mode = mode;
+    this.steps = this.tourSets[mode];
+    this.currentIndex = -1;
     this.active = true;
+    this.lastFocus = document.activeElement;
     this.dismissPrompt();
     this.markSeen();
-    this.lastFocus = document.activeElement;
     this.buildOverlay();
+    this.rebuildProgress();
     document.body.classList.add('tour-active');
     document.addEventListener('keydown', this.handleKeydown);
     window.addEventListener('resize', this.reposition);
     window.addEventListener('scroll', this.reposition, { passive: true });
-    this.goTo(0);
-    announceToScreenReader('Tour started');
+    this.logEvent('tour_start', { mode });
+    const idx = typeof startIndex === 'number' ? startIndex : 0;
+    this.goTo(idx);
+    announceToScreenReader(`${mode === 'recruiter' ? 'Recruiter' : (mode === 'dashboardDeepDive' ? 'Dashboard' : 'Full')} tour started`);
   }
 
   end(completed) {
     if (!this.active) return;
     this.active = false;
+    this.clearState();
 
     document.removeEventListener('keydown', this.handleKeydown);
     window.removeEventListener('resize', this.reposition);
@@ -1433,25 +1619,46 @@ class SiteTour {
     [overlay, spotlight, tooltip].forEach(el => {
       if (el) el.classList.remove('is-visible');
     });
-
-    setTimeout(() => {
-      ['overlay', 'spotlight', 'tooltip'].forEach(key => {
-        const el = this.elements[key];
-        if (el && el.parentNode) el.parentNode.removeChild(el);
-        this.elements[key] = null;
-      });
-    }, 260);
+    setTimeout(() => this._teardownOverlay(false), 260);
 
     if (this.lastFocus && typeof this.lastFocus.focus === 'function') {
       try { this.lastFocus.focus(); } catch (e) {}
     }
 
+    this.logEvent(completed ? 'tour_complete' : 'tour_skip');
     announceToScreenReader(completed ? 'Tour complete' : 'Tour ended');
+  }
+
+  _teardownOverlay(immediate) {
+    ['overlay', 'spotlight', 'tooltip'].forEach(key => {
+      const el = this.elements[key];
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+      this.elements[key] = null;
+    });
+    if (immediate) {
+      // Also clear references to inner nodes so buildOverlay rebuilds cleanly
+      ['title', 'body', 'counter', 'modeBadge', 'detail', 'deepDiveBtn', 'recap',
+       'recapBackBtn', 'prevBtn', 'nextBtn', 'skipBtn', 'progress'].forEach(k => {
+        this.elements[k] = null;
+      });
+    }
   }
 
   goTo(index) {
     if (index < 0 || index >= this.steps.length) return;
+    const step = this.steps[index];
+
+    if (step.page && !this.pageMatches(step.page)) {
+      // Cross-page navigation needed — persist with autoResume so the next page picks it up
+      this.currentIndex = index;
+      this.saveState({ index, autoResume: true });
+      this.logEvent('tour_cross_page', { to: step.page });
+      this.navigateTo(step.page);
+      return;
+    }
+
     this.currentIndex = index;
+    this.saveState();
     this.renderStep();
     this.place();
   }
@@ -1467,6 +1674,39 @@ class SiteTour {
   prev() {
     if (this.currentIndex <= 0) return;
     this.goTo(this.currentIndex - 1);
+  }
+
+  enterDeepDive() {
+    const step = this.steps[this.currentIndex];
+    if (!step || !step.deepDive) return;
+    const { mode } = step.deepDive;
+    if (!this.tourSets[mode]) return;
+    const targetSet = this.tourSets[mode];
+    const firstStep = targetSet[0];
+    this.mode = mode;
+    this.steps = targetSet;
+    this.currentIndex = 0;
+    this.saveState({ index: 0, autoResume: true });
+    this.logEvent('tour_deepdive_enter', { mode });
+    if (firstStep.page && !this.pageMatches(firstStep.page)) {
+      this.navigateTo(firstStep.page);
+    } else {
+      this.renderStep();
+      this.place();
+    }
+  }
+
+  reposition() {
+    if (!this.active) return;
+    if (this._rafPending) return;
+    this._rafPending = true;
+    requestAnimationFrame(() => {
+      this._rafPending = false;
+      const step = this.steps[this.currentIndex];
+      if (!step || step.isRecap || !step.id) return;
+      const target = document.querySelector(`[data-tour-id="${step.id}"]`);
+      if (target) this.placeAroundTarget(target);
+    });
   }
 
   handleKeydown(e) {
@@ -1511,12 +1751,25 @@ class SiteTour {
 
   renderStep() {
     const step = this.steps[this.currentIndex];
-    if (!step) return;
+    if (!step || !this.elements.tooltip) return;
 
     this.elements.title.textContent = step.title;
     this.elements.body.textContent = step.body;
     this.elements.counter.textContent = `${this.currentIndex + 1} / ${this.steps.length}`;
 
+    // Mode badge
+    if (this.mode === 'recruiter') {
+      this.elements.modeBadge.hidden = false;
+      this.elements.modeBadge.textContent = 'Recruiter';
+    } else if (this.mode === 'dashboardDeepDive') {
+      this.elements.modeBadge.hidden = false;
+      this.elements.modeBadge.textContent = 'Deep dive';
+    } else {
+      this.elements.modeBadge.hidden = true;
+      this.elements.modeBadge.textContent = '';
+    }
+
+    // Detail link
     if (step.detailHref && !step.isRecap) {
       this.elements.detail.hidden = false;
       this.elements.detail.textContent = (step.detailLabel || 'Open detail') +
@@ -1533,13 +1786,31 @@ class SiteTour {
       this.elements.detail.hidden = true;
     }
 
+    // Deep-dive entry button
+    if (step.deepDive && this.tourSets[step.deepDive.mode]) {
+      this.elements.deepDiveBtn.hidden = false;
+      this.elements.deepDiveBtn.textContent = step.deepDive.label || 'Take the deep dive →';
+    } else {
+      this.elements.deepDiveBtn.hidden = true;
+    }
+
+    // Recap card
     this.elements.recap.hidden = !step.isRecap;
     this.elements.tooltip.classList.toggle('is-recap', !!step.isRecap);
+    if (step.isRecap && step.recapBackHref) {
+      this.elements.recapBackBtn.hidden = false;
+      this.elements.recapBackBtn.textContent = step.recapBackLabel || '← Back';
+      this.elements.recapBackBtn.href = step.recapBackHref;
+    } else {
+      this.elements.recapBackBtn.hidden = true;
+    }
 
+    // Prev/Next buttons
     this.elements.prevBtn.disabled = this.currentIndex === 0;
     const isLast = this.currentIndex === this.steps.length - 1;
     this.elements.nextBtn.textContent = isLast ? 'Finish' : 'Next →';
 
+    // Progress dots
     Array.from(this.elements.progress.children).forEach((dot, i) => {
       dot.classList.toggle('is-current', i === this.currentIndex);
       dot.classList.toggle('is-done', i < this.currentIndex);

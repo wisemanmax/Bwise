@@ -1627,7 +1627,7 @@
   </aside>
 
     <main class="main" id="main-content">
-    <div class="main-header">
+    <div class="main-header" data-tour-id="dashboard-header">
       <div class="main-header__intro-wrapper">
         <div class="main-header__welcome">
           <div class="main-header__welcome-title text-light">
@@ -1669,7 +1669,7 @@
       </div>
     </div>
 
-    <section class="panel" aria-label="Saved views">
+    <section class="panel" aria-label="Saved views" data-tour-id="dashboard-views">
       <div class="panel-header">
         <div>
           <div class="panel-title">Saved views</div>
@@ -1732,7 +1732,7 @@
       </div>
     </section>
 
-    <section class="executive-brief" aria-label="Executive brief" data-filter-section>
+    <section class="executive-brief" aria-label="Executive brief" data-filter-section data-tour-id="dashboard-brief">
       <article class="brief-card" data-filterable="card" data-domain="risk data" data-team="atlas" data-status="watch" data-search="executive brief risk posture">
         <div class="brief-card__title">Executive Brief</div>
         <div class="brief-card__meta">
@@ -1791,7 +1791,7 @@
         </div>
         <a class="snippet-link" href="power-bi-dashboards.html">Review staffing model</a>
       </div>
-      <div class="workload-grid">
+      <div class="workload-grid" data-tour-id="dashboard-workload">
         <div class="workload-card" data-filterable="card" data-domain="risk" data-team="atlas" data-status="critical" data-search="atlas workload fraud response">
           <div class="workload-header">
             <span>Atlas · Fraud response</span>
@@ -2695,5 +2695,6 @@
     loadDashboardData();
     applyFilters();
   </script>
+  <script src="../assets/script.js"></script>
 </body>
 </html>
