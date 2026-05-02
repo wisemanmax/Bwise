@@ -832,6 +832,82 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* ===== SPARKLINES ===== */
+  .sparkline {
+    display: block;
+    width: 100%;
+    height: 26px;
+    margin-top: 10px;
+    overflow: visible;
+  }
+  .sparkline-empty {
+    height: 26px;
+    margin-top: 10px;
+    border-bottom: 1px dashed var(--line);
+    opacity: 0.4;
+  }
+
+  /* ===== ANOMALY MARKERS ===== */
+  .anomaly-chip {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    margin-left: 8px;
+    border: 1px solid;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .anomaly-chip.high-bad {
+    background: var(--rose-dim);
+    border-color: var(--rose);
+    color: var(--rose);
+  }
+  .anomaly-chip.high-good {
+    background: var(--green-dim);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .anomaly-chip.low-bad {
+    background: var(--amber-dim);
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .cohort-cell.anomaly-high::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 4px var(--green);
+  }
+  .cohort-cell.anomaly-low::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--rose);
+    box-shadow: 0 0 4px var(--rose);
+  }
+
+  /* Anomaly legend */
+  .anomaly-legend {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-3);
+    margin-left: 14px;
+  }
+  .anomaly-legend-item {
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .anomaly-legend-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+
   /* ===== SECTION NAV (sticky TOC) ===== */
   html { scroll-padding-top: 64px; scroll-behavior: smooth; }
   .section-nav {
@@ -1016,6 +1092,70 @@
     font-size: 12px;
   }
 
+  /* ===== SPARKLINES + ANOMALIES ===== */
+  .kpi-spark-wrap {
+    margin: 10px 0 6px;
+    height: 30px;
+    position: relative;
+  }
+  .sparkline { display: block; width: 100%; height: 100%; }
+  .kpi-anomaly {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-left: 8px;
+    padding: 2px 8px;
+    background: var(--rose-dim);
+    border: 1px solid rgba(255, 85, 119, 0.5);
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--rose);
+    text-transform: uppercase;
+    font-weight: 500;
+    vertical-align: 1px;
+  }
+  .kpi-anomaly.up   { background: rgba(0, 245, 160, 0.10); border-color: rgba(0, 245, 160, 0.5); color: var(--green); }
+  .kpi-anomaly.down { background: var(--rose-dim); border-color: rgba(255, 85, 119, 0.5); color: var(--rose); }
+  .cohort-cell.anomaly-high { box-shadow: inset 0 0 0 1px rgba(0, 245, 160, 0.6); }
+  .cohort-cell.anomaly-low  { box-shadow: inset 0 0 0 1px rgba(255, 85, 119, 0.6); }
+  .cohort-cell .anomaly-mark {
+    position: absolute;
+    top: 3px; left: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .cohort-cell.anomaly-high .anomaly-mark { color: var(--green); }
+  .cohort-cell.anomaly-low  .anomaly-mark { color: var(--rose); }
+  .anomaly-strip {
+    margin: -16px 0 28px;
+    padding: 10px 14px;
+    background: linear-gradient(90deg, var(--rose-dim), transparent);
+    border-left: 2px solid var(--rose);
+    border-radius: 0 4px 4px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-1);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+    animation: slideDown 0.3s ease-out;
+  }
+  .anomaly-strip-lbl {
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--rose); text-transform: uppercase;
+    font-weight: 500;
+  }
+  .anomaly-strip-item { color: var(--ink-2); }
+  .anomaly-strip-item strong { color: var(--ink-0); }
+  .cohort-anomaly-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-3);
+    margin-top: 6px;
+    text-align: right;
+  }
+  .cohort-anomaly-note .up   { color: var(--green); }
+  .cohort-anomaly-note .down { color: var(--rose); }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 980px) {
     .app { padding: 24px 20px 60px; }
@@ -1172,6 +1312,92 @@ function computeDelta(currentLoans, allLoansInWindow) {
 function pctDelta(curr, prev) {
   if (prev === 0) return curr > 0 ? 100 : 0;
   return ((curr - prev) / prev) * 100;
+}
+
+// ============================================================
+// SPARKLINE DATA BUILDER + COMPONENT
+// ============================================================
+function buildSparklines(loans, windowDays) {
+  const buckets = 14;
+  const bucketSize = windowDays / buckets;
+  const bucketLoans = Array.from({length: buckets}, () => []);
+
+  loans.forEach(l => {
+    // Newest at right (idx = buckets-1), oldest at left (idx = 0)
+    const idx = Math.min(buckets - 1, Math.max(0,
+      Math.floor((windowDays - l.daysAgo) / bucketSize)));
+    bucketLoans[idx].push(l);
+  });
+
+  const series = { volume: [], savings: [], approval: [], dpd: [] };
+  bucketLoans.forEach(bl => {
+    const funded = bl.filter(l => l.stage === 'Funded');
+    const decisioned = bl.filter(l => l.stage !== 'Applied' && l.stage !== 'Soft Pull');
+    const approved = bl.filter(l => l.stage === 'Approved' || l.stage === 'Funded');
+    const dpdCount = funded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    series.volume.push(funded.reduce((s, l) => s + l.balance, 0));
+    series.savings.push(funded.length
+      ? funded.reduce((s, l) => s + l.lifetimeSavings, 0) / funded.length : 0);
+    series.approval.push(decisioned.length
+      ? (approved.length / decisioned.length) * 100 : 0);
+    series.dpd.push(funded.length
+      ? (dpdCount / funded.length) * 100 : 0);
+  });
+  return series;
+}
+
+function Sparkline({ values, color, inverse }) {
+  // Empty state — flat dashed line
+  if (!values || values.length === 0 || values.every(v => v === 0)) {
+    return <div className="sparkline-empty"></div>;
+  }
+
+  const W = 100, H = 26, PAD = 2;
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const range = Math.max(max - min, max * 0.001 || 0.001);
+
+  const points = values.map((v, i) => {
+    const x = (i / (values.length - 1)) * W;
+    const y = H - PAD - ((v - min) / range) * (H - 2 * PAD);
+    return [x, y];
+  });
+
+  const pathD = points.map(([x, y], i) =>
+    (i === 0 ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2)).join(' ');
+  const areaD = pathD + ' L ' + W + ' ' + H + ' L 0 ' + H + ' Z';
+
+  const last = points[points.length - 1];
+
+  return (
+    <svg className="sparkline" viewBox={'0 0 ' + W + ' ' + H} preserveAspectRatio="none">
+      <path d={areaD} fill={color} fillOpacity="0.12" />
+      <path d={pathD} stroke={color} strokeWidth="1.5" fill="none"
+        vectorEffect="non-scaling-stroke" />
+      <circle cx={last[0]} cy={last[1]} r="1.8" fill={color} vectorEffect="non-scaling-stroke" />
+    </svg>
+  );
+}
+
+// ============================================================
+// ANOMALY DETECTION (±2σ)
+// ============================================================
+function detectAnomalies(values, threshold = 2) {
+  // Returns array of { idx, deviation, zscore, direction } for outliers
+  const valid = values.filter(v => v != null && !isNaN(v));
+  if (valid.length < 3) return [];
+  const mean = valid.reduce((s, v) => s + v, 0) / valid.length;
+  const variance = valid.reduce((s, v) => s + (v - mean) ** 2, 0) / valid.length;
+  const std = Math.sqrt(variance);
+  if (std < 0.0001) return [];
+  return values.map((v, i) => {
+    if (v == null || isNaN(v)) return null;
+    const z = (v - mean) / std;
+    if (Math.abs(z) >= threshold) {
+      return { idx: i, value: v, mean, std, zscore: z, direction: z > 0 ? 'high' : 'low' };
+    }
+    return null;
+  }).filter(Boolean);
 }
 
 // ============================================================
@@ -1555,6 +1781,91 @@ function ApiKeyModal({ isOpen, onClose, currentKey, onSave, onClear }) {
 }
 
 // ============================================================
+// SPARKLINE + ANOMALY DETECTION
+// ============================================================
+function buildKpiSeries(loans, weeks = 12) {
+  const buckets = Array(weeks).fill(null).map(() => []);
+  loans.forEach(l => {
+    const wk = Math.floor(l.daysAgo / 7);
+    if (wk >= weeks) return;
+    const idx = weeks - 1 - wk;  // newest week on the right
+    buckets[idx].push(l);
+  });
+  const sumIf = (bs, pred, fn) => bs.filter(pred).reduce((s, l) => s + fn(l), 0);
+  const avgIf = (bs, pred, fn) => {
+    const f = bs.filter(pred);
+    return f.length ? f.reduce((s, l) => s + fn(l), 0) / f.length : 0;
+  };
+  const isFunded   = l => l.stage === 'Funded';
+  const isDecided  = l => l.stage !== 'Applied' && l.stage !== 'Soft Pull';
+  const isApproved = l => l.stage === 'Approved' || l.stage === 'Funded';
+  const isDpd      = l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD';
+
+  return {
+    volume:       buckets.map(bs => sumIf(bs, isFunded, l => l.balance)),
+    avgSavings:   buckets.map(bs => avgIf(bs, isFunded, l => l.lifetimeSavings)),
+    approvalRate: buckets.map(bs => {
+      const dec = bs.filter(isDecided).length;
+      const app = bs.filter(isApproved).length;
+      return dec ? (app / dec) * 100 : 0;
+    }),
+    dpd60Rate:    buckets.map(bs => {
+      const f = bs.filter(isFunded).length;
+      const d = bs.filter(l => isFunded(l) && isDpd(l)).length;
+      return f ? (d / f) * 100 : 0;
+    }),
+  };
+}
+
+// Detects whether the most recent point lies outside ±2σ of the historical points
+function detectAnomaly(series) {
+  if (series.length < 4) return null;
+  const recent = series[series.length - 1];
+  const historical = series.slice(0, -1).filter(v => v > 0);
+  if (historical.length < 3) return null;
+  const mean = historical.reduce((a, b) => a + b, 0) / historical.length;
+  const variance = historical.reduce((a, b) => a + (b - mean) ** 2, 0) / historical.length;
+  const std = Math.sqrt(variance);
+  if (std === 0 || mean === 0) return null;
+  const z = (recent - mean) / std;
+  if (Math.abs(z) >= 2) {
+    return { z, dir: z > 0 ? 'up' : 'down', recent, mean };
+  }
+  return null;
+}
+
+// SVG Sparkline — area + line + last-point dot
+let _sparkUid = 0;
+function Sparkline({ values, color, width = 110, height = 28 }) {
+  const id = useMemo(() => 'sl' + (++_sparkUid), []);
+  if (!values || values.length === 0) return null;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+  const n = values.length;
+  const xAt = (i) => n === 1 ? width / 2 : (i / (n - 1)) * width;
+  const yAt = (v) => height - ((v - min) / range) * (height - 4) - 2;
+  const linePts = values.map((v, i) => xAt(i) + ',' + yAt(v)).join(' ');
+  const areaPts = '0,' + height + ' ' + linePts + ' ' + width + ',' + height;
+  const lastX = xAt(n - 1);
+  const lastY = yAt(values[n - 1]);
+  return (
+    <svg className="sparkline" viewBox={'0 0 ' + width + ' ' + height} preserveAspectRatio="none"
+         xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor={color} stopOpacity="0.32" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polygon points={areaPts} fill={'url(#' + id + ')'} />
+      <polyline points={linePts} fill="none" stroke={color} strokeWidth="1.5" strokeLinejoin="round" />
+      <circle cx={lastX} cy={lastY} r="2.5" fill={color} />
+    </svg>
+  );
+}
+
+// ============================================================
 // COMPONENTS
 // ============================================================
 
@@ -1629,6 +1940,8 @@ function FilterBar({ filters, removeFilter, clearFilters, totalCount, filteredCo
 
 function KpiStrip({ loans, isFiltered, filters, windowSel }) {
   const [showSql, setShowSql] = useState(false);
+  const windowDays = windowSel === '7D' ? 7 : windowSel === '30D' ? 30 : 90;
+  const sparks = useMemo(() => buildSparklines(loans, windowDays), [loans, windowDays]);
   const stats = useMemo(() => {
     const funded = loans.filter(l => l.stage === 'Funded');
     const totalVolume = funded.reduce((s, l) => s + l.balance, 0);
@@ -1672,6 +1985,15 @@ function KpiStrip({ loans, isFiltered, filters, windowSel }) {
     return { totalVolume, avgSavings, apprRate, dpd60Rate, volDelta, savDelta, apprDelta, dpdDelta };
   }, [loans]);
 
+  // 12-week sparkline series + anomaly detection (±2σ)
+  const series = useMemo(() => buildKpiSeries(loans, 12), [loans]);
+  const anomalies = useMemo(() => ({
+    volume:       detectAnomaly(series.volume),
+    avgSavings:   detectAnomaly(series.avgSavings),
+    approvalRate: detectAnomaly(series.approvalRate),
+    dpd60Rate:    detectAnomaly(series.dpd60Rate),
+  }), [series]);
+
   const fmtCur = (n) => '$' + (n/1e6).toFixed(1) + 'M';
   const fmtNum = (n) => n.toLocaleString('en-US');
   const deltaClass = (v, inverse=false) => {
@@ -1684,8 +2006,36 @@ function KpiStrip({ loans, isFiltered, filters, windowSel }) {
     return v > 0 ? '▲' : '▼';
   };
 
+  // For DPD, "up" is bad (rose); for the others, "up" is good (green).
+  const renderAnomalyChip = (key) => {
+    const a = anomalies[key];
+    if (!a) return null;
+    const isDpd = key === 'dpd60Rate';
+    const cls = isDpd
+      ? (a.dir === 'up' ? 'down' : 'up')
+      : (a.dir === 'up' ? 'up'   : 'down');
+    return <span className={'kpi-anomaly ' + cls}>{a.dir === 'up' ? '↑' : '↓'} {Math.abs(a.z).toFixed(1)}σ</span>;
+  };
+
+  const anyAnomaly = Object.values(anomalies).some(a => a !== null);
+  const anomalyDescriptions = [];
+  if (anomalies.volume)       anomalyDescriptions.push({ lbl: 'Funded Volume', a: anomalies.volume });
+  if (anomalies.avgSavings)   anomalyDescriptions.push({ lbl: 'Avg Savings',   a: anomalies.avgSavings });
+  if (anomalies.approvalRate) anomalyDescriptions.push({ lbl: 'Approval Rate', a: anomalies.approvalRate });
+  if (anomalies.dpd60Rate)    anomalyDescriptions.push({ lbl: '60+ DPD Rate',  a: anomalies.dpd60Rate });
+
   return (
     <React.Fragment>
+    {anyAnomaly && (
+      <div className="anomaly-strip">
+        <span className="anomaly-strip-lbl">⚠ Anomalies detected</span>
+        {anomalyDescriptions.map((d, i) => (
+          <span key={i} className="anomaly-strip-item">
+            <strong>{d.lbl}</strong> {d.a.dir === 'up' ? 'spiked' : 'dropped'} to {Math.abs(d.a.z).toFixed(1)}σ {d.a.dir === 'up' ? 'above' : 'below'} 12-wk norm
+          </span>
+        ))}
+      </div>
+    )}
     <div className="kpi-grid fade-in" style={{animationDelay: '0.05s'}}>
       <div className="kpi">
         <div className="kpi-lbl">Funded Volume {isFiltered && <span style={{color:'var(--cyan)'}}>·</span>}</div>
@@ -1694,6 +2044,7 @@ function KpiStrip({ loans, isFiltered, filters, windowSel }) {
           <span className="arrow">{deltaArrow(stats.volDelta)}</span>
           {stats.volDelta > 0 ? '+' : ''}{stats.volDelta.toFixed(1)}% WoW
         </div>
+        <Sparkline values={sparks.volume} color="#00d9f5" />
       </div>
       <div className="kpi">
         <div className="kpi-lbl">Avg Lifetime Savings</div>
@@ -1702,6 +2053,7 @@ function KpiStrip({ loans, isFiltered, filters, windowSel }) {
           <span className="arrow">{deltaArrow(stats.savDelta)}</span>
           {stats.savDelta > 0 ? '+' : ''}${Math.round(stats.savDelta).toLocaleString()} vs prior
         </div>
+        <Sparkline values={sparks.savings} color="#00f5a0" />
       </div>
       <div className="kpi">
         <div className="kpi-lbl">Approval Rate</div>
@@ -1710,6 +2062,7 @@ function KpiStrip({ loans, isFiltered, filters, windowSel }) {
           <span className="arrow">{deltaArrow(stats.apprDelta)}</span>
           {stats.apprDelta > 0 ? '+' : ''}{stats.apprDelta.toFixed(1)} pts
         </div>
+        <Sparkline values={sparks.approval} color="#f5b800" />
       </div>
       <div className="kpi">
         <div className="kpi-lbl">60+ DPD Rate</div>
@@ -1718,6 +2071,7 @@ function KpiStrip({ loans, isFiltered, filters, windowSel }) {
           <span className="arrow">{deltaArrow(stats.dpdDelta)}</span>
           {stats.dpdDelta > 0 ? '+' : ''}{Math.round(stats.dpdDelta)} bps WoW
         </div>
+        <Sparkline values={sparks.dpd} color="#ff5577" />
       </div>
     </div>
     <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: -32, marginBottom: 32}}>
@@ -2030,6 +2384,28 @@ function CohortHeatmap({ loans, filters, toggleFilter, windowSel }) {
     return `rgba(0, 245, 160, ${0.15 + (rate - 0.70) * 1.2})`;
   };
 
+  // ±2σ anomaly detection across all cells with sample size >= 10
+  const cohortAnomalies = useMemo(() => {
+    const cells = [];
+    FICO_BANDS.forEach(f => {
+      DEGREES.forEach(d => {
+        const c = grid[f][d];
+        if (c.total >= 10) {
+          cells.push({ fico: f, degree: d, rate: c.approved / c.total });
+        }
+      });
+    });
+    const rates = cells.map(c => c.rate);
+    const flagged = detectAnomalies(rates, 2);
+    const m = {};
+    flagged.forEach(a => {
+      const cell = cells[a.idx];
+      m[cell.fico + '|' + cell.degree] = a;
+    });
+    return m;
+  }, [grid]);
+  const anomalyCount = Object.keys(cohortAnomalies).length;
+
   const isCellActive = (fico, degree) =>
     filters.fico.includes(fico) && filters.degree.includes(degree);
 
@@ -2064,11 +2440,18 @@ function CohortHeatmap({ loans, filters, toggleFilter, windowSel }) {
                   const cell = grid[fico][d];
                   const rate = cell.total ? cell.approved / cell.total : 0;
                   const active = isCellActive(fico, d);
+                  const anomaly = cohortAnomalies[fico + '|' + d];
+                  const anomalyClass = anomaly
+                    ? (anomaly.direction === 'high' ? ' anomaly-high' : ' anomaly-low')
+                    : '';
+                  const anomalyTip = anomaly
+                    ? ` · ${anomaly.zscore > 0 ? '+' : ''}${anomaly.zscore.toFixed(1)}σ vs cohort mean ${(anomaly.mean*100).toFixed(1)}%`
+                    : '';
                   return (
                     <td key={d}
-                        className={'cohort-cell' + (active ? ' active-filter' : '')}
+                        className={'cohort-cell' + (active ? ' active-filter' : '') + anomalyClass}
                         style={{background: cell.total ? colorFor(rate) : 'var(--bg-2)'}}
-                        title={`${fico} × ${d} — Approval ${(rate*100).toFixed(1)}% on n=${cell.total}. Click to filter.`}
+                        title={`${fico} × ${d} — Approval ${(rate*100).toFixed(1)}% on n=${cell.total}${anomalyTip}. Click to filter.`}
                         onClick={() => handleCellClick(fico, d)}>
                       <span className="v">{cell.total ? (rate*100).toFixed(0) + '%' : '—'}</span>
                       <span className="n">n={cell.total}</span>
@@ -2087,6 +2470,15 @@ function CohortHeatmap({ loans, filters, toggleFilter, windowSel }) {
         <span>Approval rate</span>
         <span className="cohort-legend-bar"></span>
         <span>Low → High</span>
+        {anomalyCount > 0 && (
+          <span className="anomaly-legend">
+            <span className="anomaly-legend-item">
+              <span className="anomaly-legend-dot" style={{background:'var(--green)'}}></span>
+              <span className="anomaly-legend-dot" style={{background:'var(--rose)'}}></span>
+              <span>{anomalyCount} ±2σ {anomalyCount === 1 ? 'outlier' : 'outliers'}</span>
+            </span>
+          </span>
+        )}
       </div>
       <div className="panel-footer">
         <button className={'sql-toggle' + (showSql ? ' open' : '')} onClick={() => setShowSql(!showSql)}>
@@ -2294,6 +2686,18 @@ function ChannelScorecard({ loans, filters, toggleFilter, windowSel }) {
     return m;
   }, [baseRows]);
 
+  // ±2σ anomaly detection on 60+ DPD across channels with enough volume
+  const anomalies = useMemo(() => {
+    const eligible = baseRows.filter(r => r.funded_n >= 10);
+    const dpds = eligible.map(r => r.dpd_60_rate_pct);
+    const flagged = detectAnomalies(dpds, 2);
+    const m = {};
+    flagged.forEach(a => {
+      m[eligible[a.idx].channel] = a;
+    });
+    return m;
+  }, [baseRows]);
+
   const rows = useMemo(() => {
     const sorted = [...baseRows].sort((a, b) => {
       const va = a[sortKey], vb = b[sortKey];
@@ -2364,6 +2768,12 @@ function ChannelScorecard({ loans, filters, toggleFilter, windowSel }) {
                     <span className={'dpd-badge ' + dpdClass(r.dpd_60_rate_pct)}>
                       {r.dpd_60_rate_pct.toFixed(2)}%
                     </span>
+                    {anomalies[r.channel] && (
+                      <span className={'anomaly-chip ' + (anomalies[r.channel].direction === 'high' ? 'high-bad' : 'high-good')}
+                        title={'Outlier vs other channels: ' + anomalies[r.channel].zscore.toFixed(1) + 'σ from mean (' + anomalies[r.channel].mean.toFixed(2) + '%)'}>
+                        ⚡ {(anomalies[r.channel].zscore > 0 ? '+' : '') + anomalies[r.channel].zscore.toFixed(1)}σ
+                      </span>
+                    )}
                   </td>
                   <td className="numeric">${Math.round(r.avg_lifetime_savings).toLocaleString()}</td>
                 </tr>
