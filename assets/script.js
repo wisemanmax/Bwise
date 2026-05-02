@@ -1188,37 +1188,87 @@ class SiteTour {
       full: [
         { page: '/', id: 'hero',
           title: "Welcome — here's the 90-second tour",
-          body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities." },
+          body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities.",
+          details: [
+            "Use Next / Back, or arrow keys, to navigate",
+            "Skip anytime — resume from the tour chip",
+            "11 stops · ~90 seconds total"
+          ] },
         { page: '/', id: 'about',
           title: "What I actually do",
-          body: "Power BI / Snowflake reporting at Sallie Mae plus full-stack tools when product gaps need filling. The bridge between BI, ops, compliance, and engineering." },
+          body: "Power BI / Snowflake reporting at Sallie Mae, plus full-stack tools when product gaps need filling.",
+          details: [
+            "Bridge between BI, ops, compliance, and engineering",
+            "Production-grade data models and dashboards",
+            "Ship the supporting apps when no team exists"
+          ] },
         { page: '/', id: 'experience',
           title: "Seven years at Sallie Mae — with the receipts",
-          body: "Owns reporting for 1,000+ users, cut manual reporting 60% with Python automation, and architected an AI-augmented testing platform for Snowflake. The bullets behind the headline are right here." },
+          body: "Measurable impact, shipped systems. The bullets behind the headline are highlighted here.",
+          details: [
+            "1,000+ users on my reporting pipeline",
+            "60% manual reporting eliminated via Python automation",
+            "AI-augmented Snowflake testing platform — solo build"
+          ] },
         { page: '/', id: 'projects-partnerpulse',
           title: "PartnerPulse — solo, in production",
-          body: "A relationship-analytics PWA on a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers). One shared view of partner health and engagement.",
+          body: "A relationship-analytics PWA on a zero-infrastructure serverless stack: GitHub Pages + Cloudflare Workers.",
+          details: [
+            "One shared view of partner health and engagement",
+            "Edge functions for auth and data sync",
+            "Live for paying users today"
+          ],
           detailHref: 'https://partnerpulse.byheir.com', detailLabel: "Visit PartnerPulse", detailExternal: true },
         { page: '/', id: 'projects-builder',
           title: "The Builder — CI/CD discipline for analytics",
-          body: "Multi-stage data validation with branch review, change auditing, and merge controls. Enterprise release practices applied to BI deliverables.",
+          body: "Enterprise release practices applied to BI deliverables.",
+          details: [
+            "Multi-stage data validation with branch review",
+            "Change auditing and merge controls",
+            "The same engineering rigor analysts deserve"
+          ],
           detailHref: '/pages/the-builder.html', detailLabel: "Read the case study" },
         { page: '/', id: 'work-demo',
           title: "Operations Dashboard — click in and explore",
-          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites. A working demo of how I think about operational tooling.",
+          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites.",
+          details: [
+            "Saved-view chips filter every panel without reload",
+            "Exec brief, live workload, KPI quickview",
+            "Working demo of how I think about ops tooling"
+          ],
           deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
         { page: '/', id: 'work-external',
           title: "Three live apps in production",
-          body: "Ironlog (analytics PWA suite), PartnerPulse, and Wiseforge (chat-to-deploy builder). Each link opens in a new tab so you don't lose your place in the tour." },
+          body: "Each opens in a new tab so you don't lose your place in the tour.",
+          details: [
+            "IronLog — analytics PWA suite",
+            "PartnerPulse — partner relationship analytics",
+            "Wiseforge — chat-to-deploy site builder"
+          ] },
         { page: '/', id: 'skills',
           title: "BI · SQL · Full-stack",
-          body: "The combination is the point — deep enough to ship enterprise reporting, deep enough to build the supporting apps myself." },
+          body: "The combination is the point — deep enough to ship enterprise reporting and deep enough to build the apps around it.",
+          details: [
+            "BI: Power BI, Snowflake, semantic models",
+            "Full-stack: TypeScript, PWAs, Cloudflare Workers",
+            "Data: SQL at scale, Python automation, AI-assisted testing"
+          ] },
         { page: '/', id: 'code-samples',
           title: "See how I write code",
-          body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview. Signal beyond the bullet points." },
+          body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview.",
+          details: [
+            "Signal beyond bullet points on a résumé",
+            "Same patterns I use in production",
+            "Code and live result, side by side"
+          ] },
         { page: '/', id: 'contact',
           title: "Open to roles in regulated fintech",
-          body: "Senior engineering, BI / data-platform, or reporting-platform roles. Email is the fastest path." },
+          body: "Senior engineering, BI / data-platform, or reporting-platform roles.",
+          details: [
+            "Email is the fastest path",
+            "Résumé below for the paper trail",
+            "Same-day reply most weekdays"
+          ] },
         { page: '/', isRecap: true,
           title: "That's the tour.",
           body: "Two ways forward: grab the résumé for a paper trail, or send a note — I usually reply the same day." }
@@ -1226,22 +1276,51 @@ class SiteTour {
       recruiter: [
         { page: '/', id: 'hero',
           title: "The 60-second pitch",
-          body: "Seven-plus years in regulated fintech. BI platform owner. Full-stack engineer. Currently available." },
+          body: "Seven-plus years in regulated fintech. BI platform owner. Full-stack engineer. Currently available.",
+          details: [
+            "7 stops · ~60 seconds",
+            "Skip or finish anytime"
+          ] },
         { page: '/', id: 'experience',
           title: "The receipts",
-          body: "1,000+ users on my reporting · 60% manual reporting eliminated via Python · AI-augmented Snowflake testing platform — solo build. Plus seven years of compliance-grade delivery." },
+          body: "Seven years of compliance-grade delivery, with measurable outcomes.",
+          details: [
+            "1,000+ users on my reporting",
+            "60% manual reporting eliminated via Python",
+            "AI-augmented Snowflake testing platform — solo build"
+          ] },
         { page: '/', id: 'projects-partnerpulse',
           title: "Solo-shipped, in production",
-          body: "PartnerPulse, The Builder, and IronLog — three platforms architected and shipped end-to-end. Discovery to deploy. No team." },
+          body: "Three platforms architected and shipped end-to-end. Discovery to deploy. No team.",
+          details: [
+            "PartnerPulse — relationship analytics PWA",
+            "The Builder — CI/CD for analytics",
+            "IronLog — analytics PWA suite"
+          ] },
         { page: '/', id: 'work-external',
           title: "Live in production today",
-          body: "Three apps with real users right now: IronLog (PWA suite), PartnerPulse (analytics), Wiseforge (chat-to-deploy). Click any to verify." },
+          body: "Real users right now — click any to verify.",
+          details: [
+            "IronLog (PWA suite)",
+            "PartnerPulse (analytics)",
+            "Wiseforge (chat-to-deploy)"
+          ] },
         { page: '/', id: 'skills',
           title: "Senior IC across BI · SQL · Full-stack",
-          body: "Deep enough to ship enterprise reporting AND deep enough to build the apps around it. The combination is the differentiator." },
+          body: "Deep enough to ship enterprise reporting AND deep enough to build the apps around it.",
+          details: [
+            "Power BI, Snowflake, semantic models",
+            "TypeScript, PWAs, Cloudflare Workers",
+            "SQL at scale, Python automation"
+          ] },
         { page: '/', id: 'contact',
           title: "Open to senior roles in regulated fintech",
-          body: "Senior engineering, BI / data-platform, or reporting-platform leadership. Email gets the fastest reply; résumé is one click." },
+          body: "Senior engineering, BI / data-platform, or reporting-platform leadership.",
+          details: [
+            "Email gets the fastest reply",
+            "Résumé is one click",
+            "Same-day reply most weekdays"
+          ] },
         { page: '/', isRecap: true,
           title: "That's the snapshot.",
           body: "Grab the résumé for the paper trail or send a note — I usually reply same day." }
@@ -1249,16 +1328,36 @@ class SiteTour {
       dashboardDeepDive: [
         { page: '/pages/dashboard.html', id: 'dashboard-header',
           title: "Operations Dashboard — the command center",
-          body: "Reporting metadata up top, live KPI quickview to the right. Designed for ops leadership to see system state in one glance — built solo to demonstrate how I think about operational tooling." },
+          body: "Designed for ops leadership to see system state in one glance — built solo.",
+          details: [
+            "Reporting metadata up top",
+            "Live KPI quickview to the right",
+            "Hand-built to show how I think about ops tooling"
+          ] },
         { page: '/pages/dashboard.html', id: 'dashboard-views',
           title: "Saved views switch focus instantly",
-          body: "Click any chip to filter the entire dashboard by team, priority, or status — every panel below updates without a page reload." },
+          body: "Click any chip to filter the entire dashboard — every panel below updates without a page reload.",
+          details: [
+            "Filter by team, priority, or status",
+            "Zero round-trips — pure client-side state",
+            "URL-shareable view if needed"
+          ] },
         { page: '/pages/dashboard.html', id: 'dashboard-brief',
           title: "Exec-ready summary",
-          body: "The kind of one-pager I write for leadership weekly. Headlines first, supporting bullets, all updating with the underlying data." },
+          body: "The kind of one-pager I write for leadership weekly.",
+          details: [
+            "Headlines first, supporting bullets after",
+            "All numbers update with the active filter",
+            "Print-friendly layout under the hood"
+          ] },
         { page: '/pages/dashboard.html', id: 'dashboard-workload',
           title: "Live workload across squads",
-          body: "Status colors, progress bars, meta. Every card reflects the active filters above — same pattern I use for production ops dashboards at work." },
+          body: "Status colors, progress bars, meta — every card reflects the active filters above.",
+          details: [
+            "Same pattern I use for production ops dashboards",
+            "Accessible color choices, not just signal-by-hue",
+            "Cards stay scannable as data grows"
+          ] },
         { page: '/pages/dashboard.html', isRecap: true,
           recapBackHref: '/', recapBackLabel: "← Back to portfolio",
           title: "That's the demo.",
@@ -1554,6 +1653,7 @@ class SiteTour {
       </div>
       <h3 id="tour-tooltip-title" class="tour-tooltip__title" data-tour-title></h3>
       <p id="tour-tooltip-body" class="tour-tooltip__body" data-tour-body></p>
+      <ul class="tour-tooltip__details" data-tour-details hidden></ul>
       <a class="tour-tooltip__detail" data-tour-detail hidden>Open detail →</a>
       <button type="button" class="tour-tooltip__deepdive" data-tour-deepdive hidden></button>
       <div class="tour-tooltip__recap" data-tour-recap hidden>
@@ -1577,6 +1677,7 @@ class SiteTour {
     this.elements.tooltip = tooltip;
     this.elements.title = tooltip.querySelector('[data-tour-title]');
     this.elements.body = tooltip.querySelector('[data-tour-body]');
+    this.elements.details = tooltip.querySelector('[data-tour-details]');
     this.elements.counter = tooltip.querySelector('[data-tour-step-counter]');
     this.elements.modeBadge = tooltip.querySelector('[data-tour-mode-badge]');
     this.elements.detail = tooltip.querySelector('[data-tour-detail]');
@@ -1673,7 +1774,7 @@ class SiteTour {
     });
     if (immediate) {
       // Also clear references to inner nodes so buildOverlay rebuilds cleanly
-      ['title', 'body', 'counter', 'modeBadge', 'detail', 'deepDiveBtn', 'recap',
+      ['title', 'body', 'details', 'counter', 'modeBadge', 'detail', 'deepDiveBtn', 'recap',
        'recapBackBtn', 'prevBtn', 'nextBtn', 'skipBtn', 'progress'].forEach(k => {
         this.elements[k] = null;
       });
@@ -1792,6 +1893,21 @@ class SiteTour {
     this.elements.title.textContent = step.title;
     this.elements.body.textContent = step.body;
     this.elements.counter.textContent = `${this.currentIndex + 1} / ${this.steps.length}`;
+
+    // Optional bullet details — populated via DOM API to keep content escaped
+    if (this.elements.details) {
+      this.elements.details.innerHTML = '';
+      if (Array.isArray(step.details) && step.details.length) {
+        step.details.forEach(text => {
+          const li = document.createElement('li');
+          li.textContent = text;
+          this.elements.details.appendChild(li);
+        });
+        this.elements.details.hidden = false;
+      } else {
+        this.elements.details.hidden = true;
+      }
+    }
 
     // Mode badge
     if (this.mode === 'recruiter') {
