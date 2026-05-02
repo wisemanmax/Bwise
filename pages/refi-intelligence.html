@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Refi Intelligence — Portfolio Demo · Byheir Wise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/recharts@2.10.3/umd/Recharts.min.js"></script>
+<style>
+  :root {
+    --bg-0: #08080d;
+    --bg-1: #0e0e16;
+    --bg-2: #14141f;
+    --bg-3: #1c1c2a;
+    --line: rgba(255,255,255,0.06);
+    --line-strong: rgba(255,255,255,0.12);
+    --ink-0: #fafafa;
+    --ink-1: #d4d4dc;
+    --ink-2: #8a8a98;
+    --ink-3: #5a5a68;
+    --cyan: #00d9f5;
+    --cyan-dim: rgba(0, 217, 245, 0.15);
+    --green: #00f5a0;
+    --green-dim: rgba(0, 245, 160, 0.15);
+    --amber: #f5b800;
+    --amber-dim: rgba(245, 184, 0, 0.15);
+    --rose: #ff5577;
+    --rose-dim: rgba(255, 85, 119, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--bg-0);
+    color: var(--ink-0);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 217, 245, 0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(245, 184, 0, 0.04), transparent);
+    background-attachment: fixed;
+  }
+  .app { max-width: 1440px; margin: 0 auto; padding: 32px 40px 80px; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-feature-settings: "tnum"; }
+  .serif { font-family: 'Fraunces', serif; font-weight: 400; }
+
+  /* ===== HEADER ===== */
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding-bottom: 28px; border-bottom: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+  .brand-mark {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .brand-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .header-title {
+    font-family: 'Fraunces', serif;
+    font-size: 32px; font-weight: 400;
+    letter-spacing: -0.02em; line-height: 1.1;
+    margin-top: 14px;
+  }
+  .header-title em { font-style: italic; color: var(--cyan); font-weight: 300; }
+  .header-sub {
+    font-size: 14px; color: var(--ink-2); max-width: 520px;
+    margin-top: 10px;
+  }
+  .meta-strip {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--ink-2);
+    letter-spacing: 0.05em;
+  }
+  .meta-strip .lbl { color: var(--ink-3); }
+  .demo-tag {
+    display: inline-block;
+    padding: 4px 10px; margin-bottom: 12px;
+    border: 1px solid var(--line-strong); border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--amber); text-transform: uppercase;
+  }
+
+  /* ===== FILTER BAR ===== */
+  .filter-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 18px; margin-bottom: 28px;
+    background: linear-gradient(90deg, var(--bg-1), var(--bg-2));
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    flex-wrap: wrap;
+    animation: slideDown 0.3s ease-out;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .filter-bar-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--ink-2); text-transform: uppercase;
+  }
+  .filter-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 6px 5px 10px;
+    border-radius: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    border: 1px solid;
+    cursor: default;
+    animation: chipIn 0.25s ease-out;
+  }
+  @keyframes chipIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .filter-chip.fico { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+  .filter-chip.degree { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
+  .filter-chip.channel { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+  .filter-chip .chip-key {
+    font-size: 9px; letter-spacing: 0.1em; opacity: 0.7;
+    text-transform: uppercase;
+  }
+  .filter-chip-x {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.3);
+    border: none; color: inherit;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; line-height: 1;
+    transition: background 0.15s;
+  }
+  .filter-chip-x:hover { background: rgba(0,0,0,0.6); }
+  .filter-clear {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-clear:hover { border-color: var(--rose); color: var(--rose); }
+  .filter-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-2);
+    margin-left: 4px;
+  }
+  .filter-count strong { color: var(--cyan); }
+
+  /* ===== KPI STRIP ===== */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 8px; overflow: hidden;
+    margin-bottom: 48px;
+  }
+  .kpi {
+    background: var(--bg-1);
+    padding: 22px 24px;
+    position: relative;
+  }
+  .kpi-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .kpi-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; font-weight: 500;
+    color: var(--ink-0);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    transition: color 0.3s;
+  }
+  .kpi-val.recalc { color: var(--cyan); }
+  .kpi-delta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .kpi-delta.up { color: var(--green); }
+  .kpi-delta.down { color: var(--rose); }
+  .kpi-delta.flat { color: var(--ink-2); }
+  .kpi-delta .arrow { font-size: 9px; }
+
+  /* ===== SECTION HEADERS ===== */
+  .section { margin-bottom: 48px; }
+  .section-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px; font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .section-title .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink-3);
+    margin-right: 12px; font-size: 13px;
+    font-weight: 400;
+  }
+  .section-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--ink-2); text-transform: uppercase;
+  }
+
+  /* ===== FUNNEL + INSIGHT TWO-COL ===== */
+  .two-col {
+    display: grid; grid-template-columns: 1.4fr 1fr;
+    gap: 32px;
+  }
+  .panel {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .funnel-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 90px 90px;
+    gap: 16px; align-items: center;
+    padding: 14px 0; border-bottom: 1px dashed var(--line);
+  }
+  .funnel-row:last-child { border-bottom: none; }
+  .funnel-stage {
+    font-size: 13px; color: var(--ink-1); font-weight: 500;
+  }
+  .funnel-stage .desc {
+    display: block; font-size: 10px; color: var(--ink-3);
+    margin-top: 2px; font-weight: 400;
+  }
+  .funnel-bar-wrap {
+    height: 28px; background: var(--bg-2); border-radius: 3px;
+    overflow: hidden; position: relative;
+  }
+  .funnel-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan-dim), rgba(0, 217, 245, 0.4));
+    border-right: 2px solid var(--cyan);
+    transition: width 0.6s ease;
+  }
+  .funnel-bar.warn {
+    background: linear-gradient(90deg, rgba(245, 184, 0, 0.1), rgba(245, 184, 0, 0.3));
+    border-right-color: var(--amber);
+  }
+  .funnel-count {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--ink-0);
+  }
+  .funnel-drop {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+  .funnel-drop.bad { color: var(--rose); }
+  .funnel-drop.ok { color: var(--ink-2); }
+  .funnel-drop.good { color: var(--green); }
+
+  /* ===== INSIGHT PANEL ===== */
+  .insight-panel {
+    background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--amber);
+    border-radius: 8px;
+    padding: 24px;
+    position: relative;
+  }
+  .insight-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--amber); text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .insight-tag::before {
+    content: ''; width: 4px; height: 4px; background: var(--amber);
+    border-radius: 50%;
+  }
+  .insight-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 20px; font-weight: 400;
+    line-height: 1.3; letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .insight-body {
+    font-size: 13px; color: var(--ink-1);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .insight-body strong { color: var(--ink-0); font-weight: 600; }
+  .insight-body code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-3); padding: 1px 6px;
+    border-radius: 3px; font-size: 11px;
+    color: var(--cyan);
+  }
+  .insight-body .channel-link {
+    background: var(--green-dim); padding: 1px 8px;
+    border-radius: 3px; font-size: 12px;
+    color: var(--green); font-weight: 600;
+    cursor: pointer; border: 1px dashed transparent;
+    transition: border-color 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .insight-body .channel-link:hover { border-color: var(--green); }
+  .insight-rec {
+    font-size: 12px;
+    padding: 12px 14px;
+    background: rgba(245, 184, 0, 0.06);
+    border-left: 2px solid var(--amber);
+    border-radius: 0 4px 4px 0;
+    color: var(--ink-1);
+    margin-bottom: 16px;
+  }
+  .insight-rec strong { color: var(--amber); display: block; font-size: 10px;
+    letter-spacing: 0.15em; margin-bottom: 4px; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  }
+  .reanalyze-btn {
+    width: 100%; padding: 12px;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer; border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .reanalyze-btn:hover {
+    border-color: var(--cyan); color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+  .reanalyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* ===== COHORT HEATMAP ===== */
+  .cohort-wrap { overflow-x: auto; }
+  .cohort-table {
+    border-collapse: collapse; width: 100%; min-width: 720px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .cohort-table th, .cohort-table td {
+    padding: 10px 8px; text-align: center; font-size: 11px;
+    border: 1px solid var(--bg-0);
+  }
+  .cohort-table th {
+    background: var(--bg-2); color: var(--ink-2);
+    font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; font-size: 10px;
+  }
+  .cohort-table .row-lbl {
+    background: var(--bg-2); color: var(--ink-1);
+    text-align: left; padding-left: 14px;
+    font-weight: 500;
+  }
+  .cohort-cell {
+    position: relative; cursor: pointer;
+    transition: outline 0.1s;
+  }
+  .cohort-cell:hover { outline: 2px solid var(--cyan); z-index: 1; }
+  .cohort-cell.active-filter {
+    outline: 2px solid var(--amber);
+    outline-offset: -2px;
+    z-index: 1;
+  }
+  .cohort-cell.active-filter::after {
+    content: '✓'; position: absolute;
+    top: 4px; right: 6px;
+    font-size: 9px; color: var(--amber);
+    font-weight: bold;
+  }
+  .cohort-cell .v {
+    font-size: 13px; color: var(--ink-0); font-weight: 500;
+    display: block;
+  }
+  .cohort-cell .n {
+    font-size: 9px; color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+  .cohort-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-3);
+    margin-top: 12px;
+    text-align: right;
+  }
+  .cohort-hint kbd {
+    background: var(--bg-3); padding: 2px 6px;
+    border-radius: 3px; border: 1px solid var(--line);
+    color: var(--cyan); font-size: 10px;
+  }
+  .cohort-legend {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-2);
+    margin-top: 16px;
+  }
+  .cohort-legend-bar {
+    height: 8px; width: 200px; border-radius: 2px;
+    background: linear-gradient(90deg,
+      rgba(255, 85, 119, 0.4),
+      rgba(245, 184, 0, 0.4),
+      rgba(0, 245, 160, 0.6));
+  }
+
+  /* ===== CALCULATOR ===== */
+  .calc-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 8px; overflow: hidden;
+  }
+  .calc-inputs, .calc-results {
+    background: var(--bg-1); padding: 28px;
+  }
+  .input-grp { margin-bottom: 18px; }
+  .input-grp label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--ink-2); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .input-grp input {
+    width: 100%; padding: 10px 12px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--ink-0);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  .input-grp input:focus {
+    outline: none; border-color: var(--cyan);
+  }
+  .input-grp .suffix {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .input-grp .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--ink-3);
+    min-width: 28px;
+  }
+
+  .result-block {
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 18px; margin-bottom: 18px;
+  }
+  .result-block:last-child { border-bottom: none; margin-bottom: 0; }
+  .result-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .result-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px; color: var(--cyan);
+    letter-spacing: -0.01em; font-weight: 500;
+  }
+  .result-val.lifetime { color: var(--green); font-size: 32px; }
+  .result-sub {
+    font-size: 12px; color: var(--ink-2); margin-top: 4px;
+  }
+
+  /* histogram for "where you fit" */
+  .hist-wrap { margin-top: 14px; }
+  .hist-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 4px;
+  }
+  .hist-lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-2);
+    width: 90px; text-align: right;
+  }
+  .hist-bar-wrap {
+    flex: 1; height: 14px; background: var(--bg-3);
+    border-radius: 2px; position: relative; overflow: hidden;
+  }
+  .hist-bar {
+    height: 100%; background: rgba(0, 217, 245, 0.25);
+    border-right: 1px solid var(--cyan);
+  }
+  .hist-marker {
+    position: absolute; top: -3px; bottom: -3px;
+    width: 2px; background: var(--amber);
+    box-shadow: 0 0 6px var(--amber);
+  }
+  .hist-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-3);
+    width: 40px;
+  }
+
+  .your-fit {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: rgba(245, 184, 0, 0.06);
+    border-left: 2px solid var(--amber);
+    border-radius: 0 4px 4px 0;
+    font-size: 12px; color: var(--ink-1);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== TIME SELECTOR ===== */
+  .time-select {
+    display: flex; gap: 2px; padding: 2px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  .time-btn {
+    background: transparent; border: none;
+    padding: 6px 12px; cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--ink-2); text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .time-btn:hover { color: var(--ink-0); }
+  .time-btn.active {
+    background: var(--cyan-dim); color: var(--cyan);
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    margin-top: 64px; padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--ink-3); text-transform: uppercase;
+  }
+  .footer a { color: var(--cyan); text-decoration: none; }
+
+  /* ===== SQL VIEWER ===== */
+  .panel-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    display: flex; justify-content: flex-end; align-items: center;
+    gap: 12px;
+  }
+  .sql-toggle {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sql-toggle:hover { color: var(--cyan); border-color: var(--cyan); }
+  .sql-toggle.open { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-dim); }
+  .sql-panel {
+    margin-top: 16px;
+    background: #06060a;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    animation: slideDown 0.25s ease-out;
+  }
+  .sql-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border-bottom: 1px solid var(--line);
+  }
+  .sql-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    color: var(--cyan); text-transform: uppercase;
+  }
+  .sql-copy {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sql-copy:hover { color: var(--cyan); border-color: var(--cyan); }
+  .sql-copy.copied { color: var(--green); border-color: var(--green); }
+  .sql-code {
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--ink-1);
+    overflow-x: auto;
+    white-space: pre;
+    margin: 0;
+    max-height: 520px;
+    overflow-y: auto;
+  }
+  .sql-k { color: var(--cyan); font-weight: 500; }
+  .sql-f { color: var(--green); }
+  .sql-s { color: var(--amber); }
+  .sql-n { color: #c89cff; }
+  .sql-c { color: var(--ink-3); font-style: italic; }
+
+  /* ===== MODAL ===== */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    animation: fadeIn 0.18s;
+    padding: 20px;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    width: min(480px, 100%);
+    background: var(--bg-1);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    overflow: hidden;
+    animation: modalIn 0.25s ease-out;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .modal-head h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400; font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .modal-close {
+    background: transparent; border: none;
+    color: var(--ink-2); font-size: 22px;
+    cursor: pointer; padding: 0 6px;
+    line-height: 1;
+  }
+  .modal-close:hover { color: var(--ink-0); }
+  .modal-body { padding: 22px; }
+  .modal-body p {
+    font-size: 13px; color: var(--ink-2);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+  .modal-body p a { color: var(--cyan); text-decoration: none; }
+  .modal-body p a:hover { text-decoration: underline; }
+  .modal-current {
+    font-size: 11px; color: var(--ink-2);
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-current code {
+    background: var(--bg-3);
+    padding: 4px 10px; border-radius: 3px;
+    color: var(--green); flex: 1;
+  }
+  .modal-current code.unset { color: var(--ink-3); }
+  .modal-input {
+    width: 100%;
+    padding: 11px 13px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--ink-0);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+  }
+  .modal-input:focus { outline: none; border-color: var(--cyan); }
+  .modal-actions {
+    display: flex; justify-content: space-between; gap: 10px;
+  }
+  .btn-primary, .btn-secondary, .btn-danger {
+    padding: 9px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--cyan-dim);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+  }
+  .btn-primary:hover { background: var(--cyan); color: var(--bg-0); }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+  }
+  .btn-secondary:hover { color: var(--ink-0); border-color: var(--ink-2); }
+  .btn-danger {
+    background: transparent;
+    border: 1px solid rgba(255, 85, 119, 0.3);
+    color: var(--rose);
+  }
+  .btn-danger:hover { background: var(--rose-dim); border-color: var(--rose); }
+
+  /* ===== HEADER ACTIONS + AI BADGE ===== */
+  .header-actions {
+    display: flex; gap: 8px;
+    margin-top: 14px;
+    justify-content: flex-end;
+  }
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .icon-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+  .icon-btn.has-key { color: var(--green); border-color: rgba(0, 245, 160, 0.35); }
+  .icon-btn.has-key::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 6px var(--green);
+  }
+  .icon-btn.no-key::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ink-3);
+  }
+  .ai-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    color: var(--cyan); text-transform: uppercase;
+    padding: 3px 9px;
+    background: var(--cyan-dim);
+    border-radius: 10px;
+    margin-left: 10px;
+    font-weight: 500;
+  }
+  .prompt-expander {
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-3);
+    cursor: pointer;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  .prompt-expander:hover { color: var(--cyan); }
+  .prompt-block {
+    margin-top: 10px;
+    padding: 14px;
+    background: var(--bg-0);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .ai-error {
+    background: var(--rose-dim);
+    border: 1px solid var(--rose);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--rose);
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  .ai-spinner {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 6px;
+    vertical-align: -1px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== SECTION NAV (sticky TOC) ===== */
+  html { scroll-padding-top: 64px; scroll-behavior: smooth; }
+  .section-nav {
+    position: sticky; top: 0;
+    z-index: 50;
+    display: flex; gap: 4px;
+    padding: 12px 40px;
+    margin: 0 -40px 28px;
+    background: rgba(8, 8, 13, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .section-nav::-webkit-scrollbar { display: none; }
+  .sn-item {
+    text-decoration: none;
+    padding: 7px 13px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .sn-item:hover {
+    color: var(--cyan);
+    border-color: var(--line-strong);
+    background: var(--cyan-dim);
+  }
+  .sn-num {
+    color: var(--ink-3);
+    margin-right: 6px;
+    font-weight: 400;
+  }
+  .sn-item:hover .sn-num { color: var(--cyan); }
+
+  /* ===== CHANNEL SCORECARD ===== */
+  .scorecard-wrap { overflow-x: auto; }
+  .scorecard-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .scorecard-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--bg-2);
+    color: var(--ink-2);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line-strong);
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .scorecard-table th:hover { color: var(--cyan); }
+  .scorecard-table th.sorted { color: var(--cyan); }
+  .scorecard-table th.numeric { text-align: right; }
+  .scorecard-table th .sort-arrow {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 8px;
+    vertical-align: 1px;
+  }
+  .scorecard-table td {
+    padding: 14px;
+    font-size: 12px;
+    color: var(--ink-1);
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .scorecard-table td.numeric { text-align: right; }
+  .scorecard-table tr:hover td { background: var(--bg-2); }
+  .scorecard-table tr.row-active td {
+    background: rgba(0, 245, 160, 0.06);
+    border-bottom-color: rgba(0, 245, 160, 0.2);
+  }
+  .scorecard-table tr.row-active td:first-child {
+    box-shadow: inset 2px 0 0 var(--green);
+  }
+  .channel-cell {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 500;
+    color: var(--ink-0);
+  }
+  .channel-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--bg-3);
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .channel-pill.partner { background: rgba(245, 184, 0, 0.12); color: var(--amber); }
+  .channel-pill.direct { background: rgba(0, 217, 245, 0.12); color: var(--cyan); }
+  .channel-pill.referral { background: rgba(0, 245, 160, 0.10); color: var(--green); }
+  .risk-flag {
+    color: var(--rose);
+    font-size: 13px;
+    margin-left: 4px;
+  }
+  .dpd-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    min-width: 60px;
+    text-align: center;
+  }
+  .dpd-badge.low { color: var(--green); background: var(--green-dim); }
+  .dpd-badge.mid { color: var(--amber); background: var(--amber-dim); }
+  .dpd-badge.high { color: var(--rose); background: var(--rose-dim); }
+
+  /* ===== VINTAGE CURVES ===== */
+  .vintage-wrap {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .vintage-header {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 28px;
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .vintage-narrative {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+  .vintage-narrative strong { color: var(--ink-1); }
+  .vintage-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .vintage-stat {
+    background: var(--bg-2);
+    border-radius: 4px;
+    padding: 12px 14px;
+    border-left: 2px solid var(--cyan);
+  }
+  .vintage-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .vintage-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--cyan);
+    font-weight: 500;
+  }
+  .vintage-stat.peak { border-left-color: var(--rose); }
+  .vintage-stat.peak .vintage-stat-val { color: var(--rose); }
+  .vintage-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 980px) {
+    .app { padding: 24px 20px 60px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .calc-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 16px; }
+    .meta-strip { text-align: left; }
+    .header-title { font-size: 26px; }
+    .filter-bar { padding: 12px 14px; }
+    .filter-clear { margin-left: 0; width: 100%; margin-top: 8px; }
+    .vintage-header { grid-template-columns: 1fr; gap: 18px; }
+    .vintage-stats { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .section-nav { padding: 12px 20px; margin: 0 -20px 20px; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.5s ease-out backwards; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useMemo, useEffect, useRef } = React;
+const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
+
+// ============================================================
+// SYNTHETIC DATA GENERATION
+// ============================================================
+function mulberry32(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = seed;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const rand = mulberry32(42);
+const pick = (arr, weights) => {
+  const total = weights.reduce((a,b) => a+b, 0);
+  let r = rand() * total;
+  for (let i = 0; i < arr.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return arr[i];
+  }
+  return arr[arr.length - 1];
+};
+const randNorm = (mu, sigma) => {
+  let u = 0, v = 0;
+  while (u === 0) u = rand();
+  while (v === 0) v = rand();
+  return mu + sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+};
+
+const FICO_BANDS = ['660-699', '700-739', '740-779', '780+'];
+const DEGREES = ['Bachelor\u2019s', 'Master\u2019s', 'MBA', 'JD', 'MD', 'PhD'];
+const STAGES = ['Applied', 'Soft Pull', 'Underwriting', 'Approved', 'Funded'];
+const CHANNELS = ['Direct', 'Referral', 'Partner A', 'Partner B', 'Partner C'];
+
+function generateLoans(n = 5000) {
+  const loans = [];
+  const now = new Date('2026-04-30');
+  for (let i = 0; i < n; i++) {
+    const fico = pick(FICO_BANDS, [0.18, 0.32, 0.30, 0.20]);
+    const degree = pick(DEGREES, [0.45, 0.25, 0.10, 0.07, 0.08, 0.05]);
+    const channel = pick(CHANNELS, [0.40, 0.20, 0.18, 0.14, 0.08]);
+
+    const ficoIdx = FICO_BANDS.indexOf(fico);
+    const degBonus = ['MD','JD','MBA','PhD'].includes(degree) ? 0.08 : 0;
+    const baseProg = 0.55 + ficoIdx * 0.07 + degBonus;
+    const channelPenalty = channel === 'Partner C' ? -0.18 : 0;
+    const progress = Math.max(0, Math.min(1, baseProg + channelPenalty + (rand() - 0.5) * 0.2));
+
+    let stageIdx;
+    if (progress > 0.85) stageIdx = 4;
+    else if (progress > 0.70) stageIdx = 3;
+    else if (progress > 0.50) stageIdx = 2;
+    else if (progress > 0.25) stageIdx = 1;
+    else stageIdx = 0;
+
+    const declined = rand() < 0.04 && stageIdx >= 2;
+    const stage = declined ? 'Declined' : STAGES[stageIdx];
+
+    const balance = Math.round(randNorm(58000, 18000) / 1000) * 1000;
+    const balanceClamped = Math.max(15000, Math.min(180000, balance));
+    const origRate = +(randNorm(7.8, 1.2)).toFixed(2);
+    const refiRate = +(Math.max(4.5, origRate - randNorm(2.2, 0.8))).toFixed(2);
+    const term = pick([60, 84, 120, 180], [0.20, 0.35, 0.30, 0.15]);
+
+    const monthlyOrig = pmt(origRate/100/12, term, balanceClamped);
+    const monthlyRefi = pmt(refiRate/100/12, term, balanceClamped);
+    const monthlySavings = Math.max(0, monthlyOrig - monthlyRefi);
+    const lifetimeSavings = monthlySavings * term;
+
+    let delinq = 'Current';
+    if (stage === 'Funded') {
+      const delqProb = channel === 'Partner C' ? 0.12 : 0.04;
+      const r = rand();
+      if (r < delqProb * 0.3) delinq = '90+ DPD';
+      else if (r < delqProb * 0.6) delinq = '60+ DPD';
+      else if (r < delqProb) delinq = '30+ DPD';
+    }
+
+    const daysAgo = Math.floor(Math.pow(rand(), 1.3) * 90);
+    const appDate = new Date(now); appDate.setDate(appDate.getDate() - daysAgo);
+
+    loans.push({
+      id: 'L' + (100000 + i),
+      fico, degree, channel, stage,
+      origRate, refiRate, balance: balanceClamped, term,
+      monthlySavings: Math.round(monthlySavings),
+      lifetimeSavings: Math.round(lifetimeSavings),
+      delinq, appDate, daysAgo,
+    });
+  }
+  return loans;
+}
+
+function pmt(r, n, pv) {
+  if (r === 0) return pv / n;
+  return (pv * r) / (1 - Math.pow(1 + r, -n));
+}
+
+// ============================================================
+// FILTER UTILITIES
+// ============================================================
+function applyFilters(loans, filters) {
+  return loans.filter(l => {
+    if (filters.fico.length && !filters.fico.includes(l.fico)) return false;
+    if (filters.degree.length && !filters.degree.includes(l.degree)) return false;
+    if (filters.channel.length && !filters.channel.includes(l.channel)) return false;
+    return true;
+  });
+}
+
+function totalFilterCount(filters) {
+  return filters.fico.length + filters.degree.length + filters.channel.length;
+}
+
+// Compute WoW deltas: last 7 days vs prior 7 days within the filtered/timed set.
+function computeDelta(currentLoans, allLoansInWindow) {
+  // Note: WoW is computed against the broader timed set's daysAgo,
+  // so it reflects week-over-week movement inside whatever filter is active.
+  const recent = currentLoans.filter(l => l.daysAgo <= 7);
+  const prior  = currentLoans.filter(l => l.daysAgo > 7 && l.daysAgo <= 14);
+  return { recent, prior };
+}
+
+function pctDelta(curr, prev) {
+  if (prev === 0) return curr > 0 ? 100 : 0;
+  return ((curr - prev) / prev) * 100;
+}
+
+// ============================================================
+// SQL LIBRARY — generates Snowflake SQL reflecting current filters
+// ============================================================
+function buildWhere(filters) {
+  const clauses = [];
+  if (filters.fico.length)
+    clauses.push(`AND fico_band IN (${filters.fico.map(f => "'" + f + "'").join(', ')})`);
+  if (filters.degree.length)
+    clauses.push(`AND degree_type IN (${filters.degree.map(d => "'" + d + "'").join(', ')})`);
+  if (filters.channel.length)
+    clauses.push(`AND channel IN (${filters.channel.map(c => "'" + c + "'").join(', ')})`);
+  return clauses.length ? '\n    ' + clauses.join('\n    ') : '';
+}
+
+function windowDays(w) { return w === '7D' ? 7 : w === '30D' ? 30 : 90; }
+
+const sqlLibrary = {
+  kpiStrip: (filters, win) => {
+    const days = windowDays(win);
+    const w = buildWhere(filters);
+    return `-- KPI Strip: portfolio totals + WoW deltas
+-- Window: trailing ${days}d, computed in a single pass via conditional aggregation
+
+WITH base AS (
+  SELECT
+    loan_id, balance, lifetime_savings, stage,
+    delinq_status, channel, fico_band, degree_type,
+    DATEDIFF('day', app_date, CURRENT_DATE()) AS days_ago
+  FROM refi.loan_applications
+  WHERE app_date >= DATEADD('day', -${days}, CURRENT_DATE())${w}
+)
+SELECT
+  -- Headline KPIs (current filtered set)
+  SUM(CASE WHEN stage = 'Funded' THEN balance END)                     AS funded_volume,
+  AVG(CASE WHEN stage = 'Funded' THEN lifetime_savings END)::INT       AS avg_lifetime_savings,
+  100.0 * COUNT_IF(stage IN ('Approved','Funded'))
+        / NULLIF(COUNT_IF(stage NOT IN ('Applied','Soft Pull')), 0)    AS approval_rate_pct,
+  100.0 * COUNT_IF(stage = 'Funded' AND delinq_status IN ('60+ DPD','90+ DPD'))
+        / NULLIF(COUNT_IF(stage = 'Funded'), 0)                        AS dpd_60_rate_pct,
+
+  -- WoW deltas: last 7d vs prior 7d, same filter
+  100.0 * (
+    SUM(CASE WHEN days_ago <= 7 AND stage = 'Funded' THEN balance END)::FLOAT
+    / NULLIF(SUM(CASE WHEN days_ago BETWEEN 8 AND 14 AND stage = 'Funded' THEN balance END), 0)
+    - 1
+  )                                                                    AS volume_wow_pct,
+  100.0 * COUNT_IF(days_ago <= 7 AND stage = 'Funded'
+                   AND delinq_status IN ('60+ DPD','90+ DPD'))
+        / NULLIF(COUNT_IF(days_ago <= 7 AND stage = 'Funded'), 0)
+  -
+  100.0 * COUNT_IF(days_ago BETWEEN 8 AND 14 AND stage = 'Funded'
+                   AND delinq_status IN ('60+ DPD','90+ DPD'))
+        / NULLIF(COUNT_IF(days_ago BETWEEN 8 AND 14 AND stage = 'Funded'), 0)
+                                                                       AS dpd_wow_bps_delta
+FROM base;`;
+  },
+
+  funnel: (filters, win) => {
+    const days = windowDays(win);
+    const w = buildWhere(filters);
+    return `-- Application funnel: count reaching each stage + drop-off vs prior stage
+-- Uses LAG over the grouped result for clean stage-to-stage % drop
+
+WITH stage_def AS (
+  SELECT * FROM (VALUES
+    ('Applied', 1), ('Soft Pull', 2), ('Underwriting', 3),
+    ('Approved', 4), ('Funded', 5)
+  ) AS s(stage_name, stage_idx)
+),
+loans AS (
+  SELECT
+    loan_id,
+    CASE stage
+      WHEN 'Applied'      THEN 1 WHEN 'Soft Pull'    THEN 2
+      WHEN 'Underwriting' THEN 3 WHEN 'Approved'     THEN 4
+      WHEN 'Funded'       THEN 5
+    END AS reached_idx
+  FROM refi.loan_applications
+  WHERE stage <> 'Declined'
+    AND app_date >= DATEADD('day', -${days}, CURRENT_DATE())${w}
+),
+counts AS (
+  SELECT
+    s.stage_name, s.stage_idx,
+    COUNT_IF(l.reached_idx >= s.stage_idx) AS reached_n
+  FROM stage_def s
+  CROSS JOIN loans l
+  GROUP BY s.stage_name, s.stage_idx
+)
+SELECT
+  stage_name,
+  stage_idx,
+  reached_n,
+  ROUND(
+    100.0 * (1 - reached_n::FLOAT
+                / NULLIF(LAG(reached_n) OVER (ORDER BY stage_idx), 0)),
+    1
+  ) AS dropoff_from_prior_pct
+FROM counts
+ORDER BY stage_idx;`;
+  },
+
+  cohort: (filters, win) => {
+    const days = windowDays(win);
+    const w = buildWhere(filters);
+    return `-- Cohort approval: FICO band x Degree type
+-- Returns long format; pivot happens client-side for the heatmap
+
+WITH decisioned AS (
+  SELECT fico_band, degree_type, stage
+  FROM refi.loan_applications
+  WHERE stage IN ('Underwriting','Approved','Funded','Declined')
+    AND app_date >= DATEADD('day', -${days}, CURRENT_DATE())${w}
+)
+SELECT
+  fico_band,
+  degree_type,
+  COUNT(*)                                          AS n_decisions,
+  COUNT_IF(stage IN ('Approved','Funded'))          AS n_approved,
+  ROUND(
+    100.0 * COUNT_IF(stage IN ('Approved','Funded'))
+          / NULLIF(COUNT(*), 0),
+    1
+  )                                                 AS approval_rate_pct,
+  CASE WHEN COUNT(*) < 30 THEN TRUE ELSE FALSE END  AS thin_cell
+FROM decisioned
+GROUP BY fico_band, degree_type
+QUALIFY n_decisions > 0
+ORDER BY fico_band DESC, degree_type;`;
+  },
+
+  channelScorecard: (filters, win) => {
+    const days = windowDays(win);
+    const w = buildWhere(filters);
+    return `-- Channel scorecard: per-channel KPIs + risk rank
+-- Computed in a single GROUP BY with conditional aggregation
+
+WITH base AS (
+  SELECT channel, stage, balance, lifetime_savings, delinq_status
+  FROM refi.loan_applications
+  WHERE app_date >= DATEADD('day', -${days}, CURRENT_DATE())${w}
+)
+SELECT
+  channel,
+  COUNT(*)                                                              AS apps_n,
+  COUNT_IF(stage = 'Funded')                                            AS funded_n,
+  SUM(CASE WHEN stage = 'Funded' THEN balance END)                      AS funded_volume,
+  ROUND(100.0 * COUNT_IF(stage IN ('Approved','Funded'))
+              / NULLIF(COUNT_IF(stage NOT IN ('Applied','Soft Pull')), 0), 1)
+                                                                        AS approval_rate_pct,
+  ROUND(100.0 * COUNT_IF(stage = 'Funded' AND delinq_status IN ('60+ DPD','90+ DPD'))
+              / NULLIF(COUNT_IF(stage = 'Funded'), 0), 2)
+                                                                        AS dpd_60_rate_pct,
+  AVG(CASE WHEN stage = 'Funded' THEN lifetime_savings END)::INT        AS avg_lifetime_savings,
+  RANK() OVER (
+    ORDER BY 100.0 * COUNT_IF(stage = 'Funded' AND delinq_status IN ('60+ DPD','90+ DPD'))
+                  / NULLIF(COUNT_IF(stage = 'Funded'), 0) DESC
+  )                                                                     AS risk_rank
+FROM base
+GROUP BY channel
+ORDER BY funded_volume DESC;`;
+  },
+
+  vintage: (filters, win) => {
+    const days = windowDays(win);
+    const w = buildWhere(filters);
+    return `-- Vintage curves: cumulative 60+ DPD rate by funding cohort x months on book
+-- The CROSS JOIN against a generated MOB grid produces a long-format result
+-- ready for a line chart with one series per cohort.
+
+WITH funded AS (
+  SELECT
+    loan_id,
+    channel,
+    fund_date,
+    delinq_status,
+    DATEDIFF('day', fund_date, CURRENT_DATE())                  AS days_seasoned,
+    DATE_TRUNC('week', fund_date)                               AS cohort_week,
+    CASE
+      WHEN DATEDIFF('day', fund_date, CURRENT_DATE()) <= 14 THEN 'Last 2 weeks'
+      WHEN DATEDIFF('day', fund_date, CURRENT_DATE()) <= 28 THEN '2-4 weeks ago'
+      WHEN DATEDIFF('day', fund_date, CURRENT_DATE()) <= 42 THEN '4-6 weeks ago'
+      WHEN DATEDIFF('day', fund_date, CURRENT_DATE()) <= 63 THEN '6-9 weeks ago'
+      ELSE                                                          '9-12 weeks ago'
+    END                                                         AS cohort_label
+  FROM refi.loan_applications
+  WHERE stage = 'Funded'
+    AND fund_date >= DATEADD('day', -${days}, CURRENT_DATE())${w}
+),
+mob_grid AS (
+  SELECT (SEQ4() / 4.0) AS mob_month
+  FROM TABLE(GENERATOR(ROWCOUNT => 13))
+),
+cohort_size AS (
+  SELECT cohort_label, COUNT(DISTINCT loan_id) AS n
+  FROM funded GROUP BY cohort_label
+),
+joined AS (
+  SELECT
+    f.cohort_label,
+    g.mob_month,
+    f.days_seasoned,
+    f.delinq_status,
+    cs.n AS cohort_n
+  FROM funded f
+  CROSS JOIN mob_grid g
+  JOIN cohort_size cs USING (cohort_label)
+  WHERE g.mob_month * 30 <= f.days_seasoned
+)
+SELECT
+  cohort_label,
+  mob_month,
+  ROUND(
+    100.0 * COUNT_IF(delinq_status IN ('60+ DPD','90+ DPD'))
+          / NULLIF(MAX(cohort_n), 0),
+    2
+  ) AS cumulative_dpd_pct,
+  MAX(cohort_n) AS cohort_n
+FROM joined
+GROUP BY cohort_label, mob_month
+ORDER BY cohort_label, mob_month;`;
+  },
+};
+
+// ============================================================
+// VINTAGE COHORT DEFINITIONS + BUILDER
+// ============================================================
+const VINTAGE_COHORTS = [
+  { label: 'Last 2 weeks',   daysFrom: 0,  daysTo: 14, color: '#00d9f5' },
+  { label: '2–4 weeks ago',  daysFrom: 14, daysTo: 28, color: '#7eebf5' },
+  { label: '4–6 weeks ago',  daysFrom: 28, daysTo: 42, color: '#f5b800' },
+  { label: '6–9 weeks ago',  daysFrom: 42, daysTo: 63, color: '#ff9544' },
+  { label: '9–12 weeks ago', daysFrom: 63, daysTo: 90, color: '#ff5577' },
+];
+
+function buildVintageData(loans) {
+  const cohortLoans = {};
+  VINTAGE_COHORTS.forEach(c => { cohortLoans[c.label] = []; });
+
+  loans.filter(l => l.stage === 'Funded').forEach(l => {
+    for (const c of VINTAGE_COHORTS) {
+      if (l.daysAgo >= c.daysFrom && l.daysAgo < c.daysTo) {
+        cohortLoans[c.label].push(l);
+        break;
+      }
+    }
+  });
+
+  const cohortStats = VINTAGE_COHORTS.map(c => {
+    const ls = cohortLoans[c.label];
+    const total = ls.length;
+    const dpd = ls.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const terminalDpd = total ? (dpd / total) * 100 : 0;
+    const maxMOB = c.daysTo / 30;
+    return { ...c, n: total, terminalDpd, maxMOB };
+  });
+
+  // X-axis: 0 to 3 in 0.25 increments
+  const data = [];
+  const steps = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
+  steps.forEach(mob => {
+    const row = { mob };
+    cohortStats.forEach(c => {
+      if (mob > c.maxMOB || c.n === 0) {
+        row[c.label] = null;
+      } else {
+        // Saturating curve: rises fast early, plateaus toward terminal DPD
+        const progress = mob === 0 ? 0 : 1 - Math.exp(-mob * 0.85);
+        row[c.label] = +(c.terminalDpd * progress).toFixed(2);
+      }
+    });
+    data.push(row);
+  });
+
+  return { data, cohortStats };
+}
+
+// ============================================================
+// SQL SYNTAX HIGHLIGHTER (single-pass tokenizer, no nesting issues)
+// ============================================================
+function highlightSql(sql) {
+  const escaped = sql
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  const pattern = /(--[^\n]*)|('[^']*')|(\b(?:WITH|SELECT|FROM|WHERE|AND|OR|NOT|IN|AS|GROUP\s+BY|ORDER\s+BY|HAVING|JOIN|CROSS\s+JOIN|LEFT\s+JOIN|INNER\s+JOIN|ON|USING|CASE|WHEN|THEN|ELSE|END|QUALIFY|OVER|PARTITION\s+BY|VALUES|CURRENT_DATE|TRUE|FALSE|DESC|ASC|BETWEEN|NULL|IS|FLOAT|INT|DISTINCT|ROWCOUNT)\b)|(\b(?:COUNT|SUM|AVG|MIN|MAX|ROUND|NULLIF|COALESCE|DATEADD|DATEDIFF|RANK|LAG|LEAD|RATIO_TO_REPORT|ROW_NUMBER|COUNT_IF|CAST|DATE_TRUNC|SEQ4|GENERATOR|TABLE)\b)|(\b\d+(?:\.\d+)?\b)/g;
+  return escaped.replace(pattern, (m, c, s, k, f, n) => {
+    if (c) return '<span class="sql-c">' + c + '</span>';
+    if (s) return '<span class="sql-s">' + s + '</span>';
+    if (k) return '<span class="sql-k">' + k + '</span>';
+    if (f) return '<span class="sql-f">' + f + '</span>';
+    if (n) return '<span class="sql-n">' + n + '</span>';
+    return m;
+  });
+}
+
+// ============================================================
+// SQL PANEL (reusable)
+// ============================================================
+function SqlPanel({ sql }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(sql).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    }).catch(() => {});
+  };
+  return (
+    <div className="sql-panel">
+      <div className="sql-header">
+        <span className="sql-tag">▸ Snowflake · auto-generated for current filters</span>
+        <button className={'sql-copy' + (copied ? ' copied' : '')} onClick={handleCopy}>
+          {copied ? '✓ Copied' : 'Copy SQL'}
+        </button>
+      </div>
+      <pre className="sql-code"
+        dangerouslySetInnerHTML={{__html: highlightSql(sql)}} />
+    </div>
+  );
+}
+
+// ============================================================
+// API KEY MODAL
+// ============================================================
+function ApiKeyModal({ isOpen, onClose, currentKey, onSave, onClear }) {
+  const [val, setVal] = useState('');
+  useEffect(() => {
+    if (isOpen) setVal('');
+  }, [isOpen]);
+  if (!isOpen) return null;
+  const masked = currentKey
+    ? currentKey.slice(0, 10) + '…' + currentKey.slice(-4)
+    : null;
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-head">
+          <h3>Anthropic API Key</h3>
+          <button className="modal-close" onClick={onClose} aria-label="Close">×</button>
+        </div>
+        <div className="modal-body">
+          <p>
+            Powers the live AI re-analysis. Stored in <code style={{color:'var(--cyan)'}}>localStorage</code> on
+            your browser only — never sent anywhere except the Anthropic API.
+            Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>.
+          </p>
+          <div className="modal-current">
+            <span style={{color: 'var(--ink-3)'}}>Current:</span>
+            <code className={masked ? '' : 'unset'}>{masked || 'not set'}</code>
+          </div>
+          <input
+            className="modal-input"
+            type="password"
+            placeholder="sk-ant-api03-..."
+            value={val}
+            onChange={e => setVal(e.target.value)}
+            autoFocus
+          />
+          <div className="modal-actions">
+            <div>
+              {currentKey && (
+                <button className="btn-danger" onClick={() => { onClear(); onClose(); }}>
+                  Remove key
+                </button>
+              )}
+            </div>
+            <div style={{display:'flex', gap: 10}}>
+              <button className="btn-secondary" onClick={onClose}>Cancel</button>
+              <button className="btn-primary"
+                onClick={() => { if (val.trim()) { onSave(val.trim()); onClose(); } }}>
+                Save key
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// COMPONENTS
+// ============================================================
+
+function Header({ window, setWindow, openKeyModal, hasApiKey }) {
+  return (
+    <div className="header fade-in">
+      <div>
+        <div className="brand-mark">
+          <span className="brand-dot"></span>
+          <span>WISE / REFI INTELLIGENCE</span>
+        </div>
+        <div className="header-title">
+          Refi Portfolio <em>Intelligence</em>
+        </div>
+        <div className="header-sub">
+          Live cohort, funnel, and savings analytics across 5,000 synthetic refi
+          applications. Built as a portfolio demo by Byheir Wise.
+        </div>
+      </div>
+      <div className="meta-strip">
+        <div className="demo-tag">Synthetic data · Demo build</div>
+        <div><span className="lbl">As of</span> 2026-04-30</div>
+        <div><span className="lbl">Cohort size</span> 5,000 apps</div>
+        <div><span className="lbl">Data refresh</span> Real-time</div>
+        <div className="header-actions">
+          <button className={'icon-btn ' + (hasApiKey ? 'has-key' : 'no-key')}
+            onClick={openKeyModal}
+            title={hasApiKey ? 'API key configured · click to change' : 'Add Anthropic API key to enable AI'}>
+            {hasApiKey ? 'AI Ready' : 'Add API Key'}
+          </button>
+        </div>
+        <div style={{marginTop: 10}}>
+          <div className="time-select">
+            {['7D', '30D', '90D'].map(w => (
+              <button key={w}
+                className={'time-btn ' + (window === w ? 'active' : '')}
+                onClick={() => setWindow(w)}>{w}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FilterBar({ filters, removeFilter, clearFilters, totalCount, filteredCount }) {
+  const hasFilters = totalFilterCount(filters) > 0;
+  if (!hasFilters) return null;
+
+  const renderChips = (key, values) =>
+    values.map(v => (
+      <span key={key + ':' + v} className={'filter-chip ' + key}>
+        <span className="chip-key">{key}</span>
+        <span>{v}</span>
+        <button className="filter-chip-x" onClick={() => removeFilter(key, v)} aria-label={'Remove ' + v}>×</button>
+      </span>
+    ));
+
+  return (
+    <div className="filter-bar">
+      <span className="filter-bar-lbl">Active filters</span>
+      {renderChips('fico', filters.fico)}
+      {renderChips('degree', filters.degree)}
+      {renderChips('channel', filters.channel)}
+      <span className="filter-count">
+        showing <strong>{filteredCount.toLocaleString()}</strong> of {totalCount.toLocaleString()}
+      </span>
+      <button className="filter-clear" onClick={clearFilters}>Clear all ×</button>
+    </div>
+  );
+}
+
+function KpiStrip({ loans, isFiltered, filters, windowSel }) {
+  const [showSql, setShowSql] = useState(false);
+  const stats = useMemo(() => {
+    const funded = loans.filter(l => l.stage === 'Funded');
+    const totalVolume = funded.reduce((s, l) => s + l.balance, 0);
+    const avgSavings = funded.length
+      ? Math.round(funded.reduce((s, l) => s + l.lifetimeSavings, 0) / funded.length)
+      : 0;
+    const decisioned = loans.filter(l => l.stage !== 'Applied' && l.stage !== 'Soft Pull');
+    const approved = loans.filter(l => l.stage === 'Approved' || l.stage === 'Funded');
+    const apprRate = decisioned.length ? (approved.length / decisioned.length) * 100 : 0;
+    const dpd60 = funded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const dpd60Rate = funded.length ? (dpd60 / funded.length) * 100 : 0;
+
+    // WoW deltas — last 7 days vs prior 7 days within current filter
+    const recent = loans.filter(l => l.daysAgo <= 7);
+    const prior  = loans.filter(l => l.daysAgo > 7 && l.daysAgo <= 14);
+
+    const recentFunded = recent.filter(l => l.stage === 'Funded');
+    const priorFunded  = prior.filter(l => l.stage === 'Funded');
+    const volDelta = pctDelta(
+      recentFunded.reduce((s,l) => s + l.balance, 0),
+      priorFunded.reduce((s,l) => s + l.balance, 0)
+    );
+    const recentAvgSav = recentFunded.length ? recentFunded.reduce((s,l)=>s+l.lifetimeSavings,0)/recentFunded.length : 0;
+    const priorAvgSav  = priorFunded.length  ? priorFunded.reduce((s,l)=>s+l.lifetimeSavings,0)/priorFunded.length  : 0;
+    const savDelta = recentAvgSav - priorAvgSav;
+
+    const recentDec = recent.filter(l => l.stage !== 'Applied' && l.stage !== 'Soft Pull');
+    const priorDec  = prior.filter(l => l.stage !== 'Applied' && l.stage !== 'Soft Pull');
+    const recentAppr = recent.filter(l => l.stage === 'Approved' || l.stage === 'Funded');
+    const priorAppr  = prior.filter(l => l.stage === 'Approved' || l.stage === 'Funded');
+    const recentApprRate = recentDec.length ? (recentAppr.length / recentDec.length) * 100 : 0;
+    const priorApprRate  = priorDec.length  ? (priorAppr.length  / priorDec.length)  * 100 : 0;
+    const apprDelta = recentApprRate - priorApprRate;
+
+    const recentDpd = recentFunded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const priorDpd  = priorFunded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const recentDpdRate = recentFunded.length ? (recentDpd / recentFunded.length) * 100 : 0;
+    const priorDpdRate  = priorFunded.length  ? (priorDpd  / priorFunded.length)  * 100 : 0;
+    const dpdDelta = (recentDpdRate - priorDpdRate) * 100; // bps
+
+    return { totalVolume, avgSavings, apprRate, dpd60Rate, volDelta, savDelta, apprDelta, dpdDelta };
+  }, [loans]);
+
+  const fmtCur = (n) => '$' + (n/1e6).toFixed(1) + 'M';
+  const fmtNum = (n) => n.toLocaleString('en-US');
+  const deltaClass = (v, inverse=false) => {
+    const positive = inverse ? v < 0 : v > 0;
+    if (Math.abs(v) < 0.5) return 'flat';
+    return positive ? 'up' : 'down';
+  };
+  const deltaArrow = (v) => {
+    if (Math.abs(v) < 0.5) return '―';
+    return v > 0 ? '▲' : '▼';
+  };
+
+  return (
+    <React.Fragment>
+    <div className="kpi-grid fade-in" style={{animationDelay: '0.05s'}}>
+      <div className="kpi">
+        <div className="kpi-lbl">Funded Volume {isFiltered && <span style={{color:'var(--cyan)'}}>·</span>}</div>
+        <div className={'kpi-val' + (isFiltered ? ' recalc' : '')}>{fmtCur(stats.totalVolume)}</div>
+        <div className={'kpi-delta ' + deltaClass(stats.volDelta)}>
+          <span className="arrow">{deltaArrow(stats.volDelta)}</span>
+          {stats.volDelta > 0 ? '+' : ''}{stats.volDelta.toFixed(1)}% WoW
+        </div>
+      </div>
+      <div className="kpi">
+        <div className="kpi-lbl">Avg Lifetime Savings</div>
+        <div className={'kpi-val' + (isFiltered ? ' recalc' : '')}>${fmtNum(stats.avgSavings)}</div>
+        <div className={'kpi-delta ' + deltaClass(stats.savDelta)}>
+          <span className="arrow">{deltaArrow(stats.savDelta)}</span>
+          {stats.savDelta > 0 ? '+' : ''}${Math.round(stats.savDelta).toLocaleString()} vs prior
+        </div>
+      </div>
+      <div className="kpi">
+        <div className="kpi-lbl">Approval Rate</div>
+        <div className={'kpi-val' + (isFiltered ? ' recalc' : '')}>{stats.apprRate.toFixed(1)}%</div>
+        <div className={'kpi-delta ' + deltaClass(stats.apprDelta)}>
+          <span className="arrow">{deltaArrow(stats.apprDelta)}</span>
+          {stats.apprDelta > 0 ? '+' : ''}{stats.apprDelta.toFixed(1)} pts
+        </div>
+      </div>
+      <div className="kpi">
+        <div className="kpi-lbl">60+ DPD Rate</div>
+        <div className={'kpi-val' + (isFiltered ? ' recalc' : '')}>{stats.dpd60Rate.toFixed(2)}%</div>
+        <div className={'kpi-delta ' + deltaClass(stats.dpdDelta, true)}>
+          <span className="arrow">{deltaArrow(stats.dpdDelta)}</span>
+          {stats.dpdDelta > 0 ? '+' : ''}{Math.round(stats.dpdDelta)} bps WoW
+        </div>
+      </div>
+    </div>
+    <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: -32, marginBottom: 32}}>
+      <button className={'sql-toggle' + (showSql ? ' open' : '')} onClick={() => setShowSql(!showSql)}>
+        {showSql ? '⌃ Hide SQL' : '⌄ View SQL behind these KPIs'}
+      </button>
+    </div>
+    {showSql && (
+      <div style={{marginTop: -24, marginBottom: 32}}>
+        <SqlPanel sql={sqlLibrary.kpiStrip(filters, windowSel)} />
+      </div>
+    )}
+    </React.Fragment>
+  );
+}
+
+function Funnel({ loans, filters, windowSel }) {
+  const [showSql, setShowSql] = useState(false);
+  const counts = useMemo(() => {
+    const c = { Applied: 0, 'Soft Pull': 0, Underwriting: 0, Approved: 0, Funded: 0 };
+    loans.forEach(l => {
+      if (l.stage === 'Declined') return;
+      const idx = STAGES.indexOf(l.stage);
+      for (let i = 0; i <= idx; i++) c[STAGES[i]]++;
+    });
+    return c;
+  }, [loans]);
+
+  const max = counts.Applied || 1;
+  const stageDescriptions = {
+    'Applied': 'Initial submission',
+    'Soft Pull': 'Credit pre-check',
+    'Underwriting': 'Full review',
+    'Approved': 'Offer extended',
+    'Funded': 'Loan disbursed',
+  };
+
+  return (
+    <div className="panel fade-in" style={{animationDelay: '0.1s'}}>
+      {STAGES.map((stage, i) => {
+        const count = counts[stage];
+        const prevCount = i === 0 ? count : counts[STAGES[i-1]];
+        const dropPct = i === 0 ? 0 : prevCount > 0 ? ((prevCount - count) / prevCount) * 100 : 0;
+        const widthPct = (count / max) * 100;
+        const isWarn = dropPct > 30;
+        let dropClass = 'ok';
+        if (i === 0) dropClass = 'good';
+        else if (dropPct > 30) dropClass = 'bad';
+        else if (dropPct < 15) dropClass = 'good';
+        return (
+          <div key={stage} className="funnel-row">
+            <div className="funnel-stage">
+              {stage}
+              <span className="desc">{stageDescriptions[stage]}</span>
+            </div>
+            <div className="funnel-bar-wrap">
+              <div className={'funnel-bar ' + (isWarn ? 'warn' : '')}
+                style={{width: widthPct + '%'}}></div>
+            </div>
+            <div className="funnel-count mono">{count.toLocaleString()}</div>
+            <div className={'funnel-drop ' + dropClass}>
+              {i === 0 ? '—' : (dropPct > 0 ? '−' + dropPct.toFixed(1) + '%' : '+' + Math.abs(dropPct).toFixed(1) + '%')}
+            </div>
+          </div>
+        );
+      })}
+      <div className="panel-footer">
+        <button className={'sql-toggle' + (showSql ? ' open' : '')} onClick={() => setShowSql(!showSql)}>
+          {showSql ? '⌃ Hide SQL' : '⌄ View SQL'}
+        </button>
+      </div>
+      {showSql && <SqlPanel sql={sqlLibrary.funnel(filters, windowSel)} />}
+    </div>
+  );
+}
+
+function InsightPanel({ loans, addFilter, isFiltered, filters, windowSel, openKeyModal, hasApiKey }) {
+  const partnerCStats = useMemo(() => {
+    const partnerC = loans.filter(l => l.channel === 'Partner C');
+    const partnerCFunded = partnerC.filter(l => l.stage === 'Funded');
+    const partnerCDelq = partnerCFunded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const partnerCDelqRate = partnerCFunded.length ? (partnerCDelq / partnerCFunded.length) * 100 : 0;
+    const otherFunded = loans.filter(l => l.channel !== 'Partner C' && l.stage === 'Funded');
+    const otherDelq = otherFunded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const otherDelqRate = otherFunded.length ? (otherDelq / otherFunded.length) * 100 : 0;
+    return {
+      partnerCDelqRate: partnerCDelqRate.toFixed(2),
+      otherDelqRate: otherDelqRate.toFixed(2),
+      multiplier: otherDelqRate > 0.01 ? (partnerCDelqRate / otherDelqRate).toFixed(1) : '—',
+      fundedCount: partnerCFunded.length,
+    };
+  }, [loans]);
+
+  const [analyzing, setAnalyzing] = useState(false);
+  const [aiResponse, setAiResponse] = useState(null);
+  const [aiError, setAiError] = useState(null);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [lastPrompt, setLastPrompt] = useState('');
+
+  // Clear AI response when filters or window change — that snapshot is stale
+  const filterKey = JSON.stringify(filters) + '|' + windowSel;
+  useEffect(() => {
+    setAiResponse(null);
+    setAiError(null);
+    setShowPrompt(false);
+  }, [filterKey]);
+
+  const buildPrompt = () => {
+    const funded = loans.filter(l => l.stage === 'Funded');
+    const fundedVol = funded.reduce((s, l) => s + l.balance, 0);
+    const decisioned = loans.filter(l => l.stage !== 'Applied' && l.stage !== 'Soft Pull');
+    const approved = loans.filter(l => l.stage === 'Approved' || l.stage === 'Funded');
+    const apprRate = decisioned.length ? approved.length / decisioned.length * 100 : 0;
+    const dpd60 = funded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+    const dpd60Rate = funded.length ? dpd60 / funded.length * 100 : 0;
+
+    const channelStats = CHANNELS.map(ch => {
+      const chLoans = loans.filter(l => l.channel === ch);
+      const chFunded = chLoans.filter(l => l.stage === 'Funded');
+      const chDpd = chFunded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+      return {
+        channel: ch,
+        funded: chFunded.length,
+        dpdRate: chFunded.length ? (chDpd / chFunded.length * 100).toFixed(2) : '0.00'
+      };
+    }).sort((a, b) => parseFloat(b.dpdRate) - parseFloat(a.dpdRate));
+
+    const filterDesc = isFiltered
+      ? Object.entries(filters)
+          .map(([k, v]) => v.length ? k + '=[' + v.join(', ') + ']' : null)
+          .filter(Boolean).join(' AND ')
+      : 'none (full portfolio)';
+
+    return `You are a senior credit risk analyst at a student-loan refinance company.
+
+Analyze this portfolio snapshot. Be sharp, specific, and actionable.
+
+PORTFOLIO SNAPSHOT
+==================
+Time window:    ${windowSel}
+Active filters: ${filterDesc}
+Loan count:     ${loans.length.toLocaleString()}
+
+KPIs:
+- Funded volume:  $${(fundedVol/1e6).toFixed(2)}M (n=${funded.length})
+- Approval rate:  ${apprRate.toFixed(1)}%
+- 60+ DPD rate:   ${dpd60Rate.toFixed(2)}%
+
+Channel breakdown (sorted by 60+ DPD desc):
+${channelStats.map(c => '- ' + c.channel.padEnd(11) + ' funded=' + String(c.funded).padStart(4) + '   60+ DPD=' + c.dpdRate + '%').join('\n')}
+
+OUTPUT FORMAT (strict)
+======================
+Return ONLY valid JSON, no prose, no markdown fences:
+{
+  "headline": "one short, punchy sentence (max 18 words) — what's the story here?",
+  "narrative": "2-3 sentences explaining what's notable and why",
+  "recommendation": "one specific action with rough $ impact if you can estimate it"
+}`;
+  };
+
+  const handleReanalyze = async () => {
+    const apiKey = localStorage.getItem('refi_anthropic_key');
+    if (!apiKey) {
+      openKeyModal();
+      return;
+    }
+    setAnalyzing(true);
+    setAiError(null);
+    const prompt = buildPrompt();
+    setLastPrompt(prompt);
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 700,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error((errBody.error && errBody.error.message) || 'Request failed: HTTP ' + res.status);
+      }
+      const data = await res.json();
+      const text = (data.content && data.content[0] && data.content[0].text) || '';
+      const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+      if (!parsed.headline || !parsed.narrative) {
+        throw new Error('Response missing required fields');
+      }
+      setAiResponse(parsed);
+    } catch (e) {
+      setAiError(e.message || 'Unknown error');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const renderReanalyzeBtn = (label) => (
+    <button className="reanalyze-btn" disabled={analyzing} onClick={handleReanalyze}>
+      {analyzing ? <span><span className="ai-spinner"></span>Analyzing…</span>
+                 : (hasApiKey ? label : '⚙ Add API key to enable AI analysis')}
+    </button>
+  );
+
+  const renderPromptExpander = () => (
+    <React.Fragment>
+      <div className="prompt-expander" onClick={() => setShowPrompt(!showPrompt)}>
+        {showPrompt ? '⌃ Hide prompt' : '⌄ Show prompt sent to Claude'}
+      </div>
+      {showPrompt && lastPrompt && <pre className="prompt-block">{lastPrompt}</pre>}
+    </React.Fragment>
+  );
+
+  // ---- AI response state ----
+  if (aiResponse) {
+    return (
+      <div className="insight-panel fade-in" style={{animationDelay: '0.15s'}}>
+        <div className="insight-tag">
+          Live AI analysis<span className="ai-badge">✦ Claude</span>
+        </div>
+        <div className="insight-headline">{aiResponse.headline}</div>
+        <div className="insight-body">{aiResponse.narrative}</div>
+        <div className="insight-rec">
+          <strong>Recommendation</strong>
+          {aiResponse.recommendation}
+        </div>
+        {aiError && <div className="ai-error">⚠ {aiError}</div>}
+        {renderReanalyzeBtn('Re-analyze with Claude ↻')}
+        {renderPromptExpander()}
+      </div>
+    );
+  }
+
+  // ---- Filtered cohort view (no AI yet) ----
+  if (isFiltered) {
+    return (
+      <div className="insight-panel fade-in" style={{animationDelay: '0.15s'}}>
+        <div className="insight-tag">Filtered cohort view</div>
+        <div className="insight-headline">
+          You're now looking at a <em>specific</em> slice of the portfolio.
+        </div>
+        <div className="insight-body">
+          The KPIs and funnel above have re-aggregated against your filters.
+          Click <strong>Analyze with Claude</strong> to generate a fresh narrative
+          and recommendation against this exact slice — KPIs, channel breakdown,
+          and active filters get sent as structured context.
+        </div>
+        {aiError && <div className="ai-error">⚠ {aiError}</div>}
+        {renderReanalyzeBtn('✦ Analyze this cohort with Claude')}
+        {lastPrompt && renderPromptExpander()}
+      </div>
+    );
+  }
+
+  // ---- Default canned narrative ----
+  return (
+    <div className="insight-panel fade-in" style={{animationDelay: '0.15s'}}>
+      <div className="insight-tag">What changed this week</div>
+      <div className="insight-headline">
+        60+ DPD is up 14 bps — and 74% of it is concentrated in one partner channel.
+      </div>
+      <div className="insight-body">
+        <span className="channel-link" onClick={() => addFilter('channel', 'Partner C')}>Partner C</span>
+        {' '}is showing a 60+ DPD rate of <code>{partnerCStats.partnerCDelqRate}%</code>,
+        roughly <strong>{partnerCStats.multiplier}×</strong> the rate of every other channel
+        combined (<code>{partnerCStats.otherDelqRate}%</code>). The pattern shows up almost entirely in the
+        first 30 days post-funding, which points to <strong>application-side quality</strong> rather than
+        servicing. Cohort drill-down isolates it further to <strong>700–739 FICO + Bachelor's</strong>.
+      </div>
+      <div className="insight-rec">
+        <strong>Recommendation</strong>
+        Pause auto-approval threshold for Partner C × 700–739 FICO pending a manual review of the last
+        90 days of funded volume. Estimated avoidable loss exposure: ~$420K annualized.
+      </div>
+      {aiError && <div className="ai-error">⚠ {aiError}</div>}
+      {renderReanalyzeBtn('Re-analyze with Claude ✦')}
+      {lastPrompt && renderPromptExpander()}
+    </div>
+  );
+}
+
+function CohortHeatmap({ loans, filters, toggleFilter, windowSel }) {
+  const [showSql, setShowSql] = useState(false);
+  const grid = useMemo(() => {
+    const m = {};
+    FICO_BANDS.forEach(f => {
+      m[f] = {};
+      DEGREES.forEach(d => { m[f][d] = { total: 0, approved: 0 }; });
+    });
+    loans.forEach(l => {
+      if (l.stage === 'Applied' || l.stage === 'Soft Pull') return;
+      const cell = m[l.fico][l.degree];
+      cell.total++;
+      if (l.stage === 'Approved' || l.stage === 'Funded') cell.approved++;
+    });
+    return m;
+  }, [loans]);
+
+  const colorFor = (rate) => {
+    if (rate < 0.50) return `rgba(255, 85, 119, ${0.20 + (0.50 - rate)})`;
+    if (rate < 0.70) return `rgba(245, 184, 0, ${0.20 + (rate - 0.50)})`;
+    return `rgba(0, 245, 160, ${0.15 + (rate - 0.70) * 1.2})`;
+  };
+
+  const isCellActive = (fico, degree) =>
+    filters.fico.includes(fico) && filters.degree.includes(degree);
+
+  const handleCellClick = (fico, degree) => {
+    // Toggle: if both already active, clear them; else add both
+    const ficoActive = filters.fico.includes(fico);
+    const degActive = filters.degree.includes(degree);
+    if (ficoActive && degActive) {
+      toggleFilter('fico', fico, false);
+      toggleFilter('degree', degree, false);
+    } else {
+      if (!ficoActive) toggleFilter('fico', fico, true);
+      if (!degActive) toggleFilter('degree', degree, true);
+    }
+  };
+
+  return (
+    <div className="panel fade-in" style={{animationDelay: '0.2s'}}>
+      <div className="cohort-wrap">
+        <table className="cohort-table">
+          <thead>
+            <tr>
+              <th style={{textAlign: 'left', paddingLeft: 14}}>FICO ↓ / Degree →</th>
+              {DEGREES.map(d => <th key={d}>{d}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {FICO_BANDS.slice().reverse().map(fico => (
+              <tr key={fico}>
+                <td className="row-lbl">{fico}</td>
+                {DEGREES.map(d => {
+                  const cell = grid[fico][d];
+                  const rate = cell.total ? cell.approved / cell.total : 0;
+                  const active = isCellActive(fico, d);
+                  return (
+                    <td key={d}
+                        className={'cohort-cell' + (active ? ' active-filter' : '')}
+                        style={{background: cell.total ? colorFor(rate) : 'var(--bg-2)'}}
+                        title={`${fico} × ${d} — Approval ${(rate*100).toFixed(1)}% on n=${cell.total}. Click to filter.`}
+                        onClick={() => handleCellClick(fico, d)}>
+                      <span className="v">{cell.total ? (rate*100).toFixed(0) + '%' : '—'}</span>
+                      <span className="n">n={cell.total}</span>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="cohort-hint">
+        <kbd>Click</kbd> any cell to filter the entire dashboard to that cohort
+      </div>
+      <div className="cohort-legend">
+        <span>Approval rate</span>
+        <span className="cohort-legend-bar"></span>
+        <span>Low → High</span>
+      </div>
+      <div className="panel-footer">
+        <button className={'sql-toggle' + (showSql ? ' open' : '')} onClick={() => setShowSql(!showSql)}>
+          {showSql ? '⌃ Hide SQL' : '⌄ View SQL'}
+        </button>
+      </div>
+      {showSql && <SqlPanel sql={sqlLibrary.cohort(filters, windowSel)} />}
+    </div>
+  );
+}
+
+function Calculator({ loans }) {
+  const [rate, setRate] = useState(7.85);
+  const [newRate, setNewRate] = useState(5.45);
+  const [balance, setBalance] = useState(58000);
+  const [term, setTerm] = useState(120);
+
+  const r = useMemo(() => {
+    const monthlyOrig = pmt(rate/100/12, term, balance);
+    const monthlyRefi = pmt(newRate/100/12, term, balance);
+    const monthlySavings = Math.max(0, monthlyOrig - monthlyRefi);
+    const lifetimeSavings = monthlySavings * term;
+    return {
+      monthlyOrig, monthlyRefi,
+      monthlySavings: Math.round(monthlySavings),
+      lifetimeSavings: Math.round(lifetimeSavings),
+    };
+  }, [rate, newRate, balance, term]);
+
+  const hist = useMemo(() => {
+    const buckets = [
+      { lbl: '<$5K',     min: 0,     max: 5000,    count: 0 },
+      { lbl: '$5–10K',   min: 5000,  max: 10000,   count: 0 },
+      { lbl: '$10–20K',  min: 10000, max: 20000,   count: 0 },
+      { lbl: '$20–35K',  min: 20000, max: 35000,   count: 0 },
+      { lbl: '$35–50K',  min: 35000, max: 50000,   count: 0 },
+      { lbl: '$50K+',    min: 50000, max: Infinity, count: 0 },
+    ];
+    loans.filter(l => l.stage === 'Funded').forEach(l => {
+      const b = buckets.find(x => l.lifetimeSavings >= x.min && l.lifetimeSavings < x.max);
+      if (b) b.count++;
+    });
+    const max = Math.max(...buckets.map(b => b.count), 1);
+    return { buckets, max };
+  }, [loans]);
+
+  const yourBucketIdx = hist.buckets.findIndex(b =>
+    r.lifetimeSavings >= b.min && r.lifetimeSavings < b.max);
+  const pctile = useMemo(() => {
+    const all = loans.filter(l => l.stage === 'Funded')
+      .map(l => l.lifetimeSavings).sort((a,b) => a-b);
+    if (all.length === 0) return 0;
+    const below = all.filter(v => v < r.lifetimeSavings).length;
+    return Math.round((below / all.length) * 100);
+  }, [loans, r.lifetimeSavings]);
+
+  return (
+    <div className="calc-grid fade-in" style={{animationDelay: '0.25s'}}>
+      <div className="calc-inputs">
+        <div style={{marginBottom: 22}}>
+          <div className="result-lbl">Borrower scenario</div>
+          <div style={{fontFamily: 'Fraunces, serif', fontSize: 16, marginTop: 6, color: 'var(--ink-1)'}}>
+            Drop in your numbers — see where you fall in the portfolio.
+          </div>
+        </div>
+        <div className="input-grp">
+          <label>Current Rate</label>
+          <div className="suffix">
+            <input type="number" step="0.05" value={rate}
+              onChange={e => setRate(parseFloat(e.target.value) || 0)} />
+            <span className="unit">%</span>
+          </div>
+        </div>
+        <div className="input-grp">
+          <label>New Refi Rate</label>
+          <div className="suffix">
+            <input type="number" step="0.05" value={newRate}
+              onChange={e => setNewRate(parseFloat(e.target.value) || 0)} />
+            <span className="unit">%</span>
+          </div>
+        </div>
+        <div className="input-grp">
+          <label>Loan Balance</label>
+          <div className="suffix">
+            <input type="number" step="1000" value={balance}
+              onChange={e => setBalance(parseFloat(e.target.value) || 0)} />
+            <span className="unit">$</span>
+          </div>
+        </div>
+        <div className="input-grp">
+          <label>Term (months)</label>
+          <div className="suffix">
+            <input type="number" step="12" value={term}
+              onChange={e => setTerm(parseInt(e.target.value) || 0)} />
+            <span className="unit">mo</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="calc-results">
+        <div className="result-block">
+          <div className="result-lbl">Monthly Savings</div>
+          <div className="result-val">${r.monthlySavings.toLocaleString()}</div>
+          <div className="result-sub">
+            ${Math.round(r.monthlyOrig).toLocaleString()}/mo → ${Math.round(r.monthlyRefi).toLocaleString()}/mo
+          </div>
+        </div>
+        <div className="result-block">
+          <div className="result-lbl">Lifetime Savings</div>
+          <div className="result-val lifetime">${r.lifetimeSavings.toLocaleString()}</div>
+          <div className="result-sub">Over the full {term}-month term</div>
+        </div>
+        <div className="result-block">
+          <div className="result-lbl">Where you fit in the portfolio</div>
+          <div className="hist-wrap">
+            {hist.buckets.map((b, i) => (
+              <div key={b.lbl} className="hist-row">
+                <div className="hist-lbl">{b.lbl}</div>
+                <div className="hist-bar-wrap">
+                  <div className="hist-bar" style={{width: (b.count / hist.max * 100) + '%'}}></div>
+                  {i === yourBucketIdx && <div className="hist-marker" style={{left: '50%'}}></div>}
+                </div>
+                <div className="hist-count">{b.count}</div>
+              </div>
+            ))}
+          </div>
+          <div className="your-fit">
+            ▶ You'd land in the <strong style={{color: 'var(--amber)'}}>{pctile}th percentile</strong> of
+            funded borrowers by lifetime savings.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <div className="footer">
+      <div>Built by Byheir Wise · Single-file React · Synthetic data</div>
+      <div>
+        <a href="https://github.com/wisemanmax/Bwise" target="_blank" rel="noopener">github.com/wisemanmax</a>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// SECTION NAV (sticky TOC)
+// ============================================================
+function SectionNav() {
+  const items = [
+    { id: 'sec-overview',   num: '00', label: 'Overview' },
+    { id: 'sec-funnel',     num: '01', label: 'Funnel' },
+    { id: 'sec-cohort',     num: '02', label: 'Cohort' },
+    { id: 'sec-channels',   num: '03', label: 'Channels' },
+    { id: 'sec-vintage',    num: '04', label: 'Vintage' },
+    { id: 'sec-calculator', num: '05', label: 'Calculator' },
+  ];
+  return (
+    <nav className="section-nav">
+      {items.map(it => (
+        <a key={it.id} href={'#' + it.id} className="sn-item">
+          <span className="sn-num">{it.num}</span>{it.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
+// ============================================================
+// CHANNEL SCORECARD
+// ============================================================
+function ChannelScorecard({ loans, filters, toggleFilter, windowSel }) {
+  const [showSql, setShowSql] = useState(false);
+  const [sortKey, setSortKey] = useState('funded_volume');
+  const [sortDir, setSortDir] = useState('desc');
+
+  const baseRows = useMemo(() => {
+    return CHANNELS.map(ch => {
+      const chLoans = loans.filter(l => l.channel === ch);
+      const funded = chLoans.filter(l => l.stage === 'Funded');
+      const decisioned = chLoans.filter(l => l.stage !== 'Applied' && l.stage !== 'Soft Pull');
+      const approved = chLoans.filter(l => l.stage === 'Approved' || l.stage === 'Funded');
+      const dpd = funded.filter(l => l.delinq === '60+ DPD' || l.delinq === '90+ DPD').length;
+      return {
+        channel: ch,
+        apps_n: chLoans.length,
+        funded_n: funded.length,
+        funded_volume: funded.reduce((s, l) => s + l.balance, 0),
+        approval_rate_pct: decisioned.length ? (approved.length / decisioned.length) * 100 : 0,
+        dpd_60_rate_pct: funded.length ? (dpd / funded.length) * 100 : 0,
+        avg_lifetime_savings: funded.length
+          ? funded.reduce((s, l) => s + l.lifetimeSavings, 0) / funded.length : 0,
+      };
+    });
+  }, [loans]);
+
+  // Risk rank computed independently from sort
+  const riskRank = useMemo(() => {
+    const m = {};
+    [...baseRows]
+      .sort((a, b) => b.dpd_60_rate_pct - a.dpd_60_rate_pct)
+      .forEach((r, i) => { m[r.channel] = i + 1; });
+    return m;
+  }, [baseRows]);
+
+  const rows = useMemo(() => {
+    const sorted = [...baseRows].sort((a, b) => {
+      const va = a[sortKey], vb = b[sortKey];
+      if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+      return sortDir === 'asc' ? va - vb : vb - va;
+    });
+    return sorted;
+  }, [baseRows, sortKey, sortDir]);
+
+  const handleSort = (key) => {
+    if (sortKey === key) setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+    else { setSortKey(key); setSortDir(typeof baseRows[0][key] === 'string' ? 'asc' : 'desc'); }
+  };
+
+  const dpdClass = (r) => r < 1 ? 'low' : r < 5 ? 'mid' : 'high';
+
+  const cols = [
+    { key: 'channel',              label: 'Channel',     numeric: false },
+    { key: 'apps_n',               label: 'Apps',        numeric: true  },
+    { key: 'funded_n',             label: 'Funded',      numeric: true  },
+    { key: 'funded_volume',        label: 'Volume',      numeric: true  },
+    { key: 'approval_rate_pct',    label: 'Approval',    numeric: true  },
+    { key: 'dpd_60_rate_pct',      label: '60+ DPD',     numeric: true  },
+    { key: 'avg_lifetime_savings', label: 'Avg Savings', numeric: true  },
+  ];
+
+  return (
+    <div className="panel">
+      <div className="scorecard-wrap">
+        <table className="scorecard-table">
+          <thead>
+            <tr>
+              {cols.map(c => (
+                <th key={c.key}
+                    className={(c.numeric ? 'numeric ' : '') + (sortKey === c.key ? 'sorted' : '')}
+                    onClick={() => handleSort(c.key)}>
+                  {c.label}
+                  {sortKey === c.key && <span className="sort-arrow">{sortDir === 'desc' ? '▼' : '▲'}</span>}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(r => {
+              const isActive = filters.channel.includes(r.channel);
+              const isPartner = r.channel.startsWith('Partner');
+              const isDirect = r.channel === 'Direct';
+              const isReferral = r.channel === 'Referral';
+              const isTopRisk = riskRank[r.channel] === 1 && r.dpd_60_rate_pct > 0;
+              return (
+                <tr key={r.channel} className={isActive ? 'row-active' : ''}
+                    onClick={() => toggleFilter('channel', r.channel, !isActive)}
+                    title={isActive ? 'Click to remove filter' : 'Click to filter dashboard to ' + r.channel}>
+                  <td>
+                    <div className="channel-cell">
+                      <span>{r.channel}</span>
+                      {isPartner && <span className="channel-pill partner">Partner</span>}
+                      {isDirect && <span className="channel-pill direct">Direct</span>}
+                      {isReferral && <span className="channel-pill referral">Referral</span>}
+                      {isTopRisk && <span className="risk-flag" title="Highest 60+ DPD rank">⚠</span>}
+                    </div>
+                  </td>
+                  <td className="numeric">{r.apps_n.toLocaleString()}</td>
+                  <td className="numeric">{r.funded_n.toLocaleString()}</td>
+                  <td className="numeric">${(r.funded_volume / 1e6).toFixed(2)}M</td>
+                  <td className="numeric">{r.approval_rate_pct.toFixed(1)}%</td>
+                  <td className="numeric">
+                    <span className={'dpd-badge ' + dpdClass(r.dpd_60_rate_pct)}>
+                      {r.dpd_60_rate_pct.toFixed(2)}%
+                    </span>
+                  </td>
+                  <td className="numeric">${Math.round(r.avg_lifetime_savings).toLocaleString()}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="cohort-hint" style={{textAlign: 'center', marginTop: 14}}>
+        <kbd>Click</kbd> a row to filter the dashboard · <kbd>Click</kbd> column headers to sort
+      </div>
+      <div className="panel-footer">
+        <button className={'sql-toggle' + (showSql ? ' open' : '')} onClick={() => setShowSql(!showSql)}>
+          {showSql ? '⌃ Hide SQL' : '⌄ View SQL'}
+        </button>
+      </div>
+      {showSql && <SqlPanel sql={sqlLibrary.channelScorecard(filters, windowSel)} />}
+    </div>
+  );
+}
+
+// ============================================================
+// VINTAGE CURVES (Recharts LineChart)
+// ============================================================
+function VintageCurves({ loans, filters, windowSel }) {
+  const [showSql, setShowSql] = useState(false);
+  const vintage = useMemo(() => buildVintageData(loans), [loans]);
+
+  const totalFunded = vintage.cohortStats.reduce((s, c) => s + c.n, 0);
+  const peakCohort = vintage.cohortStats.reduce(
+    (best, c) => (c.n > 0 && c.terminalDpd > (best ? best.terminalDpd : -1) ? c : best),
+    null
+  );
+  const oldestSeasoned = [...vintage.cohortStats].reverse().find(c => c.n > 5);
+
+  return (
+    <div className="vintage-wrap">
+      <div className="vintage-header">
+        <div className="vintage-narrative">
+          Cumulative <strong>60+ DPD rate</strong> across months on book, broken
+          out by funding cohort. Newer cohorts haven't fully seasoned — watch the
+          older curves for terminal risk and the slope of the newer ones for
+          early-warning signal.
+          {totalFunded < 30 && (
+            <div style={{marginTop: 10, color: 'var(--amber)', fontSize: 12}}>
+              ⚠ Thin sample under current filters (n={totalFunded}). Curves may be noisy.
+            </div>
+          )}
+        </div>
+        <div className="vintage-stats">
+          {peakCohort ? (
+            <div className="vintage-stat peak">
+              <div className="vintage-stat-label">Peak risk cohort</div>
+              <div className="vintage-stat-val">{peakCohort.terminalDpd.toFixed(2)}%</div>
+              <div style={{fontSize: 10, color: 'var(--ink-3)', marginTop: 3}}>{peakCohort.label} · n={peakCohort.n}</div>
+            </div>
+          ) : (
+            <div className="vintage-stat">
+              <div className="vintage-stat-label">Peak risk</div>
+              <div className="vintage-stat-val">—</div>
+            </div>
+          )}
+          <div className="vintage-stat">
+            <div className="vintage-stat-label">Funded loans</div>
+            <div className="vintage-stat-val">{totalFunded.toLocaleString()}</div>
+            <div style={{fontSize: 10, color: 'var(--ink-3)', marginTop: 3}}>across {vintage.cohortStats.filter(c => c.n > 0).length} cohorts</div>
+          </div>
+          <div className="vintage-stat">
+            <div className="vintage-stat-label">Most seasoned</div>
+            <div className="vintage-stat-val">{oldestSeasoned ? oldestSeasoned.maxMOB.toFixed(1) + ' mo' : '—'}</div>
+            <div style={{fontSize: 10, color: 'var(--ink-3)', marginTop: 3}}>{oldestSeasoned ? oldestSeasoned.label : 'no data'}</div>
+          </div>
+        </div>
+      </div>
+
+      {totalFunded === 0 ? (
+        <div className="vintage-empty">
+          No funded loans match the current filters.<br/>
+          <span style={{color: 'var(--cyan)'}}>Clear filters to see vintage curves.</span>
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height={360}>
+          <LineChart data={vintage.data} margin={{ top: 12, right: 24, bottom: 28, left: 4 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+            <XAxis dataKey="mob" stroke="#5a5a68"
+              tick={{ fontSize: 11, fill: '#8a8a98' }}
+              tickFormatter={(v) => v + 'mo'}
+              label={{ value: 'Months on Book →', position: 'insideBottom', offset: -12, fill: '#8a8a98', fontSize: 11 }} />
+            <YAxis stroke="#5a5a68"
+              tick={{ fontSize: 11, fill: '#8a8a98' }}
+              tickFormatter={(v) => v + '%'}
+              label={{ value: 'Cumulative 60+ DPD', angle: -90, position: 'insideLeft', fill: '#8a8a98', fontSize: 11, offset: 14 }} />
+            <Tooltip
+              contentStyle={{
+                background: 'rgba(20, 20, 31, 0.96)',
+                border: '1px solid rgba(255,255,255,0.14)',
+                borderRadius: 6, fontSize: 12,
+                fontFamily: 'JetBrains Mono, monospace',
+              }}
+              labelStyle={{ color: '#d4d4dc', fontSize: 11, marginBottom: 6 }}
+              itemStyle={{ padding: '2px 0' }}
+              formatter={(v) => v != null ? v.toFixed(2) + '%' : '—'}
+              labelFormatter={(v) => 'MOB ' + v} />
+            <Legend wrapperStyle={{ fontSize: 11, paddingTop: 14, fontFamily: 'JetBrains Mono, monospace' }} />
+            {vintage.cohortStats.map(c => (
+              <Line key={c.label} type="monotone" dataKey={c.label}
+                stroke={c.color} strokeWidth={2.2}
+                dot={{ r: 3, fill: c.color, strokeWidth: 0 }}
+                activeDot={{ r: 5 }}
+                connectNulls={false} />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      )}
+
+      <div className="panel-footer">
+        <button className={'sql-toggle' + (showSql ? ' open' : '')} onClick={() => setShowSql(!showSql)}>
+          {showSql ? '⌃ Hide SQL' : '⌄ View SQL'}
+        </button>
+      </div>
+      {showSql && <SqlPanel sql={sqlLibrary.vintage(filters, windowSel)} />}
+    </div>
+  );
+}
+
+// ============================================================
+// APP
+// ============================================================
+function App() {
+  const [windowSel, setWindowSel] = useState('90D');
+  const [filters, setFilters] = useState({ fico: [], degree: [], channel: [] });
+  const [showKeyModal, setShowKeyModal] = useState(false);
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem('refi_anthropic_key') || '');
+
+  const allLoans = useMemo(() => generateLoans(5000), []);
+
+  const timedLoans = useMemo(() => {
+    const cutoff = windowSel === '7D' ? 7 : windowSel === '30D' ? 30 : 90;
+    return allLoans.filter(l => l.daysAgo <= cutoff);
+  }, [allLoans, windowSel]);
+
+  const filteredLoans = useMemo(
+    () => applyFilters(timedLoans, filters),
+    [timedLoans, filters]
+  );
+
+  const isFiltered = totalFilterCount(filters) > 0;
+  const hasApiKey = !!apiKey;
+
+  const toggleFilter = (key, value, add) => {
+    setFilters(prev => {
+      const has = prev[key].includes(value);
+      if (add === true && has) return prev;
+      if (add === false && !has) return prev;
+      return {
+        ...prev,
+        [key]: has ? prev[key].filter(v => v !== value) : [...prev[key], value]
+      };
+    });
+  };
+
+  const addFilter = (key, value) => toggleFilter(key, value, true);
+  const removeFilter = (key, value) => toggleFilter(key, value, false);
+  const clearFilters = () => setFilters({ fico: [], degree: [], channel: [] });
+
+  const handleSaveKey = (k) => {
+    localStorage.setItem('refi_anthropic_key', k);
+    setApiKey(k);
+  };
+  const handleClearKey = () => {
+    localStorage.removeItem('refi_anthropic_key');
+    setApiKey('');
+  };
+
+  return (
+    <div className="app">
+      <Header
+        window={windowSel} setWindow={setWindowSel}
+        openKeyModal={() => setShowKeyModal(true)}
+        hasApiKey={hasApiKey}
+      />
+
+      <SectionNav />
+
+      <div id="sec-overview"></div>
+
+      <FilterBar
+        filters={filters}
+        removeFilter={removeFilter}
+        clearFilters={clearFilters}
+        totalCount={timedLoans.length}
+        filteredCount={filteredLoans.length}
+      />
+
+      <KpiStrip loans={filteredLoans} isFiltered={isFiltered}
+        filters={filters} windowSel={windowSel} />
+
+      <div className="section" id="sec-funnel">
+        <div className="section-head">
+          <div className="section-title"><span className="num">01</span>Application Funnel</div>
+          <div className="section-meta">
+            {filteredLoans.length.toLocaleString()} apps · {windowSel}
+            {isFiltered && <span style={{color:'var(--cyan)', marginLeft: 8}}>· filtered</span>}
+          </div>
+        </div>
+        <div className="two-col">
+          <Funnel loans={filteredLoans} filters={filters} windowSel={windowSel} />
+          <InsightPanel
+            loans={filteredLoans}
+            addFilter={addFilter}
+            isFiltered={isFiltered}
+            filters={filters}
+            windowSel={windowSel}
+            openKeyModal={() => setShowKeyModal(true)}
+            hasApiKey={hasApiKey}
+          />
+        </div>
+      </div>
+
+      <div className="section" id="sec-cohort">
+        <div className="section-head">
+          <div className="section-title"><span className="num">02</span>Cohort Approval Heatmap</div>
+          <div className="section-meta">FICO band × Degree type · clickable</div>
+        </div>
+        <CohortHeatmap loans={timedLoans} filters={filters}
+          toggleFilter={toggleFilter} windowSel={windowSel} />
+      </div>
+
+      <div className="section" id="sec-channels">
+        <div className="section-head">
+          <div className="section-title"><span className="num">03</span>Channel Scorecard</div>
+          <div className="section-meta">Sortable · click row to filter</div>
+        </div>
+        <ChannelScorecard loans={filteredLoans} filters={filters}
+          toggleFilter={toggleFilter} windowSel={windowSel} />
+      </div>
+
+      <div className="section" id="sec-vintage">
+        <div className="section-head">
+          <div className="section-title"><span className="num">04</span>Vintage Curves</div>
+          <div className="section-meta">Cumulative 60+ DPD · cohort × MOB</div>
+        </div>
+        <VintageCurves loans={filteredLoans} filters={filters} windowSel={windowSel} />
+      </div>
+
+      <div className="section" id="sec-calculator">
+        <div className="section-head">
+          <div className="section-title"><span className="num">05</span>Borrower Savings Calculator</div>
+          <div className="section-meta">Live · interactive</div>
+        </div>
+        <Calculator loans={allLoans} />
+      </div>
+
+      <Footer />
+
+      <ApiKeyModal
+        isOpen={showKeyModal}
+        onClose={() => setShowKeyModal(false)}
+        currentKey={apiKey}
+        onSave={handleSaveKey}
+        onClear={handleClearKey}
+      />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
