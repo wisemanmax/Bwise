@@ -1727,6 +1727,17 @@ header {
     padding-inline-start: calc(var(--space-xl) + var(--space-xs));
 }
 
+@media (prefers-color-scheme: dark) {
+    .achievement-list li {
+        color: var(--text-muted);
+    }
+
+    .achievement-list li:hover {
+        background: rgba(148, 163, 184, 0.12);
+        color: var(--text-main);
+    }
+}
+
 .card-cta-row {
     margin: var(--space-md) 0 0;
 }
