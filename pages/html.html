@@ -293,33 +293,276 @@
             </div>
         </section>
 
-        <section aria-labelledby="html-library-title" class="stacked-section">
+        <section aria-labelledby="html-extra-patterns-title" class="stacked-section">
             <div class="section-header">
-                <h2 id="html-library-title" class="section-title">HTML reference library</h2>
+                <h2 id="html-extra-patterns-title" class="section-title">More HTML examples</h2>
                 <p class="section-subtitle">
-                    A structured library of semantic templates and layout patterns for compliance-ready UI flows.
+                    Additional production-ready markup patterns for navigation, content, and feedback flows.
                 </p>
             </div>
 
-            <div class="learning-library" data-library-track="html" data-library-source="../assets/data/learning-library.json">
-                <div class="library-controls">
-                    <label class="library-search">
-                        <span class="sr-only">Search HTML templates</span>
-                        <input type="search" placeholder="Search forms, content models, and layouts" data-library-search />
-                    </label>
-                    <label class="library-filter">
-                        <span class="sr-only">Filter by level</span>
-                        <select data-library-filter>
-                            <option value="all">All levels</option>
-                            <option value="Foundations">Foundations</option>
-                            <option value="Intermediate">Intermediate</option>
-                            <option value="Advanced">Advanced</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="library-meta" data-library-count>Loading modules...</div>
-                <div class="library-grid" data-library-grid></div>
-                <button class="library-more" type="button" data-library-more>Load more modules</button>
+            <div class="grid three-cols">
+                <article class="card">
+                    <h3 class="card-title">Breadcrumb navigation</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a breadcrumb navigation trail">
+                            <div class="code-preview__label">Preview</div>
+                            <nav aria-label="Breadcrumb" class="preview-breadcrumb">
+                                <ol>
+                                    <li><a href="#">Dashboard</a></li>
+                                    <li><a href="#">Collections</a></li>
+                                    <li aria-current="page">Account PSL-22031</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <pre class="code-block"><code>&lt;nav aria-label="Breadcrumb"&gt;
+    &lt;ol class="breadcrumb"&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Dashboard&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/collections"&gt;Collections&lt;/a&gt;&lt;/li&gt;
+        &lt;li aria-current="page"&gt;Account PSL-22031&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Status alerts</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a success alert message">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="preview-alert preview-alert--success" role="status">
+                                <strong>Batch published.</strong>
+                                <span>1,000 accounts updated. Audit log generated.</span>
+                            </div>
+                            <div class="preview-alert preview-alert--warning" role="status">
+                                <strong>Coverage below threshold.</strong>
+                                <span>Tests at 82% — minimum is 85%.</span>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;div class="alert alert--success"
+     role="status"
+     aria-live="polite"&gt;
+    &lt;strong&gt;Batch published.&lt;/strong&gt;
+    &lt;span&gt;1,000 accounts updated.&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="alert alert--warning"
+     role="alert"&gt;
+    &lt;strong&gt;Coverage below threshold.&lt;/strong&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Disclosure (details/summary)</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a collapsible details disclosure">
+                            <div class="code-preview__label">Preview</div>
+                            <details class="preview-details">
+                                <summary>Audit evidence pack</summary>
+                                <p>Includes pipeline run ID, security scan summary, and coverage report.</p>
+                            </details>
+                            <details class="preview-details">
+                                <summary>Stakeholder approvals</summary>
+                                <p>Compliance lead, engineering manager, and product owner sign-off.</p>
+                            </details>
+                        </div>
+                        <pre class="code-block"><code>&lt;details class="disclosure"&gt;
+    &lt;summary&gt;Audit evidence pack&lt;/summary&gt;
+    &lt;p&gt;Includes pipeline run ID, security
+       scan summary, and coverage report.&lt;/p&gt;
+&lt;/details&gt;
+
+&lt;details class="disclosure" open&gt;
+    &lt;summary&gt;Stakeholder approvals&lt;/summary&gt;
+    &lt;p&gt;Compliance lead and PM sign-off.&lt;/p&gt;
+&lt;/details&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Tabbed interface</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a tab list with three tabs">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="preview-tabs">
+                                <div role="tablist" aria-label="Account view">
+                                    <button role="tab" aria-selected="true" class="preview-tab is-active">Overview</button>
+                                    <button role="tab" aria-selected="false" class="preview-tab">Activity</button>
+                                    <button role="tab" aria-selected="false" class="preview-tab">Documents</button>
+                                </div>
+                                <div role="tabpanel" class="preview-tabpanel">
+                                    Balance: $12,450 · Status: Current · Risk: Prime
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;div role="tablist" aria-label="Account view"&gt;
+    &lt;button role="tab"
+            aria-selected="true"
+            aria-controls="overview-panel"
+            id="overview-tab"&gt;Overview&lt;/button&gt;
+    &lt;button role="tab"
+            aria-selected="false"
+            aria-controls="activity-panel"&gt;Activity&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div role="tabpanel"
+     id="overview-panel"
+     aria-labelledby="overview-tab"&gt;
+    Balance, status, and risk profile.
+&lt;/div&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Definition list</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a definition list of account terms">
+                            <div class="code-preview__label">Preview</div>
+                            <dl class="preview-deflist">
+                                <dt>Roll rate</dt>
+                                <dd>Percentage of accounts moving to a worse delinquency bucket.</dd>
+                                <dt>Cure rate</dt>
+                                <dd>Percentage of delinquent accounts brought back to current.</dd>
+                                <dt>Vintage</dt>
+                                <dd>The origination cohort an account belongs to.</dd>
+                            </dl>
+                        </div>
+                        <pre class="code-block"><code>&lt;dl class="def-list"&gt;
+    &lt;dt&gt;Roll rate&lt;/dt&gt;
+    &lt;dd&gt;Percentage of accounts moving to
+        a worse delinquency bucket.&lt;/dd&gt;
+
+    &lt;dt&gt;Cure rate&lt;/dt&gt;
+    &lt;dd&gt;Percentage of delinquent accounts
+        brought back to current.&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Progress and meter</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of progress and meter elements">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="preview-progress-row">
+                                <label for="upload-progress">Upload</label>
+                                <progress id="upload-progress" value="68" max="100">68%</progress>
+                                <span>68%</span>
+                            </div>
+                            <div class="preview-progress-row">
+                                <label for="coverage-meter">Coverage</label>
+                                <meter id="coverage-meter" value="93" min="0" low="60" high="85" optimum="95" max="100">93%</meter>
+                                <span>93%</span>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;label for="upload"&gt;Upload&lt;/label&gt;
+&lt;progress id="upload"
+          value="68"
+          max="100"&gt;68%&lt;/progress&gt;
+
+&lt;label for="coverage"&gt;Coverage&lt;/label&gt;
+&lt;meter id="coverage"
+       value="93"
+       low="60" high="85"
+       optimum="95"
+       max="100"&gt;93%&lt;/meter&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Figure with caption</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a figure with caption">
+                            <div class="code-preview__label">Preview</div>
+                            <figure class="preview-figure">
+                                <div class="preview-figure__chart" aria-hidden="true">
+                                    <span style="height: 40%"></span>
+                                    <span style="height: 65%"></span>
+                                    <span style="height: 50%"></span>
+                                    <span style="height: 80%"></span>
+                                    <span style="height: 95%"></span>
+                                </div>
+                                <figcaption>Quarterly cure rate trend across PSL portfolio.</figcaption>
+                            </figure>
+                        </div>
+                        <pre class="code-block"><code>&lt;figure&gt;
+    &lt;img src="cure-rate-chart.svg"
+         alt="Quarterly cure rate
+              from 32% to 58%
+              across four quarters" /&gt;
+    &lt;figcaption&gt;
+        Quarterly cure rate trend across
+        the PSL portfolio.
+    &lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Skip link + landmarks</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of a skip link and landmark structure">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="preview-skip-wrapper">
+                                <a href="#preview-main" class="preview-skip">Skip to content</a>
+                                <div class="preview-landmarks">
+                                    <span class="preview-landmark">header</span>
+                                    <span class="preview-landmark">nav</span>
+                                    <span class="preview-landmark preview-landmark--main">main</span>
+                                    <span class="preview-landmark">aside</span>
+                                    <span class="preview-landmark">footer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;a href="#main" class="skip-link"&gt;
+    Skip to content
+&lt;/a&gt;
+
+&lt;header&gt;...&lt;/header&gt;
+&lt;nav aria-label="Main"&gt;...&lt;/nav&gt;
+
+&lt;main id="main" tabindex="-1"&gt;
+    &lt;article&gt;...&lt;/article&gt;
+    &lt;aside aria-label="Filters"&gt;...&lt;/aside&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;...&lt;/footer&gt;</code></pre>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Picture with art direction</h3>
+                    <div class="code-example">
+                        <div class="code-preview" role="img" aria-label="Preview of responsive picture sources">
+                            <div class="code-preview__label">Preview</div>
+                            <div class="preview-picture">
+                                <div class="preview-picture__source">
+                                    <span class="preview-picture__chip">≥1024px</span>
+                                    <span>Wide hero · 1920×800</span>
+                                </div>
+                                <div class="preview-picture__source">
+                                    <span class="preview-picture__chip">≥640px</span>
+                                    <span>Tablet hero · 1024×768</span>
+                                </div>
+                                <div class="preview-picture__source">
+                                    <span class="preview-picture__chip">default</span>
+                                    <span>Mobile hero · 720×900</span>
+                                </div>
+                            </div>
+                        </div>
+                        <pre class="code-block"><code>&lt;picture&gt;
+    &lt;source media="(min-width: 1024px)"
+            srcset="hero-wide.webp" /&gt;
+    &lt;source media="(min-width: 640px)"
+            srcset="hero-tablet.webp" /&gt;
+    &lt;img src="hero-mobile.webp"
+         alt="Operations dashboard hero"
+         width="720" height="900"
+         loading="lazy" /&gt;
+&lt;/picture&gt;</code></pre>
+                    </div>
+                </article>
             </div>
         </section>
 

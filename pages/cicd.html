@@ -386,33 +386,230 @@
             </div>
         </section>
 
-        <section aria-labelledby="cicd-library-title" class="stacked-section">
+        <section aria-labelledby="cicd-extras-title" class="stacked-section">
             <div class="section-header">
-                <h2 id="cicd-library-title" class="section-title">CI/CD enablement library</h2>
+                <h2 id="cicd-extras-title" class="section-title">More CI/CD examples</h2>
                 <p class="section-subtitle">
-                    Release-ready playbooks, pipeline guardrails, and audit evidence templates for every stage.
+                    Additional pipeline patterns, deployment strategies, and governance signals captured as visuals.
                 </p>
             </div>
 
-            <div class="learning-library" data-library-track="cicd" data-library-source="../assets/data/learning-library.json">
-                <div class="library-controls">
-                    <label class="library-search">
-                        <span class="sr-only">Search CI/CD playbooks</span>
-                        <input type="search" placeholder="Search pipelines, quality gates, and release plans" data-library-search />
-                    </label>
-                    <label class="library-filter">
-                        <span class="sr-only">Filter by level</span>
-                        <select data-library-filter>
-                            <option value="all">All levels</option>
-                            <option value="Foundations">Foundations</option>
-                            <option value="Intermediate">Intermediate</option>
-                            <option value="Advanced">Advanced</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="library-meta" data-library-count>Loading modules...</div>
-                <div class="library-grid" data-library-grid></div>
-                <button class="library-more" type="button" data-library-more>Load more modules</button>
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Sample workflow run</h3>
+                    <div class="workflow-run">
+                        <div class="workflow-run__row workflow-run__row--ok">
+                            <span class="workflow-run__step">checkout</span>
+                            <span class="workflow-run__time">2s</span>
+                            <span class="workflow-run__status">passed</span>
+                        </div>
+                        <div class="workflow-run__row workflow-run__row--ok">
+                            <span class="workflow-run__step">install dependencies</span>
+                            <span class="workflow-run__time">38s</span>
+                            <span class="workflow-run__status">passed</span>
+                        </div>
+                        <div class="workflow-run__row workflow-run__row--ok">
+                            <span class="workflow-run__step">lint + format</span>
+                            <span class="workflow-run__time">12s</span>
+                            <span class="workflow-run__status">passed</span>
+                        </div>
+                        <div class="workflow-run__row workflow-run__row--ok">
+                            <span class="workflow-run__step">unit tests</span>
+                            <span class="workflow-run__time">1m 24s</span>
+                            <span class="workflow-run__status">passed</span>
+                        </div>
+                        <div class="workflow-run__row workflow-run__row--running">
+                            <span class="workflow-run__step">integration tests</span>
+                            <span class="workflow-run__time">running</span>
+                            <span class="workflow-run__status">in progress</span>
+                        </div>
+                        <div class="workflow-run__row workflow-run__row--pending">
+                            <span class="workflow-run__step">security scan</span>
+                            <span class="workflow-run__time">queued</span>
+                            <span class="workflow-run__status">pending</span>
+                        </div>
+                        <div class="workflow-run__row workflow-run__row--pending">
+                            <span class="workflow-run__step">deploy staging</span>
+                            <span class="workflow-run__time">queued</span>
+                            <span class="workflow-run__status">pending</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Environment promotion ladder</h3>
+                    <div class="env-ladder">
+                        <div class="env-ladder__step env-ladder__step--ok">
+                            <strong>Dev</strong>
+                            <span>Auto-deploy on every commit · ephemeral data</span>
+                        </div>
+                        <div class="env-ladder__step env-ladder__step--ok">
+                            <strong>Staging</strong>
+                            <span>Smoke tests + UAT signoff · masked data</span>
+                        </div>
+                        <div class="env-ladder__step env-ladder__step--gated">
+                            <strong>UAT</strong>
+                            <span>Stakeholder approval · regression suite</span>
+                        </div>
+                        <div class="env-ladder__step env-ladder__step--prod">
+                            <strong>Production</strong>
+                            <span>Change window · blue/green slot · rollback ready</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Deployment strategies</h3>
+                    <div class="strategy-grid">
+                        <div class="strategy-tile">
+                            <strong>Blue / Green</strong>
+                            <span>Two identical slots, swap at the load balancer.</span>
+                            <span class="strategy-tile__chip">Zero downtime</span>
+                        </div>
+                        <div class="strategy-tile">
+                            <strong>Canary</strong>
+                            <span>Roll out to 5% → 25% → 100% with metrics gates.</span>
+                            <span class="strategy-tile__chip">Risk control</span>
+                        </div>
+                        <div class="strategy-tile">
+                            <strong>Rolling</strong>
+                            <span>Replace instances in batches behind health checks.</span>
+                            <span class="strategy-tile__chip">Cost efficient</span>
+                        </div>
+                        <div class="strategy-tile">
+                            <strong>Feature flag</strong>
+                            <span>Deploy dark, enable per cohort, kill switch ready.</span>
+                            <span class="strategy-tile__chip">Decoupled</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">DORA metrics</h3>
+                    <div class="dora-grid">
+                        <div class="dora-tile">
+                            <span class="dora-tile__label">Deployment frequency</span>
+                            <strong class="dora-tile__value">12 / week</strong>
+                            <span class="dora-tile__band dora-tile__band--elite">Elite</span>
+                        </div>
+                        <div class="dora-tile">
+                            <span class="dora-tile__label">Lead time for changes</span>
+                            <strong class="dora-tile__value">2.3 hrs</strong>
+                            <span class="dora-tile__band dora-tile__band--elite">Elite</span>
+                        </div>
+                        <div class="dora-tile">
+                            <span class="dora-tile__label">Change failure rate</span>
+                            <strong class="dora-tile__value">3.1%</strong>
+                            <span class="dora-tile__band dora-tile__band--high">High</span>
+                        </div>
+                        <div class="dora-tile">
+                            <span class="dora-tile__label">Mean time to restore</span>
+                            <strong class="dora-tile__value">12 min</strong>
+                            <span class="dora-tile__band dora-tile__band--elite">Elite</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Pull request checklist</h3>
+                    <ul class="pr-checklist">
+                        <li class="pr-checklist__item pr-checklist__item--done">Linked Jira ticket and risk score</li>
+                        <li class="pr-checklist__item pr-checklist__item--done">Unit + integration tests added</li>
+                        <li class="pr-checklist__item pr-checklist__item--done">Coverage delta ≥ 0%</li>
+                        <li class="pr-checklist__item pr-checklist__item--done">Security review (if applicable)</li>
+                        <li class="pr-checklist__item pr-checklist__item--pending">Two reviewer approvals</li>
+                        <li class="pr-checklist__item pr-checklist__item--pending">Release notes updated</li>
+                        <li class="pr-checklist__item pr-checklist__item--pending">Feature flag default verified</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Incident playbook</h3>
+                    <ol class="incident-steps">
+                        <li>
+                            <span class="incident-steps__chip">T-0</span>
+                            <span>Page on-call. Open incident channel. Acknowledge alert.</span>
+                        </li>
+                        <li>
+                            <span class="incident-steps__chip">T+5</span>
+                            <span>Assess blast radius. Decide rollback vs. forward fix.</span>
+                        </li>
+                        <li>
+                            <span class="incident-steps__chip">T+10</span>
+                            <span>Execute rollback runbook or hotfix branch deployment.</span>
+                        </li>
+                        <li>
+                            <span class="incident-steps__chip">T+30</span>
+                            <span>Confirm metrics recovered. Notify stakeholders.</span>
+                        </li>
+                        <li>
+                            <span class="incident-steps__chip">T+24h</span>
+                            <span>Blameless postmortem. Action items logged with owners.</span>
+                        </li>
+                    </ol>
+                </article>
+            </div>
+        </section>
+
+        <section aria-labelledby="cicd-secrets-title" class="stacked-section">
+            <div class="section-header">
+                <h2 id="cicd-secrets-title" class="section-title">Secrets and supply chain</h2>
+                <p class="section-subtitle">
+                    Guardrails for credentials, dependencies, and build provenance across every release.
+                </p>
+            </div>
+
+            <div class="grid two-cols">
+                <article class="card">
+                    <h3 class="card-title">Secrets handling</h3>
+                    <div class="secrets-flow">
+                        <div class="secrets-flow__step">
+                            <strong>Vault</strong>
+                            <span>Centralized secrets store with rotation policies.</span>
+                        </div>
+                        <div class="secrets-flow__arrow" aria-hidden="true">→</div>
+                        <div class="secrets-flow__step">
+                            <strong>OIDC</strong>
+                            <span>Short-lived federated tokens for CI runners.</span>
+                        </div>
+                        <div class="secrets-flow__arrow" aria-hidden="true">→</div>
+                        <div class="secrets-flow__step">
+                            <strong>Runtime</strong>
+                            <span>Injected as env vars · scrubbed from logs.</span>
+                        </div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>Pre-commit secret scanning with deny-list patterns.</li>
+                        <li>Build logs redacted automatically.</li>
+                        <li>Quarterly access review with revocation evidence.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3 class="card-title">Supply chain checks</h3>
+                    <div class="supply-chain">
+                        <div class="supply-chain__row">
+                            <span class="supply-chain__label">SBOM generated</span>
+                            <span class="badge">CycloneDX 1.5</span>
+                        </div>
+                        <div class="supply-chain__row">
+                            <span class="supply-chain__label">Dependency audit</span>
+                            <span class="badge">0 critical · 2 medium</span>
+                        </div>
+                        <div class="supply-chain__row">
+                            <span class="supply-chain__label">Container base image</span>
+                            <span class="badge">Distroless · pinned digest</span>
+                        </div>
+                        <div class="supply-chain__row">
+                            <span class="supply-chain__label">Build provenance</span>
+                            <span class="badge">SLSA L3 attested</span>
+                        </div>
+                        <div class="supply-chain__row">
+                            <span class="supply-chain__label">License compliance</span>
+                            <span class="badge">OSS allowlist enforced</span>
+                        </div>
+                    </div>
+                </article>
             </div>
         </section>
     </main>

@@ -162,8 +162,8 @@ class DashboardSection {
     this.root = root;
     this.dataSet = dataSet;
     this.animationTimeout = null;
-    this.viewButtons = safeQueryAll('.demo-btn[data-view]', this.root);
-    this.metricCards = safeQueryAll('.metric-card', this.root);
+    this.viewButtons = Array.from(safeQueryAll('.demo-btn[data-view]', this.root));
+    this.metricCards = Array.from(safeQueryAll('.metric-card', this.root));
 
     if (this.viewButtons.length === 0) {
       return;

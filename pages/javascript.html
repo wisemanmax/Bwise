@@ -434,12 +434,233 @@ searchInput.addEventListener(<span class="str">"input"</span>,
 table.addEventListener(<span class="str">"click"</span>, (e) => {
     <span class="kw">const</span> row = e.target.closest(<span class="str">"tr"</span>);
     <span class="kw">if</span> (!row) <span class="kw">return</span>;
-    
+
     <span class="kw">const</span> id = row.dataset.accountId;
     <span class="kw">if</span> (e.target.matches(<span class="str">".edit-btn"</span>)) {
         <span class="fn">openEditor</span>(id);
     }
 });</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">⏱️</div>
+                        <div class="pattern-info"><h3 class="pattern-title">Throttle</h3></div>
+                        <span class="pattern-badge">Performance</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="mini-kpis">
+                            <div class="mini-kpi"><div class="mini-kpi-label">Scroll events/s</div><div class="mini-kpi-value">120 → 4</div></div>
+                            <div class="mini-kpi"><div class="mini-kpi-label">CPU saved</div><div class="mini-kpi-value">~96%</div></div>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">function</span> <span class="fn">throttle</span>(fn, wait = <span class="num">250</span>) {
+    <span class="kw">let</span> last = <span class="num">0</span>;
+    <span class="kw">return</span> <span class="kw">function</span> (...args) {
+        <span class="kw">const</span> now = Date.now();
+        <span class="kw">if</span> (now - last >= wait) {
+            last = now;
+            fn.apply(<span class="kw">this</span>, args);
+        }
+    };
+}
+
+window.addEventListener(<span class="str">"scroll"</span>,
+    <span class="fn">throttle</span>(updateScrollProgress, <span class="num">100</span>));</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">💾</div>
+                        <div class="pattern-info"><h3 class="pattern-title">LocalStorage Cache</h3></div>
+                        <span class="pattern-badge">Resilience</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="flags-demo">
+                            <div class="flag-row"><span class="flag-name">cache:portfolios</span><span class="flag-state on">FRESH</span></div>
+                            <div class="flag-row"><span class="flag-name">cache:agents</span><span class="flag-state off">EXPIRED</span></div>
+                            <div class="flag-row"><span class="flag-name">cache:filters</span><span class="flag-state on">FRESH</span></div>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">function</span> <span class="fn">cacheGet</span>(key, ttlMs = <span class="num">60000</span>) {
+    <span class="kw">const</span> raw = localStorage.getItem(key);
+    <span class="kw">if</span> (!raw) <span class="kw">return null</span>;
+    <span class="kw">const</span> { value, savedAt } = JSON.parse(raw);
+    <span class="kw">if</span> (Date.now() - savedAt > ttlMs) {
+        localStorage.removeItem(key);
+        <span class="kw">return null</span>;
+    }
+    <span class="kw">return</span> value;
+}
+
+<span class="kw">function</span> <span class="fn">cacheSet</span>(key, value) {
+    localStorage.setItem(key,
+        JSON.stringify({ value, savedAt: Date.now() }));
+}</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">🔁</div>
+                        <div class="pattern-info"><h3 class="pattern-title">Fetch with Retry</h3></div>
+                        <span class="pattern-badge">Reliability</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="mini-kpis">
+                            <div class="mini-kpi"><div class="mini-kpi-label">Attempts</div><div class="mini-kpi-value">1 → 4</div></div>
+                            <div class="mini-kpi"><div class="mini-kpi-label">Backoff</div><div class="mini-kpi-value">2s · 4s · 8s</div></div>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">async function</span> <span class="fn">fetchRetry</span>(url, opts = {}, retries = <span class="num">3</span>) {
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i <= retries; i++) {
+        <span class="kw">try</span> {
+            <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(url, opts);
+            <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(res.status);
+            <span class="kw">return</span> res.json();
+        } <span class="kw">catch</span> (err) {
+            <span class="kw">if</span> (i === retries) <span class="kw">throw</span> err;
+            <span class="kw">await new</span> Promise(r =>
+                setTimeout(r, <span class="num">1000</span> * <span class="num">2</span> ** i));
+        }
+    }
+}</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">⚡</div>
+                        <div class="pattern-info"><h3 class="pattern-title">Promise.all + Map</h3></div>
+                        <span class="pattern-badge">Async</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="mini-kpis">
+                            <div class="mini-kpi"><div class="mini-kpi-label">Sequential</div><div class="mini-kpi-value">2.4s</div></div>
+                            <div class="mini-kpi"><div class="mini-kpi-label">Parallel</div><div class="mini-kpi-value">0.6s</div></div>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">const</span> portfolioIds = [<span class="str">"PSL"</span>, <span class="str">"REFI"</span>, <span class="str">"PRIME"</span>];
+
+<span class="cmt">// Run all fetches in parallel</span>
+<span class="kw">const</span> results = <span class="kw">await</span> Promise.all(
+    portfolioIds.map(id =>
+        <span class="fn">fetch</span>(<span class="str">`/api/portfolios/${id}`</span>)
+            .then(r => r.json())
+    )
+);
+
+<span class="kw">const</span> totalBalance = results
+    .reduce((sum, p) => sum + p.balance, <span class="num">0</span>);</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">👁️</div>
+                        <div class="pattern-info"><h3 class="pattern-title">Lazy Loading</h3></div>
+                        <span class="pattern-badge">Performance</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="flags-demo">
+                            <div class="flag-row"><span class="flag-name">section.kpi</span><span class="flag-state on">VISIBLE</span></div>
+                            <div class="flag-row"><span class="flag-name">section.charts</span><span class="flag-state off">PENDING</span></div>
+                            <div class="flag-row"><span class="flag-name">section.audit</span><span class="flag-state off">PENDING</span></div>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">const</span> observer = <span class="kw">new</span> IntersectionObserver(
+    (entries) => {
+        entries.forEach(entry => {
+            <span class="kw">if</span> (entry.isIntersecting) {
+                <span class="fn">loadSection</span>(entry.target);
+                observer.unobserve(entry.target);
+            }
+        });
+    },
+    { rootMargin: <span class="str">"100px"</span> }
+);
+
+document.querySelectorAll(<span class="str">"[data-lazy]"</span>)
+    .forEach(el => observer.observe(el));</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">📋</div>
+                        <div class="pattern-info"><h3 class="pattern-title">Copy to Clipboard</h3></div>
+                        <span class="pattern-badge">UX</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="search-demo">
+                            <label>Account reference</label>
+                            <input type="text" value="PSL-22031-Q4-2025" readonly />
+                            <button type="button" class="demo-btn">📋 Copy reference</button>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">async function</span> <span class="fn">copyText</span>(text, button) {
+    <span class="kw">try</span> {
+        <span class="kw">await</span> navigator.clipboard.writeText(text);
+        button.textContent = <span class="str">"✓ Copied"</span>;
+        setTimeout(() => {
+            button.textContent = <span class="str">"📋 Copy"</span>;
+        }, <span class="num">2000</span>);
+    } <span class="kw">catch</span> (err) {
+        <span class="fn">showError</span>(<span class="str">"Could not copy"</span>);
+    }
+}</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">🧮</div>
+                        <div class="pattern-info"><h3 class="pattern-title">Reducer Pattern</h3></div>
+                        <span class="pattern-badge">State</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="mini-kpis">
+                            <div class="mini-kpi"><div class="mini-kpi-label">Actions</div><div class="mini-kpi-value">14</div></div>
+                            <div class="mini-kpi"><div class="mini-kpi-label">State trees</div><div class="mini-kpi-value">3</div></div>
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">function</span> <span class="fn">reducer</span>(state, action) {
+    <span class="kw">switch</span> (action.type) {
+        <span class="kw">case</span> <span class="str">"FILTER"</span>:
+            <span class="kw">return</span> { ...state, filter: action.value };
+        <span class="kw">case</span> <span class="str">"LOADED"</span>:
+            <span class="kw">return</span> { ...state, items: action.items };
+        <span class="kw">case</span> <span class="str">"RESET"</span>:
+            <span class="kw">return</span> { items: [], filter: <span class="str">""</span> };
+        <span class="kw">default</span>:
+            <span class="kw">return</span> state;
+    }
+}
+
+<span class="kw">let</span> state = <span class="fn">reducer</span>(state,
+    { type: <span class="str">"FILTER"</span>, value: <span class="str">"escalated"</span> });</code></pre></div>
+                </article>
+
+                <article class="pattern-card">
+                    <div class="pattern-header">
+                        <div class="pattern-icon">🌐</div>
+                        <div class="pattern-info"><h3 class="pattern-title">URL State Sync</h3></div>
+                        <span class="pattern-badge">Routing</span>
+                    </div>
+                    <div class="pattern-preview">
+                        <div class="search-demo">
+                            <label>Shareable URL</label>
+                            <input type="text" value="?portfolio=PSL&status=active&page=2" readonly />
+                        </div>
+                    </div>
+                    <div class="pattern-code"><pre><code><span class="kw">function</span> <span class="fn">syncFiltersToURL</span>(filters) {
+    <span class="kw">const</span> params = <span class="kw">new</span> URLSearchParams();
+    Object.entries(filters).forEach(([k, v]) => {
+        <span class="kw">if</span> (v) params.set(k, v);
+    });
+    history.replaceState(<span class="kw">null</span>, <span class="str">""</span>,
+        <span class="str">`?${params.toString()}`</span>);
+}
+
+<span class="kw">function</span> <span class="fn">readFiltersFromURL</span>() {
+    <span class="kw">return</span> Object.fromEntries(
+        <span class="kw">new</span> URLSearchParams(location.search));
+}</code></pre></div>
                 </article>
             </div>
         </section>
@@ -479,28 +700,6 @@ table.addEventListener(<span class="str">"click"</span>, (e) => {
             </div>
         </section>
 
-        <section class="library-section-wrapper" aria-labelledby="library-title">
-            <div class="section-header">
-                <h2 id="library-title" class="section-title">JavaScript Delivery Library</h2>
-                <p class="section-subtitle">Browse a curated library of interaction playbooks, QA-ready checklists, and delivery templates.</p>
-            </div>
-            <div class="learning-library" data-library-track="javascript" data-library-source="../assets/data/learning-library.json">
-                <div class="library-controls">
-                    <label class="library-search"><span class="sr-only">Search JavaScript modules</span><input type="search" placeholder="Search interactions, state patterns, and UI logic" data-library-search /></label>
-                    <label class="library-filter"><span class="sr-only">Filter by level</span><select data-library-filter><option value="all">All Levels</option><option value="Foundations">Foundations</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select></label>
-                </div>
-                <div class="library-meta" data-library-count>6 modules available</div>
-                <div class="library-grid" data-library-grid>
-                    <article class="library-card"><div class="library-card__header"><span class="library-card__track">JAVASCRIPT</span><span class="library-card__level">Foundations</span></div><h3 class="library-card__title">DOM Manipulation Essentials</h3><p class="library-card__summary">Master selecting, creating, and modifying DOM elements without frameworks.</p><div class="library-card__meta"><span>45 min</span><span>Fundamentals</span></div><div class="library-card__tags"><span class="library-tag">DOM</span><span class="library-tag">querySelector</span><span class="library-tag">vanilla-js</span></div></article>
-                    <article class="library-card"><div class="library-card__header"><span class="library-card__track">JAVASCRIPT</span><span class="library-card__level">Intermediate</span></div><h3 class="library-card__title">Async Patterns & Promises</h3><p class="library-card__summary">Handle asynchronous operations with Promises, async/await, and error boundaries.</p><div class="library-card__meta"><span>60 min</span><span>Async Programming</span></div><div class="library-card__tags"><span class="library-tag">promises</span><span class="library-tag">async-await</span><span class="library-tag">fetch</span></div></article>
-                    <article class="library-card"><div class="library-card__header"><span class="library-card__track">JAVASCRIPT</span><span class="library-card__level">Advanced</span></div><h3 class="library-card__title">State Management Patterns</h3><p class="library-card__summary">Build predictable state containers without external dependencies.</p><div class="library-card__meta"><span>90 min</span><span>Architecture</span></div><div class="library-card__tags"><span class="library-tag">state</span><span class="library-tag">reducers</span><span class="library-tag">observers</span></div></article>
-                    <article class="library-card"><div class="library-card__header"><span class="library-card__track">JAVASCRIPT</span><span class="library-card__level">Intermediate</span></div><h3 class="library-card__title">Event Handling Deep Dive</h3><p class="library-card__summary">Delegation, bubbling, capturing, and custom events for scalable UIs.</p><div class="library-card__meta"><span>50 min</span><span>Events</span></div><div class="library-card__tags"><span class="library-tag">events</span><span class="library-tag">delegation</span><span class="library-tag">custom-events</span></div></article>
-                    <article class="library-card"><div class="library-card__header"><span class="library-card__track">JAVASCRIPT</span><span class="library-card__level">Advanced</span></div><h3 class="library-card__title">Performance Optimization</h3><p class="library-card__summary">Debouncing, throttling, virtual scrolling, and memory management.</p><div class="library-card__meta"><span>75 min</span><span>Performance</span></div><div class="library-card__tags"><span class="library-tag">performance</span><span class="library-tag">debounce</span><span class="library-tag">memory</span></div></article>
-                    <article class="library-card"><div class="library-card__header"><span class="library-card__track">JAVASCRIPT</span><span class="library-card__level">Foundations</span></div><h3 class="library-card__title">Form Validation Patterns</h3><p class="library-card__summary">Build accessible, real-time form validation with clear error messaging.</p><div class="library-card__meta"><span>40 min</span><span>Forms</span></div><div class="library-card__tags"><span class="library-tag">forms</span><span class="library-tag">validation</span><span class="library-tag">a11y</span></div></article>
-                </div>
-                <button class="library-more" type="button" data-library-more disabled>All modules loaded</button>
-            </div>
-        </section>
     </main>
 
     <footer><p>Byheir Wise · Lead Business Execution Consultant</p><p>Additional technical deep dives for hiring managers and engineering leaders.</p></footer>
@@ -710,34 +909,11 @@ validateQAScore({ score: 150, notes: '' });`
             });
         });
 
-        // Library Search
-        const librarySearch = document.querySelector('[data-library-search]');
-        const libraryFilter = document.querySelector('[data-library-filter]');
-        const libraryCards = document.querySelectorAll('.library-card');
-        const libraryCount = document.querySelector('[data-library-count]');
-        function filterLibrary() {
-            const query = librarySearch?.value.toLowerCase() || '';
-            const level = libraryFilter?.value || 'all';
-            let visibleCount = 0;
-            libraryCards.forEach(card => {
-                const title = card.querySelector('.library-card__title')?.textContent.toLowerCase() || '';
-                const summary = card.querySelector('.library-card__summary')?.textContent.toLowerCase() || '';
-                const cardLevel = card.querySelector('.library-card__level')?.textContent || '';
-                const tags = Array.from(card.querySelectorAll('.library-tag')).map(t => t.textContent.toLowerCase()).join(' ');
-                const matchesQuery = !query || title.includes(query) || summary.includes(query) || tags.includes(query);
-                const matchesLevel = level === 'all' || cardLevel === level;
-                if (matchesQuery && matchesLevel) { card.style.display = ''; visibleCount++; } else { card.style.display = 'none'; }
-            });
-            if (libraryCount) { libraryCount.textContent = `${visibleCount} module${visibleCount !== 1 ? 's' : ''} available`; }
-        }
-        librarySearch?.addEventListener('input', filterLibrary);
-        libraryFilter?.addEventListener('change', filterLibrary);
-
         // Scroll animations
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } });
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.pattern-card, .viz-container, .library-card').forEach(el => {
+        document.querySelectorAll('.pattern-card, .viz-container').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
