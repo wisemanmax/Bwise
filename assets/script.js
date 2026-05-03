@@ -1192,7 +1192,7 @@ class SiteTour {
           details: [
             "Use Next / Back, or arrow keys, to navigate",
             "Skip anytime — resume from the tour chip",
-            "11 stops · ~90 seconds total"
+            "12 stops · ~90 seconds total"
           ] },
         { page: '/', id: 'about',
           title: "What I actually do",
@@ -1237,6 +1237,15 @@ class SiteTour {
             "Working demo of how I think about ops tooling"
           ],
           deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
+        { page: '/', id: 'work-refi',
+          title: "Refi Intelligence — portfolio analytics demo",
+          body: "A React + Recharts analytics build over 5,000 synthetic refi applications — cohort heatmaps, funnel drop-off, savings distribution, and AI-augmented narrative.",
+          details: [
+            "Cohort table, funnel, and savings charts in one view",
+            "Compare mode toggles 7-day vs 30-day side-by-side",
+            "Bring-your-own-key Anthropic integration for narrative"
+          ],
+          detailHref: '/pages/refi-intelligence.html', detailLabel: "Open Refi Intelligence" },
         { page: '/', id: 'work-external',
           title: "Three live apps in production",
           body: "Each opens in a new tab so you don't lose your place in the tour.",
