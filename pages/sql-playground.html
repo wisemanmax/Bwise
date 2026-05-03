@@ -1,0 +1,2460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SQL Playground · Lending KPIs</title>
+<meta name="description" content="In-browser SQL playground against a synthetic Snowflake-shaped lending schema. 21 challenge prompts, real queries, real findings." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+  :root {
+    --bg: #08080d;
+    --bg-elev: #0e0e16;
+    --bg-elev-2: #14141f;
+    --border: rgba(255,255,255,0.06);
+    --border-strong: rgba(255,255,255,0.12);
+    --ink: #e9e9f0;
+    --ink-dim: #8b8b9a;
+    --ink-faint: #555566;
+    --green: #00f5a0;
+    --cyan: #00d9f5;
+    --gold: #ffc857;
+    --red: #ff5577;
+    --amber: #ffa84a;
+    --purple: #b48aff;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(0, 217, 245, 0.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 100%, rgba(0, 245, 160, 0.06), transparent 60%),
+      var(--bg);
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>");
+    opacity: 0.03; mix-blend-mode: overlay;
+  }
+
+  /* HEADER */
+  .header {
+    position: relative; z-index: 10;
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    background: rgba(8, 8, 13, 0.7);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    display: grid; place-items: center;
+    color: var(--bg); font-weight: 800; font-size: 18px;
+    box-shadow: 0 8px 24px rgba(0, 245, 160, 0.25);
+  }
+  .brand h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .brand .sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-dim); letter-spacing: 0.05em; text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .header-meta { display: flex; align-items: center; gap: 18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); display: inline-block; margin-right: 8px; vertical-align: middle; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .header-meta a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); padding-bottom: 1px; transition: color 0.15s; }
+  .header-meta a:hover { color: var(--cyan); border-color: var(--cyan); }
+
+  /* HERO */
+  .hero-strip { padding: 28px 28px 8px; position: relative; z-index: 5; }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--green); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .hero-title {
+    font-family: 'Instrument Serif', serif; font-weight: 400;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.05; letter-spacing: -0.01em;
+    margin: 0 0 8px; max-width: 880px;
+  }
+  .hero-title em { font-style: italic; color: var(--cyan); }
+  .hero-sub { color: var(--ink-dim); font-size: 14px; max-width: 760px; line-height: 1.5; }
+
+  /* FILTERS */
+  .filter-bar {
+    padding: 24px 28px 6px; position: relative; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 24px; align-items: center;
+  }
+  .filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    padding: 5px 12px; border-radius: 100px; cursor: pointer;
+    border: 1px solid var(--border-strong); background: rgba(255,255,255,0.02);
+    color: var(--ink-dim); transition: all 0.15s; user-select: none;
+  }
+  .pill:hover { color: var(--ink); border-color: rgba(255,255,255,0.2); }
+  .pill.active {
+    background: rgba(0, 245, 160, 0.1); color: var(--green);
+    border-color: rgba(0, 245, 160, 0.4);
+  }
+  .pill .count { color: var(--ink-faint); margin-left: 4px; }
+  .pill.active .count { color: var(--green); opacity: 0.7; }
+
+  /* CHALLENGES */
+  .challenges { padding: 14px 28px 8px; position: relative; z-index: 5; }
+  .challenge-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .challenge-card {
+    background: linear-gradient(180deg, rgba(20, 20, 31, 0.7), rgba(14, 14, 22, 0.9));
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px;
+    cursor: pointer; transition: all 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .challenge-card.hidden { display: none; }
+  .challenge-card::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, var(--green), var(--cyan));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .challenge-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .challenge-card:hover::before { opacity: 1; }
+  .challenge-card.active { border-color: rgba(0, 245, 160, 0.4); background: linear-gradient(180deg, rgba(0, 245, 160, 0.06), rgba(14, 14, 22, 0.9)); }
+  .challenge-card.active::before { opacity: 1; }
+  .challenge-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.1em;
+  }
+  .challenge-title {
+    font-size: 14px; font-weight: 600; margin-top: 4px; margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .challenge-desc { font-size: 12px; color: var(--ink-dim); line-height: 1.45; }
+  .challenge-meta {
+    display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  }
+  .tag {
+    padding: 2px 7px; border-radius: 4px;
+    background: rgba(255,255,255,0.04); color: var(--ink-dim);
+    border: 1px solid var(--border);
+  }
+  .tag.diff-easy { color: var(--green); border-color: rgba(0, 245, 160, 0.2); }
+  .tag.diff-med  { color: var(--gold); border-color: rgba(255, 200, 87, 0.2); }
+  .tag.diff-hard { color: var(--red); border-color: rgba(255, 85, 119, 0.2); }
+  .tag.cat-Risk { color: var(--red); border-color: rgba(255, 85, 119, 0.15); background: rgba(255, 85, 119, 0.04); }
+  .tag.cat-Funnel { color: var(--cyan); border-color: rgba(0, 217, 245, 0.15); background: rgba(0, 217, 245, 0.04); }
+  .tag.cat-Portfolio { color: var(--green); border-color: rgba(0, 245, 160, 0.15); background: rgba(0, 245, 160, 0.04); }
+  .tag.cat-Behavior { color: var(--purple); border-color: rgba(180, 138, 255, 0.15); background: rgba(180, 138, 255, 0.04); }
+  .tag.cat-Vintage { color: var(--gold); border-color: rgba(255, 200, 87, 0.15); background: rgba(255, 200, 87, 0.04); }
+  .tag.cat-Pricing { color: var(--amber); border-color: rgba(255, 168, 74, 0.15); background: rgba(255, 168, 74, 0.04); }
+
+  /* WORKSPACE */
+  .workspace {
+    padding: 16px 28px 40px; position: relative; z-index: 5;
+    display: grid; grid-template-columns: 280px 1fr; gap: 16px;
+    min-height: calc(100vh - 100px);
+  }
+  @media (max-width: 1000px) { .workspace { grid-template-columns: 1fr; } }
+
+  .schema-panel {
+    background: rgba(14, 14, 22, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px;
+    height: fit-content; position: sticky; top: 16px;
+    max-height: calc(100vh - 32px); overflow-y: auto;
+  }
+  .schema-panel h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-dim); letter-spacing: 0.18em; text-transform: uppercase;
+    margin: 0 0 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .schema-panel h3 .schema-hint {
+    color: var(--ink-faint); font-size: 9px; text-transform: none; letter-spacing: 0.05em;
+    font-style: italic;
+  }
+  .schema-table {
+    margin-bottom: 14px;
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden;
+  }
+  .schema-table-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; cursor: pointer;
+    background: rgba(255,255,255,0.02);
+    transition: background 0.15s;
+  }
+  .schema-table-header:hover { background: rgba(0, 217, 245, 0.06); }
+  .schema-table-name {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--green);
+  }
+  .schema-table-name.fact { color: var(--cyan); }
+  .schema-row-count {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint);
+  }
+  .schema-cols {
+    padding: 8px 12px 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+  }
+  .schema-col {
+    display: flex; justify-content: space-between; padding: 3px 0;
+    cursor: pointer; transition: color 0.15s;
+  }
+  .schema-col:hover { color: var(--cyan); }
+  .schema-col-name { color: var(--ink); }
+  .schema-col-type { color: var(--ink-faint); font-size: 10px; }
+  .schema-col.pk .schema-col-name::after { content: " 🔑"; opacity: 0.6; }
+
+  /* EDITOR + RESULTS */
+  .editor-stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+  .editor-panel, .results-panel {
+    background: rgba(14, 14, 22, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+  }
+
+  .editor-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    gap: 12px; flex-wrap: wrap;
+  }
+  .editor-title-wrap { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+  .editor-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-dim); letter-spacing: 0.15em; text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .editor-current-prompt {
+    font-size: 13px; color: var(--ink); font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .editor-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-strong);
+    background: rgba(255,255,255,0.03); color: var(--ink); cursor: pointer;
+    transition: all 0.15s; display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 500;
+  }
+  .btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.2); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn:disabled:hover { background: rgba(255,255,255,0.03); border-color: var(--border-strong); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    color: var(--bg); border-color: transparent; font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0, 245, 160, 0.2);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 245, 160, 0.35); }
+  .btn-ghost { background: transparent; color: var(--ink-dim); border-color: transparent; padding: 8px 10px; }
+  .btn-ghost:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+  .kbd {
+    display: inline-block; padding: 1px 5px; border-radius: 3px;
+    background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+    font-size: 10px; color: var(--ink-dim); margin-left: 4px;
+  }
+  .btn-primary .kbd { background: rgba(0,0,0,0.2); border-color: rgba(0,0,0,0.3); color: rgba(0,0,0,0.7); }
+
+  .editor-body { min-height: 280px; }
+
+  .CodeMirror {
+    background: transparent !important;
+    color: var(--ink) !important;
+    height: auto; min-height: 280px; max-height: 50vh;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 13px; line-height: 1.65;
+    padding: 14px 0;
+  }
+  .CodeMirror-gutters { background: transparent !important; border-right: 1px solid var(--border) !important; }
+  .CodeMirror-linenumber { color: var(--ink-faint) !important; padding: 0 10px !important; }
+  .CodeMirror-cursor { border-left: 2px solid var(--green) !important; }
+  .CodeMirror-selected { background: rgba(0, 217, 245, 0.15) !important; }
+  .cm-keyword { color: var(--cyan) !important; font-weight: 600; }
+  .cm-string, .cm-string-2 { color: var(--green) !important; }
+  .cm-number { color: var(--gold) !important; }
+  .cm-operator { color: var(--ink) !important; }
+  .cm-variable, .cm-variable-2 { color: var(--ink) !important; }
+  .cm-comment { color: var(--ink-faint) !important; font-style: italic; }
+  .cm-punctuation { color: var(--ink-dim) !important; }
+  .cm-bracket { color: var(--gold) !important; }
+
+  .results-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    gap: 12px; flex-wrap: wrap;
+  }
+  .results-tabs { display: flex; gap: 4px; align-items: center; }
+  .results-tab {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    padding: 6px 12px; border-radius: 6px; cursor: pointer;
+    color: var(--ink-dim); transition: all 0.15s;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: transparent;
+  }
+  .results-tab:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+  .results-tab.active {
+    color: var(--green); background: rgba(0, 245, 160, 0.08);
+  }
+  .results-tab.disabled { opacity: 0.3; cursor: not-allowed; }
+  .results-tab.disabled:hover { color: var(--ink-dim); background: transparent; }
+
+  /* CHART VIEW */
+  .chart-view {
+    padding: 20px; display: none; min-height: 360px; max-height: 55vh;
+  }
+  .chart-view.active { display: block; }
+  .chart-view canvas { max-width: 100%; max-height: 50vh; }
+  .chart-empty {
+    display: grid; place-items: center; padding: 60px 20px;
+    color: var(--ink-faint); font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    text-align: center; line-height: 1.6;
+  }
+
+  /* EXPLAIN VIEW */
+  .explain-view { padding: 16px; display: none; }
+  .explain-view.active { display: block; }
+  .explain-tree {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--ink); line-height: 1.7;
+    background: rgba(0,0,0,0.3); padding: 14px 16px;
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow-x: auto;
+  }
+  .explain-row {
+    padding: 3px 0; white-space: pre;
+  }
+  .explain-row .opcode { color: var(--cyan); font-weight: 600; }
+  .explain-row .table-ref { color: var(--green); }
+  .explain-row .using { color: var(--gold); }
+  .explain-row .scan { color: var(--red); }
+  .explain-note {
+    margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-dim); line-height: 1.5; padding: 10px 12px;
+    background: rgba(0, 217, 245, 0.04); border-left: 2px solid var(--cyan);
+    border-radius: 4px;
+  }
+
+  /* HISTORY PANEL */
+  .history-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90;
+    opacity: 0; visibility: hidden; transition: all 0.2s;
+  }
+  .history-overlay.open { opacity: 1; visibility: visible; }
+  .history-panel {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 440px; max-width: 90vw;
+    background: var(--bg-elev); border-left: 1px solid var(--border-strong);
+    z-index: 91; transform: translateX(100%); transition: transform 0.25s;
+    display: flex; flex-direction: column;
+    box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+  }
+  .history-panel.open { transform: translateX(0); }
+  .history-header {
+    padding: 18px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .history-header h3 {
+    margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-dim); letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .history-close {
+    background: none; border: none; color: var(--ink-dim);
+    font-size: 22px; cursor: pointer; padding: 0 6px;
+    line-height: 1; transition: color 0.15s;
+  }
+  .history-close:hover { color: var(--ink); }
+  .history-list { flex: 1; overflow-y: auto; padding: 8px 12px; }
+  .history-item {
+    padding: 12px 14px; margin-bottom: 6px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer; transition: all 0.15s;
+  }
+  .history-item:hover {
+    border-color: rgba(0, 245, 160, 0.3);
+    background: rgba(0, 245, 160, 0.04);
+  }
+  .history-item-meta {
+    display: flex; justify-content: space-between; gap: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); margin-bottom: 6px;
+  }
+  .history-item-meta .ok { color: var(--green); }
+  .history-item-meta .err { color: var(--red); }
+  .history-item-sql {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink); line-height: 1.45;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  .history-empty {
+    padding: 80px 20px; text-align: center; color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6;
+  }
+  .history-footer {
+    padding: 12px 16px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint);
+  }
+  .history-clear {
+    background: none; border: 1px solid var(--border-strong);
+    color: var(--ink-dim); padding: 4px 10px; border-radius: 4px;
+    font-family: inherit; font-size: 10px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .history-clear:hover { color: var(--red); border-color: var(--red); }
+
+  .results-meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-dim); display: flex; align-items: center; gap: 12px;
+  }
+  .results-meta .ok { color: var(--green); }
+  .results-meta .err { color: var(--red); }
+
+  .results-body { max-height: 55vh; overflow: auto; min-height: 200px; }
+  .results-body.empty {
+    display: grid; place-items: center; color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 60px 20px; text-align: center;
+  }
+
+  .results-table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .results-table th {
+    text-align: left; padding: 10px 14px;
+    background: rgba(0,0,0,0.3); color: var(--cyan);
+    font-weight: 600; font-size: 11px; letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-strong);
+    position: sticky; top: 0; z-index: 1;
+  }
+  .results-table td {
+    padding: 8px 14px; border-bottom: 1px solid var(--border);
+    color: var(--ink); white-space: nowrap;
+  }
+  .results-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .results-table td.num { text-align: right; color: var(--gold); }
+  .results-table td.warn { color: var(--red); font-weight: 500; }
+  .results-table td.good { color: var(--green); }
+
+  .err-msg {
+    padding: 18px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--red); background: rgba(255, 85, 119, 0.05);
+    border-left: 2px solid var(--red); margin: 16px;
+    border-radius: 6px; line-height: 1.5;
+  }
+
+  .solution-drawer {
+    border-top: 1px solid var(--border);
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    display: none;
+  }
+  .solution-drawer.open { display: block; }
+  .solution-drawer h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .solution-drawer p { font-size: 13px; color: var(--ink-dim); line-height: 1.55; margin: 0; }
+  .solution-drawer .insight {
+    margin-top: 10px; padding: 10px 12px;
+    background: rgba(255, 200, 87, 0.05); border-left: 2px solid var(--gold);
+    border-radius: 4px;
+    font-size: 12px; color: var(--ink); line-height: 1.5;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .solution-drawer .insight strong { color: var(--gold); }
+  .solution-drawer .insight code {
+    background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px;
+    color: var(--cyan); font-size: 11px;
+  }
+  .solution-drawer .insight em { color: var(--purple); font-style: italic; }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 50;
+    background: var(--bg-elev-2); border: 1px solid var(--green);
+    color: var(--green); padding: 12px 18px; border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    transform: translateY(8px); opacity: 0; transition: all 0.25s;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .foot {
+    padding: 28px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-faint); letter-spacing: 0.05em;
+    border-top: 1px solid var(--border); margin-top: 20px;
+  }
+  .foot a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+  .foot a:hover { color: var(--cyan); }
+
+  .loader {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--bg); display: grid; place-items: center;
+    transition: opacity 0.4s, visibility 0.4s;
+  }
+  .loader.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loader-inner { text-align: center; max-width: 480px; padding: 0 24px; }
+  .loader-mark {
+    width: 56px; height: 56px; border-radius: 12px; margin: 0 auto 18px;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    display: grid; place-items: center; color: var(--bg);
+    font-weight: 800; font-size: 24px;
+    animation: spin 2s linear infinite;
+  }
+  .loader-mark.error { animation: none; background: var(--red); }
+  @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  .loader-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--ink-dim); letter-spacing: 0.1em;
+  }
+  .loader-text .step { color: var(--green); }
+  .loader-text.error .step { color: var(--red); }
+  .loader-detail {
+    margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-faint); line-height: 1.55; display: none;
+  }
+  .loader-detail.show { display: block; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
+
+  .CodeMirror-hints {
+    background: var(--bg-elev-2) !important; border: 1px solid var(--border-strong) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4); border-radius: 6px;
+  }
+  .CodeMirror-hint { color: var(--ink) !important; padding: 4px 12px !important; }
+  li.CodeMirror-hint-active { background: var(--cyan) !important; color: var(--bg) !important; }
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-mark" id="loader-mark">SQL</div>
+    <div class="loader-text" id="loader-text-wrap">
+      <span id="loader-step" class="step">Booting WASM engine</span><span class="dim">…</span>
+    </div>
+    <div class="loader-detail" id="loader-detail"></div>
+  </div>
+</div>
+
+<div class="header">
+  <div class="brand">
+    <div class="brand-mark">SQ</div>
+    <div>
+      <h1>SQL Playground · Lending KPIs</h1>
+      <div class="sub">In-browser SQLite · Snowflake-shaped schema · 21 challenges · zero backend</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span><span class="status-dot" id="db-status"></span><span id="db-status-text">Schema loaded</span></span>
+    <a href="https://github.com/wisemanmax/Bwise" target="_blank" rel="noopener">github.com/wisemanmax</a>
+  </div>
+</div>
+
+<div class="hero-strip">
+  <div class="hero-eyebrow">// portfolio · sql proof-of-craft</div>
+  <h2 class="hero-title">A real SQL workbench against a synthetic <em>lending portfolio</em>. Pick a prompt, write the query, ship the answer.</h2>
+  <p class="hero-sub">
+    Five tables, ~1,700 loans, ~28k payments — generated in your browser with seeded patterns that mirror real portfolio behavior:
+    FICO-driven loss curves, channel funnel drop-off, vintage delinquency drift, repeat-borrower cross-sell signal. Open the schema,
+    pick a challenge, and verify the SQL runs against live data.
+  </p>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">CATEGORY</span>
+    <div class="pill active" data-filter-cat="all">All</div>
+    <div class="pill" data-filter-cat="Risk">Risk</div>
+    <div class="pill" data-filter-cat="Funnel">Funnel</div>
+    <div class="pill" data-filter-cat="Portfolio">Portfolio</div>
+    <div class="pill" data-filter-cat="Behavior">Behavior</div>
+    <div class="pill" data-filter-cat="Vintage">Vintage</div>
+    <div class="pill" data-filter-cat="Pricing">Pricing</div>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">DIFFICULTY</span>
+    <div class="pill active" data-filter-diff="all">All</div>
+    <div class="pill" data-filter-diff="easy">Easy</div>
+    <div class="pill" data-filter-diff="med">Medium</div>
+    <div class="pill" data-filter-diff="hard">Hard</div>
+  </div>
+</div>
+
+<div class="challenges">
+  <div class="challenge-grid" id="challenge-grid"></div>
+</div>
+
+<div class="workspace">
+  <div class="schema-panel">
+    <h3>Schema <span class="schema-hint">click table to preview</span></h3>
+    <div id="schema-list"></div>
+  </div>
+
+  <div class="editor-stack">
+    <div class="editor-panel">
+      <div class="editor-header">
+        <div class="editor-title-wrap">
+          <span class="editor-title">Query</span>
+          <span class="editor-current-prompt" id="current-prompt-name">— scratch query —</span>
+        </div>
+        <div class="editor-actions">
+          <button class="btn btn-ghost" id="btn-history" title="Show query history">History</button>
+          <button class="btn btn-ghost" id="btn-copy" title="Copy SQL to clipboard">Copy</button>
+          <button class="btn btn-ghost" id="btn-solution" style="display:none">Show solution</button>
+          <button class="btn btn-ghost" id="btn-clear">Clear</button>
+          <button class="btn btn-primary" id="btn-run">▶ Run<span class="kbd">⌘ ↵</span></button>
+        </div>
+      </div>
+      <div class="editor-body">
+        <textarea id="editor"></textarea>
+      </div>
+      <div class="solution-drawer" id="solution-drawer">
+        <h4>// approach</h4>
+        <p id="solution-text"></p>
+        <div class="insight" id="solution-insight"></div>
+      </div>
+    </div>
+
+    <div class="results-panel">
+      <div class="results-header">
+        <div class="results-tabs">
+          <div class="results-tab active" data-view="table">Table</div>
+          <div class="results-tab disabled" data-view="chart" id="tab-chart" title="Chart available when results have a category and a numeric column">Chart</div>
+          <div class="results-tab" data-view="plan" id="tab-plan" title="EXPLAIN QUERY PLAN — see how SQLite executes the query">Plan</div>
+        </div>
+        <div class="results-meta">
+          <span id="results-status">— ready —</span>
+          <button class="btn btn-ghost" id="btn-export" disabled style="font-size:11px; padding:5px 10px">Export CSV</button>
+        </div>
+      </div>
+      <div class="results-body empty" id="results-body">
+        Press <span style="color:var(--green); margin: 0 4px">▶ Run</span> or hit <span class="kbd" style="margin: 0 4px">⌘ ↵</span> to execute the query.
+      </div>
+      <div class="chart-view" id="chart-view">
+        <canvas id="chart-canvas"></canvas>
+      </div>
+      <div class="explain-view" id="explain-view">
+        <div id="explain-empty" class="chart-empty">Run a query, then click <strong style="color:var(--green)">Plan</strong> to see SQLite's execution plan.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  built with sql.js · codemirror · vanilla js · synthetic data deterministically seeded · ~1,700 loans, ~28k payments
+</div>
+
+<div class="history-overlay" id="history-overlay"></div>
+<div class="history-panel" id="history-panel">
+  <div class="history-header">
+    <h3>// query history</h3>
+    <button class="history-close" id="history-close" title="Close">×</button>
+  </div>
+  <div class="history-list" id="history-list"></div>
+  <div class="history-footer">
+    <span id="history-count">0 queries</span>
+    <button class="history-clear" id="history-clear">Clear all</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied</div>
+
+<script>
+// ===== SEEDED RANDOM =====
+let _seed = 1337;
+function srand() { _seed = (_seed * 9301 + 49297) % 233280; return _seed / 233280; }
+function rint(min, max) { return Math.floor(srand() * (max - min + 1)) + min; }
+function rfloat(min, max) { return srand() * (max - min) + min; }
+function pick(arr) { return arr[Math.floor(srand() * arr.length)]; }
+function pickWeighted(items) {
+  const total = items.reduce((s, [, w]) => s + w, 0);
+  let r = srand() * total;
+  for (const [v, w] of items) { r -= w; if (r <= 0) return v; }
+  return items[items.length - 1][0];
+}
+
+// ===== REFERENCE DATA =====
+const FIRST_NAMES = ['James','Maria','David','Sarah','Michael','Jennifer','Robert','Linda','William','Patricia','John','Elizabeth','Christopher','Barbara','Daniel','Susan','Matthew','Margaret','Anthony','Lisa','Mark','Nancy','Paul','Karen','Steven','Betty','Andrew','Helen','Kenneth','Sandra','Joshua','Donna','Kevin','Carol','Brian','Ruth','George','Sharon','Edward','Michelle','Ronald','Laura','Timothy','Sarah','Jason','Kimberly','Jeffrey','Deborah','Ryan','Dorothy','Jacob','Amy','Gary','Angela','Nicholas','Ashley','Eric','Brenda','Jonathan','Emma','Stephen','Olivia','Larry','Cynthia','Justin','Marie','Scott','Janet','Brandon','Catherine','Benjamin','Frances','Samuel','Christine','Gregory','Samantha','Frank','Debra','Alexander','Rachel','Tyler','Carolyn','Aaron','Janet','Henry','Virginia','Jose','Maria','Adam','Heather','Douglas','Diane','Nathan','Julie','Peter','Joyce','Zachary','Victoria','Kyle','Kelly'];
+const LAST_NAMES = ['Smith','Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Rodriguez','Martinez','Hernandez','Lopez','Gonzalez','Wilson','Anderson','Thomas','Taylor','Moore','Jackson','Martin','Lee','Perez','Thompson','White','Harris','Sanchez','Clark','Ramirez','Lewis','Robinson','Walker','Young','Allen','King','Wright','Scott','Torres','Nguyen','Hill','Flores','Green','Adams','Nelson','Baker','Hall','Rivera','Campbell','Mitchell','Carter','Roberts','Phillips','Evans','Turner','Diaz','Parker','Cruz','Edwards','Collins','Reyes','Stewart','Morris','Morales','Murphy','Cook','Rogers','Gutierrez','Ortiz','Morgan','Cooper','Peterson','Bailey','Reed','Kelly','Howard','Ramos','Kim','Cox','Ward','Richardson','Watson','Brooks','Chavez','Wood','James'];
+const STATES = [['CA',0.12],['TX',0.10],['FL',0.08],['NY',0.07],['PA',0.05],['IL',0.05],['OH',0.04],['GA',0.04],['NC',0.04],['MI',0.03],['NJ',0.03],['VA',0.03],['WA',0.03],['AZ',0.03],['MA',0.03],['TN',0.03],['IN',0.03],['MO',0.02],['MD',0.02],['WI',0.02],['CO',0.02],['MN',0.02],['SC',0.02],['AL',0.02],['LA',0.02],['KY',0.02],['OR',0.02],['OK',0.01],['CT',0.01],['DE',0.005],['NV',0.01],['UT',0.01],['IA',0.01]];
+const EMPLOYMENT = [['Employed Full-Time',0.62],['Employed Part-Time',0.10],['Self-Employed',0.12],['Retired',0.08],['Unemployed',0.05],['Student',0.03]];
+const CHANNELS = [['Online',0.42],['Direct Mail',0.20],['Branch',0.18],['Partner',0.14],['Phone',0.06]];
+const PRODUCTS = [
+  { id: 1, name: 'Personal Loan',     category: 'Personal',  base_apr: 0.1499 },
+  { id: 2, name: 'Auto Refinance',    category: 'Auto',      base_apr: 0.0699 },
+  { id: 3, name: 'Student Refi',      category: 'Education', base_apr: 0.0599 },
+  { id: 4, name: 'HELOC',             category: 'Mortgage',  base_apr: 0.0899 }
+];
+
+function generateFICO() {
+  const band = pickWeighted([['deep_sub',0.05],['sub',0.15],['near_prime',0.25],['prime',0.30],['super',0.25]]);
+  switch (band) {
+    case 'deep_sub':   return rint(500, 579);
+    case 'sub':        return rint(580, 619);
+    case 'near_prime': return rint(620, 679);
+    case 'prime':      return rint(680, 739);
+    case 'super':      return rint(740, 850);
+  }
+}
+
+function delinqProb(fico, productCategory, originationDate) {
+  let p;
+  if (fico < 580)      p = 0.42;
+  else if (fico < 620) p = 0.28;
+  else if (fico < 680) p = 0.14;
+  else if (fico < 740) p = 0.06;
+  else                 p = 0.02;
+  if (productCategory === 'Personal') p *= 1.15;
+  if (productCategory === 'Auto')     p *= 0.90;
+  if (productCategory === 'Mortgage') p *= 0.70;
+  // VINTAGE STRESS: Q3 2024 cohort gets bumped — discoverable pattern
+  const month = parseInt(originationDate.slice(5, 7));
+  const year  = parseInt(originationDate.slice(0, 4));
+  if (year === 2024 && month >= 7  && month <= 9)  p *= 2.2;
+  if (year === 2024 && month >= 10 && month <= 12) p *= 1.6;
+  return Math.min(p, 0.85);
+}
+
+// ===== DATA GENERATION =====
+function dateAddDays(dateStr, days) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+function dateAddMonths(dateStr, months) {
+  const d = new Date(dateStr + 'T00:00:00Z');
+  d.setUTCMonth(d.getUTCMonth() + months);
+  return d.toISOString().slice(0, 10);
+}
+function randomDateBetween(startStr, endStr) {
+  const s = new Date(startStr + 'T00:00:00Z').getTime();
+  const e = new Date(endStr   + 'T00:00:00Z').getTime();
+  const t = s + srand() * (e - s);
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+function generateData() {
+  const today = '2025-12-15';
+  const earliestApp = '2022-01-01';
+
+  const borrowers = [];
+  for (let i = 1; i <= 1500; i++) {
+    const fico = generateFICO();
+    let income;
+    if (fico < 600)      income = rint(22000, 55000);
+    else if (fico < 680) income = rint(35000, 85000);
+    else if (fico < 740) income = rint(55000, 130000);
+    else                 income = rint(80000, 280000);
+    borrowers.push({
+      id: i, first: pick(FIRST_NAMES), last: pick(LAST_NAMES),
+      fico, state: pickWeighted(STATES), employment: pickWeighted(EMPLOYMENT),
+      income, dob: randomDateBetween('1955-01-01', '2003-12-31')
+    });
+  }
+
+  const applications = [];
+  let appId = 1;
+  for (const b of borrowers) {
+    const numApps = pickWeighted([[1, 0.50], [2, 0.30], [3, 0.15], [4, 0.05]]);
+    for (let i = 0; i < numApps; i++) {
+      const product = pick(PRODUCTS);
+      const appDate = randomDateBetween(earliestApp, today);
+      let approvalProb;
+      if (b.fico < 580) approvalProb = 0.18;
+      else if (b.fico < 620) approvalProb = 0.42;
+      else if (b.fico < 680) approvalProb = 0.68;
+      else if (b.fico < 740) approvalProb = 0.84;
+      else approvalProb = 0.92;
+      const channel = pickWeighted(CHANNELS);
+      if (channel === 'Online')   approvalProb *= 0.92;
+      if (channel === 'Branch')   approvalProb *= 1.05;
+      if (channel === 'Partner')  approvalProb *= 0.88;
+      let status;
+      const r = srand();
+      if (r < 0.05) status = 'Withdrawn';
+      else if (r < 0.05 + approvalProb * 0.95) status = 'Approved';
+      else status = 'Declined';
+      let requestedAmount;
+      if (product.category === 'Personal')  requestedAmount = rint(2000, 50000);
+      if (product.category === 'Auto')      requestedAmount = rint(8000, 65000);
+      if (product.category === 'Education') requestedAmount = rint(5000, 95000);
+      if (product.category === 'Mortgage')  requestedAmount = rint(20000, 250000);
+      applications.push({
+        id: appId++, borrowerId: b.id, productId: product.id,
+        productCategory: product.category, baseApr: product.base_apr,
+        date: appDate, amount: requestedAmount, channel, status
+      });
+    }
+  }
+
+  const loans = [];
+  let loanId = 1;
+  for (const a of applications) {
+    if (a.status !== 'Approved') continue;
+    if (srand() > 0.85) continue;
+    const borrower = borrowers[a.borrowerId - 1];
+    const origDate = dateAddDays(a.date, rint(2, 14));
+    if (origDate > today) continue;
+    let aprAdj = 0;
+    if (borrower.fico < 580) aprAdj = 0.10;
+    else if (borrower.fico < 620) aprAdj = 0.07;
+    else if (borrower.fico < 680) aprAdj = 0.04;
+    else if (borrower.fico < 740) aprAdj = 0.015;
+    const apr = +(a.baseApr + aprAdj + rfloat(-0.005, 0.01)).toFixed(4);
+    let term;
+    if (a.productCategory === 'Personal')  term = pick([24, 36, 48, 60]);
+    if (a.productCategory === 'Auto')      term = pick([48, 60, 72, 84]);
+    if (a.productCategory === 'Education') term = pick([60, 84, 120, 180]);
+    if (a.productCategory === 'Mortgage')  term = pick([60, 120, 180, 240]);
+    const principal = Math.round(a.amount * rfloat(0.85, 1.02) / 100) * 100;
+    loans.push({
+      id: loanId++, appId: a.id, borrowerId: a.borrowerId, productId: a.productId,
+      productCategory: a.productCategory, origDate, principal, apr, term,
+      fico: borrower.fico, status: 'Active'
+    });
+  }
+
+  const payments = [];
+  let paymentId = 1;
+  const todayDate = today;
+  for (const l of loans) {
+    const monthlyPayment = (l.principal * (l.apr / 12)) / (1 - Math.pow(1 + l.apr / 12, -l.term));
+    const everDelinqProb = delinqProb(l.fico, l.productCategory, l.origDate);
+    let willGoDelinq = srand() < everDelinqProb;
+    let delinqStartMonth = willGoDelinq ? rint(2, Math.min(11, l.term - 1)) : 999;
+    let willCure = willGoDelinq && srand() < (l.fico < 620 ? 0.30 : l.fico < 700 ? 0.55 : 0.75);
+    let willChargeOff = willGoDelinq && !willCure && srand() < (l.fico < 620 ? 0.55 : l.fico < 700 ? 0.30 : 0.10);
+    let willPayOff = !willGoDelinq && srand() < (l.fico >= 740 ? 0.18 : 0.08);
+    let payOffMonth = willPayOff ? rint(Math.floor(l.term * 0.35), Math.floor(l.term * 0.85)) : 999;
+
+    let currentDPD = 0;
+    for (let m = 1; m <= l.term; m++) {
+      const scheduledDate = dateAddMonths(l.origDate, m);
+      if (scheduledDate > todayDate) break;
+      if (m === payOffMonth) {
+        payments.push({
+          id: paymentId++, loanId: l.id, schedDate: scheduledDate,
+          schedAmount: +monthlyPayment.toFixed(2),
+          paidDate: dateAddDays(scheduledDate, rint(-3, 2)),
+          paidAmount: +(monthlyPayment * (l.term - m + 1) * 0.92).toFixed(2),
+          dpd: 0
+        });
+        l.status = 'Paid Off';
+        break;
+      }
+      let dpd = 0;
+      let paidOnTime = true;
+      if (willGoDelinq && m >= delinqStartMonth) {
+        const monthsSinceDelinq = m - delinqStartMonth;
+        if (willCure && monthsSinceDelinq >= rint(2, 5)) {
+          dpd = 0; paidOnTime = true; willGoDelinq = false;
+        } else {
+          dpd = currentDPD + 30; paidOnTime = false;
+        }
+      }
+      currentDPD = dpd;
+
+      if (willChargeOff && dpd >= 120) {
+        payments.push({
+          id: paymentId++, loanId: l.id, schedDate: scheduledDate,
+          schedAmount: +monthlyPayment.toFixed(2),
+          paidDate: null, paidAmount: 0, dpd
+        });
+        l.status = 'Charged Off';
+        break;
+      }
+
+      let paidDate, paidAmount;
+      if (paidOnTime) {
+        paidDate = dateAddDays(scheduledDate, rint(-5, 3));
+        paidAmount = +monthlyPayment.toFixed(2);
+      } else {
+        const missChance = dpd >= 60 ? 0.7 : 0.4;
+        if (srand() < missChance) {
+          paidDate = null; paidAmount = 0;
+        } else {
+          paidDate = dateAddDays(scheduledDate, dpd + rint(0, 10));
+          if (paidDate > todayDate) { paidDate = null; paidAmount = 0; }
+          else paidAmount = +(monthlyPayment * rfloat(0.5, 1.0)).toFixed(2);
+        }
+      }
+      payments.push({
+        id: paymentId++, loanId: l.id, schedDate: scheduledDate,
+        schedAmount: +monthlyPayment.toFixed(2), paidDate, paidAmount, dpd
+      });
+    }
+    if (l.status === 'Active') {
+      if (currentDPD >= 90)      l.status = 'Severely Delinquent';
+      else if (currentDPD >= 60) l.status = '60+ DPD';
+      else if (currentDPD >= 30) l.status = '30+ DPD';
+      else                       l.status = 'Current';
+    }
+  }
+
+  return { borrowers, applications, loans, payments };
+}
+
+// ===== SQLITE LOADING =====
+function loadIntoDB(db, data) {
+  db.run(`
+    CREATE TABLE DIM_BORROWERS (
+      BORROWER_ID INTEGER PRIMARY KEY,
+      FIRST_NAME TEXT, LAST_NAME TEXT,
+      FICO_SCORE INTEGER, STATE TEXT,
+      EMPLOYMENT_STATUS TEXT, ANNUAL_INCOME INTEGER,
+      DATE_OF_BIRTH TEXT
+    );
+    CREATE TABLE DIM_PRODUCTS (
+      PRODUCT_ID INTEGER PRIMARY KEY,
+      PRODUCT_NAME TEXT, PRODUCT_CATEGORY TEXT, BASE_APR REAL
+    );
+    CREATE TABLE FACT_APPLICATIONS (
+      APPLICATION_ID INTEGER PRIMARY KEY,
+      BORROWER_ID INTEGER, PRODUCT_ID INTEGER,
+      APPLICATION_DATE TEXT, REQUESTED_AMOUNT INTEGER,
+      CHANNEL TEXT, STATUS TEXT
+    );
+    CREATE TABLE FACT_LOANS (
+      LOAN_ID INTEGER PRIMARY KEY,
+      APPLICATION_ID INTEGER, BORROWER_ID INTEGER, PRODUCT_ID INTEGER,
+      ORIGINATION_DATE TEXT, PRINCIPAL INTEGER, APR REAL,
+      TERM_MONTHS INTEGER, STATUS TEXT
+    );
+    CREATE TABLE FACT_PAYMENTS (
+      PAYMENT_ID INTEGER PRIMARY KEY,
+      LOAN_ID INTEGER,
+      SCHEDULED_DATE TEXT, SCHEDULED_AMOUNT REAL,
+      PAID_DATE TEXT, PAID_AMOUNT REAL, DAYS_PAST_DUE INTEGER
+    );
+    CREATE INDEX IDX_LOANS_ORIG ON FACT_LOANS(ORIGINATION_DATE);
+    CREATE INDEX IDX_LOANS_BORR ON FACT_LOANS(BORROWER_ID);
+    CREATE INDEX IDX_PMT_LOAN ON FACT_PAYMENTS(LOAN_ID);
+    CREATE INDEX IDX_APP_BORR ON FACT_APPLICATIONS(BORROWER_ID);
+  `);
+
+  const stmts = {
+    borrower: db.prepare('INSERT INTO DIM_BORROWERS VALUES (?,?,?,?,?,?,?,?)'),
+    product:  db.prepare('INSERT INTO DIM_PRODUCTS VALUES (?,?,?,?)'),
+    app:      db.prepare('INSERT INTO FACT_APPLICATIONS VALUES (?,?,?,?,?,?,?)'),
+    loan:     db.prepare('INSERT INTO FACT_LOANS VALUES (?,?,?,?,?,?,?,?,?)'),
+    pmt:      db.prepare('INSERT INTO FACT_PAYMENTS VALUES (?,?,?,?,?,?,?)')
+  };
+  db.run('BEGIN TRANSACTION');
+  for (const b of data.borrowers) stmts.borrower.run([b.id, b.first, b.last, b.fico, b.state, b.employment, b.income, b.dob]);
+  for (const p of PRODUCTS) stmts.product.run([p.id, p.name, p.category, p.base_apr]);
+  for (const a of data.applications) stmts.app.run([a.id, a.borrowerId, a.productId, a.date, a.amount, a.channel, a.status]);
+  for (const l of data.loans) stmts.loan.run([l.id, l.appId, l.borrowerId, l.productId, l.origDate, l.principal, l.apr, l.term, l.status]);
+  for (const p of data.payments) stmts.pmt.run([p.id, p.loanId, p.schedDate, p.schedAmount, p.paidDate, p.paidAmount, p.dpd]);
+  db.run('COMMIT');
+  Object.values(stmts).forEach(s => s.free());
+}
+
+// ===== SCHEMA METADATA =====
+const SCHEMA = [
+  { table: 'DIM_BORROWERS', kind: 'dim', cols: [
+    ['BORROWER_ID','INT',true],['FIRST_NAME','TEXT'],['LAST_NAME','TEXT'],
+    ['FICO_SCORE','INT'],['STATE','TEXT'],['EMPLOYMENT_STATUS','TEXT'],
+    ['ANNUAL_INCOME','INT'],['DATE_OF_BIRTH','DATE']
+  ]},
+  { table: 'DIM_PRODUCTS', kind: 'dim', cols: [
+    ['PRODUCT_ID','INT',true],['PRODUCT_NAME','TEXT'],
+    ['PRODUCT_CATEGORY','TEXT'],['BASE_APR','REAL']
+  ]},
+  { table: 'FACT_APPLICATIONS', kind: 'fact', cols: [
+    ['APPLICATION_ID','INT',true],['BORROWER_ID','INT'],['PRODUCT_ID','INT'],
+    ['APPLICATION_DATE','DATE'],['REQUESTED_AMOUNT','INT'],
+    ['CHANNEL','TEXT'],['STATUS','TEXT']
+  ]},
+  { table: 'FACT_LOANS', kind: 'fact', cols: [
+    ['LOAN_ID','INT',true],['APPLICATION_ID','INT'],['BORROWER_ID','INT'],['PRODUCT_ID','INT'],
+    ['ORIGINATION_DATE','DATE'],['PRINCIPAL','INT'],['APR','REAL'],
+    ['TERM_MONTHS','INT'],['STATUS','TEXT']
+  ]},
+  { table: 'FACT_PAYMENTS', kind: 'fact', cols: [
+    ['PAYMENT_ID','INT',true],['LOAN_ID','INT'],
+    ['SCHEDULED_DATE','DATE'],['SCHEDULED_AMOUNT','REAL'],
+    ['PAID_DATE','DATE'],['PAID_AMOUNT','REAL'],['DAYS_PAST_DUE','INT']
+  ]}
+];
+
+// ===== 21 CHALLENGES =====
+const CHALLENGES = [
+  // VINTAGE & COHORTS
+  {
+    id: 'cohort-delinq', num: '01', category: 'Vintage', difficulty: 'med',
+    title: 'Vintage delinquency drift',
+    desc: 'Compute 30+ DPD rate by origination quarter. Find the cohort with rising delinquency.',
+    tags: ['cohort'],
+    starter:
+`-- For each origination quarter, what % of loans ever hit 30+ DPD?
+
+SELECT
+  /* your SQL here */
+FROM FACT_LOANS l
+JOIN FACT_PAYMENTS p ON p.LOAN_ID = l.LOAN_ID
+GROUP BY 1
+ORDER BY 1;`,
+    solution:
+`SELECT
+  STRFTIME('%Y', l.ORIGINATION_DATE) || '-Q' ||
+    ((CAST(STRFTIME('%m', l.ORIGINATION_DATE) AS INTEGER) - 1) / 3 + 1)
+    AS ORIG_QUARTER,
+  COUNT(DISTINCT l.LOAN_ID) AS LOANS_ORIGINATED,
+  COUNT(DISTINCT CASE WHEN p.DAYS_PAST_DUE >= 30 THEN l.LOAN_ID END) AS EVER_30_DPD,
+  ROUND(
+    100.0 * COUNT(DISTINCT CASE WHEN p.DAYS_PAST_DUE >= 30 THEN l.LOAN_ID END)
+          / COUNT(DISTINCT l.LOAN_ID),
+    2
+  ) AS DELINQ_RATE_PCT
+FROM FACT_LOANS l
+LEFT JOIN FACT_PAYMENTS p ON p.LOAN_ID = l.LOAN_ID
+GROUP BY 1
+ORDER BY 1;`,
+    approach: 'Group loans by origination quarter, count distinct loans that ever hit DPD >= 30, divide. Quarter is the analytic-standard unit for cohort/vintage work.',
+    insight: '<strong>2024-Q3</strong> spikes well above prior quarters, with <strong>2024-Q4</strong> elevated as well. In a real portfolio this two-quarter drift triggers a <em>credit policy review</em>: did underwriting standards loosen? Did a marketing channel skew toward riskier applicants?'
+  },
+  {
+    id: 'vintage-curve', num: '17', category: 'Vintage', difficulty: 'hard',
+    title: 'Vintage curve — months on book',
+    desc: 'Cumulative 30+ DPD rate by months-on-book, broken out by origination quarter. The classic credit risk visualization.',
+    tags: ['cohort', 'risk'],
+    starter:
+`-- For each origination quarter, show cumulative % of loans that hit 30+ DPD
+-- by 6 months on book, 12 MoB, 18 MoB.
+
+WITH loan_age AS (
+  /* compute cohort + origination date per loan */
+),
+loan_first_dpd AS (
+  /* for each loan that ever went delinquent, find MoB at first DPD event */
+)
+SELECT /* cohort, size, cumulative DPD rate at each milestone */
+FROM loan_age la
+LEFT JOIN loan_first_dpd lfd ON lfd.LOAN_ID = la.LOAN_ID
+GROUP BY ...;`,
+    solution:
+`WITH loan_age AS (
+  SELECT
+    LOAN_ID, ORIGINATION_DATE,
+    STRFTIME('%Y', ORIGINATION_DATE) || '-Q' ||
+      ((CAST(STRFTIME('%m', ORIGINATION_DATE) AS INTEGER) - 1) / 3 + 1)
+      AS COHORT
+  FROM FACT_LOANS
+),
+loan_first_dpd AS (
+  SELECT
+    p.LOAN_ID,
+    MIN((JULIANDAY(p.SCHEDULED_DATE) - JULIANDAY(la.ORIGINATION_DATE)) / 30.0)
+      AS MOB_AT_FIRST_DPD
+  FROM FACT_PAYMENTS p
+  JOIN loan_age la ON la.LOAN_ID = p.LOAN_ID
+  WHERE p.DAYS_PAST_DUE >= 30
+  GROUP BY p.LOAN_ID
+)
+SELECT
+  la.COHORT,
+  COUNT(DISTINCT la.LOAN_ID) AS COHORT_SIZE,
+  ROUND(100.0 * COUNT(DISTINCT CASE WHEN lfd.MOB_AT_FIRST_DPD <= 6  THEN la.LOAN_ID END)
+              / COUNT(DISTINCT la.LOAN_ID), 2) AS CUM_DPD_BY_MOB6_PCT,
+  ROUND(100.0 * COUNT(DISTINCT CASE WHEN lfd.MOB_AT_FIRST_DPD <= 12 THEN la.LOAN_ID END)
+              / COUNT(DISTINCT la.LOAN_ID), 2) AS CUM_DPD_BY_MOB12_PCT,
+  ROUND(100.0 * COUNT(DISTINCT CASE WHEN lfd.MOB_AT_FIRST_DPD <= 18 THEN la.LOAN_ID END)
+              / COUNT(DISTINCT la.LOAN_ID), 2) AS CUM_DPD_BY_MOB18_PCT
+FROM loan_age la
+LEFT JOIN loan_first_dpd lfd ON lfd.LOAN_ID = la.LOAN_ID
+GROUP BY la.COHORT
+HAVING COHORT_SIZE >= 20
+ORDER BY la.COHORT;`,
+    approach: 'Two CTEs: one to attach the cohort label to each loan, another to find the MoB at first DPD event. Then aggregate cumulative rates at 6/12/18 MoB.',
+    insight: 'Older cohorts have had more time to mature, so their MoB18 number is the most reliable. <strong>2024-Q3 borrowers</strong> hit MoB6 trouble faster than any other cohort — the risk isn\'t just <em>more</em> defaults, they happen <em>earlier</em>. Both metrics matter for <code>CECL</code> reserves.'
+  },
+  {
+    id: 'cohort-retention', num: '21', category: 'Vintage', difficulty: 'hard',
+    title: 'Cohort retention — still active',
+    desc: 'For each origination quarter, what fraction of loans is still in current/active status today vs paid off vs defaulted?',
+    tags: ['cohort', 'retention'],
+    starter:
+`-- For each origination quarter, show:
+-- cohort size, % still current, % paid off, % delinquent, % charged off.
+
+SELECT
+  /* cohort, total, conditional sums by status */
+FROM FACT_LOANS
+GROUP BY ...
+ORDER BY 1;`,
+    solution:
+`SELECT
+  STRFTIME('%Y', ORIGINATION_DATE) || '-Q' ||
+    ((CAST(STRFTIME('%m', ORIGINATION_DATE) AS INTEGER) - 1) / 3 + 1)
+    AS COHORT,
+  COUNT(*) AS COHORT_SIZE,
+  ROUND(100.0 * SUM(CASE WHEN STATUS = 'Current' THEN 1 ELSE 0 END) / COUNT(*), 1) AS CURRENT_PCT,
+  ROUND(100.0 * SUM(CASE WHEN STATUS = 'Paid Off' THEN 1 ELSE 0 END) / COUNT(*), 1) AS PAID_OFF_PCT,
+  ROUND(100.0 * SUM(CASE WHEN STATUS LIKE '%DPD%' OR STATUS = 'Severely Delinquent'
+                         THEN 1 ELSE 0 END) / COUNT(*), 1) AS DELINQUENT_PCT,
+  ROUND(100.0 * SUM(CASE WHEN STATUS = 'Charged Off' THEN 1 ELSE 0 END) / COUNT(*), 1) AS CHARGED_OFF_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY 1;`,
+    approach: 'Single GROUP BY with conditional SUMs to pivot status into columns. Each row sums to roughly 100% (Active not yet matured + paid + delinquent + charged off).',
+    insight: 'Old cohorts (2022, 2023) have higher Paid Off % — they had time. The 2024-Q3 cohort has elevated Delinquent + Charged Off shares despite being relatively young — the <em>same finding</em> as Challenge 01 viewed from a different angle. Triangulating one issue from multiple queries is how analysts <strong>build conviction</strong>.'
+  },
+
+  // RISK & DELINQUENCY
+  {
+    id: 'fico-loss', num: '02', category: 'Risk', difficulty: 'easy',
+    title: 'Loss curve by FICO band',
+    desc: 'Charge-off rate stratified by FICO band. Quantify risk gradient across credit tiers.',
+    tags: ['segmentation'],
+    starter:
+`-- Bucket borrowers into FICO bands, then compute % of their loans charged off.
+
+SELECT
+  CASE /* your bands */ END AS FICO_BAND,
+  /* counts and rates */
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+GROUP BY 1
+ORDER BY ...;`,
+    solution:
+`SELECT
+  CASE
+    WHEN b.FICO_SCORE < 580 THEN '1. <580 (Deep Sub)'
+    WHEN b.FICO_SCORE < 620 THEN '2. 580-619 (Sub)'
+    WHEN b.FICO_SCORE < 680 THEN '3. 620-679 (Near Prime)'
+    WHEN b.FICO_SCORE < 740 THEN '4. 680-739 (Prime)'
+    ELSE                          '5. 740+ (Super Prime)'
+  END AS FICO_BAND,
+  COUNT(*) AS LOANS,
+  SUM(CASE WHEN l.STATUS = 'Charged Off' THEN 1 ELSE 0 END) AS CHARGE_OFFS,
+  ROUND(100.0 * SUM(CASE WHEN l.STATUS = 'Charged Off' THEN 1 ELSE 0 END) / COUNT(*), 2) AS CHARGE_OFF_RATE_PCT,
+  ROUND(AVG(l.APR) * 100, 2) AS AVG_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+GROUP BY 1
+ORDER BY 1;`,
+    approach: 'CASE expression to bucket FICO, COUNT and conditional SUM for charge-off rate, AVG(APR) to show the price-for-risk relationship.',
+    insight: 'Sub-580 charge-off should be ~10-15× the super-prime rate. This is the <strong>price-for-risk</strong> story you tell in a credit memo — and the same logic underwrites loss-given-default models.'
+  },
+  {
+    id: 'roll-rates', num: '04', category: 'Risk', difficulty: 'hard',
+    title: 'Roll rates: Current → 30 → 60 → 90+',
+    desc: 'Of loans that hit 30 DPD, what fraction rolled to 60? To 90+? Classic loss-forecasting input.',
+    tags: ['forecasting'],
+    starter:
+`WITH max_dpd AS (
+  SELECT LOAN_ID, MAX(DAYS_PAST_DUE) AS PEAK_DPD
+  FROM FACT_PAYMENTS GROUP BY LOAN_ID
+)
+SELECT /* count at each tier and the roll-down rates */
+FROM max_dpd;`,
+    solution:
+`WITH max_dpd AS (
+  SELECT LOAN_ID, MAX(DAYS_PAST_DUE) AS PEAK_DPD
+  FROM FACT_PAYMENTS
+  GROUP BY LOAN_ID
+),
+tiers AS (
+  SELECT
+    SUM(CASE WHEN PEAK_DPD >= 30  THEN 1 ELSE 0 END) AS REACHED_30,
+    SUM(CASE WHEN PEAK_DPD >= 60  THEN 1 ELSE 0 END) AS REACHED_60,
+    SUM(CASE WHEN PEAK_DPD >= 90  THEN 1 ELSE 0 END) AS REACHED_90,
+    SUM(CASE WHEN PEAK_DPD >= 120 THEN 1 ELSE 0 END) AS REACHED_120
+  FROM max_dpd
+)
+SELECT
+  REACHED_30, REACHED_60, REACHED_90, REACHED_120,
+  ROUND(100.0 * REACHED_60  / NULLIF(REACHED_30, 0), 1) AS ROLL_30_TO_60_PCT,
+  ROUND(100.0 * REACHED_90  / NULLIF(REACHED_60, 0), 1) AS ROLL_60_TO_90_PCT,
+  ROUND(100.0 * REACHED_120 / NULLIF(REACHED_90, 0), 1) AS ROLL_90_TO_120_PCT
+FROM tiers;`,
+    approach: 'CTE to get peak DPD per loan, second CTE to count loans at each tier, then compute conditional rates with NULLIF to guard against divide-by-zero.',
+    insight: 'Roll rates above ~50% per stage are red flags. A healthy book might show 30→60 around 40-55%, with the 60→90 roll the most predictive of charge-off. This feeds <strong>CECL allowance models</strong> directly.'
+  },
+  {
+    id: 'fpd', num: '12', category: 'Risk', difficulty: 'med',
+    title: 'First payment default by product',
+    desc: 'Loans where the borrower missed within the first 2 payments. Strong fraud + underwriting signal.',
+    tags: ['fraud', 'underwriting'],
+    starter:
+`-- Use a window function to rank payments per loan by date.
+-- Then count loans where one of the first 2 payments hit 30+ DPD.
+
+WITH ranked_pmts AS (
+  SELECT
+    LOAN_ID, DAYS_PAST_DUE, SCHEDULED_DATE,
+    ROW_NUMBER() OVER (PARTITION BY LOAN_ID ORDER BY SCHEDULED_DATE) AS PMT_NUM
+  FROM FACT_PAYMENTS
+)
+SELECT /* product, total loans, FPD count, FPD rate */
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS pr ON pr.PRODUCT_ID = l.PRODUCT_ID
+JOIN ranked_pmts rp ON rp.LOAN_ID = l.LOAN_ID
+GROUP BY pr.PRODUCT_NAME;`,
+    solution:
+`WITH ranked_pmts AS (
+  SELECT
+    LOAN_ID, DAYS_PAST_DUE, SCHEDULED_DATE,
+    ROW_NUMBER() OVER (PARTITION BY LOAN_ID ORDER BY SCHEDULED_DATE) AS PMT_NUM
+  FROM FACT_PAYMENTS
+)
+SELECT
+  pr.PRODUCT_NAME,
+  COUNT(DISTINCT l.LOAN_ID) AS LOANS,
+  COUNT(DISTINCT CASE WHEN rp.PMT_NUM <= 2 AND rp.DAYS_PAST_DUE >= 30
+                      THEN l.LOAN_ID END) AS FPD_COUNT,
+  ROUND(100.0 * COUNT(DISTINCT CASE WHEN rp.PMT_NUM <= 2 AND rp.DAYS_PAST_DUE >= 30
+                                    THEN l.LOAN_ID END)
+              / COUNT(DISTINCT l.LOAN_ID), 2) AS FPD_RATE_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS pr ON pr.PRODUCT_ID = l.PRODUCT_ID
+JOIN ranked_pmts rp ON rp.LOAN_ID = l.LOAN_ID
+GROUP BY pr.PRODUCT_NAME
+ORDER BY FPD_RATE_PCT DESC;`,
+    approach: 'Window function ROW_NUMBER() to enumerate payments per loan in date order, then aggregate with a CASE that filters to PMT_NUM <= 2.',
+    insight: 'FPD is the <strong>fastest-feedback metric</strong> in lending — you know within 60 days of origination whether something went wrong at underwriting. Personal loans typically lead because they\'re the most accessible product, attracting the most distressed applicants.'
+  },
+  {
+    id: 'state-delinq', num: '13', category: 'Risk', difficulty: 'med',
+    title: 'State delinquency hot spots',
+    desc: 'Rank states by delinquency rate. Geographic risk concentration that goes beyond pure exposure.',
+    tags: ['geographic'],
+    starter:
+`-- For each state with at least 20 loans, compute the % currently delinquent.
+
+SELECT
+  b.STATE,
+  COUNT(*) AS TOTAL_LOANS,
+  /* problem loan count + rate */
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+GROUP BY b.STATE
+HAVING COUNT(*) >= 20
+ORDER BY ...;`,
+    solution:
+`SELECT
+  b.STATE,
+  COUNT(*) AS TOTAL_LOANS,
+  SUM(CASE WHEN l.STATUS LIKE '%DPD%' OR l.STATUS = 'Severely Delinquent'
+                                      OR l.STATUS = 'Charged Off' THEN 1 ELSE 0 END) AS PROBLEM_LOANS,
+  ROUND(100.0 * SUM(CASE WHEN l.STATUS LIKE '%DPD%' OR l.STATUS = 'Severely Delinquent'
+                                                   OR l.STATUS = 'Charged Off'
+                         THEN 1 ELSE 0 END) / COUNT(*), 2) AS PROBLEM_RATE_PCT,
+  ROUND(AVG(b.FICO_SCORE), 0) AS AVG_FICO
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+GROUP BY b.STATE
+HAVING COUNT(*) >= 20
+ORDER BY PROBLEM_RATE_PCT DESC
+LIMIT 15;`,
+    approach: 'Aggregate by state, count "problem" loans (anything not Current or Paid Off), and include AVG(FICO) — high problem rate at high average FICO is a much bigger red flag than the same rate at low FICO.',
+    insight: 'Look at <strong>problem rate vs avg FICO</strong>. A state with 12% problem rate and 580 avg FICO is expected; the same problem rate at 720 avg FICO suggests <em>local economic stress</em> (e.g., regional layoffs) and warrants pulling employment data for that ZIP.'
+  },
+  {
+    id: 'dpd-progression', num: '20', category: 'Risk', difficulty: 'hard',
+    title: 'DPD payment-to-payment transitions',
+    desc: 'Use LAG to classify each payment as worsening, improving, curing, or stable. Powers transition matrix models.',
+    tags: ['window-fn', 'forecasting'],
+    starter:
+`-- For each payment, compare DPD to the previous payment on the same loan
+-- using LAG(). Classify the transition and aggregate counts.
+
+WITH dpd_seq AS (
+  SELECT
+    LOAN_ID, SCHEDULED_DATE, DAYS_PAST_DUE,
+    LAG(DAYS_PAST_DUE) OVER (PARTITION BY LOAN_ID ORDER BY SCHEDULED_DATE) AS PREV_DPD
+  FROM FACT_PAYMENTS
+)
+SELECT /* CASE classifying transition + counts */
+FROM dpd_seq
+WHERE PREV_DPD IS NOT NULL
+GROUP BY 1
+ORDER BY ...;`,
+    solution:
+`WITH dpd_seq AS (
+  SELECT
+    LOAN_ID, SCHEDULED_DATE, DAYS_PAST_DUE,
+    LAG(DAYS_PAST_DUE) OVER (PARTITION BY LOAN_ID ORDER BY SCHEDULED_DATE) AS PREV_DPD
+  FROM FACT_PAYMENTS
+)
+SELECT
+  CASE
+    WHEN PREV_DPD = 0 AND DAYS_PAST_DUE = 0 THEN '1. Stayed current'
+    WHEN PREV_DPD = 0 AND DAYS_PAST_DUE > 0 THEN '2. Went delinquent'
+    WHEN PREV_DPD > 0 AND DAYS_PAST_DUE = 0 THEN '3. Cured to current'
+    WHEN PREV_DPD > 0 AND DAYS_PAST_DUE > PREV_DPD THEN '4. Worsened'
+    WHEN PREV_DPD > 0 AND DAYS_PAST_DUE < PREV_DPD AND DAYS_PAST_DUE > 0 THEN '5. Partial cure'
+    ELSE '6. Held same DPD'
+  END AS TRANSITION,
+  COUNT(*) AS PAYMENT_TRANSITIONS,
+  ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS PCT_OF_TOTAL
+FROM dpd_seq
+WHERE PREV_DPD IS NOT NULL
+GROUP BY 1
+ORDER BY 1;`,
+    approach: 'LAG() pulls prior-row DPD into the same row. CASE classifies the transition. The window function in the SELECT (<code>SUM(COUNT(*)) OVER ()</code>) computes percentages without a self-join.',
+    insight: 'The <strong>"Cured to current"</strong> rate is the gold metric for collections effectiveness. Pair this with a <em>by-month-delinquent</em> filter and you get a curing curve — the input that determines whether to invest more in early-stage collections or accept the loss earlier.'
+  },
+
+  // FUNNEL & CONVERSION
+  {
+    id: 'funnel', num: '03', category: 'Funnel', difficulty: 'easy',
+    title: 'Application funnel by channel',
+    desc: 'Submitted → approved → funded conversion. Which acquisition channel converts best?',
+    tags: ['conversion'],
+    starter:
+`-- For each channel: total apps, approval rate, fund rate, avg days to fund.
+
+SELECT
+  a.CHANNEL,
+  /* counts and rates */
+FROM FACT_APPLICATIONS a
+LEFT JOIN FACT_LOANS l ON l.APPLICATION_ID = a.APPLICATION_ID
+GROUP BY 1
+ORDER BY ...;`,
+    solution:
+`SELECT
+  a.CHANNEL,
+  COUNT(*) AS TOTAL_APPS,
+  SUM(CASE WHEN a.STATUS = 'Approved' THEN 1 ELSE 0 END) AS APPROVED,
+  COUNT(l.LOAN_ID) AS FUNDED,
+  ROUND(100.0 * SUM(CASE WHEN a.STATUS = 'Approved' THEN 1 ELSE 0 END) / COUNT(*), 1) AS APPROVAL_RATE_PCT,
+  ROUND(100.0 * COUNT(l.LOAN_ID) / COUNT(*), 1) AS FUND_RATE_PCT,
+  ROUND(AVG(JULIANDAY(l.ORIGINATION_DATE) - JULIANDAY(a.APPLICATION_DATE)), 1) AS AVG_DAYS_TO_FUND
+FROM FACT_APPLICATIONS a
+LEFT JOIN FACT_LOANS l ON l.APPLICATION_ID = a.APPLICATION_ID
+GROUP BY 1
+ORDER BY FUND_RATE_PCT DESC;`,
+    approach: 'LEFT JOIN apps to loans so unfunded apps still appear. Conditional SUM for approval, COUNT(loans) for fund rate, JULIANDAY diff for cycle time.',
+    insight: '<strong>Branch and Phone</strong> typically have higher approval/fund rates than Online — but Online does the volume. The acquisition cost / unit economics conversation starts here.'
+  },
+  {
+    id: 'channel-product', num: '14', category: 'Funnel', difficulty: 'med',
+    title: 'Channel × Product cross-tab',
+    desc: 'Application count by channel and product as a pivot table. Reveals which channels sell which products.',
+    tags: ['cross-tab'],
+    starter:
+`-- Pivot: rows = channel, columns = product category.
+-- Use conditional SUM to manually pivot (SQLite has no PIVOT keyword).
+
+SELECT
+  a.CHANNEL,
+  /* SUM(CASE WHEN p.PRODUCT_CATEGORY = 'X' THEN 1 ELSE 0 END) AS X_APPS, ... */
+FROM FACT_APPLICATIONS a
+JOIN DIM_PRODUCTS p ON p.PRODUCT_ID = a.PRODUCT_ID
+GROUP BY a.CHANNEL;`,
+    solution:
+`SELECT
+  a.CHANNEL,
+  COUNT(*) AS TOTAL_APPS,
+  SUM(CASE WHEN p.PRODUCT_CATEGORY = 'Personal'  THEN 1 ELSE 0 END) AS PERSONAL_APPS,
+  SUM(CASE WHEN p.PRODUCT_CATEGORY = 'Auto'      THEN 1 ELSE 0 END) AS AUTO_APPS,
+  SUM(CASE WHEN p.PRODUCT_CATEGORY = 'Education' THEN 1 ELSE 0 END) AS EDUCATION_APPS,
+  SUM(CASE WHEN p.PRODUCT_CATEGORY = 'Mortgage'  THEN 1 ELSE 0 END) AS MORTGAGE_APPS,
+  ROUND(100.0 * SUM(CASE WHEN p.PRODUCT_CATEGORY = 'Personal' THEN 1 ELSE 0 END)
+              / COUNT(*), 1) AS PERSONAL_MIX_PCT
+FROM FACT_APPLICATIONS a
+JOIN DIM_PRODUCTS p ON p.PRODUCT_ID = a.PRODUCT_ID
+GROUP BY a.CHANNEL
+ORDER BY TOTAL_APPS DESC;`,
+    approach: 'Manual pivot via conditional SUM. SQLite has no PIVOT operator — every analyst writes this pattern hundreds of times in their career.',
+    insight: 'If <strong>Direct Mail</strong> over-indexes on Personal Loans while <strong>Branch</strong> over-indexes on HELOC, that\'s a real channel strategy signal: campaigns and product mix are aligned to where each channel converts best. Marketing should know.'
+  },
+  {
+    id: 'decline-fico', num: '15', category: 'Funnel', difficulty: 'med',
+    title: 'Decline rate by FICO band',
+    desc: 'Of declined applications, what does the credit profile look like? Validates your underwriting cutoff.',
+    tags: ['underwriting'],
+    starter:
+`-- For each FICO band, count total apps and declined apps,
+-- then compute the decline rate.
+
+SELECT
+  CASE /* fico bands */ END AS FICO_BAND,
+  /* total apps, declined, decline rate */
+FROM FACT_APPLICATIONS a
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = a.BORROWER_ID
+GROUP BY 1;`,
+    solution:
+`SELECT
+  CASE
+    WHEN b.FICO_SCORE < 580 THEN '1. <580 (Deep Sub)'
+    WHEN b.FICO_SCORE < 620 THEN '2. 580-619 (Sub)'
+    WHEN b.FICO_SCORE < 680 THEN '3. 620-679 (Near Prime)'
+    WHEN b.FICO_SCORE < 740 THEN '4. 680-739 (Prime)'
+    ELSE                          '5. 740+ (Super Prime)'
+  END AS FICO_BAND,
+  COUNT(*) AS TOTAL_APPS,
+  SUM(CASE WHEN a.STATUS = 'Declined' THEN 1 ELSE 0 END) AS DECLINED,
+  ROUND(100.0 * SUM(CASE WHEN a.STATUS = 'Declined' THEN 1 ELSE 0 END) / COUNT(*), 1) AS DECLINE_RATE_PCT
+FROM FACT_APPLICATIONS a
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = a.BORROWER_ID
+GROUP BY 1
+ORDER BY 1;`,
+    approach: 'Same FICO band CASE used elsewhere, but counting declined applications. Validates the underwriting model is doing what it should.',
+    insight: 'Decline rate should fall sharply as FICO rises. If a deep-sub band shows ~80%+ decline, your underwriting is appropriately conservative. If <strong>super-prime decline rate is &gt; 10%</strong>, something else is wrong: missing income docs, fraud flags, debt-to-income violations. Worth pulling those apps for review.'
+  },
+
+  // PORTFOLIO & EXPOSURE
+  {
+    id: 'concentration', num: '05', category: 'Portfolio', difficulty: 'easy',
+    title: 'Geographic concentration',
+    desc: 'Top 5 states by outstanding principal exposure. Where is the portfolio most exposed?',
+    tags: ['exposure'],
+    starter:
+`SELECT
+  /* state, count, sum, avg */
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+WHERE /* active loans only */
+GROUP BY ...
+ORDER BY ...
+LIMIT 5;`,
+    solution:
+`SELECT
+  b.STATE,
+  COUNT(*) AS ACTIVE_LOANS,
+  SUM(l.PRINCIPAL) AS TOTAL_EXPOSURE_USD,
+  ROUND(AVG(l.PRINCIPAL), 0) AS AVG_LOAN_USD,
+  ROUND(100.0 * SUM(l.PRINCIPAL) / (
+    SELECT SUM(PRINCIPAL) FROM FACT_LOANS
+    WHERE STATUS NOT IN ('Charged Off', 'Paid Off')
+  ), 2) AS PCT_OF_PORTFOLIO
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+WHERE l.STATUS NOT IN ('Charged Off', 'Paid Off')
+GROUP BY b.STATE
+ORDER BY TOTAL_EXPOSURE_USD DESC
+LIMIT 5;`,
+    approach: 'Filter to active loans, sum by state, use a correlated subquery for portfolio share. Geographic concentration is a regulatory ask.',
+    insight: 'CA, TX, FL, NY usually dominate by population alone. The interesting follow-up: is delinquency rate <em>also</em> concentrated there? That drives <strong>geographic stress testing</strong> assumptions.'
+  },
+  {
+    id: 'status-mix', num: '08', category: 'Portfolio', difficulty: 'easy',
+    title: 'Loan status distribution',
+    desc: 'Portfolio composition by status. The one-line snapshot every credit report opens with.',
+    tags: ['snapshot'],
+    starter:
+`SELECT STATUS, COUNT(*) AS LOAN_COUNT
+FROM FACT_LOANS
+GROUP BY STATUS
+ORDER BY ...;`,
+    solution:
+`SELECT
+  STATUS,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS PCT_OF_PORTFOLIO,
+  SUM(PRINCIPAL) AS TOTAL_PRINCIPAL_USD
+FROM FACT_LOANS
+GROUP BY STATUS
+ORDER BY LOAN_COUNT DESC;`,
+    approach: 'Window function in the SELECT computes the percentage without a self-join. <code>SUM(COUNT(*)) OVER ()</code> sums the row counts across all groups.',
+    insight: 'A "healthy" book skews heavily toward Current (~80-85%) with single-digit % delinquent and &lt; 3% charged off. Anything outside those ranges should trigger a <strong>portfolio review</strong>.'
+  },
+  {
+    id: 'monthly-orig', num: '09', category: 'Portfolio', difficulty: 'easy',
+    title: 'Monthly origination volume',
+    desc: 'How much did we lend each month, and how is the trend shaped? Production charts open every board deck.',
+    tags: ['trend'],
+    starter:
+`SELECT
+  SUBSTR(ORIGINATION_DATE, 1, 7) AS ORIG_MONTH,
+  COUNT(*) AS LOAN_COUNT,
+  SUM(PRINCIPAL) AS PRINCIPAL_USD
+FROM FACT_LOANS
+GROUP BY ...
+ORDER BY ...;`,
+    solution:
+`SELECT
+  SUBSTR(ORIGINATION_DATE, 1, 7) AS ORIG_MONTH,
+  COUNT(*) AS LOAN_COUNT,
+  SUM(PRINCIPAL) AS TOTAL_PRINCIPAL_USD,
+  ROUND(AVG(PRINCIPAL), 0) AS AVG_LOAN_USD,
+  ROUND(AVG(APR) * 100, 2) AS AVG_APR_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY 1 DESC
+LIMIT 24;`,
+    approach: 'SUBSTR for month bucketing is the most portable date-trunc trick in SQL. Limit to last 24 months. AVG(APR) shows whether you\'re trading volume for yield.',
+    insight: 'Watch for <strong>volume up + APR down</strong> together — that\'s a sign you\'re winning more loans by lowering price, which often coincides with the credit-loosening that shows up in vintage curves a quarter later. The two signals together are the early warning.'
+  },
+  {
+    id: 'top-loans', num: '10', category: 'Portfolio', difficulty: 'easy',
+    title: 'Top 10 active loan exposures',
+    desc: 'Single-loan concentration risk. The biggest single-name exposures in the book.',
+    tags: ['concentration'],
+    starter:
+`SELECT
+  l.LOAN_ID,
+  b.FIRST_NAME || ' ' || b.LAST_NAME AS BORROWER,
+  l.PRINCIPAL,
+  l.STATUS
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+WHERE /* active */
+ORDER BY ...
+LIMIT 10;`,
+    solution:
+`SELECT
+  l.LOAN_ID,
+  b.FIRST_NAME || ' ' || b.LAST_NAME AS BORROWER,
+  b.STATE,
+  b.FICO_SCORE,
+  pr.PRODUCT_NAME,
+  l.PRINCIPAL,
+  ROUND(l.APR * 100, 2) AS APR_PCT,
+  l.STATUS
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+JOIN DIM_PRODUCTS  pr ON pr.PRODUCT_ID = l.PRODUCT_ID
+WHERE l.STATUS NOT IN ('Charged Off', 'Paid Off')
+ORDER BY l.PRINCIPAL DESC
+LIMIT 10;`,
+    approach: 'Three-table join, filter to active, sort by principal. Trivial query but powerful when paired with a tip-line — the largest exposures get hand-monitored at most lenders.',
+    insight: 'In secured products (Mortgage, Auto), the largest loans need the deepest underwriting and most frequent re-checks. <strong>Single-name concentration</strong> is a classic way books blow up — one giant default can wipe a quarter\'s earnings.'
+  },
+  {
+    id: 'top-state-borrower', num: '18', category: 'Portfolio', difficulty: 'hard',
+    title: 'Top borrower per state — window rank',
+    desc: 'Use ROW_NUMBER to pick the highest-exposure borrower in each state.',
+    tags: ['window-fn', 'concentration'],
+    starter:
+`-- For each state, find the single borrower with the highest total active exposure.
+-- ROW_NUMBER() OVER (PARTITION BY state ORDER BY exposure DESC) makes this elegant.
+
+WITH ranked AS (
+  SELECT
+    /* state, name, total exposure, rank within state */
+  FROM ...
+  GROUP BY ...
+)
+SELECT * FROM ranked WHERE RNK = 1
+ORDER BY TOTAL_EXPOSURE DESC LIMIT 15;`,
+    solution:
+`WITH ranked AS (
+  SELECT
+    b.STATE,
+    b.BORROWER_ID,
+    b.FIRST_NAME || ' ' || b.LAST_NAME AS NAME,
+    b.FICO_SCORE,
+    SUM(l.PRINCIPAL) AS TOTAL_EXPOSURE,
+    ROW_NUMBER() OVER (PARTITION BY b.STATE ORDER BY SUM(l.PRINCIPAL) DESC) AS RNK
+  FROM DIM_BORROWERS b
+  JOIN FACT_LOANS l ON l.BORROWER_ID = b.BORROWER_ID
+  WHERE l.STATUS NOT IN ('Charged Off', 'Paid Off')
+  GROUP BY b.STATE, b.BORROWER_ID
+)
+SELECT STATE, NAME, FICO_SCORE, TOTAL_EXPOSURE
+FROM ranked
+WHERE RNK = 1
+ORDER BY TOTAL_EXPOSURE DESC
+LIMIT 15;`,
+    approach: 'Aggregate per (state, borrower) pair, ROW_NUMBER the result partitioned by state ordered by exposure descending, then filter to RNK = 1. The window function operates AFTER the GROUP BY, which trips up beginners.',
+    insight: 'A common follow-up: <code>RNK &lt;= 3</code> instead of <code>= 1</code> gives you a per-state top-3 list. This pattern (<strong>"top N per group"</strong>) is one of the highest-frequency window-function uses in analytics. Once you see it, you stop writing correlated subqueries.'
+  },
+
+  // BORROWER BEHAVIOR
+  {
+    id: 'repeat-borrowers', num: '06', category: 'Behavior', difficulty: 'med',
+    title: 'Repeat borrower portfolio',
+    desc: 'Borrowers with 2+ loans. Exposure plus current portfolio status mix — the cross-sell story.',
+    tags: ['cross-sell'],
+    starter:
+`SELECT
+  /* ... */
+FROM DIM_BORROWERS b
+JOIN FACT_LOANS l ON l.BORROWER_ID = b.BORROWER_ID
+GROUP BY b.BORROWER_ID
+HAVING /* 2+ loans */
+ORDER BY ...
+LIMIT 10;`,
+    solution:
+`SELECT
+  b.BORROWER_ID,
+  b.FIRST_NAME || ' ' || b.LAST_NAME AS NAME,
+  b.FICO_SCORE,
+  b.STATE,
+  COUNT(*) AS LOAN_COUNT,
+  SUM(l.PRINCIPAL) AS TOTAL_PRINCIPAL_USD,
+  SUM(CASE WHEN l.STATUS = 'Current' THEN 1 ELSE 0 END) AS CURRENT_LOANS,
+  SUM(CASE WHEN l.STATUS LIKE '%DPD%' OR l.STATUS = 'Severely Delinquent' THEN 1 ELSE 0 END) AS DELINQUENT_LOANS,
+  SUM(CASE WHEN l.STATUS = 'Paid Off' THEN 1 ELSE 0 END) AS PAID_OFF_LOANS,
+  SUM(CASE WHEN l.STATUS = 'Charged Off' THEN 1 ELSE 0 END) AS CHARGED_OFF_LOANS
+FROM DIM_BORROWERS b
+JOIN FACT_LOANS l ON l.BORROWER_ID = b.BORROWER_ID
+GROUP BY b.BORROWER_ID
+HAVING COUNT(*) >= 2
+ORDER BY TOTAL_PRINCIPAL_USD DESC
+LIMIT 10;`,
+    approach: 'Join borrowers to loans, group by borrower, conditional SUMs to pivot status into separate columns. HAVING filters to multi-loan customers — the cross-sell wins.',
+    insight: 'Repeat borrowers are gold — acquisition cost is near zero on the second loan. Layer on time-between-loans and channel of original acquisition to build a <strong>cross-sell propensity model</strong>.'
+  },
+  {
+    id: 'age-fico-grid', num: '11', category: 'Behavior', difficulty: 'easy',
+    title: 'Borrower age × FICO grid',
+    desc: 'How does credit profile vary across age cohorts? Two-dimensional segmentation.',
+    tags: ['demographics'],
+    starter:
+`-- Bucket borrowers into age groups (use today's date - DOB).
+-- Then count by age band × FICO band.
+
+SELECT
+  CASE /* age band */ END AS AGE_BAND,
+  CASE /* fico band */ END AS FICO_BAND,
+  COUNT(*) AS BORROWERS,
+  ROUND(AVG(ANNUAL_INCOME), 0) AS AVG_INCOME
+FROM DIM_BORROWERS
+GROUP BY 1, 2
+ORDER BY 1, 2;`,
+    solution:
+`SELECT
+  CASE
+    WHEN (JULIANDAY('2025-12-15') - JULIANDAY(DATE_OF_BIRTH)) / 365.25 < 30 THEN '1. Under 30'
+    WHEN (JULIANDAY('2025-12-15') - JULIANDAY(DATE_OF_BIRTH)) / 365.25 < 45 THEN '2. 30-44'
+    WHEN (JULIANDAY('2025-12-15') - JULIANDAY(DATE_OF_BIRTH)) / 365.25 < 60 THEN '3. 45-59'
+    ELSE '4. 60+'
+  END AS AGE_BAND,
+  CASE
+    WHEN FICO_SCORE < 620 THEN '1. Sub'
+    WHEN FICO_SCORE < 680 THEN '2. Near Prime'
+    WHEN FICO_SCORE < 740 THEN '3. Prime'
+    ELSE '4. Super Prime'
+  END AS FICO_BAND,
+  COUNT(*) AS BORROWERS,
+  ROUND(AVG(ANNUAL_INCOME), 0) AS AVG_INCOME_USD,
+  ROUND(AVG(FICO_SCORE), 0) AS AVG_FICO
+FROM DIM_BORROWERS
+GROUP BY 1, 2
+ORDER BY 1, 2;`,
+    approach: 'JULIANDAY date arithmetic gives age in years (after dividing by 365.25 for leap years). Two CASE expressions create the grid axes.',
+    insight: 'The under-30 cohort almost always under-indexes on Super Prime — credit history takes time to build. Watch the <strong>30-44 Prime/Super-Prime cell</strong>: that\'s the prime segment to target with HELOC and mortgage refi cross-sell — high lifetime value, low risk.'
+  },
+  {
+    id: 'repeat-velocity', num: '16', category: 'Behavior', difficulty: 'med',
+    title: 'Days between repeat loans',
+    desc: 'For multi-loan borrowers, how long between their 1st and 2nd loan? Time-to-revisit is a powerful retention KPI.',
+    tags: ['retention'],
+    starter:
+`-- Use window functions: rank loans per borrower by date.
+-- Pull rank-2 origination date and subtract rank-1 date.
+
+WITH ranked AS (
+  SELECT
+    BORROWER_ID, ORIGINATION_DATE,
+    ROW_NUMBER() OVER (PARTITION BY BORROWER_ID ORDER BY ORIGINATION_DATE) AS RNK
+  FROM FACT_LOANS
+)
+SELECT /* avg/min/max days between loan 1 and loan 2 */
+FROM ranked;`,
+    solution:
+`WITH ranked AS (
+  SELECT
+    BORROWER_ID, ORIGINATION_DATE,
+    ROW_NUMBER() OVER (PARTITION BY BORROWER_ID ORDER BY ORIGINATION_DATE) AS RNK
+  FROM FACT_LOANS
+),
+gaps AS (
+  SELECT
+    r1.BORROWER_ID,
+    JULIANDAY(r2.ORIGINATION_DATE) - JULIANDAY(r1.ORIGINATION_DATE) AS DAYS_BETWEEN
+  FROM ranked r1
+  JOIN ranked r2
+    ON r1.BORROWER_ID = r2.BORROWER_ID
+   AND r1.RNK = 1 AND r2.RNK = 2
+)
+SELECT
+  COUNT(*) AS REPEAT_BORROWERS,
+  ROUND(AVG(DAYS_BETWEEN), 0) AS AVG_DAYS_TO_2ND_LOAN,
+  ROUND(MIN(DAYS_BETWEEN), 0) AS MIN_DAYS,
+  ROUND(MAX(DAYS_BETWEEN), 0) AS MAX_DAYS,
+  SUM(CASE WHEN DAYS_BETWEEN <= 90  THEN 1 ELSE 0 END) AS WITHIN_90D,
+  SUM(CASE WHEN DAYS_BETWEEN <= 365 THEN 1 ELSE 0 END) AS WITHIN_1Y
+FROM gaps;`,
+    approach: 'ROW_NUMBER ranks loans per borrower chronologically, then a self-join pairs rank-1 with rank-2 of the same borrower. JULIANDAY diff gives days between.',
+    insight: 'The <strong>WITHIN_90D</strong> count is your warning bucket: borrowers re-applying within 90 days are often doing so for liquidity reasons (the first loan didn\'t cover what they needed) which is a <em>negative</em> signal vs healthy cross-sell timing of 12-24 months.'
+  },
+  {
+    id: 'rapid-refi', num: '19', category: 'Behavior', difficulty: 'hard',
+    title: 'Rapid refinance detection',
+    desc: 'Find borrowers who took a 2nd loan within 90 days of their 1st. Often distress signals or stacking behavior.',
+    tags: ['fraud', 'window-fn'],
+    starter:
+`-- Use LAG to see the previous loan's date for each borrower.
+-- Flag rows where the gap is <= 90 days. List those borrowers + amounts.
+
+WITH numbered AS (
+  SELECT
+    BORROWER_ID, LOAN_ID, ORIGINATION_DATE, PRINCIPAL,
+    LAG(ORIGINATION_DATE) OVER (PARTITION BY BORROWER_ID ORDER BY ORIGINATION_DATE) AS PREV_DATE,
+    LAG(PRINCIPAL) OVER (PARTITION BY BORROWER_ID ORDER BY ORIGINATION_DATE) AS PREV_PRINCIPAL
+  FROM FACT_LOANS
+)
+SELECT /* the rapid refi rows */
+FROM numbered
+WHERE PREV_DATE IS NOT NULL
+  AND JULIANDAY(ORIGINATION_DATE) - JULIANDAY(PREV_DATE) <= 90
+ORDER BY ...;`,
+    solution:
+`WITH numbered AS (
+  SELECT
+    BORROWER_ID, LOAN_ID, ORIGINATION_DATE, PRINCIPAL, STATUS,
+    LAG(ORIGINATION_DATE) OVER (PARTITION BY BORROWER_ID ORDER BY ORIGINATION_DATE) AS PREV_DATE,
+    LAG(PRINCIPAL) OVER (PARTITION BY BORROWER_ID ORDER BY ORIGINATION_DATE) AS PREV_PRINCIPAL
+  FROM FACT_LOANS
+)
+SELECT
+  n.BORROWER_ID,
+  b.FIRST_NAME || ' ' || b.LAST_NAME AS NAME,
+  b.FICO_SCORE,
+  n.PREV_DATE AS FIRST_LOAN_DATE,
+  n.ORIGINATION_DATE AS RAPID_REFI_DATE,
+  CAST(JULIANDAY(n.ORIGINATION_DATE) - JULIANDAY(n.PREV_DATE) AS INT) AS DAYS_GAP,
+  n.PREV_PRINCIPAL AS FIRST_LOAN_USD,
+  n.PRINCIPAL AS REFI_LOAN_USD,
+  n.STATUS AS REFI_STATUS
+FROM numbered n
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = n.BORROWER_ID
+WHERE n.PREV_DATE IS NOT NULL
+  AND JULIANDAY(n.ORIGINATION_DATE) - JULIANDAY(n.PREV_DATE) <= 90
+ORDER BY DAYS_GAP ASC
+LIMIT 25;`,
+    approach: 'LAG pulls the prior loan\'s date and amount into the same row. Filter to gaps under 90 days, join borrower demographics, sort by tightest gap.',
+    insight: 'In real-world books these borrowers default at meaningfully higher rates than first-time borrowers with similar FICO — so they justify a <strong>tighter underwriting layer</strong> when applying again. The behavioral signal (rapid refi) carries information not in the credit score.'
+  },
+
+  // PRICING & YIELD
+  {
+    id: 'apr-product', num: '07', category: 'Pricing', difficulty: 'easy',
+    title: 'Average APR by product',
+    desc: 'Pricing snapshot. Where is the yield coming from, and how much does FICO move it?',
+    tags: ['yield'],
+    starter:
+`SELECT
+  pr.PRODUCT_NAME,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(l.APR) * 100, 2) AS AVG_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS pr ON pr.PRODUCT_ID = l.PRODUCT_ID
+GROUP BY pr.PRODUCT_NAME;`,
+    solution:
+`SELECT
+  pr.PRODUCT_NAME,
+  pr.PRODUCT_CATEGORY,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(l.APR) * 100, 2) AS AVG_APR_PCT,
+  ROUND(MIN(l.APR) * 100, 2) AS MIN_APR_PCT,
+  ROUND(MAX(l.APR) * 100, 2) AS MAX_APR_PCT,
+  ROUND(AVG(l.PRINCIPAL), 0) AS AVG_PRINCIPAL_USD,
+  ROUND(AVG(b.FICO_SCORE), 0) AS AVG_FICO
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS pr ON pr.PRODUCT_ID = l.PRODUCT_ID
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+GROUP BY pr.PRODUCT_NAME
+ORDER BY AVG_APR_PCT DESC;`,
+    approach: 'Joins all three relevant tables, aggregates min/avg/max APR plus FICO so the price-vs-credit-quality story is visible.',
+    insight: 'Personal Loans should carry the highest APR because they\'re unsecured. Mortgage/HELOC much lower because there\'s collateral. The <strong>spread between MIN_APR and MAX_APR</strong> within a product reveals how much risk-based pricing the lender does — a tight spread means flat pricing, wide spread means deep underwriting tiers.'
+  },
+];
+
+// ===== UI WIRING =====
+let db = null;
+let editor = null;
+let currentChallenge = null;
+let lastResult = null;
+let lastSQL = '';
+let currentFilters = { cat: 'all', diff: 'all' };
+let chartInstance = null;
+let currentView = 'table';
+let historyList = [];
+const HISTORY_KEY = 'sqlplayground.history.v1';
+const HISTORY_MAX = 50;
+
+const el = (id) => document.getElementById(id);
+function setLoaderStep(text) { el('loader-step').textContent = text; }
+
+function showLoaderError(msg, detail) {
+  const m = el('loader-mark');
+  m.textContent = '!';
+  m.classList.add('error');
+  el('loader-text-wrap').classList.add('error');
+  setLoaderStep(msg);
+  if (detail) {
+    el('loader-detail').classList.add('show');
+    el('loader-detail').innerHTML = detail;
+  }
+}
+
+async function boot() {
+  if (typeof initSqlJs === 'undefined') {
+    showLoaderError('sql.js failed to load',
+      'The CDN script <code>cdn.jsdelivr.net/npm/sql.js</code> didn\'t load. Check your network or browser console.');
+    return;
+  }
+
+  setLoaderStep('Booting WASM engine');
+  let SQL;
+  try {
+    SQL = await initSqlJs({
+      locateFile: f => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${f}`
+    });
+  } catch (e) {
+    showLoaderError('WASM init failed', escapeHTML(e.message));
+    return;
+  }
+
+  setLoaderStep('Generating synthetic portfolio');
+  await new Promise(r => setTimeout(r, 50));
+  const data = generateData();
+
+  setLoaderStep('Loading into SQLite (' + data.payments.length.toLocaleString() + ' payments)');
+  await new Promise(r => setTimeout(r, 50));
+  db = new SQL.Database();
+  loadIntoDB(db, data);
+
+  setLoaderStep('Wiring editor');
+  await new Promise(r => setTimeout(r, 50));
+
+  buildSchemaSidebar();
+  buildChallengeCards();
+  buildEditor();
+  wireFilters();
+  wireResultsActions();
+  loadHistoryFromStorage();
+  wireHistoryPanel();
+  wireResultTabs();
+
+  el('loader').classList.add('gone');
+}
+
+function buildSchemaSidebar() {
+  const list = el('schema-list');
+  let html = '';
+  for (const t of SCHEMA) {
+    const rowCount = countOf(t.table);
+    html += `<div class="schema-table">
+      <div class="schema-table-header" data-table="${t.table}">
+        <span class="schema-table-name ${t.kind}">${t.table}</span>
+        <span class="schema-row-count">${rowCount.toLocaleString()}</span>
+      </div>
+      <div class="schema-cols" data-cols-for="${t.table}">
+        ${t.cols.map(([n, ty, pk]) => `
+          <div class="schema-col ${pk ? 'pk' : ''}" data-insert="${n}">
+            <span class="schema-col-name">${n}</span>
+            <span class="schema-col-type">${ty}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+  list.innerHTML = html;
+  list.addEventListener('click', (e) => {
+    if (!editor) return;
+    const headerEl = e.target.closest('.schema-table-header');
+    if (headerEl) {
+      const tableName = headerEl.dataset.table;
+      editor.setValue(`SELECT * FROM ${tableName} LIMIT 25;`);
+      el('current-prompt-name').textContent = '— scratch query —';
+      currentChallenge = null;
+      el('btn-solution').style.display = 'none';
+      el('solution-drawer').classList.remove('open');
+      document.querySelectorAll('.challenge-card').forEach(c => c.classList.remove('active'));
+      runQuery();
+      return;
+    }
+    const colEl = e.target.closest('.schema-col');
+    if (colEl) {
+      const text = colEl.dataset.insert;
+      const cur = editor.getCursor();
+      editor.replaceRange(text, cur);
+      editor.focus();
+    }
+  });
+}
+
+function countOf(tableName) {
+  if (!db) return 0;
+  try {
+    const res = db.exec(`SELECT COUNT(*) FROM ${tableName}`);
+    return res[0].values[0][0];
+  } catch (e) { return 0; }
+}
+
+function buildChallengeCards() {
+  const grid = el('challenge-grid');
+  grid.innerHTML = CHALLENGES.map(c => `
+    <div class="challenge-card" data-id="${c.id}" data-cat="${c.category}" data-diff="${c.difficulty}">
+      <div class="challenge-num">CHALLENGE / ${c.num}</div>
+      <div class="challenge-title">${c.title}</div>
+      <div class="challenge-desc">${c.desc}</div>
+      <div class="challenge-meta">
+        <span class="tag cat-${c.category}">${c.category}</span>
+        <span class="tag diff-${c.difficulty}">${c.difficulty.toUpperCase()}</span>
+        ${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+      </div>
+    </div>`).join('');
+  grid.addEventListener('click', (e) => {
+    const card = e.target.closest('.challenge-card');
+    if (card) loadChallenge(card.dataset.id);
+  });
+}
+
+function wireFilters() {
+  document.querySelectorAll('[data-filter-cat]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-cat]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      currentFilters.cat = p.dataset.filterCat;
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('[data-filter-diff]').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-diff]').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      currentFilters.diff = p.dataset.filterDiff;
+      applyFilters();
+    });
+  });
+  updateFilterCounts();
+}
+
+function applyFilters() {
+  document.querySelectorAll('.challenge-card').forEach(card => {
+    const catOk  = currentFilters.cat === 'all'  || card.dataset.cat === currentFilters.cat;
+    const diffOk = currentFilters.diff === 'all' || card.dataset.diff === currentFilters.diff;
+    card.classList.toggle('hidden', !(catOk && diffOk));
+  });
+}
+
+function updateFilterCounts() {
+  const counts = { all: CHALLENGES.length };
+  for (const c of CHALLENGES) {
+    counts[c.category] = (counts[c.category] || 0) + 1;
+    counts[c.difficulty] = (counts[c.difficulty] || 0) + 1;
+  }
+  document.querySelectorAll('[data-filter-cat]').forEach(p => {
+    const k = p.dataset.filterCat;
+    if (counts[k] !== undefined) p.innerHTML = p.textContent.trim() + ` <span class="count">${counts[k]}</span>`;
+  });
+  document.querySelectorAll('[data-filter-diff]').forEach(p => {
+    const k = p.dataset.filterDiff;
+    if (counts[k] !== undefined) p.innerHTML = p.textContent.trim() + ` <span class="count">${counts[k]}</span>`;
+  });
+}
+
+function loadChallenge(id) {
+  const c = CHALLENGES.find(x => x.id === id);
+  if (!c) return;
+  currentChallenge = c;
+  document.querySelectorAll('.challenge-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.id === id);
+  });
+  el('current-prompt-name').textContent = `${c.num} · ${c.title}`;
+  editor.setValue(c.starter);
+  el('btn-solution').style.display = 'inline-flex';
+  el('btn-solution').textContent = 'Show solution';
+  el('solution-drawer').classList.remove('open');
+  document.querySelector('.editor-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function buildEditor() {
+  const tables = {};
+  SCHEMA.forEach(t => { tables[t.table] = t.cols.map(c => c[0]); });
+
+  editor = CodeMirror.fromTextArea(el('editor'), {
+    mode: 'text/x-sql', theme: 'default',
+    lineNumbers: true, matchBrackets: true,
+    indentUnit: 2, smartIndent: true, lineWrapping: true,
+    extraKeys: {
+      'Cmd-Enter': runQuery, 'Ctrl-Enter': runQuery,
+      'Ctrl-Space': 'autocomplete'
+    },
+    hintOptions: { tables }
+  });
+  editor.setValue(`-- Welcome. The schema is loaded — try clicking a challenge above,
+-- or write your own query. Cmd/Ctrl + Enter to run.
+
+SELECT
+  PRODUCT_CATEGORY,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(PRINCIPAL), 0) AS AVG_PRINCIPAL,
+  ROUND(AVG(APR) * 100, 2) AS AVG_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS p ON p.PRODUCT_ID = l.PRODUCT_ID
+GROUP BY PRODUCT_CATEGORY
+ORDER BY LOAN_COUNT DESC;`);
+
+  el('btn-run').addEventListener('click', runQuery);
+  el('btn-clear').addEventListener('click', () => { editor.setValue(''); editor.focus(); });
+  el('btn-copy').addEventListener('click', () => {
+    const sql = editor.getValue();
+    navigator.clipboard.writeText(sql).then(() => showToast('Query copied'));
+  });
+  el('btn-solution').addEventListener('click', () => {
+    if (!currentChallenge) return;
+    const drawer = el('solution-drawer');
+    if (drawer.classList.contains('open')) {
+      drawer.classList.remove('open');
+      el('btn-solution').textContent = 'Show solution';
+    } else {
+      el('solution-text').textContent = currentChallenge.approach;
+      el('solution-insight').innerHTML = currentChallenge.insight;
+      drawer.classList.add('open');
+      el('btn-solution').textContent = 'Hide solution';
+      editor.setValue(currentChallenge.solution);
+    }
+  });
+}
+
+function wireResultsActions() {
+  el('btn-export').addEventListener('click', () => {
+    if (!lastResult) return;
+    const csv = resultToCSV(lastResult);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+    a.href = url; a.download = `query-results-${ts}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('CSV downloaded');
+  });
+}
+
+function resultToCSV(result) {
+  const escape = (v) => {
+    if (v === null || v === undefined) return '';
+    const s = String(v);
+    if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  };
+  let csv = result.columns.map(escape).join(',') + '\n';
+  result.values.forEach(row => { csv += row.map(escape).join(',') + '\n'; });
+  return csv;
+}
+
+function showToast(text) {
+  const t = el('toast');
+  t.textContent = text;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ===== HISTORY (localStorage) =====
+function loadHistoryFromStorage() {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    historyList = raw ? JSON.parse(raw) : [];
+  } catch (e) { historyList = []; }
+}
+
+function saveHistoryToStorage() {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(historyList)); }
+  catch (e) { /* quota or disabled storage — silent fail */ }
+}
+
+function pushHistory(entry) {
+  historyList.unshift(entry);
+  if (historyList.length > HISTORY_MAX) historyList = historyList.slice(0, HISTORY_MAX);
+  saveHistoryToStorage();
+}
+
+function wireHistoryPanel() {
+  el('btn-history').addEventListener('click', openHistory);
+  el('history-close').addEventListener('click', closeHistory);
+  el('history-overlay').addEventListener('click', closeHistory);
+  el('history-clear').addEventListener('click', () => {
+    if (historyList.length === 0) return;
+    historyList = [];
+    saveHistoryToStorage();
+    renderHistory();
+    showToast('History cleared');
+  });
+}
+
+function openHistory() {
+  renderHistory();
+  el('history-panel').classList.add('open');
+  el('history-overlay').classList.add('open');
+}
+function closeHistory() {
+  el('history-panel').classList.remove('open');
+  el('history-overlay').classList.remove('open');
+}
+
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
+
+function renderHistory() {
+  const list = el('history-list');
+  el('history-count').textContent = historyList.length + ' quer' + (historyList.length === 1 ? 'y' : 'ies');
+  if (historyList.length === 0) {
+    list.innerHTML = '<div class="history-empty">No queries yet.<br/>Run a few — they\'ll show up here<br/>and persist across sessions.</div>';
+    return;
+  }
+  list.innerHTML = historyList.map((h, i) => {
+    const status = h.error
+      ? '<span class="err">✗ error</span>'
+      : '<span class="ok">✓ ' + (h.rowCount != null ? h.rowCount.toLocaleString() + ' row' + (h.rowCount === 1 ? '' : 's') : 'ok') + '</span>';
+    return `<div class="history-item" data-idx="${i}">
+      <div class="history-item-meta">
+        <span>${timeAgo(h.ts)}${h.ms != null ? ' · ' + h.ms + 'ms' : ''}</span>
+        ${status}
+      </div>
+      <div class="history-item-sql">${escapeHTML(h.sql.trim().slice(0, 200))}</div>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.history-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.idx);
+      const entry = historyList[idx];
+      if (!entry) return;
+      editor.setValue(entry.sql);
+      el('current-prompt-name').textContent = '— from history —';
+      currentChallenge = null;
+      el('btn-solution').style.display = 'none';
+      el('solution-drawer').classList.remove('open');
+      document.querySelectorAll('.challenge-card').forEach(c => c.classList.remove('active'));
+      closeHistory();
+    });
+  });
+}
+
+// ===== TABS (Table / Chart / Plan) =====
+function wireResultTabs() {
+  document.querySelectorAll('.results-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      if (tab.classList.contains('disabled')) return;
+      const view = tab.dataset.view;
+      switchView(view);
+    });
+  });
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.results-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.view === view);
+  });
+  el('results-body').style.display = view === 'table' ? '' : 'none';
+  el('chart-view').classList.toggle('active', view === 'chart');
+  el('explain-view').classList.toggle('active', view === 'plan');
+
+  if (view === 'chart') renderChart();
+  if (view === 'plan')  renderExplain();
+}
+
+// ===== CHART AUTO-DETECTION + RENDER =====
+function detectChartType(result) {
+  if (!result || result.values.length === 0) return null;
+  if (result.values.length > 100) return null;
+  if (result.columns.length < 2) return null;
+
+  const firstCol = result.values.map(r => r[0]);
+  // YYYY-MM, YYYY-Q1, YYYY-MM-DD, YYYY → time series
+  const isTimeSeries = firstCol.every(v =>
+    typeof v === 'string' && /^\d{4}(-(\d{2}|Q[1-4]|\d{2}-\d{2}))?$/.test(v)
+  );
+  // Find at least one numeric column beyond the first
+  const numericIdxs = [];
+  for (let i = 1; i < result.columns.length; i++) {
+    if (result.values.every(r => r[i] === null || typeof r[i] === 'number')) {
+      numericIdxs.push(i);
+    }
+  }
+  if (numericIdxs.length === 0) return null;
+
+  if (isTimeSeries) return { type: 'line', numericIdxs };
+  if (firstCol.every(v => typeof v === 'string')) return { type: 'bar', numericIdxs: numericIdxs.slice(0, 1) };
+  return null;
+}
+
+function updateChartTabAvailability() {
+  const tab = el('tab-chart');
+  const detected = lastResult ? detectChartType(lastResult) : null;
+  if (detected) {
+    tab.classList.remove('disabled');
+    tab.title = `Chart available: ${detected.type}`;
+  } else {
+    tab.classList.add('disabled');
+    tab.title = 'Chart unavailable: need a category/date column + numeric column, ≤100 rows';
+  }
+}
+
+function renderChart() {
+  const view = el('chart-view');
+  const detected = lastResult ? detectChartType(lastResult) : null;
+
+  if (!detected) {
+    view.innerHTML = '<div class="chart-empty">No chartable data.<br/>Charts auto-render when a result has a category or date in the first column<br/>plus at least one numeric column (and ≤ 100 rows).</div>';
+    return;
+  }
+
+  // (re)create canvas
+  view.innerHTML = '<canvas id="chart-canvas"></canvas>';
+  const ctx = el('chart-canvas').getContext('2d');
+  if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+
+  const labels = lastResult.values.map(r => String(r[0]));
+  // For line charts, plot up to 3 numeric series; for bar, just the first numeric column
+  const seriesIdxs = detected.type === 'line' ? detected.numericIdxs.slice(0, 3) : detected.numericIdxs;
+  const palette = ['#00f5a0', '#00d9f5', '#ffc857'];
+
+  const datasets = seriesIdxs.map((colIdx, i) => ({
+    label: lastResult.columns[colIdx],
+    data: lastResult.values.map(r => r[colIdx]),
+    borderColor: palette[i % palette.length],
+    backgroundColor: detected.type === 'bar' ? palette[i % palette.length] + 'cc' : palette[i % palette.length] + '22',
+    borderWidth: 2,
+    pointRadius: detected.type === 'line' ? 3 : 0,
+    pointHoverRadius: 5,
+    tension: 0.25,
+    fill: detected.type === 'line' && seriesIdxs.length === 1
+  }));
+
+  chartInstance = new Chart(ctx, {
+    type: detected.type,
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#e9e9f0',
+            font: { family: 'JetBrains Mono', size: 11 }
+          }
+        },
+        tooltip: {
+          backgroundColor: '#14141f',
+          borderColor: 'rgba(255,255,255,0.12)',
+          borderWidth: 1,
+          titleFont: { family: 'JetBrains Mono', size: 11 },
+          bodyFont: { family: 'JetBrains Mono', size: 11 }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b8b9a', font: { family: 'JetBrains Mono', size: 10 } },
+          grid: { color: 'rgba(255,255,255,0.04)' }
+        },
+        y: {
+          ticks: { color: '#8b8b9a', font: { family: 'JetBrains Mono', size: 10 } },
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+// ===== EXPLAIN QUERY PLAN =====
+function renderExplain() {
+  const view = el('explain-view');
+  if (!lastSQL) {
+    view.innerHTML = '<div class="chart-empty">Run a query, then come back to this tab to see the execution plan.</div>';
+    return;
+  }
+  try {
+    const planSQL = 'EXPLAIN QUERY PLAN ' + lastSQL;
+    const results = db.exec(planSQL);
+    if (!results.length) {
+      view.innerHTML = '<div class="chart-empty">EXPLAIN returned no rows (statement type may not support it).</div>';
+      return;
+    }
+    const r = results[0];
+    // EXPLAIN QUERY PLAN returns: id, parent, notused, detail
+    const detailIdx = r.columns.indexOf('detail');
+    const idIdx = r.columns.indexOf('id');
+    const parentIdx = r.columns.indexOf('parent');
+
+    // Build hierarchy via parent pointers
+    const rowsById = {};
+    r.values.forEach(row => { rowsById[row[idIdx]] = { row, children: [] }; });
+    const roots = [];
+    r.values.forEach(row => {
+      const parent = row[parentIdx];
+      if (parent && rowsById[parent]) rowsById[parent].children.push(rowsById[row[idIdx]]);
+      else roots.push(rowsById[row[idIdx]]);
+    });
+
+    function fmt(detail) {
+      return escapeHTML(detail)
+        .replace(/\b(SCAN|SEARCH)\b/g, '<span class="opcode">$1</span>')
+        .replace(/\b(USING\s+(?:INDEX|COVERING\s+INDEX|INTEGER\s+PRIMARY\s+KEY|AUTOMATIC\s+(?:COVERING\s+)?INDEX|TEMP\s+B-TREE)[^()]*)/gi, '<span class="using">$1</span>')
+        .replace(/\b([A-Z][A-Z_]{2,})\b/g, (m) => {
+          if (['DIM_BORROWERS','DIM_PRODUCTS','FACT_APPLICATIONS','FACT_LOANS','FACT_PAYMENTS'].includes(m))
+            return '<span class="table-ref">' + m + '</span>';
+          return m;
+        });
+    }
+
+    function walk(node, depth, lines) {
+      const prefix = depth === 0 ? '' : '  '.repeat(depth - 1) + '└─ ';
+      lines.push('<div class="explain-row">' + escapeHTML(prefix) + fmt(node.row[detailIdx]) + '</div>');
+      node.children.forEach(c => walk(c, depth + 1, lines));
+    }
+    const lines = [];
+    roots.forEach(rt => walk(rt, 0, lines));
+
+    // Look for SCAN warnings
+    const hasScan = r.values.some(row => /^\s*SCAN\b/.test(row[detailIdx]));
+    const hasSearch = r.values.some(row => /^\s*SEARCH\b/.test(row[detailIdx]));
+    let note = '';
+    if (hasScan && !hasSearch) {
+      note = '<div class="explain-note"><strong style="color:var(--red)">⚠ Full table scan detected.</strong> The query reads every row of at least one table. Add an index on the filtered/joined columns to speed this up. <code>SCAN</code> is OK for small tables, but at production scale it\'s a perf cliff.</div>';
+    } else if (hasSearch && !hasScan) {
+      note = '<div class="explain-note"><strong style="color:var(--green)">✓ Index-driven.</strong> Every step uses <code>SEARCH</code> with an index — this is the optimal access pattern.</div>';
+    } else if (hasScan && hasSearch) {
+      note = '<div class="explain-note"><strong style="color:var(--gold)">Mixed access.</strong> Some steps use indexes (<code>SEARCH</code>) and some scan (<code>SCAN</code>). Check whether the scanned tables are small dims (fine) or fact tables (not fine).</div>';
+    }
+
+    view.innerHTML =
+      '<div class="explain-tree">' + lines.join('') + '</div>' +
+      note +
+      '<div class="explain-note" style="border-color: var(--ink-faint); background: rgba(255,255,255,0.02); margin-top: 8px;">' +
+      '<strong style="color:var(--ink-dim)">How to read:</strong> Each line shows a step in SQLite\'s plan. <code>SCAN</code> = full table read. ' +
+      '<code>SEARCH</code> = indexed lookup. <code>USING INDEX</code> tells you which index. Indented lines are subqueries / joined steps.' +
+      '</div>';
+  } catch (err) {
+    view.innerHTML = '<div class="err-msg" style="margin: 0">EXPLAIN failed: ' + escapeHTML(err.message) + '</div>';
+  }
+}
+
+function runQuery() {
+  if (!db) return;
+  const sql = editor.getValue().trim();
+  if (!sql) return;
+  const status = el('results-status');
+  const body = el('results-body');
+  status.innerHTML = '<span style="color:var(--amber)">running…</span>';
+  el('btn-export').disabled = true;
+  lastSQL = sql;
+  // any new run resets us to the table view
+  if (currentView !== 'table') switchView('table');
+
+  setTimeout(() => {
+    const t0 = performance.now();
+    try {
+      const results = db.exec(sql);
+      const ms = +(performance.now() - t0).toFixed(1);
+      if (!results.length) {
+        body.className = 'results-body empty';
+        body.innerHTML = `<div>Query executed — no rows returned.<br/><span style="color:var(--ink-faint)">(${ms} ms)</span></div>`;
+        status.innerHTML = `<span class="ok">✓ ok</span> · ${ms} ms · 0 rows`;
+        lastResult = null;
+        pushHistory({ ts: Date.now(), sql, ms, rowCount: 0 });
+        updateChartTabAvailability();
+        return;
+      }
+      const result = results[results.length - 1];
+      lastResult = result;
+      renderTable(result, body);
+      status.innerHTML = `<span class="ok">✓ ok</span> · ${ms} ms · ${result.values.length.toLocaleString()} row${result.values.length === 1 ? '' : 's'}`;
+      el('btn-export').disabled = false;
+      pushHistory({ ts: Date.now(), sql, ms, rowCount: result.values.length });
+      updateChartTabAvailability();
+    } catch (err) {
+      body.className = 'results-body';
+      body.innerHTML = `<div class="err-msg"><strong>SQL error:</strong><br/>${escapeHTML(err.message)}</div>`;
+      status.innerHTML = `<span class="err">✗ error</span>`;
+      lastResult = null;
+      pushHistory({ ts: Date.now(), sql, error: err.message });
+      updateChartTabAvailability();
+    }
+  }, 10);
+}
+
+function renderTable(result, container) {
+  container.className = 'results-body';
+  const cols = result.columns;
+  const rows = result.values;
+  const numericCol = cols.map((_, i) => {
+    return rows.length > 0 && rows.slice(0, 50).every(r => r[i] === null || typeof r[i] === 'number');
+  });
+
+  let html = '<table class="results-table"><thead><tr>';
+  cols.forEach((c, i) => { html += `<th class="${numericCol[i] ? 'num' : ''}">${escapeHTML(c)}</th>`; });
+  html += '</tr></thead><tbody>';
+  rows.forEach(row => {
+    html += '<tr>';
+    row.forEach((cell, i) => {
+      let cls = numericCol[i] ? 'num' : '';
+      let display;
+      if (cell === null) display = '<span style="color:var(--ink-faint)">NULL</span>';
+      else if (typeof cell === 'number') display = formatNumber(cell, cols[i]);
+      else display = escapeHTML(String(cell));
+      if (typeof cell === 'number' && /RATE_PCT|DELINQ/i.test(cols[i]) && cell > 20) cls += ' warn';
+      if (typeof cell === 'number' && /RATE_PCT/i.test(cols[i]) && cell < 5 && cell > 0) cls += ' good';
+      html += `<td class="${cls}">${display}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function formatNumber(n, colName) {
+  if (Number.isInteger(n)) return n.toLocaleString();
+  if (/PCT|RATE|APR/i.test(colName)) return n.toFixed(2);
+  if (/USD|AMOUNT|PRINCIPAL|INCOME|EXPOSURE/i.test(colName)) return '$' + Math.round(n).toLocaleString();
+  return n.toLocaleString(undefined, { maximumFractionDigits: 4 });
+}
+
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+boot().catch(err => {
+  console.error(err);
+  showLoaderError('Boot failed', escapeHTML(err.message || String(err)));
+});
+</script>
+
+</body>
+</html>
