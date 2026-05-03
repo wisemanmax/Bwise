@@ -1650,12 +1650,13 @@
   }
   .walk-tooltip {
     position: fixed;
-    width: min(420px, 92vw);
+    width: min(440px, 92vw);
     background: var(--bg-1);
-    border: 1px solid var(--cyan);
+    border: 1px solid var(--line-strong);
     border-radius: 10px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(0, 217, 245, 0.18);
+                0 0 0 1px rgba(0, 217, 245, 0.12),
+                0 0 24px rgba(0, 217, 245, 0.08);
     z-index: 302;
     overflow: hidden;
     animation: walkIn 0.22s ease-out;
@@ -1692,19 +1693,19 @@
     color: var(--ink-3);
   }
   .walk-tip-step strong { color: var(--ink-1); }
-  .walk-tip-body { padding: 18px 20px 14px; }
+  .walk-tip-body { padding: 16px 20px 14px; }
   .walk-tip-title {
     font-family: 'Fraunces', serif;
     font-size: 19px; font-weight: 400;
     letter-spacing: -0.01em;
     line-height: 1.3;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     color: var(--ink-0);
   }
   .walk-tip-title em { font-style: italic; color: var(--cyan); font-weight: 300; }
   .walk-tip-section {
-    margin-bottom: 12px;
-    font-size: 12.5px; line-height: 1.6;
+    margin-bottom: 11px;
+    font-size: 12.5px; line-height: 1.55;
     color: var(--ink-1);
   }
   .walk-tip-section:last-child { margin-bottom: 0; }
@@ -1728,18 +1729,20 @@
   }
   .walk-tip-section strong { color: var(--ink-0); }
   .walk-tip-foot {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 18px;
+    display: flex; flex-direction: column;
+    padding: 12px 18px 14px;
     background: var(--bg-2);
     border-top: 1px solid var(--line);
-    gap: 10px;
+    gap: 12px;
   }
   .walk-progress {
-    display: flex; gap: 4px;
-    flex: 1;
+    display: flex; gap: 3px;
+    width: 100%;
   }
   .walk-progress-dot {
-    width: 16px; height: 4px;
+    flex: 1;
+    height: 3px;
+    min-width: 8px;
     border-radius: 2px;
     background: var(--bg-3);
     transition: background 0.2s;
@@ -1747,20 +1750,24 @@
   .walk-progress-dot.done { background: rgba(0, 217, 245, 0.5); }
   .walk-progress-dot.current {
     background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan);
+    box-shadow: 0 0 6px var(--cyan);
   }
   .walk-tip-actions {
-    display: flex; gap: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .walk-tip-actions .walk-btn.skip {
+    margin-right: auto;
   }
   .walk-btn {
     background: transparent;
     border: 1px solid var(--line-strong);
     color: var(--ink-2);
-    padding: 6px 14px;
+    padding: 7px 14px;
     border-radius: 4px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.12em;
     text-transform: uppercase;
+    white-space: nowrap;
     cursor: pointer;
     transition: all 0.15s;
   }
