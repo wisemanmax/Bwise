@@ -1187,12 +1187,12 @@ class SiteTour {
     return {
       full: [
         { page: '/', id: 'hero',
-          title: "Welcome — here's the 90-second tour",
+          title: "Welcome — here's the full tour",
           body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities.",
           details: [
             "Use Next / Back, or arrow keys, to navigate",
             "Skip anytime — resume from the tour chip",
-            "12 stops · ~90 seconds total"
+            "Every project, demo, and live app — start to finish"
           ] },
         { page: '/', id: 'about',
           title: "What I actually do",
@@ -1228,6 +1228,15 @@ class SiteTour {
             "The same engineering rigor analysts deserve"
           ],
           detailHref: '/pages/the-builder.html', detailLabel: "Read the case study" },
+        { page: '/', id: 'projects-ironlog',
+          title: "IronLog — three-app analytics PWA suite",
+          body: "IronLog, FinanceLog, and NutritionLog on a unified Supabase backend with SSO and real-time sync — designed and built solo.",
+          details: [
+            "One backend, three product surfaces",
+            "Session-level monitoring + feature-effectiveness tracking",
+            "Live in production at ironlog.space"
+          ],
+          detailHref: 'https://ironlog.space', detailLabel: "Visit IronLog", detailExternal: true },
         { page: '/', id: 'work-demo',
           title: "Operations Dashboard — click in and explore",
           body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites.",
@@ -1246,6 +1255,42 @@ class SiteTour {
             "Bring-your-own-key Anthropic integration for narrative"
           ],
           detailHref: '/pages/refi-intelligence.html', detailLabel: "Open Refi Intelligence" },
+        { page: '/', id: 'work-banking',
+          title: "Banking PWA — installable, biometric, offline-ready",
+          body: "iOS-style banking surface with biometric login, transfers, round-ups, and push notifications — built as a full PWA.",
+          details: [
+            "Service Worker + Web Manifest for installability",
+            "Biometric auth flow and push notification hooks",
+            "End-to-end UX, not just static screens"
+          ],
+          detailHref: '/pages/banking.html', detailLabel: "Open Banking PWA" },
+        { page: '/', id: 'work-fraud',
+          title: "Fraud Risk — real-time alert triage",
+          body: "Risk-ops UI for monitoring fraud alerts, link analysis between actors, and identity verification.",
+          details: [
+            "Alert triage queue with severity weighting",
+            "Link analysis surfaces relationships between cases",
+            "Built to mirror real fraud-ops workflows"
+          ],
+          detailHref: '/pages/fraud-risk.html', detailLabel: "Open Fraud Risk" },
+        { page: '/', id: 'work-credit',
+          title: "Credit Underwriting — decision engine UI",
+          body: "Application decisioning with document processing, manual review, and adverse-action workflow.",
+          details: [
+            "Decision engine output with overrides",
+            "Document upload + manual review queue",
+            "Adverse-action notice flow under compliance constraints"
+          ],
+          detailHref: '/pages/credit-underwriting.html', detailLabel: "Open Credit Underwriting" },
+        { page: '/', id: 'work-collections',
+          title: "Collections Toolkit — end-to-end ops suite",
+          body: "Segmentation, dialer, comms hub, QA, and compliance — the full collections workflow in one UI.",
+          details: [
+            "Account segmentation and prioritization",
+            "Outbound dialer + omnichannel comms hub",
+            "QA scoring and compliance guardrails"
+          ],
+          detailHref: '/pages/collections-toolkit.html', detailLabel: "Open Collections Toolkit" },
         { page: '/', id: 'work-external',
           title: "Three live apps in production",
           body: "Each opens in a new tab so you don't lose your place in the tour.",
@@ -1266,7 +1311,7 @@ class SiteTour {
           title: "See how I write code",
           body: "Bite-sized walkthroughs across HTML, CSS, JavaScript, Backend, and CI/CD — each with a working preview.",
           details: [
-            "Signal beyond bullet points on a résumé",
+            "Signal beyond bullet points on a resume",
             "Same patterns I use in production",
             "Code and live result, side by side"
           ] },
@@ -1275,12 +1320,12 @@ class SiteTour {
           body: "Senior engineering, BI / data-platform, or reporting-platform roles.",
           details: [
             "Email is the fastest path",
-            "Résumé below for the paper trail",
+            "Resume below for the paper trail",
             "Same-day reply most weekdays"
           ] },
         { page: '/', isRecap: true,
           title: "That's the tour.",
-          body: "Two ways forward: grab the résumé for a paper trail, or send a note — I usually reply the same day." }
+          body: "Two ways forward: grab the resume for a paper trail, or send a note — I usually reply the same day." }
       ],
       recruiter: [
         { page: '/', id: 'hero',
@@ -1327,12 +1372,12 @@ class SiteTour {
           body: "Senior engineering, BI / data-platform, or reporting-platform leadership.",
           details: [
             "Email gets the fastest reply",
-            "Résumé is one click",
+            "Resume is one click",
             "Same-day reply most weekdays"
           ] },
         { page: '/', isRecap: true,
           title: "That's the snapshot.",
-          body: "Grab the résumé for the paper trail or send a note — I usually reply same day." }
+          body: "Grab the resume for the paper trail or send a note — I usually reply same day." }
       ],
       dashboardDeepDive: [
         { page: '/pages/dashboard.html', id: 'dashboard-header',
@@ -1370,7 +1415,7 @@ class SiteTour {
         { page: '/pages/dashboard.html', isRecap: true,
           recapBackHref: '/', recapBackLabel: "← Back to portfolio",
           title: "That's the demo.",
-          body: "This whole dashboard is part of the portfolio — clickable, interactive, hand-built. Head back home for the rest, or take the résumé." }
+          body: "This whole dashboard is part of the portfolio — clickable, interactive, hand-built. Head back home for the rest, or take the resume." }
       ]
     };
   }
@@ -1704,7 +1749,7 @@ class SiteTour {
       <button type="button" class="tour-tooltip__deepdive" data-tour-deepdive hidden></button>
       <div class="tour-tooltip__recap" data-tour-recap hidden>
         <a class="tour-tooltip__btn tour-tooltip__btn--ghost" data-tour-recap-back hidden></a>
-        <a class="tour-tooltip__btn tour-tooltip__btn--primary" href="/assets/byheir-wise-resume.pdf" download>Download résumé</a>
+        <a class="tour-tooltip__btn tour-tooltip__btn--primary" href="/assets/byheir-wise-resume.pdf" download>Download resume</a>
         <a class="tour-tooltip__btn tour-tooltip__btn--ghost" href="mailto:byheirw@gmail.com">Email me</a>
       </div>
       <div class="tour-tooltip__progress" data-tour-progress aria-hidden="true"></div>
