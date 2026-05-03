@@ -1620,6 +1620,195 @@
   .schema-block .typ { color: var(--green); }
   .schema-block .com { color: var(--ink-3); font-style: italic; }
 
+  /* ===== GUIDED FEATURE WALKTHROUGH ===== */
+  /* Backdrop: when a spotlight is showing, this layer is just a click-capture
+     and the spotlight's outer box-shadow handles the dim. When there is no
+     spotlight (intro / fallback), it dims the page itself. */
+  .walk-backdrop {
+    position: fixed; inset: 0;
+    background: transparent;
+    z-index: 300;
+    animation: fadeIn 0.18s;
+  }
+  .walk-backdrop.dim {
+    background: rgba(4, 4, 8, 0.78);
+    backdrop-filter: blur(2px);
+  }
+  .walk-spotlight {
+    position: fixed;
+    border-radius: 10px;
+    box-shadow:
+      0 0 0 4px rgba(0, 217, 245, 0.55),
+      0 0 0 9999px rgba(4, 4, 8, 0.78),
+      0 0 30px rgba(0, 217, 245, 0.45);
+    pointer-events: none;
+    z-index: 301;
+    transition: top 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .walk-tooltip {
+    position: fixed;
+    width: min(420px, 92vw);
+    background: var(--bg-1);
+    border: 1px solid var(--cyan);
+    border-radius: 10px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(0, 217, 245, 0.18);
+    z-index: 302;
+    overflow: hidden;
+    animation: walkIn 0.22s ease-out;
+  }
+  @keyframes walkIn {
+    from { opacity: 0; transform: translateY(6px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .walk-tooltip.center {
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(520px, 94vw);
+  }
+  .walk-tip-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+    border-bottom: 1px solid var(--line);
+  }
+  .walk-tip-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em;
+    color: var(--cyan); text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .walk-tip-tag::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+  .walk-tip-step {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  .walk-tip-step strong { color: var(--ink-1); }
+  .walk-tip-body { padding: 18px 20px 14px; }
+  .walk-tip-title {
+    font-family: 'Fraunces', serif;
+    font-size: 19px; font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    color: var(--ink-0);
+  }
+  .walk-tip-title em { font-style: italic; color: var(--cyan); font-weight: 300; }
+  .walk-tip-section {
+    margin-bottom: 12px;
+    font-size: 12.5px; line-height: 1.6;
+    color: var(--ink-1);
+  }
+  .walk-tip-section:last-child { margin-bottom: 0; }
+  .walk-tip-section .lbl {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.18em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .walk-tip-section.what .lbl { color: var(--cyan); }
+  .walk-tip-section.data .lbl { color: var(--green); }
+  .walk-tip-section.try .lbl { color: var(--amber); }
+  .walk-tip-section code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-3);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--cyan);
+  }
+  .walk-tip-section strong { color: var(--ink-0); }
+  .walk-tip-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--line);
+    gap: 10px;
+  }
+  .walk-progress {
+    display: flex; gap: 4px;
+    flex: 1;
+  }
+  .walk-progress-dot {
+    width: 16px; height: 4px;
+    border-radius: 2px;
+    background: var(--bg-3);
+    transition: background 0.2s;
+  }
+  .walk-progress-dot.done { background: rgba(0, 217, 245, 0.5); }
+  .walk-progress-dot.current {
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+  .walk-tip-actions {
+    display: flex; gap: 6px;
+  }
+  .walk-btn {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .walk-btn:hover:not(:disabled) {
+    color: var(--ink-0);
+    border-color: var(--ink-2);
+  }
+  .walk-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .walk-btn.primary {
+    background: var(--cyan-dim);
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .walk-btn.primary:hover {
+    background: var(--cyan);
+    color: var(--bg-0);
+  }
+  .walk-btn.skip { color: var(--ink-3); }
+  .walk-btn.skip:hover { color: var(--rose); border-color: var(--rose); }
+  .walk-tip-kbd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--ink-3);
+    margin-left: 4px;
+  }
+  .walk-tip-kbd kbd {
+    background: var(--bg-3);
+    padding: 1px 5px;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: 9px;
+  }
+  .icon-btn.tour-btn {
+    color: var(--amber);
+    border-color: rgba(245, 184, 0, 0.35);
+  }
+  .icon-btn.tour-btn:hover {
+    color: var(--amber);
+    border-color: var(--amber);
+    background: var(--amber-dim);
+  }
+  @media (max-width: 720px) {
+    .walk-tooltip { width: calc(100vw - 24px); }
+  }
+  @media print {
+    .walk-backdrop, .walk-spotlight, .walk-tooltip { display: none !important; }
+  }
+
   /* ===== PRINT STYLESHEET ===== */
   @media print {
     body { background: white !important; color: black !important; }
@@ -2375,7 +2564,7 @@ function Sparkline({ values, color, width = 110, height = 28 }) {
 // ============================================================
 
 function Header({ window, setWindow, openKeyModal, hasApiKey,
-  compareMode, setCompareMode, openHibt, exportAll }) {
+  compareMode, setCompareMode, openHibt, exportAll, openTour }) {
   return (
     <div className="header fade-in">
       <div>
@@ -2397,6 +2586,10 @@ function Header({ window, setWindow, openKeyModal, hasApiKey,
         <div><span className="lbl">Cohort size</span> 5,000 apps</div>
         <div><span className="lbl">Data refresh</span> Real-time</div>
         <div className="header-actions">
+          <button className="icon-btn tour-btn" onClick={openTour}
+            title="Guided walkthrough — what each feature does and what the data represents">
+            ? Tour
+          </button>
           <button className="icon-btn drawer-btn" onClick={openHibt}
             title="How I built this — data model, SQL, prompt, stack">
             ✦ How I built this
@@ -4178,6 +4371,292 @@ FROM base;`}</div>
 }
 
 // ============================================================
+// GUIDED FEATURE WALKTHROUGH
+// ============================================================
+// Step-by-step tour explaining every feature on the page: what it does,
+// what the underlying data represents, and how to interact. Triggered by
+// the header's "? Tour" button or auto-opened on a user's first visit.
+const TOUR_STEPS = [
+  {
+    target: null,
+    tag: 'Welcome',
+    title: 'A guided tour of <em>Refi Intelligence</em>',
+    what: 'A portfolio analytics demo over <strong>5,000 synthetic refi applications</strong>. Each section answers a different operator question — funnel health, cohort risk, channel quality, vintage seasoning, and borrower savings.',
+    data: 'All loans are deterministically generated with a seeded RNG (no PII). FICO, degree, channel, balance, rate, term, stage, and delinquency are produced to mimic a real student-loan refi book.',
+    tryIt: 'Use <strong>Next →</strong> to step through every feature, <strong>Esc</strong> to close, or <strong>Skip</strong> at any time. You can reopen this tour from the <code>? Tour</code> button up top.',
+  },
+  {
+    target: '.time-select',
+    tag: 'Time window',
+    title: 'Rolling time window',
+    what: 'Toggle the analysis window across the last <strong>7 / 30 / 90 days</strong>. Every KPI, funnel, cohort cell, channel row, and chart re-aggregates against this window.',
+    data: 'Each loan carries an <code>appDate</code> and <code>daysAgo</code> field. The window is a simple <code>daysAgo &lt;= N</code> filter applied before any other slicing.',
+    tryIt: 'Click <strong>7D</strong> to see only the last week. The KPI sparklines compress, and the funnel re-counts off the smaller pool.',
+  },
+  {
+    target: '.kpi-grid',
+    tag: '00 · KPIs',
+    title: 'Top-line portfolio health',
+    what: 'Four headline metrics: <strong>Funded Volume</strong>, <strong>Approval Rate</strong>, <strong>60+ DPD Rate</strong>, and <strong>Avg Lifetime Savings</strong>.',
+    data: 'Volume = sum of <code>balance</code> on Funded loans. Approval = (Approved + Funded) ÷ all decisioned apps. 60+ DPD = share of funded loans with delinquency ≥ 60 days. Lifetime Savings = monthly savings × term, averaged across funded loans.',
+    tryIt: 'Sparklines show 14 buckets across the active window. <code>⚡</code> chips flag any KPI that is <strong>±2σ</strong> from the prior baseline — fast outlier scan.',
+  },
+  {
+    target: '#sec-funnel .panel',
+    tag: '01 · Funnel',
+    title: 'Application funnel — stage drop-off',
+    what: 'Conversion from <strong>Applied → Soft Pull → Underwriting → Approved → Funded</strong>, with the % drop at each step.',
+    data: 'Each loan is bucketed by its current <code>stage</code>. Loans count cumulatively into every prior stage they passed through, so the funnel is monotone-decreasing.',
+    tryIt: 'Bars turn <strong>amber</strong> when a stage loses more than 30% — that is the lever where most candidates fall out. <code>View SQL</code> reveals the equivalent query against the underlying schema.',
+  },
+  {
+    target: '.insight-panel',
+    tag: '01 · Insight',
+    title: 'Narrative insight + AI re-analysis',
+    what: 'Plain-English interpretation of the current funnel and KPIs — what changed, where the risk is concentrated, and a recommended action with rough $ impact.',
+    data: 'The default narrative is hand-authored against the synthetic distribution. Add an <strong>Anthropic API key</strong> (button up top) and the panel sends a structured snapshot — KPIs + per-channel DPD + active filters — to <code>claude-sonnet-4</code> for a fresh, filter-aware narrative.',
+    tryIt: 'Click <strong>Show prompt sent to Claude</strong> after running the AI to inspect the exact request. Filtering the dashboard invalidates the AI snapshot and prompts a re-analysis.',
+  },
+  {
+    target: '.decision-log',
+    tag: '01 · Live feed',
+    title: 'Live underwriting decisions',
+    what: 'A simulated stream of decision events — <strong>Approved · Declined · Referred</strong> — to convey the operational tempo behind the aggregate metrics.',
+    data: 'Rows are sampled from the loan dataset (skipping pre-decision stages) and timestamped on a 2-second cadence. Each entry carries the loan ID, action, FICO band, and balance.',
+    tryIt: 'New rows fade in at the top in cyan. The feed pauses if you scroll inside it; it resumes when you scroll back to the bottom.',
+  },
+  {
+    target: '#sec-cohort .panel',
+    tag: '02 · Cohort heatmap',
+    title: 'Approval by FICO × Degree',
+    what: 'A 4×6 heatmap of <strong>approval rate by FICO band (rows) × Degree type (columns)</strong>. Color goes red → amber → green; cell value shows % approved on n applications.',
+    data: 'For each cell: <code>approved / total decisioned</code>, where decisioned = anything past Soft Pull. Cells with n ≥ 10 are scored for ±2σ outliers vs. the cohort mean — outliers get a green/red outline + corner dot.',
+    tryIt: '<strong>Click</strong> a cell to slide open a drill-over with the underlying loans. <strong>Alt+Click</strong> to filter the entire dashboard to that FICO × Degree slice.',
+  },
+  {
+    target: '#sec-channels .panel',
+    tag: '03 · Channels',
+    title: 'Channel scorecard',
+    what: 'Per-channel performance: <strong>Apps · Funded · Volume · Approval % · 60+ DPD % · Avg Savings</strong>. Use it to spot which acquisition channel is over-/under-performing on quality.',
+    data: 'Channels are <code>Direct, Referral, Partner A/B/C</code>. Volume sums funded balances; DPD% is share of funded with ≥ 60 days delinquency. The <code>⚠</code> flag marks the channel ranked #1 on 60+ DPD.',
+    tryIt: '<strong>Click any column header</strong> to sort. <strong>Click a row</strong> to filter the entire dashboard to that channel — the KPIs, funnel, and cohort all re-compute on that slice.',
+  },
+  {
+    target: '#sec-vintage .vintage-wrap',
+    tag: '04 · Vintage',
+    title: 'Vintage curves — risk seasoning',
+    what: 'Cumulative <strong>60+ DPD rate</strong> across <strong>Months on Book (MOB)</strong>, broken out by funding cohort. The classic credit vintage chart: are newer cohorts going bad faster than older ones?',
+    data: 'Each cohort = a calendar month of funded loans. For each MOB, we report the cumulative share of that cohort that has ever hit 60+ DPD. Fully-seasoned older cohorts on the right show terminal risk; newer cohorts (steep early slope) give early-warning signal.',
+    tryIt: 'The right-side stat panel calls out the <strong>Peak risk cohort</strong>, total funded loans across cohorts, and the most-seasoned cohort. Filter the dashboard to a channel or FICO band to see how vintage shifts.',
+  },
+  {
+    target: '#sec-simulator .sim-grid',
+    tag: '05 · Simulator',
+    title: 'A/B scenario simulator',
+    what: 'Pull two policy levers — a <strong>FICO floor</strong> and a <strong>refi-rate adjustment</strong> — and watch volume, approval, projected DPD, and avg savings re-price against the same loan pool.',
+    data: 'Floor drops applications below the chosen FICO band. Rate bump re-prices each funded loan: <code>monthly = pmt(origRate) − pmt(refiRate + bump)</code>. DPD is modeled as <code>baseDPD × (1 + bump/0.25 × 5%) × 0.85^floor</code> — tighter floor lowers risk, higher rate raises it.',
+    tryIt: 'Tighten the floor to <strong>740+</strong> while bumping rate <strong>+0.50%</strong> — see how the volume / DPD / savings tradeoff falls out. <strong>Reset to baseline</strong> returns both sliders to zero.',
+  },
+  {
+    target: '#sec-loans .panel',
+    tag: '06 · Loans',
+    title: 'Loan-level detail',
+    what: 'The underlying record for every loan in the current window/filter — <strong>sortable, searchable, paginated, exportable</strong>.',
+    data: 'Columns: <code>id · stage · fico · degree · channel · balance · refi% · $/mo savings · lifetime savings · delinquency status</code>. The same fields drive every KPI and chart on the page.',
+    tryIt: 'Search by ID, FICO, degree, channel or stage. Click any column header to sort. <strong>⇓ CSV</strong> exports the current sorted result set.',
+  },
+  {
+    target: '#sec-calculator .calc-grid',
+    tag: '07 · Calculator',
+    title: 'Borrower savings calculator',
+    what: 'A live <strong>refi savings calculator</strong> for a single borrower scenario — current rate, new refi rate, balance, and term — with a histogram showing where they would land in the funded portfolio.',
+    data: 'Monthly savings = <code>pmt(currentRate) − pmt(refiRate)</code>; lifetime = monthly × term. The histogram bins funded loans by lifetime savings, and the amber marker shows the borrower\'s bucket plus their portfolio percentile.',
+    tryIt: 'Drop the new rate to <strong>4.5%</strong> on a <strong>$58K, 120-mo</strong> balance and watch the percentile climb. Numbers update on every keystroke.',
+  },
+  {
+    target: '.header-actions',
+    tag: 'Tools',
+    title: 'Header tools — share, compare, export',
+    what: 'Quick access to the page\'s utility actions: <strong>How I built this</strong>, <strong>Compare</strong>, <strong>CSV</strong>, <strong>PDF</strong>, and the <strong>API key</strong> manager.',
+    data: '<strong>Compare</strong> renders the last 7 days vs. the prior 7 days side-by-side. <strong>CSV</strong> exports the current filtered loans. <strong>PDF</strong> prints a clean print-stylesheet version. <strong>API key</strong> stores your Anthropic key in <code>localStorage</code> to enable AI insights — never sent anywhere except api.anthropic.com.',
+    tryIt: 'Active filters and the time window are encoded into the URL hash, so any view is shareable by copying the link. Reopen this tour anytime with the <code>? Tour</code> button.',
+  },
+];
+
+function FeatureTour({ open, onClose, onOpenKeyModal }) {
+  const [step, setStep] = useState(0);
+  const [pos, setPos] = useState(null);
+  const [tipPos, setTipPos] = useState(null);
+  const tipRef = useRef(null);
+
+  useEffect(() => { if (open) setStep(0); }, [open]);
+
+  // Locate target, scroll into view, measure spotlight + tooltip placement.
+  useEffect(() => {
+    if (!open) return;
+    const cur = TOUR_STEPS[step];
+    if (!cur) return;
+    if (!cur.target) {
+      setPos(null);
+      setTipPos(null);
+      return;
+    }
+    const el = document.querySelector(cur.target);
+    if (!el) {
+      // target missing — fall back to centered card
+      setPos(null);
+      setTipPos(null);
+      return;
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const measure = () => {
+      const r = el.getBoundingClientRect();
+      const pad = 8;
+      const spotlight = {
+        top: r.top - pad,
+        left: r.left - pad,
+        width: r.width + pad * 2,
+        height: r.height + pad * 2,
+      };
+      setPos(spotlight);
+
+      // Tooltip placement: prefer below, then above, then right, then center.
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const tipW = Math.min(420, vw - 24);
+      const tipH = (tipRef.current && tipRef.current.offsetHeight) || 320;
+      const margin = 18;
+      let top, left, placement = 'below';
+
+      if (spotlight.top + spotlight.height + margin + tipH < vh) {
+        top = spotlight.top + spotlight.height + margin;
+        left = Math.min(vw - tipW - 12, Math.max(12, spotlight.left + spotlight.width / 2 - tipW / 2));
+        placement = 'below';
+      } else if (spotlight.top - margin - tipH > 0) {
+        top = spotlight.top - margin - tipH;
+        left = Math.min(vw - tipW - 12, Math.max(12, spotlight.left + spotlight.width / 2 - tipW / 2));
+        placement = 'above';
+      } else if (spotlight.left + spotlight.width + margin + tipW < vw) {
+        top = Math.min(vh - tipH - 12, Math.max(12, spotlight.top + spotlight.height / 2 - tipH / 2));
+        left = spotlight.left + spotlight.width + margin;
+        placement = 'right';
+      } else if (spotlight.left - margin - tipW > 0) {
+        top = Math.min(vh - tipH - 12, Math.max(12, spotlight.top + spotlight.height / 2 - tipH / 2));
+        left = spotlight.left - margin - tipW;
+        placement = 'left';
+      } else {
+        setTipPos({ center: true });
+        return;
+      }
+      setTipPos({ top, left, placement });
+    };
+    // Two passes — once after scroll starts, then after it ends, so the spot
+    // tracks the element to its final scroll position.
+    const t1 = setTimeout(measure, 320);
+    const t2 = setTimeout(measure, 640);
+    window.addEventListener('resize', measure);
+    window.addEventListener('scroll', measure, true);
+    return () => {
+      clearTimeout(t1); clearTimeout(t2);
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('scroll', measure, true);
+    };
+  }, [step, open]);
+
+  // Keyboard nav
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (e.key === 'Escape') { e.preventDefault(); onClose(); }
+      else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        e.preventDefault();
+        setStep(s => Math.min(TOUR_STEPS.length - 1, s + 1));
+      }
+      else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setStep(s => Math.max(0, s - 1));
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [open, onClose]);
+
+  if (!open) return null;
+  const cur = TOUR_STEPS[step];
+  const isLast = step === TOUR_STEPS.length - 1;
+  const isFirst = step === 0;
+  const isCenter = !pos || (tipPos && tipPos.center) || !cur.target;
+
+  const tipStyle = isCenter ? null : tipPos ? {
+    top: tipPos.top + 'px',
+    left: tipPos.left + 'px',
+  } : { opacity: 0 };
+
+  return (
+    <React.Fragment>
+      <div className={'walk-backdrop' + (pos ? '' : ' dim')} onClick={onClose} />
+      {pos && (
+        <div className="walk-spotlight" style={{
+          top: pos.top + 'px',
+          left: pos.left + 'px',
+          width: pos.width + 'px',
+          height: pos.height + 'px',
+        }} />
+      )}
+      <div ref={tipRef}
+           className={'walk-tooltip' + (isCenter ? ' center' : '')}
+           style={tipStyle}>
+        <div className="walk-tip-head">
+          <span className="walk-tip-tag">{cur.tag}</span>
+          <span className="walk-tip-step">
+            <strong>{step + 1}</strong> / {TOUR_STEPS.length}
+          </span>
+        </div>
+        <div className="walk-tip-body">
+          <div className="walk-tip-title"
+               dangerouslySetInnerHTML={{__html: cur.title}} />
+          <div className="walk-tip-section what">
+            <span className="lbl">What it does</span>
+            <span dangerouslySetInnerHTML={{__html: cur.what}} />
+          </div>
+          <div className="walk-tip-section data">
+            <span className="lbl">What the data represents</span>
+            <span dangerouslySetInnerHTML={{__html: cur.data}} />
+          </div>
+          {cur.tryIt && (
+            <div className="walk-tip-section try">
+              <span className="lbl">Try it</span>
+              <span dangerouslySetInnerHTML={{__html: cur.tryIt}} />
+            </div>
+          )}
+        </div>
+        <div className="walk-tip-foot">
+          <div className="walk-progress">
+            {TOUR_STEPS.map((_, i) => (
+              <span key={i}
+                className={'walk-progress-dot' +
+                  (i < step ? ' done' : '') +
+                  (i === step ? ' current' : '')} />
+            ))}
+          </div>
+          <div className="walk-tip-actions">
+            <button className="walk-btn skip" onClick={onClose}>Skip</button>
+            <button className="walk-btn" disabled={isFirst}
+              onClick={() => setStep(s => Math.max(0, s - 1))}>← Prev</button>
+            {isLast ? (
+              <button className="walk-btn primary" onClick={onClose}>Done ✓</button>
+            ) : (
+              <button className="walk-btn primary"
+                onClick={() => setStep(s => Math.min(TOUR_STEPS.length - 1, s + 1))}>Next →</button>
+            )}
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+}
+
+// ============================================================
 // APP
 // ============================================================
 function App() {
@@ -4189,6 +4668,7 @@ function App() {
   const [showKeyModal, setShowKeyModal] = useState(false);
   const [showHibt, setShowHibt] = useState(false);
   const [drillCell, setDrillCell] = useState(null);
+  const [showTour, setShowTour] = useState(false);
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('refi_anthropic_key') || '');
 
   const allLoans = useMemo(() => generateLoans(5000), []);
@@ -4199,6 +4679,23 @@ function App() {
     const t = setTimeout(() => setLoading(false), 380);
     return () => clearTimeout(t);
   }, []);
+
+  // Auto-open the guided tour on a user's first visit. The flag persists in
+  // localStorage so we never re-prompt; the header "? Tour" button reopens it.
+  useEffect(() => {
+    if (loading) return;
+    try {
+      if (!localStorage.getItem('refi_tour_seen')) {
+        const t = setTimeout(() => setShowTour(true), 600);
+        return () => clearTimeout(t);
+      }
+    } catch (e) { /* localStorage may be blocked — silently skip autoshow */ }
+  }, [loading]);
+
+  const closeTour = () => {
+    setShowTour(false);
+    try { localStorage.setItem('refi_tour_seen', '1'); } catch (e) {}
+  };
 
   // Sync state → URL hash so views are shareable / bookmarkable
   const hashWriteGuardRef = useRef(false);
@@ -4283,6 +4780,7 @@ function App() {
         compareMode={compareMode} setCompareMode={setCompareMode}
         openHibt={() => setShowHibt(true)}
         exportAll={handleExportAll}
+        openTour={() => setShowTour(true)}
       />
 
       <SectionNav />
@@ -4396,6 +4894,8 @@ function App() {
         addFilter={addFilter} />
 
       <HowIBuiltDrawer open={showHibt} onClose={() => setShowHibt(false)} />
+
+      <FeatureTour open={showTour} onClose={closeTour} />
     </div>
   );
 }
