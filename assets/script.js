@@ -1255,6 +1255,15 @@ class SiteTour {
             "Bring-your-own-key Anthropic integration for narrative"
           ],
           detailHref: '/pages/refi-intelligence.html', detailLabel: "Open Refi Intelligence" },
+        { page: '/', id: 'work-sql',
+          title: "SQL Playground — real SQL, in the browser",
+          body: "SQLite compiled to WebAssembly with a Snowflake-shaped lending schema. ~1,700 loans, ~28k payments, seeded patterns that reveal vintage drift, channel skew, and FICO-driven loss curves.",
+          details: [
+            "21 challenges across Risk, Funnel, Portfolio, Behavior, Vintage, Pricing",
+            "Hard prompts use window functions and multi-CTE constructs",
+            "Single file, zero backend — works offline once cached"
+          ],
+          detailHref: '/pages/sql-playground.html', detailLabel: "Open SQL Playground" },
         { page: '/', id: 'work-banking',
           title: "Banking PWA — installable, biometric, offline-ready",
           body: "iOS-style banking surface with biometric login, transfers, round-ups, and push notifications — built as a full PWA.",

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Playground · Lending KPIs · Case Study · Byheir Wise</title>
+  <meta name="description" content="Case study: a single-file, in-browser SQL workbench against a synthetic Snowflake-shaped lending portfolio. SQLite via WebAssembly, 21 challenge prompts, seeded patterns that reveal real lending stories.">
+  <link rel="stylesheet" href="../assets/style.css">
+
+<style id="demo-back-styles">
+.demo-back{position:sticky;top:0;z-index:999999;display:flex;align-items:center;gap:.6rem;padding:.55rem max(env(safe-area-inset-left),1rem);padding-top:max(env(safe-area-inset-top),.55rem);background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(15,23,42,.08);font:600 .85rem/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#0f172a}
+.demo-back a{display:inline-flex;align-items:center;gap:.4rem;color:#0f172a;text-decoration:none;padding:.3rem .7rem;border-radius:999px;transition:background .15s ease}
+.demo-back a:hover,.demo-back a:focus-visible{background:rgba(15,23,42,.08)}
+.demo-back__chev{font-size:1rem;line-height:1}
+.demo-back__sub{color:#64748b;font-weight:500;margin-inline-start:.4rem;border-inline-start:1px solid rgba(15,23,42,.15);padding-inline-start:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}
+@media (max-width:480px){.demo-back__sub{display:none}}
+@media (prefers-color-scheme:dark){.demo-back{background:rgba(15,23,42,.94);border-bottom-color:rgba(148,163,184,.18);color:#e2e8f0}.demo-back a{color:#e2e8f0}.demo-back a:hover,.demo-back a:focus-visible{background:rgba(148,163,184,.18)}.demo-back__sub{color:#94a3b8;border-inline-start-color:rgba(148,163,184,.3)}}
+@media print{.demo-back{display:none}}
+</style>
+</head>
+<body>
+<div class="demo-back" role="navigation" aria-label="Site navigation">
+  <a href="../index.html#work">
+    <span class="demo-back__chev" aria-hidden="true">←</span>
+    <span class="demo-back__label">Portfolio</span>
+  </a>
+  <span class="demo-back__sub">byheir.com · SQL Playground case study</span>
+</div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <nav class="top-nav" aria-label="Main navigation">
+      <div class="logo">Byheir Wise</div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
+        ☰
+      </button>
+      <ul class="nav-menu" id="primary-navigation">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="sql-playground.html">SQL Playground</a></li>
+        <li><a href="sql-playground-case-study.html" aria-current="page">Case Study</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero-section" aria-labelledby="sql-hero">
+      <div class="hero-inner">
+        <div class="hero-label">Case study</div>
+        <h1 id="sql-hero" class="hero-title">SQL Playground · Lending KPIs</h1>
+        <p class="hero-subtitle">A single-file, in-browser SQL workbench. Recruiters land, click "Run," and watch real SQL execute against a fake-but-realistic lending portfolio — no signup, no backend, no waiting.</p>
+        <div class="hero-cta-row">
+          <a class="hero-cta hero-cta--primary" href="sql-playground.html">Open the playground →</a>
+          <a class="hero-cta hero-cta--ghost" href="../index.html#work">Back to work</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="problem-title">
+      <div class="section-header">
+        <h2 id="problem-title" class="section-title">The problem worth solving</h2>
+        <p class="section-subtitle">
+          "Show me what you can do" usually means cloning a repo, spinning up a database, loading sample data, and reading a README before a single query runs. Most reviewers never get past step one.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">What I wanted to prove</div>
+            <div class="card-date">Portfolio audience · 30-second window</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Domain fluency in lending — the schema, the metrics, the patterns analysts actually look for.</li>
+              <li>SQL chops past the toy level — window functions, multi-CTE constructs, vintage-curve and DPD-transition math.</li>
+              <li>Product polish — design system, interactions, empty states, the small stuff that signals care.</li>
+              <li>Engineering judgment — zero backend, single file, deploys in 30 seconds, works offline once cached.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Constraints I gave myself</div>
+            <div class="card-date">Frictionless by design</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>No signup, no backend, no waiting — the first query runs within seconds of page load.</li>
+              <li>Same data for every visitor so discoverable patterns are reproducible across sessions.</li>
+              <li>Single file deployable to GitHub Pages — no build step, no server, no CI required.</li>
+              <li>Data and queries stay in the browser; nothing leaves the device.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="architecture-title">
+      <div class="section-header">
+        <h2 id="architecture-title" class="section-title">What's under the hood</h2>
+        <p class="section-subtitle">
+          Everything runs client-side. SQLite is compiled to WebAssembly via sql.js, so the browser holds a real relational database in memory — not a mock, not a JSON file pretending to be a table.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Stack</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>sql.js</strong> — SQLite compiled to WebAssembly; full SQL execution engine in the browser.</li>
+              <li><strong>CodeMirror 5</strong> — SQL syntax highlighting, bracket matching, keyword autocomplete.</li>
+              <li><strong>Chart.js</strong> — auto-rendered line or bar charts based on result column types.</li>
+              <li><strong>Vanilla JS, single file</strong> — no framework, no bundler, no build step.</li>
+              <li><strong>localStorage</strong> — persistent query history that survives across sessions.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Schema (Snowflake-shaped)</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>DIM_BORROWERS</strong> — ~1,500 borrowers with FICO, state, channel, segment.</li>
+              <li><strong>DIM_PRODUCTS</strong> — loan products with term, base APR, category.</li>
+              <li><strong>FACT_APPLICATIONS</strong> — ~2,800 applications with status, decision reason, channel.</li>
+              <li><strong>FACT_LOANS</strong> — ~1,700 funded loans with origination date, balance, APR, vintage.</li>
+              <li><strong>FACT_PAYMENTS</strong> — ~28k payment records with DPD, status, amount.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="data-title">
+      <div class="section-header">
+        <h2 id="data-title" class="section-title">Seeded data, not random noise</h2>
+        <p class="section-subtitle">
+          The data is modeled, not random. Patterns are baked in so the harder challenges don't just return rows — they reveal a story a real lending analyst would recognize.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">What's modeled in</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>FICO drives default probability.</strong> Lower bands carry higher charge-off rates and higher APRs.</li>
+              <li><strong>Channel funnel skew.</strong> Branch and Phone approve at higher rates than Online.</li>
+              <li><strong>Vintage credit-loosening event.</strong> The 2024-Q3 cohort has a 2.2× delinquency multiplier baked in; Q4 2024 carries a milder bump.</li>
+              <li><strong>Repeat-borrower behavior.</strong> Cross-sell signal is discoverable in the application history.</li>
+              <li><strong>Seeded RNG.</strong> Same seed every load — every visitor sees the same data and the same discoverable patterns.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Why it matters</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Challenge 01 (vintage delinquency drift) returns a real curve — the Q3 spike is visible, not invented.</li>
+              <li>Risk-tier and pricing challenges align with how an underwriter actually thinks about FICO bands.</li>
+              <li>Funnel challenges expose channel mix exactly the way a portfolio manager would investigate it.</li>
+              <li>Reproducibility means a recruiter and I can talk about the same numbers without setup.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="challenges-title">
+      <div class="section-header">
+        <h2 id="challenges-title" class="section-title">Twenty-one challenges across six categories</h2>
+        <p class="section-subtitle">
+          Each prompt has a starter template, a full solution behind a "Show solution" button, and a written insight explaining why the result matters in real lending operations.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Categories</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Risk</strong> — delinquency, charge-off, FICO band performance, loss curves.</li>
+              <li><strong>Funnel</strong> — application-to-funding conversion, channel mix, drop-off attribution.</li>
+              <li><strong>Portfolio</strong> — balance distribution, concentration, mix shift over time.</li>
+              <li><strong>Behavior</strong> — repeat-borrower patterns, cross-sell signal, payment behavior.</li>
+              <li><strong>Vintage</strong> — cohort curves, vintage delinquency drift, age-of-loan analysis.</li>
+              <li><strong>Pricing</strong> — APR vs. risk-tier alignment, price-to-loss spread.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Difficulty tiers</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Easy</strong> — GROUP BY, CASE expressions, basic joins. Onboarding for the schema.</li>
+              <li><strong>Medium</strong> — multi-table joins, conditional aggregates, date math, CTEs.</li>
+              <li><strong>Hard</strong> — window functions (<code>ROW_NUMBER</code>, <code>LAG</code>), multi-CTE constructs, <code>JULIANDAY</code> math for vintage curves and DPD transition matrices. CECL-allowance and roll-rate forecasting patterns — not toy problems.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="ux-title">
+      <div class="section-header">
+        <h2 id="ux-title" class="section-title">The interaction layer</h2>
+        <p class="section-subtitle">
+          Pick a challenge, write or load SQL, hit Run. The result surface earns its keep through small touches that signal product care.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Result surface</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Table</strong> — right-aligned numerics, color-coded warnings on high delinquency rates.</li>
+              <li><strong>Chart</strong> — auto-detects whether to render a line or bar chart based on column types.</li>
+              <li><strong>Plan</strong> — runs <code>EXPLAIN QUERY PLAN</code>, shows the execution tree with color-coded <code>SCAN</code>/<code>SEARCH</code>/<code>USING INDEX</code> keywords plus an advisory note about whether the query is index-driven.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Side features</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>CSV export of any result.</li>
+              <li>Copy SQL to clipboard.</li>
+              <li>Click any table name in the schema sidebar to instantly preview it.</li>
+              <li>History panel persists every run to localStorage — nothing's lost between sessions.</li>
+              <li>"Show solution" reveals a vetted reference query when the challenge gets stuck.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="why-title">
+      <div class="section-header">
+        <h2 id="why-title" class="section-title">Why this works as a portfolio piece</h2>
+        <p class="section-subtitle">
+          It demonstrates four things at once that hiring managers care about — and it does it without asking the reviewer to spend ten minutes setting up an environment.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">What it signals</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Domain fluency</strong> — the schema, metrics, and seeded patterns are things a real lending analyst would recognize.</li>
+              <li><strong>SQL chops</strong> — the hard challenges are CECL-allowance and roll-rate forecasting patterns, not toy problems.</li>
+              <li><strong>Product polish</strong> — the design system, interactions, empty states, and small affordances all show care.</li>
+              <li><strong>Engineering judgment</strong> — zero backend, single file, deploys in 30 seconds, offline-cached after first load.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">What's next</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Expand the challenge set with stress-tested rate-shock and prepayment-curve prompts.</li>
+              <li>Add a "share my answer" link that encodes the user's SQL into the URL for review.</li>
+              <li>Surface a leaderboard of canonical solutions vs. user attempts (still client-only, still no backend).</li>
+              <li>Open the schema-and-seed pattern to other domains — collections recovery, fraud signal, servicing.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="cta-title">
+      <div class="contact-section">
+        <h2 id="cta-title" class="contact-title">Try the playground</h2>
+        <p class="contact-subtitle">
+          Open it, pick a challenge, hit Run. The whole point is that there's nothing to install and nothing to wait for.
+        </p>
+        <div class="hero-cta-row">
+          <a class="hero-cta hero-cta--primary" href="sql-playground.html">Open SQL Playground →</a>
+          <a class="hero-cta hero-cta--ghost" href="../index.html#work">Back to portfolio</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>SQL Playground · Lending KPIs · part of the Byheir Wise portfolio.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>
