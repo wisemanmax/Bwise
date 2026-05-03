@@ -69,10 +69,10 @@ Where to look when you want proof of a specific claim.
 | Banking PWA | iOS-style banking — biometric login, transfers, round-ups, push | `pages/banking.html` |
 
 ### External projects (live in production, separate repos)
-| Project | Stack | Link |
-|---|---|---|
-| IronLog Analytics Ecosystem | React 18, Vite, Supabase, Vercel, Cloudflare R2, PWA | [ironlog.space](https://ironlog.space) |
-| PartnerPulse | React 18, Vite, Recharts, Cloudflare Workers, Claude Sonnet | [partnerpulse.byheir.com](https://partnerpulse.byheir.com) |
+| Project | Stack | Live | Evidence in this repo |
+|---|---|---|---|
+| IronLog Analytics Ecosystem | React 18, Vite, Supabase, Vercel, Cloudflare R2, PWA | [ironlog.space](https://ironlog.space) | `pages/ironlog.html` |
+| PartnerPulse | React 18, Vite, Recharts, Cloudflare Workers, Claude Sonnet | [partnerpulse.byheir.com](https://partnerpulse.byheir.com) | — |
 
 ### Engineering practice pages
 | Topic | File |
@@ -92,7 +92,7 @@ Where to look when you want proof of a specific claim.
 | Power BI / Snowflake reporting across collections, fraud, compliance, servicing | Domain suites (above) + `pages/power-bi-dashboards.html` |
 | Reduced manual reporting effort by 60% via Python automation | `pages/the-builder.html` (validation/release flow) |
 | AI-augmented testing platform across six categories | `pages/the-builder.html`, `pages/ai-search.html` |
-| Full-stack work in Python / TypeScript / React | IronLog, PartnerPulse, `pages/refi-intelligence.html` |
+| Full-stack work in Python / TypeScript / React | `pages/ironlog.html` (IronLog evidence), PartnerPulse, `pages/refi-intelligence.html` |
 | IaC & CI/CD discipline for analytics tooling | `pages/cicd.html` |
 | Adoption / training / KPI standardization | `pages/case-study.html` (Operations Command Center) |
 
