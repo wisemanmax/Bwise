@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Hiring Managers · Resume Bullet → Repo Evidence · Byheir Wise</title>
+  <meta name="description" content="A hiring-manager view of the Byheir Wise portfolio: every resume claim mapped to where it can be verified in this repo, plus impact numbers with methodology notes.">
+  <link rel="stylesheet" href="../assets/style.css">
+
+<style id="demo-back-styles">
+.demo-back{position:sticky;top:0;z-index:999999;display:flex;align-items:center;gap:.6rem;padding:.55rem max(env(safe-area-inset-left),1rem);padding-top:max(env(safe-area-inset-top),.55rem);background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(15,23,42,.08);font:600 .85rem/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#0f172a}
+.demo-back a{display:inline-flex;align-items:center;gap:.4rem;color:#0f172a;text-decoration:none;padding:.3rem .7rem;border-radius:999px;transition:background .15s ease}
+.demo-back a:hover,.demo-back a:focus-visible{background:rgba(15,23,42,.08)}
+.demo-back__chev{font-size:1rem;line-height:1}
+.demo-back__sub{color:#64748b;font-weight:500;margin-inline-start:.4rem;border-inline-start:1px solid rgba(15,23,42,.15);padding-inline-start:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}
+@media (max-width:480px){.demo-back__sub{display:none}}
+@media (prefers-color-scheme:dark){.demo-back{background:rgba(15,23,42,.94);border-bottom-color:rgba(148,163,184,.18);color:#e2e8f0}.demo-back a{color:#e2e8f0}.demo-back a:hover,.demo-back a:focus-visible{background:rgba(148,163,184,.18)}.demo-back__sub{color:#94a3b8;border-inline-start-color:rgba(148,163,184,.3)}}
+@media print{.demo-back{display:none}}
+
+.evidence-table{width:100%;border-collapse:collapse;margin:0;font-size:.95rem}
+.evidence-table th,.evidence-table td{padding:.85rem 1rem;text-align:left;vertical-align:top;border-bottom:1px solid rgba(15,23,42,.08)}
+.evidence-table th{font-weight:600;background:rgba(15,23,42,.03);color:#0f172a}
+.evidence-table tbody tr:hover{background:rgba(102,126,234,.04)}
+.evidence-table code{font-size:.85em;background:rgba(15,23,42,.06);padding:.1rem .35rem;border-radius:4px}
+@media (prefers-color-scheme:dark){.evidence-table th,.evidence-table td{border-bottom-color:rgba(148,163,184,.18);color:#e2e8f0}.evidence-table th{background:rgba(148,163,184,.08);color:#e2e8f0}.evidence-table tbody tr:hover{background:rgba(102,126,234,.12)}.evidence-table code{background:rgba(148,163,184,.18)}}
+@media (max-width:640px){.evidence-table thead{display:none}.evidence-table tr{display:block;padding:.85rem 0;border-bottom:1px solid rgba(15,23,42,.08)}.evidence-table td{display:block;padding:.25rem 0;border:0}.evidence-table td::before{content:attr(data-label);display:block;font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-bottom:.15rem}}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:0}
+.kpi-card{background:linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08));border:1px solid rgba(102,126,234,.2);border-radius:12px;padding:1.25rem}
+.kpi-card__number{font-size:2rem;font-weight:700;color:#667eea;line-height:1.1;margin-bottom:.25rem}
+.kpi-card__label{font-size:.85rem;font-weight:600;color:#0f172a;margin-bottom:.5rem}
+.kpi-card__note{font-size:.78rem;color:#64748b;line-height:1.4}
+@media (prefers-color-scheme:dark){.kpi-card__label{color:#e2e8f0}.kpi-card__note{color:#94a3b8}}
+</style>
+</head>
+<body>
+<div class="demo-back" role="navigation" aria-label="Site navigation">
+  <a href="../index.html">
+    <span class="demo-back__chev" aria-hidden="true">←</span>
+    <span class="demo-back__label">Portfolio</span>
+  </a>
+  <span class="demo-back__sub">byheir.com · For hiring managers</span>
+</div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <nav class="top-nav" aria-label="Main navigation">
+      <div class="logo">Byheir Wise</div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
+        ☰
+      </button>
+      <ul class="nav-menu" id="primary-navigation">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#experience">Experience</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="for-hiring-managers.html" aria-current="page">For hiring managers</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero-section" aria-labelledby="hm-hero">
+      <div class="hero-inner">
+        <div class="hero-label">For hiring managers · 30-second scan</div>
+        <h1 id="hm-hero" class="hero-title">Find what you came for</h1>
+        <p class="hero-subtitle">Every resume claim, mapped to where it can be verified in this repo or on a live site. Plus impact numbers with methodology so you can read them critically.</p>
+        <div class="hero-cta-row">
+          <a class="hero-cta hero-cta--primary" href="../assets/byheir-wise-resume.pdf" download><span aria-hidden="true">↓</span> Download resume</a>
+          <a class="hero-cta hero-cta--ghost" href="mailto:byheirw@gmail.com">Email me</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="quickscan-title">
+      <div class="section-header">
+        <h2 id="quickscan-title" class="section-title">If you have 30 seconds</h2>
+        <p class="section-subtitle">
+          The headline numbers, with the source for each. Read the methodology section below before quoting any of these.
+        </p>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-card__number">60%</div>
+          <div class="kpi-card__label">Reduction in manual reporting effort</div>
+          <div class="kpi-card__note">Recurring data pulls, transformations, and report generation moved to Python automation. Methodology below.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">1,000+</div>
+          <div class="kpi-card__label">Business users supported</div>
+          <div class="kpi-card__note">Power BI &amp; SQL reporting across collections, fraud, compliance, servicing.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">7+ yrs</div>
+          <div class="kpi-card__label">Regulated fintech</div>
+          <div class="kpi-card__note">Sallie Mae Bank · April 2018–present · federally regulated student lending.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">6</div>
+          <div class="kpi-card__label">AI-generated validation categories</div>
+          <div class="kpi-card__note">The Builder generates Snowflake test cases across completeness, uniqueness, referential integrity, range/value, freshness, reconciliation.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">3</div>
+          <div class="kpi-card__label">Production PWAs on a unified backend</div>
+          <div class="kpi-card__note">IronLog, FinanceLog, NutritionLog · solo build, Supabase + Vercel + Cloudflare R2.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">21</div>
+          <div class="kpi-card__label">SQL challenges in the playground</div>
+          <div class="kpi-card__note">Snowflake-shaped lending schema, in-browser SQLite via WebAssembly. Try them: <a href="sql-playground.html">SQL Playground →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="map-title">
+      <div class="section-header">
+        <h2 id="map-title" class="section-title">Resume claim → where to verify it</h2>
+        <p class="section-subtitle">
+          One row per resume bullet. Click through to the page or live site that demonstrates the work.
+        </p>
+      </div>
+
+      <article class="experience-card" style="padding:0;overflow:hidden;">
+        <table class="evidence-table">
+          <thead>
+            <tr>
+              <th scope="col" style="width:55%;">Resume claim</th>
+              <th scope="col">Where to verify</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Claim">Own end-to-end Power BI &amp; SQL reporting across collections, fraud, compliance, servicing — supporting 1,000+ users.</td>
+              <td data-label="Verify">
+                <a href="power-bi-dashboards.html">Power BI Dashboards</a> ·
+                <a href="collections-toolkit.html">Collections</a> ·
+                <a href="fraud-risk.html">Fraud</a> ·
+                <a href="compliance-matrix.html">Compliance</a> ·
+                <a href="servicing-cexp.html">Servicing</a>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Write &amp; optimize advanced Snowflake SQL powering executive dashboards, reconciliation, and operational analytics.</td>
+              <td data-label="Verify">
+                <a href="sql-playground-case-study.html">SQL Playground case study</a> ·
+                <a href="sql-playground.html">Live playground</a> (21 challenges, window functions)
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Translate ambiguous reporting needs into scalable BI solutions, standardized KPI definitions, documented frameworks.</td>
+              <td data-label="Verify">
+                <a href="case-study.html">Operations Command Center case study</a> — KPI definitions, information hierarchy, decision log.
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Reduced manual reporting effort by 60% via Python automation.</td>
+              <td data-label="Verify">
+                <a href="the-builder.html">The Builder case study</a> — pipeline architecture &amp; release flow. Methodology in the section below.
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Built &amp; maintain data pipelines integrating Python, Snowflake, SQL — automated documentation &amp; QA workflows.</td>
+              <td data-label="Verify">
+                <a href="the-builder.html">The Builder</a> · <a href="cicd.html">CI/CD discipline</a> · <a href="sas-jobs.html">SAS jobs</a>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Designed an AI-augmented testing platform generating Snowflake test cases across six categories.</td>
+              <td data-label="Verify">
+                <a href="the-builder.html">The Builder</a> — six categories explicit: completeness, uniqueness, referential integrity, range/value, freshness, reconciliation.
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Ship full-stack engineering work — Python, TypeScript, React — bridging product gaps for internal stakeholders.</td>
+              <td data-label="Verify">
+                <a href="ironlog.html">IronLog evidence</a> · <a href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">PartnerPulse ↗</a> · <a href="refi-intelligence.html">Refi Intelligence</a>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Own Infrastructure-as-Code &amp; CI/CD discipline for analytics tooling.</td>
+              <td data-label="Verify">
+                <a href="cicd.html">CI/CD page</a> · branch-review &amp; merge-control patterns shown in <a href="the-builder.html">The Builder</a>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Drive internal adoption — communicate platform capabilities, train users, position BI as self-service.</td>
+              <td data-label="Verify">
+                <a href="education-overview.html">Education suite</a> (cohorts, modules, library) · <a href="case-study.html">Operations Command Center</a> rollout narrative
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Plan &amp; prioritize the reporting roadmap — communicate progress, risks, tradeoffs to business &amp; technical leadership.</td>
+              <td data-label="Verify">
+                Evident in case-study narratives: <a href="case-study.html">Operations Command Center</a>, <a href="the-builder.html">The Builder</a>, <a href="sql-playground-case-study.html">SQL Playground</a>.
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Maintain compliance with regulatory, data security, audit standards in federally regulated financial services.</td>
+              <td data-label="Verify">
+                <a href="compliance-matrix.html">Compliance matrix</a> · audit-trail design in <a href="the-builder.html">The Builder</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="container" aria-labelledby="methodology-title">
+      <div class="section-header">
+        <h2 id="methodology-title" class="section-title">How to read the impact numbers</h2>
+        <p class="section-subtitle">
+          One paragraph per number — what was measured, how, and what's intentionally not claimed.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">60% reduction in manual reporting effort</div>
+            <div class="card-date">Methodology</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>What:</strong> recurring data pulls, transformations, and report generation that previously consumed analyst hours each cycle.</li>
+              <li><strong>How measured:</strong> baseline analyst hours per reporting cycle before automation vs. analyst hours per cycle after — same scope, same outputs.</li>
+              <li><strong>Mechanism:</strong> Python automation of recurring SQL pulls and transforms; report generation triggered from the pipeline rather than hand-run.</li>
+              <li><strong>Not claimed:</strong> faster query performance, lower compute spend, or improved report accuracy — those are separate effects, not part of this number.</li>
+              <li><strong>Caveats:</strong> directional figure based on internal team measurement; not externally audited.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">1,000+ business users supported</div>
+            <div class="card-date">Methodology</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>What:</strong> distinct internal business users with access to Power BI / SQL reporting outputs I own end-to-end.</li>
+              <li><strong>Scope:</strong> across collections, fraud, compliance, and servicing domains.</li>
+              <li><strong>Not claimed:</strong> daily-active users — total addressable user base, not engagement.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Six AI-generated validation categories</div>
+            <div class="card-date">Methodology</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Categories:</strong> completeness, uniqueness, referential integrity, range/value, freshness, reconciliation.</li>
+              <li><strong>How they work:</strong> structured inputs describe the dataset; AI generates Snowflake test cases per category; tests run as part of the pipeline.</li>
+              <li><strong>Where to see it:</strong> <a href="the-builder.html">The Builder case study</a>.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Three-app PWA suite, solo</div>
+            <div class="card-date">Methodology</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>What:</strong> IronLog, FinanceLog, NutritionLog — three separate React/Vite PWAs sharing one Supabase backend.</li>
+              <li><strong>Solo:</strong> sole designer + engineer · concept → production · ongoing operator.</li>
+              <li><strong>Verifiable:</strong> visit <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space</a>, install the PWA, sign in across the apps with the same account.</li>
+              <li><strong>Architecture proof:</strong> <a href="ironlog.html">IronLog evidence page</a>.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!--
+      TODO (owner): when you're ready to add more concrete deltas, fill these in and unhide the section.
+      Anything you add should follow the methodology pattern above:
+        - What was measured (concretely, with units)
+        - How (baseline → after, same scope)
+        - Mechanism (what changed)
+        - Not claimed (what this number is NOT proof of)
+        - Caveats (audit posture, sample size, time window)
+      Candidates worth quantifying if you have the data:
+        - Reporting cycle time reduction (hours → minutes)
+        - QA cycles compressed (days → minutes) for The Builder
+        - Number of reports / dashboards owned
+        - Number of validated test cases generated
+        - Adoption metrics (new users, active users, time-to-first-report)
+        - Cost savings (compute, vendor, headcount-equivalent)
+    -->
+    <section class="container" aria-labelledby="more-deltas-title" hidden>
+      <div class="section-header">
+        <h2 id="more-deltas-title" class="section-title">More impact deltas</h2>
+      </div>
+      <article class="experience-card">
+        <div class="card-content">
+          <ul class="achievement-list">
+            <li>TODO — fill in additional anonymized KPI deltas with methodology.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="container" aria-labelledby="verify-title">
+      <div class="section-header">
+        <h2 id="verify-title" class="section-title">How to verify what's here</h2>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Inspect the work</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Open any case study above — they include problem framing, decisions, tradeoffs, and stack rationale, not just screenshots.</li>
+              <li>Try the live demos: <a href="sql-playground.html">SQL Playground</a> runs real SQL in your browser; <a href="refi-intelligence.html">Refi Intelligence</a> renders 5,000 synthetic apps with cohort + funnel analytics.</li>
+              <li>Visit external apps in production: <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a>, <a href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">partnerpulse.byheir.com ↗</a>.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Talk to me</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Email — <a href="mailto:byheirw@gmail.com">byheirw@gmail.com</a> — fastest path; happy to walk any of this through screen-share.</li>
+              <li>LinkedIn — <a href="https://www.linkedin.com/in/byheir-wise-976253265" target="_blank" rel="noopener noreferrer">byheir-wise ↗</a>.</li>
+              <li>Resume — <a href="../assets/byheir-wise-resume.pdf" download>download PDF</a>.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>For hiring managers · resume → repo evidence map · part of the Byheir Wise portfolio.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>

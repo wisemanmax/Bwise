@@ -4,6 +4,8 @@ Source for **[www.byheir.com](https://www.byheir.com)** — the portfolio of Byh
 
 Static site (HTML / CSS / vanilla JS) hosted on GitHub Pages with a custom domain via `CNAME`. No build step.
 
+> **Reviewing for a role?** Start at `pages/for-hiring-managers.html` ([live](https://www.byheir.com/pages/for-hiring-managers.html)). Every resume bullet is mapped to the page or live site that proves it, plus impact numbers with methodology.
+
 ---
 
 ## Quickstart
@@ -82,6 +84,11 @@ Where to look when you want proof of a specific claim.
 | Backend / mock APIs | `pages/backend.html`, `pages/mock-api.html` |
 | Compliance matrix | `pages/compliance-matrix.html` |
 | AI search | `pages/ai-search.html` |
+
+### For reviewers
+| Page | What it does | File |
+|---|---|---|
+| For hiring managers | Resume claim → repo evidence map; impact numbers with methodology | `pages/for-hiring-managers.html` |
 
 ---
 
