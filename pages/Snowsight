@@ -580,6 +580,28 @@ border-right: 1px solid var(–border-1) !important;
 .cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
 .cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
 .cm-s-default .cm-bracket { color: var(–text-2) !important; }
+/* Autocomplete dropdown (CodeMirror show-hint, themed for Snowsight dark) */
+.CodeMirror-hints {
+  background: var(–bg-2) !important;
+  border: 1px solid var(–border-2) !important;
+  border-radius: var(–radius-md) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45) !important;
+  padding: 4px 0 !important;
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace !important;
+  font-size: 12.5px !important;
+  max-height: 280px !important;
+  z-index: 200 !important;
+}
+.CodeMirror-hint {
+  color: var(–text-1) !important;
+  padding: 4px 12px !important;
+  white-space: nowrap !important;
+}
+li.CodeMirror-hint-active {
+  background: var(–surface-active) !important;
+  color: var(–sf-blue) !important;
+}
+
 .cm-statement-active {
 background: rgba(41, 181, 232, 0.06);
 border-left: 2px solid var(–sf-blue);
@@ -2968,6 +2990,21 @@ function renderWorksheetList() {
 
 // ---------- Editor ----------
 let editor = null;
+
+// Build a CodeMirror sql-hint table map from SCHEMA_META so autocomplete
+// surfaces real table and column names. Lower-cased to match DDL.
+function buildHintTables() {
+  const tables = {};
+  for (const db of SCHEMA_META.databases) {
+    for (const sc of db.schemas) {
+      for (const t of sc.tables) {
+        tables[t.name.toLowerCase()] = t.columns.map(c => c[0].toLowerCase());
+      }
+    }
+  }
+  return tables;
+}
+
 function initEditor() {
   const ta = $('#editor');
   editor = CodeMirror.fromTextArea(ta, {
@@ -2979,6 +3016,10 @@ function initEditor() {
     indentUnit: 2,
     smartIndent: true,
     tabSize: 2,
+    hintOptions: {
+      tables: buildHintTables(),
+      completeSingle: false
+    },
     extraKeys: {
       'Cmd-Enter':        () => runQuery(false),
       'Ctrl-Enter':       () => runQuery(false),
@@ -2988,6 +3029,16 @@ function initEditor() {
       'Ctrl-/':           'toggleComment',
       'Ctrl-Space':       'autocomplete'
     }
+  });
+  // Live autocomplete: pop hints as the user types a word character or `.`
+  // — but stay quiet inside string literals and comments.
+  editor.on('inputRead', (cm, change) => {
+    if (!change || !change.text || !change.text[0]) return;
+    const ch = change.text[0];
+    if (!/^[\w.]$/.test(ch)) return;
+    const tok = cm.getTokenAt(cm.getCursor());
+    if (tok && (tok.type === 'string' || tok.type === 'comment')) return;
+    cm.showHint({ completeSingle: false });
   });
   editor.on('change', debounce(() => {
     const ws = state.worksheets[state.activeWsId];
@@ -3639,17 +3690,37 @@ function copyCsv() {
 }
 
 // ---------- Format SQL (minimal) ----------
-function formatSql() {
+// Lazy-load sql-formatter only when the user clicks Format. Cached after first use.
+let _sqlFormatterPromise = null;
+function loadSqlFormatter() {
+  if (!_sqlFormatterPromise) {
+    _sqlFormatterPromise = import('https://cdn.jsdelivr.net/npm/sql-formatter@15/+esm');
+  }
+  return _sqlFormatterPromise;
+}
+
+async function formatSql() {
   if (!editor) return;
   const sql = editor.getValue();
-  const KW = ['SELECT','FROM','WHERE','GROUP BY','ORDER BY','HAVING','LIMIT','JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','INNER JOIN','OUTER JOIN','ON','AND','OR','UNION','UNION ALL','WITH','QUALIFY','PARTITION BY'];
-  let out = sql;
-  for (const k of KW) {
-    const re = new RegExp('(?<![A-Z_])' + k.replace(/\s/g, '\\s+') + '(?![A-Z_])', 'gi');
-    out = out.replace(re, '\n' + k.toUpperCase());
+  if (!sql.trim()) return;
+  let formatted;
+  try {
+    const mod = await loadSqlFormatter();
+    formatted = mod.format(sql, {
+      language: 'snowflake',
+      tabWidth: 2,
+      keywordCase: 'upper',
+      linesBetweenQueries: 2
+    });
+  } catch (err) {
+    toast(`Format unavailable: ${err.message}`, 'error');
+    return;
   }
-  out = out.replace(/,\s*\n?/g, ',\n  ').replace(/^\s*\n/gm, '').trim();
-  editor.setValue(out);
+  if (formatted === sql) {
+    toast('Already formatted', 'info');
+    return;
+  }
+  editor.setValue(formatted);
   toast('Formatted', 'success');
 }
 
