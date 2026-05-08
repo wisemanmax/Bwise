@@ -646,6 +646,141 @@ border-right: 1px solid var(–border-1) !important;
 .cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
 .cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
 .cm-s-default .cm-bracket { color: var(–text-2) !important; }
+/* ===== Notebook full-page view (Phase 3.1) ===== */
+.notebook-view {
+  background: var(–bg-0);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.nb-toolbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 28px;
+  border-bottom: 1px solid var(–border-1);
+}
+.nb-toolbar h2 {
+  font-size: 15px; font-weight: 600; color: var(–text-1);
+  letter-spacing: -0.01em;
+}
+.nb-meta { font-size: 11.5px; color: var(–text-3); }
+.nb-spacer { flex: 1; }
+.nb-toolbar .btn { height: 30px; padding: 0 12px; font-size: 12px; }
+
+.nb-cells {
+  flex: 1; overflow-y: auto;
+  padding: 18px 28px 80px;
+}
+.nb-cell {
+  background: var(–bg-1);
+  border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: border-color 120ms;
+}
+.nb-cell:focus-within { border-color: var(–sf-blue); }
+.nb-cell-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(–border-1);
+  background: var(–bg-2);
+  font-size: 11px;
+}
+.nb-type {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.nb-type.sql { color: var(–sf-blue); background: rgba(41,181,232,0.12); }
+.nb-type.markdown { color: var(–purple); background: rgba(176,136,249,0.12); }
+.nb-cell-head .actions {
+  margin-left: auto;
+  display: flex; gap: 2px;
+  opacity: 0; transition: opacity 80ms;
+}
+.nb-cell:hover .nb-cell-head .actions,
+.nb-cell:focus-within .nb-cell-head .actions { opacity: 1; }
+.nb-cell-head .icon-btn { width: 26px; height: 26px; }
+.nb-cell-head .icon-btn svg { width: 12px; height: 12px; }
+
+.nb-edit {
+  width: 100%;
+  background: var(–bg-1);
+  color: var(–text-1);
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  border: none; outline: none;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 64px;
+  white-space: pre;
+  overflow-x: auto;
+}
+.nb-cell.markdown .nb-edit {
+  font-family: ‘Inter’, sans-serif;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+.nb-cell-output {
+  border-top: 1px solid var(–border-1);
+  background: var(–bg-0);
+  padding: 0;
+}
+.nb-cell.markdown .nb-cell-output {
+  padding: 14px 18px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(–text-1);
+}
+.nb-cell.markdown .nb-cell-output h1 { font-size: 22px; font-weight: 600; margin: 4px 0 10px; letter-spacing: -0.01em; }
+.nb-cell.markdown .nb-cell-output h2 { font-size: 18px; font-weight: 600; margin: 14px 0 8px; }
+.nb-cell.markdown .nb-cell-output h3 { font-size: 15px; font-weight: 600; margin: 12px 0 6px; }
+.nb-cell.markdown .nb-cell-output p { margin: 6px 0 10px; color: var(–text-1); }
+.nb-cell.markdown .nb-cell-output a { color: var(–sf-blue); }
+.nb-cell.markdown .nb-cell-output code { background: var(–bg-2); padding: 1px 5px; border-radius: 3px; font-family: ‘JetBrains Mono’, monospace; font-size: 11.5px; }
+.nb-cell.markdown .nb-cell-output pre { background: var(–bg-2); padding: 12px 14px; border-radius: var(–radius-sm); overflow-x: auto; font-family: ‘JetBrains Mono’, monospace; font-size: 12px; margin: 8px 0; }
+.nb-cell.markdown .nb-cell-output ul, .nb-cell.markdown .nb-cell-output ol { padding-left: 22px; margin: 4px 0 10px; }
+.nb-cell.markdown .nb-cell-output li { margin: 2px 0; }
+.nb-cell.markdown .nb-cell-output strong { color: var(–text-1); font-weight: 600; }
+.nb-cell.markdown .nb-cell-output em { color: var(–text-1); font-style: italic; }
+.nb-cell.markdown .nb-cell-output blockquote {
+  border-left: 3px solid var(–sf-blue);
+  padding: 4px 12px; margin: 8px 0; color: var(–text-2);
+}
+
+.nb-cell.sql .nb-cell-output { padding: 0; }
+.nb-cell-status {
+  padding: 6px 14px;
+  font-size: 11px; color: var(–text-3);
+  font-family: ‘JetBrains Mono’, monospace;
+  border-bottom: 1px solid var(–border-1);
+}
+.nb-cell-status.error { color: #FF7A8C; white-space: pre-wrap; }
+.nb-cell-table-wrap { max-height: 360px; overflow: auto; }
+
+.nb-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(–text-3);
+  font-size: 13px;
+}
+.nb-add-bar {
+  display: flex; justify-content: center; gap: 8px;
+  padding: 8px 0;
+}
+.nb-add-bar .btn { height: 28px; font-size: 11.5px; }
+
+@media (max-width: 768px) {
+  .nb-toolbar { padding: 10px 14px; flex-wrap: wrap; }
+  .nb-cells { padding: 12px 14px 80px; }
+}
+
 /* ===== Admin full-page view (Phase 2.5) ===== */
 .admin-view {
   background: var(–bg-0);
@@ -1984,6 +2119,9 @@ background-clip: content-box;
         <button class="icon-btn" title="New folder" id="newFolderBtn">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5A1.5 1.5 0 013.5 3h3l1.5 1.5h4.5A1.5 1.5 0 0114 6v5.5A1.5 1.5 0 0112.5 13h-9A1.5 1.5 0 012 11.5v-7z"/><path d="M8 7v4M6 9h4" stroke-linecap="round"/></svg>
         </button>
+        <button class="icon-btn" title="New notebook" id="newNotebookBtn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><path d="M5 2.5v11M5 6h8M5 10h8" stroke-linecap="round"/></svg>
+        </button>
         <button class="icon-btn" title="New worksheet" id="newWsBtn2">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>
         </button>
@@ -2085,6 +2223,18 @@ background-clip: content-box;
   </div>
 
 </main>
+
+<section class="notebook-view" id="notebookView" hidden>
+  <div class="nb-toolbar">
+    <h2 id="nbTitle">Notebook</h2>
+    <span class="nb-meta" id="nbMeta"></span>
+    <div class="nb-spacer"></div>
+    <button class="btn" id="nbAddMdBtn" title="Add Markdown cell">+ Markdown</button>
+    <button class="btn" id="nbAddSqlBtn" title="Add SQL cell">+ SQL</button>
+    <button class="btn primary" id="nbRunAllBtn" title="Run every SQL cell top-to-bottom">Run all</button>
+  </div>
+  <div class="nb-cells" id="nbCells"></div>
+</section>
 
 <section class="admin-view" id="adminView" hidden>
   <div class="admin-header">
@@ -3479,6 +3629,7 @@ const ICON = {
   table:    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="3" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M2.5 9.5h11M6 3v10"/></svg>',
   view:     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z"/><circle cx="8" cy="8" r="2"/></svg>',
   worksheet:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2h7l3 3v9H3V2z"/><path d="M10 2v3h3M5 8h6M5 11h4"/></svg>',
+  notebook: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><path d="M5 2.5v11M5 6h8M5 10h8" stroke-linecap="round"/></svg>',
   caret:    '<svg viewBox="0 0 10 10" fill="currentColor"><path d="M3 2l4 3-4 3V2z"/></svg>'
 };
 function colTypeAbbr(t) {
@@ -3609,6 +3760,272 @@ function previewTable(dbName, schName, tblName) {
   const ws = newWorksheet(`Preview: ${tblName}`, sql);
   setActiveWorksheet(ws.id);
   setTimeout(() => runQuery(true), 100);
+}
+
+// ---------- Notebooks (Phase 3.1) ----------
+function activeNotebook() {
+  const ws = state.worksheets[state.activeWsId];
+  return ws && ws.mode === 'notebook' ? ws : null;
+}
+function nbNewCell(type) {
+  return { id: 'c_' + Math.random().toString(36).slice(2, 8), type, content: '' };
+}
+function nbAddCell(type, afterIdx) {
+  const nb = activeNotebook();
+  if (!nb) return;
+  const cell = nbNewCell(type);
+  if (typeof afterIdx === 'number') nb.cells.splice(afterIdx + 1, 0, cell);
+  else nb.cells.push(cell);
+  nb.updatedAt = Date.now();
+  saveState();
+  renderNotebookView();
+  // Focus the new cell's textarea
+  setTimeout(() => {
+    const ta = document.querySelector(`[data-cell-id="${cell.id}"] .nb-edit`);
+    if (ta) ta.focus();
+  }, 30);
+}
+function nbDeleteCell(cellId) {
+  const nb = activeNotebook();
+  if (!nb) return;
+  if (nb.cells.length === 1) {
+    toast('Notebook needs at least one cell', 'warn');
+    return;
+  }
+  if (!confirm('Delete this cell?')) return;
+  nb.cells = nb.cells.filter(c => c.id !== cellId);
+  nb.updatedAt = Date.now();
+  saveState();
+  renderNotebookView();
+}
+function nbMoveCell(cellId, dir) {
+  const nb = activeNotebook();
+  if (!nb) return;
+  const idx = nb.cells.findIndex(c => c.id === cellId);
+  if (idx < 0) return;
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= nb.cells.length) return;
+  const [c] = nb.cells.splice(idx, 1);
+  nb.cells.splice(newIdx, 0, c);
+  nb.updatedAt = Date.now();
+  saveState();
+  renderNotebookView();
+}
+function nbDuplicateCell(cellId) {
+  const nb = activeNotebook();
+  if (!nb) return;
+  const idx = nb.cells.findIndex(c => c.id === cellId);
+  if (idx < 0) return;
+  const src = nb.cells[idx];
+  nb.cells.splice(idx + 1, 0, { id: 'c_' + Math.random().toString(36).slice(2, 8), type: src.type, content: src.content });
+  nb.updatedAt = Date.now();
+  saveState();
+  renderNotebookView();
+}
+
+// Tiny inline Markdown renderer — no external dep. Handles headings,
+// bold/italic, inline code, fenced code, lists, links, blockquotes, paragraphs.
+// Good enough for notebook prose; not a full CommonMark implementation.
+function renderInlineMarkdown(md) {
+  if (md == null) return '';
+  // Escape HTML first
+  let s = String(md).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // Fenced code blocks (```...```), preserve content as-is
+  s = s.replace(/```([\s\S]*?)```/g, (_, body) => `<pre>${body.trim()}</pre>`);
+  // Headings
+  s = s.replace(/^###### (.+)$/gm, '<h6>$1</h6>');
+  s = s.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
+  s = s.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  s = s.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  s = s.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  s = s.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // Blockquotes
+  s = s.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  // Inline code (avoid touching content already inside <pre>)
+  s = s.replace(/(^|[^`])`([^`\n]+)`/g, '$1<code>$2</code>');
+  // Bold then italic (order matters)
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  // Links
+  s = s.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // Lists — convert consecutive "- " lines into a single <ul>
+  s = s.replace(/((?:^- .+(?:\n|$))+)/gm, block => {
+    const items = block.trim().split(/\n/).map(l => l.replace(/^- /, '').trim());
+    return '<ul>' + items.map(i => `<li>${i}</li>`).join('') + '</ul>';
+  });
+  // Paragraphs — wrap blocks of plain text separated by blank lines
+  const blocks = s.split(/\n{2,}/);
+  return blocks.map(b => {
+    if (/^\s*<(h\d|ul|ol|pre|blockquote|p)\b/.test(b)) return b;
+    if (!b.trim()) return '';
+    return `<p>${b.replace(/\n/g, '<br>')}</p>`;
+  }).join('\n');
+}
+
+function renderNotebookView() {
+  const nb = activeNotebook();
+  if (!nb) {
+    $('#nbCells').innerHTML = '<div class="nb-empty">No active notebook.</div>';
+    return;
+  }
+  $('#nbTitle').textContent = nb.name;
+  $('#nbMeta').textContent = `${nb.cells.length} cell${nb.cells.length === 1 ? '' : 's'}`;
+  const cellsEl = $('#nbCells');
+  cellsEl.innerHTML = '';
+  nb.cells.forEach((cell, idx) => cellsEl.appendChild(buildNbCell(cell, idx)));
+  // Trailing add bar so users can append without hovering between cells
+  cellsEl.appendChild(el('div', { class: 'nb-add-bar' },
+    el('button', { class: 'btn', onclick: () => nbAddCell('markdown') }, '+ Markdown'),
+    el('button', { class: 'btn', onclick: () => nbAddCell('sql') }, '+ SQL')
+  ));
+}
+
+function buildNbCell(cell, idx) {
+  const wrap = el('div', { class: `nb-cell ${cell.type}`, 'data-cell-id': cell.id });
+
+  const head = el('div', { class: 'nb-cell-head' });
+  head.appendChild(el('span', { class: `nb-type ${cell.type}` }, cell.type === 'sql' ? 'SQL' : 'Markdown'));
+  if (cell.type === 'sql') {
+    head.appendChild(el('button', {
+      class: 'btn primary', style: 'height:24px;padding:0 10px;font-size:11px;',
+      onclick: () => runNotebookCell(cell.id)
+    }, '▶ Run'));
+  }
+  const actions = el('span', { class: 'actions' });
+  actions.appendChild(el('button', { class: 'icon-btn', title: 'Move up',
+    onclick: () => nbMoveCell(cell.id, -1),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 10l4-4 4 4" stroke-linecap="round"/></svg>'
+  }));
+  actions.appendChild(el('button', { class: 'icon-btn', title: 'Move down',
+    onclick: () => nbMoveCell(cell.id, 1),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4" stroke-linecap="round"/></svg>'
+  }));
+  actions.appendChild(el('button', { class: 'icon-btn', title: 'Duplicate',
+    onclick: () => nbDuplicateCell(cell.id),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1"/><path d="M11 5V3a1 1 0 00-1-1H3a1 1 0 00-1 1v7a1 1 0 001 1h2"/></svg>'
+  }));
+  actions.appendChild(el('button', { class: 'icon-btn', title: 'Delete cell',
+    onclick: () => nbDeleteCell(cell.id),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h10M6 5V3h4v2M5 5l1 9h4l1-9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  }));
+  head.appendChild(actions);
+  wrap.appendChild(head);
+
+  const ta = el('textarea', {
+    class: 'nb-edit',
+    rows: cell.type === 'markdown' ? 4 : 5,
+    spellcheck: 'false',
+    placeholder: cell.type === 'markdown' ? 'Type Markdown here…' : 'Type SQL here…'
+  });
+  ta.value = cell.content;
+  ta.addEventListener('input', () => {
+    cell.content = ta.value;
+    const nb = activeNotebook();
+    if (nb) { nb.updatedAt = Date.now(); saveState(); }
+    if (cell.type === 'markdown') updateMarkdownPreview(wrap, ta.value);
+  });
+  ta.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      if (cell.type === 'sql') runNotebookCell(cell.id);
+      else updateMarkdownPreview(wrap, ta.value);
+    }
+  });
+  wrap.appendChild(ta);
+
+  const output = el('div', { class: 'nb-cell-output' });
+  if (cell.type === 'markdown') {
+    output.innerHTML = renderInlineMarkdown(cell.content);
+  }
+  wrap.appendChild(output);
+
+  return wrap;
+}
+
+function updateMarkdownPreview(cellWrap, md) {
+  const out = cellWrap.querySelector('.nb-cell-output');
+  if (out) out.innerHTML = renderInlineMarkdown(md);
+}
+
+async function runNotebookCell(cellId) {
+  const nb = activeNotebook();
+  if (!nb) return;
+  const cell = nb.cells.find(c => c.id === cellId);
+  if (!cell || cell.type !== 'sql') return;
+  if (!state.engine || !state.engine.ready) { toast('Warehouse warming up…', 'warn'); return; }
+
+  const wrap = document.querySelector(`[data-cell-id="${cellId}"]`);
+  if (!wrap) return;
+  let outEl = wrap.querySelector('.nb-cell-output');
+  outEl.innerHTML = '';
+  const status = el('div', { class: 'nb-cell-status' }, 'Running…');
+  outEl.appendChild(status);
+
+  const start = performance.now();
+  let translated;
+  try {
+    translated = translateSnowflake(cell.content, state.engine.kind);
+  } catch (err) {
+    status.classList.add('error');
+    status.textContent = `Translation error: ${err.message}`;
+    return;
+  }
+  const stmts = splitStatements(translated);
+  let lastResult = null;
+  try {
+    for (const s of stmts) {
+      const r = await state.engine.exec(s);
+      if (r && r.length) lastResult = r[r.length - 1];
+    }
+  } catch (err) {
+    status.classList.add('error');
+    status.textContent = err.message;
+    return;
+  }
+  const dur = performance.now() - start;
+  if (!lastResult || !lastResult.values) {
+    status.textContent = `Statement OK · ${formatDuration(dur)}`;
+    return;
+  }
+  const rows = lastResult.values.length;
+  status.textContent = `${formatNum(rows)} row${rows === 1 ? '' : 's'} · ${formatDuration(dur)}`;
+  const wrapTbl = el('div', { class: 'nb-cell-table-wrap' });
+  wrapTbl.appendChild(buildSimpleResultTable(lastResult));
+  outEl.appendChild(wrapTbl);
+}
+
+// Lightweight result-table renderer for notebook cells — reuses .result-table styling
+// but caps rows aggressively since we may have many cells in view.
+function buildSimpleResultTable(rs) {
+  const tbl = el('table', { class: 'result-table' });
+  const thead = el('thead');
+  const headRow = el('tr');
+  headRow.appendChild(el('th', { style: 'width: 40px;' }, '#'));
+  const colTypes = rs.columns.map((_, j) => inferColType(rs.values, j));
+  for (let j = 0; j < rs.columns.length; j++) {
+    headRow.appendChild(el('th', {}, rs.columns[j], el('span', { class: 'col-meta' }, colTypes[j])));
+  }
+  thead.appendChild(headRow);
+  tbl.appendChild(thead);
+  const tbody = el('tbody');
+  const max = Math.min(rs.values.length, 200);
+  for (let i = 0; i < max; i++) {
+    const tr = el('tr', { class: 'row-num' });
+    tr.appendChild(el('td', {}, String(i + 1)));
+    const row = rs.values[i];
+    for (let j = 0; j < rs.columns.length; j++) tr.appendChild(renderCell(row[j], colTypes[j]));
+    tbody.appendChild(tr);
+  }
+  tbl.appendChild(tbody);
+  return tbl;
+}
+
+async function runAllNotebookCells() {
+  const nb = activeNotebook();
+  if (!nb) return;
+  for (const c of nb.cells) {
+    if (c.type === 'sql') await runNotebookCell(c.id);
+  }
 }
 
 // ---------- Admin pages (Phase 2.5) ----------
@@ -3967,6 +4384,7 @@ function newWorksheet(name, sql) {
   const ws = {
     id,
     name: name || `New worksheet ${Object.keys(state.worksheets).length + 1}`,
+    mode: 'sql',
     sql: sql || '',
     createdAt: now,
     updatedAt: now
@@ -3977,9 +4395,39 @@ function newWorksheet(name, sql) {
   saveState();
   renderTabs();
   renderWorksheetList();
-  loadEditorFromActive();
+  routeActiveWorksheet();
   return ws;
 }
+
+// Notebook worksheet — same shape as a SQL worksheet but mode='notebook'
+// and a `cells` array of { id, type: 'sql' | 'markdown', content }.
+function newNotebook(name) {
+  const id = uid();
+  const now = Date.now();
+  const nbCount = Object.values(state.worksheets).filter(w => w.mode === 'notebook').length + 1;
+  const ws = {
+    id,
+    name: name || `Notebook ${nbCount}`,
+    mode: 'notebook',
+    cells: [
+      { id: 'c_' + Math.random().toString(36).slice(2, 8), type: 'markdown',
+        content: `# ${name || `Notebook ${nbCount}`}\n\nMix Markdown and SQL cells. Run each cell with **⌘↵** or the Run button.\n\n*Outputs render inline below each cell.*` },
+      { id: 'c_' + Math.random().toString(36).slice(2, 8), type: 'sql',
+        content: `-- Try editing me, then press ⌘↵\nSELECT c_mktsegment, COUNT(*) AS customers\nFROM customer\nGROUP BY 1\nORDER BY customers DESC;` }
+    ],
+    createdAt: now,
+    updatedAt: now
+  };
+  state.worksheets[id] = ws;
+  if (!state.worksheetOrder.includes(id)) state.worksheetOrder.push(id);
+  state.activeWsId = id;
+  saveState();
+  renderTabs();
+  renderWorksheetList();
+  routeActiveWorksheet();
+  return ws;
+}
+
 function setActiveWorksheet(id) {
   if (!state.worksheets[id]) return;
   if (!state.worksheetOrder.includes(id)) state.worksheetOrder.push(id);
@@ -3987,8 +4435,23 @@ function setActiveWorksheet(id) {
   saveState();
   renderTabs();
   renderWorksheetList();
-  loadEditorFromActive();
+  routeActiveWorksheet();
   renderResults();
+}
+
+// Route the currently-active worksheet to the right view + renderer.
+// SQL worksheets use the editor in #worksheetView; notebooks render in #notebookView.
+function routeActiveWorksheet() {
+  const ws = state.worksheets[state.activeWsId];
+  if (!ws) { loadEditorFromActive(); return; }
+  if (ws.mode === 'notebook') {
+    if (state.activeView !== 'notebook') switchView('notebook');
+    renderNotebookView();
+  } else {
+    // Switch back to worksheet view if currently on notebook (don't disturb other views like history/admin)
+    if (state.activeView === 'notebook') switchView('worksheet');
+    loadEditorFromActive();
+  }
 }
 function closeWorksheetTab(id) {
   if (!state.worksheets[id]) return;
@@ -4003,7 +4466,7 @@ function closeWorksheetTab(id) {
   saveState();
   renderTabs();
   renderWorksheetList();
-  loadEditorFromActive();
+  routeActiveWorksheet();
 }
 function renameWorksheet(id, newName) {
   if (!state.worksheets[id]) return;
@@ -4027,7 +4490,7 @@ function renderTabs() {
           if (name !== null) renameWorksheet(id, name);
         }
       },
-      el('span', { class: 'icon', html: ICON.worksheet }),
+      el('span', { class: 'icon', html: ws.mode === 'notebook' ? ICON.notebook : ICON.worksheet }),
       el('span', { class: 'name' }, ws.name),
       el('span', {
           class: 'close', title: 'Close tab',
@@ -4104,7 +4567,7 @@ function buildWorksheetItem(ws) {
       draggable: 'true',
       onclick: () => setActiveWorksheet(ws.id)
     },
-    el('span', { class: 'icon', html: ICON.worksheet }),
+    el('span', { class: 'icon', html: ws.mode === 'notebook' ? ICON.notebook : ICON.worksheet }),
     el('span', { class: 'label' }, ws.name),
     el('span', { class: 'meta' }, formatRelTime(ws.updatedAt))
   );
@@ -4985,20 +5448,22 @@ function addXLabels(svg, data, padL, w, H, padB, ns, xPos) {
 }
 
 // ---------- History modal ----------
-// ---------- View routing (worksheet ↔ history ↔ table-detail ↔ admin) ----------
+// ---------- View routing ----------
 function switchView(view) {
   state.activeView = view;
   $('#worksheetView').hidden    = view !== 'worksheet';
   $('#historyView').hidden      = view !== 'history';
   $('#tableDetailView').hidden  = view !== 'table-detail';
   $('#adminView').hidden        = view !== 'admin';
+  $('#notebookView').hidden     = view !== 'notebook';
   $$('.nav-tab').forEach(t => {
-    // Top nav highlights worksheet/history/admin; table-detail keeps Worksheets active visually.
-    const target = (view === 'table-detail') ? 'worksheet' : view;
+    // Notebook + table-detail are sub-routes of Worksheets; keep that nav-tab active.
+    const target = (view === 'table-detail' || view === 'notebook') ? 'worksheet' : view;
     t.classList.toggle('active', t.dataset.view === target);
   });
   if (view === 'history') renderHistoryPage();
   if (view === 'admin') renderAdminPage();
+  if (view === 'notebook') renderNotebookView();
 }
 
 // ---------- Query History page ----------
@@ -5416,7 +5881,7 @@ async function boot() {
   }
   renderTabs();
   renderWorksheetList();
-  loadEditorFromActive();
+  routeActiveWorksheet();
 
   wireUI();
 
@@ -5670,6 +6135,10 @@ function wireUI() {
   });
   $('#newWsBtn2').addEventListener('click', () => newWorksheet());
   $('#newFolderBtn').addEventListener('click', () => newFolder());
+  $('#newNotebookBtn').addEventListener('click', () => newNotebook());
+  $('#nbAddSqlBtn').addEventListener('click', () => nbAddCell('sql'));
+  $('#nbAddMdBtn').addEventListener('click', () => nbAddCell('markdown'));
+  $('#nbRunAllBtn').addEventListener('click', () => runAllNotebookCells());
 
   $('#refreshDbBtn').addEventListener('click', () => {
     renderTree();
