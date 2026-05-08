@@ -2026,8 +2026,64 @@ const ROW_COUNTS = {};
 // state.engine.kind; Node harness passes 'sqljs' or 'duckdb' explicitly.
 function translateSnowflake(sql, target) {
   target = target || 'sqljs';
+  // Shared first pass — Snowflake idioms that translate to portable SQL on both engines.
+  sql = applySharedRewrites(sql);
   if (target === 'duckdb') return translateForDuckDB(sql);
   return translateForSqljs(sql);
+}
+
+// Shared rewrites — work on both engines because the output is portable SQL.
+function applySharedRewrites(sql) {
+  let out = sql;
+  out = replaceFunc(out, 'STARTSWITH', a => a.length === 2 ? `(${a[0]} LIKE ${a[1]} || '%')` : null);
+  out = replaceFunc(out, 'ENDSWITH',   a => a.length === 2 ? `(${a[0]} LIKE '%' || ${a[1]})` : null);
+  out = replaceFunc(out, 'CONTAINS',   a => a.length === 2 ? `(${a[0]} LIKE '%' || ${a[1]} || '%')` : null);
+  // Snowflake's APPROX_COUNT_DISTINCT uses HLL; both engines also support it natively,
+  // but COUNT(DISTINCT) gives an exact answer everywhere with no portability surprises.
+  out = replaceFunc(out, 'APPROX_COUNT_DISTINCT', a => `COUNT(DISTINCT ${a[0]})`);
+  // RATIO_TO_REPORT(x) OVER (...) → ((x) * 1.0 / NULLIF(SUM(x) OVER (...), 0))
+  // Needs OVER-aware rewriting because the OVER clause must attach to SUM, not the wrapper.
+  out = rewriteRatioToReport(out);
+  return out;
+}
+
+// Walks RATIO_TO_REPORT(arg) OVER (...) pairs and rewrites them as a windowed ratio.
+function rewriteRatioToReport(sql) {
+  const re = /\bRATIO_TO_REPORT\s*\(/gi;
+  let result = '', lastIdx = 0, m;
+  while ((m = re.exec(sql)) !== null) {
+    const start = m.index;
+    let depth = 1, i = m.index + m[0].length;
+    while (i < sql.length && depth > 0) {
+      if (sql[i] === '(') depth++;
+      else if (sql[i] === ')') depth--;
+      i++;
+    }
+    if (depth !== 0) break;
+    const close = i - 1;
+    const arg = sql.slice(m.index + m[0].length, close).trim();
+    const after = sql.slice(close + 1);
+    const overM = /^\s*OVER\s*\(/i.exec(after);
+    if (!overM) {
+      // No OVER clause — leave as-is, will surface as an engine error
+      lastIdx = close + 1;
+      re.lastIndex = close + 1;
+      continue;
+    }
+    let j = close + 1 + overM[0].length, d2 = 1;
+    while (j < sql.length && d2 > 0) {
+      if (sql[j] === '(') d2++;
+      else if (sql[j] === ')') d2--;
+      j++;
+    }
+    const overClause = sql.slice(close + 1, j); // " OVER (...)"
+    const repl = `((${arg}) * 1.0 / NULLIF(SUM(${arg})${overClause}, 0))`;
+    result += sql.slice(lastIdx, start) + repl;
+    lastIdx = j;
+    re.lastIndex = j;
+  }
+  result += sql.slice(lastIdx);
+  return result;
 }
 
 function translateForSqljs(sql) {
@@ -2189,7 +2245,14 @@ function translateForDuckDB(sql) {
   // LEN → LENGTH (DuckDB has LENGTH; LEN is Snowflake)
   out = out.replace(/\bLEN\s*\(/gi, 'LENGTH(');
 
-  // ::TYPE, ILIKE, QUALIFY, IFNULL, LISTAGG, ARRAY_AGG, window fns — DuckDB native, no rewrite.
+  // Snowflake-only functions DuckDB names differently
+  out = replaceFunc(out, 'EDITDISTANCE', a => a.length >= 2 ? `levenshtein(${a[0]}, ${a[1]})` : null);
+  out = replaceFunc(out, 'REGEXP_LIKE',  a => a.length === 2 ? `regexp_matches(${a[0]}, ${a[1]})` : null);
+  out = replaceFunc(out, 'BITAND_AGG',   a => `bit_and(${a[0]})`);
+  out = replaceFunc(out, 'BITOR_AGG',    a => `bit_or(${a[0]})`);
+  out = replaceFunc(out, 'BITXOR_AGG',   a => `bit_xor(${a[0]})`);
+
+  // ::TYPE, ILIKE, QUALIFY, IFNULL, LISTAGG, ARRAY_AGG, MEDIAN, MODE, window fns — DuckDB native, no rewrite.
   return out;
 }
 
@@ -2662,6 +2725,29 @@ JOIN nation n   ON s.s_nationkey = n.n_nationkey
 QUALIFY ROW_NUMBER() OVER (PARTITION BY p.p_partkey ORDER BY ps.ps_supplycost) = 1
 ORDER BY p.p_partkey
 LIMIT 20;`
+  },
+  { id: 'startswith', tag: 'STRING', title: 'Customer Search with STARTSWITH', desc: 'Snowflake STARTSWITH / CONTAINS rewritten to portable LIKE.',
+    sql: `-- Customers whose address contains "Main" and whose phone starts with the area-code prefix "12"
+SELECT
+  c_name,
+  c_address,
+  c_phone,
+  c_mktsegment
+FROM customer
+WHERE STARTSWITH(c_phone, '12')
+  AND CONTAINS(c_address, 'Main')
+ORDER BY c_name
+LIMIT 25;`
+  },
+  { id: 'ratio', tag: 'WINDOW', title: 'Segment Revenue Share with RATIO_TO_REPORT', desc: 'Snowflake RATIO_TO_REPORT rewritten to a portable windowed ratio.',
+    sql: `-- Each market segment's share of total customer balance
+SELECT
+  c_mktsegment,
+  ROUND(SUM(c_acctbal), 2)                                     AS segment_balance,
+  ROUND(RATIO_TO_REPORT(SUM(c_acctbal)) OVER () * 100, 2)      AS pct_of_total
+FROM customer
+GROUP BY c_mktsegment
+ORDER BY pct_of_total DESC;`
   },
   { id: 'shipmode', tag: 'GROUPING', title: 'Ship Mode Performance', desc: 'On-time delivery rate by shipping mode.',
     sql: `-- On-time delivery rate by ship mode
