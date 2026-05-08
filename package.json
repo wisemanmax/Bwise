@@ -3,13 +3,14 @@
   "private": true,
   "description": "Dev tooling for byheir.com — site itself is static (no build step required for end users).",
   "scripts": {
-    "test": "node pages/Snowsight-test.js && node pages/Snowsight-engine-smoke.js",
+    "test": "node pages/Snowsight-test.js --engine=sqljs && node pages/Snowsight-test.js --engine=duckdb && node pages/Snowsight-engine-smoke.js",
     "test:snowsight": "node pages/Snowsight-test.js",
     "test:snowsight:sqljs": "node pages/Snowsight-test.js --engine=sqljs",
     "test:snowsight:duckdb": "node pages/Snowsight-test.js --engine=duckdb",
     "test:engine-smoke": "node pages/Snowsight-engine-smoke.js"
   },
   "devDependencies": {
+    "@duckdb/node-api": "^1.5.2-r.1",
     "sql.js": "^1.14.0"
   }
 }

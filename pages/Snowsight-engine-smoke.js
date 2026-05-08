@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /**
- * Engine adapter smoke test — Phase 0a guardrail.
+ * Engine adapter smoke test — guardrail for the createEngine block in
+ * pages/Snowsight. The main harness (Snowsight-test.js) only exercises
+ * the translator + data + TEMPLATES; this file extracts the engine
+ * adapter block alone, evaluates it, and exercises every public method.
  *
- * The main harness (Snowsight-test.js) extracts only PART 1 (translator +
- * data + TEMPLATES) from pages/Snowsight, so it cannot catch regressions in
- * the engine adapter that lives further down. This file extracts the
- * engine adapter block alone, evaluates it against npm sql.js, and
- * exercises every public method.
+ * sqljs path runs end-to-end against npm sql.js.
+ *
+ * duckdb path: the page's adapter calls a browser-only ESM import from
+ * jsDelivr, which can't run under Node. We verify the adapter shape
+ * (kind, ready, async exec/bulkInsert) and rejection paths only.
  *
  * Run: node pages/Snowsight-engine-smoke.js
  */
@@ -19,7 +22,8 @@ const vm = require('vm');
 
 const html = fs.readFileSync(path.join(__dirname, 'Snowsight'), 'utf8');
 
-// Pull just the engine adapter — anchored on banner comments so it's stable.
+// Pull the entire engine block — adapter factory + sub-builders + helpers.
+// Anchored on banner comment + the closing helper function.
 const m = html.match(/(\/\/ ---------- Engine adapter[\s\S]*?function selectedEngineKind\(\)[\s\S]*?\n\})/);
 if (!m) {
   console.error('Engine adapter block not found in pages/Snowsight.');
@@ -28,17 +32,21 @@ if (!m) {
 
 const engineCode = m[1] + `
 ;globalThis.createEngine = createEngine;
+;globalThis.createSqljsEngine = createSqljsEngine;
+;globalThis.createDuckDBEngine = createDuckDBEngine;
 ;globalThis.selectedEngineKind = selectedEngineKind;
 `;
 
 const initSqlJsNpm = require('sql.js');
 const sandbox = {
   console,
-  // Strip browser-only locateFile so the adapter works under Node.
+  // Strip browser-only locateFile so the sqljs adapter works under Node.
   initSqlJs: () => initSqlJsNpm(),
   window: { location: { search: '' } },
   URLSearchParams,
-  Set, Map, Date, JSON, Promise, Error, RegExp
+  // For the duckdb adapter — we don't actually call init(), so dynamic
+  // import never executes; nothing to stub.
+  Set, Map, Date, JSON, Promise, Error, RegExp, Blob: function () {}, Worker: function () {}, URL
 };
 sandbox.globalThis = sandbox;
 vm.createContext(sandbox);
@@ -53,41 +61,44 @@ const check = (name, ok, detail = '') => {
 };
 
 (async () => {
+  // ---------- Dispatcher ----------
   check('default engine kind is sqljs', selectedEngineKind() === 'sqljs');
-
-  try { createEngine('duckdb'); check('createEngine(duckdb) rejects', false); }
-  catch (e) { check('createEngine(duckdb) rejects', /not yet implemented/i.test(e.message)); }
-
   try { createEngine('bogus'); check('createEngine(bogus) rejects', false); }
   catch (e) { check('createEngine(bogus) rejects', /unknown engine/i.test(e.message)); }
 
-  const engine = createEngine('sqljs');
-  check('ready=false before init', engine.ready === false);
-  await engine.init();
-  check('ready=true after init', engine.ready === true);
-  check('kind=sqljs', engine.kind === 'sqljs');
+  // ---------- sqljs adapter (full end-to-end) ----------
+  const sq = createEngine('sqljs');
+  check('sqljs ready=false before init', sq.ready === false);
+  await sq.init();
+  check('sqljs ready=true after init', sq.ready === true);
+  check('sqljs kind=sqljs', sq.kind === 'sqljs');
 
-  engine.exec(`CREATE TABLE t (id INTEGER, name TEXT);`);
-  engine.bulkInsert('t', ['id', 'name'], [[1, 'a'], [2, 'b'], [3, 'c']]);
-  const rs = engine.exec(`SELECT COUNT(*) AS n FROM t;`);
-  const n = rs[0].values[0][0];
-  check('bulkInsert + exec roundtrip', n === 3, `got n=${n}`);
+  await sq.exec(`CREATE TABLE t (id INTEGER, name TEXT);`);
+  await sq.bulkInsert('t', ['id', 'name'], [[1, 'a'], [2, 'b'], [3, 'c']]);
+  const rs = await sq.exec(`SELECT COUNT(*) AS n FROM t;`);
+  check('sqljs bulkInsert + exec roundtrip', rs[0].values[0][0] === 3, `got n=${rs[0].values[0][0]}`);
 
-  // Empty bulkInsert is a no-op — must not error.
   let emptyOk = true;
-  try { engine.bulkInsert('t', ['id', 'name'], []); }
-  catch (_) { emptyOk = false; }
-  check('bulkInsert([]) is a no-op', emptyOk);
+  try { await sq.bulkInsert('t', ['id', 'name'], []); } catch (_) { emptyOk = false; }
+  check('sqljs bulkInsert([]) is a no-op', emptyOk);
 
-  // Result shape stays sql.js-compatible: Array<{columns, values}>.
-  const shape = engine.exec(`SELECT id, name FROM t ORDER BY id;`);
-  const shapeOk = Array.isArray(shape)
-    && shape.length === 1
-    && Array.isArray(shape[0].columns)
-    && Array.isArray(shape[0].values)
-    && shape[0].columns.join(',') === 'id,name'
-    && shape[0].values.length === 3;
-  check('result shape is sql.js-compatible', shapeOk);
+  const shape = await sq.exec(`SELECT id, name FROM t ORDER BY id;`);
+  const shapeOk = Array.isArray(shape) && shape.length === 1
+    && Array.isArray(shape[0].columns) && Array.isArray(shape[0].values)
+    && shape[0].columns.join(',') === 'id,name' && shape[0].values.length === 3;
+  check('sqljs result shape sql.js-compatible', shapeOk);
+
+  // ---------- duckdb adapter (shape only — init requires browser) ----------
+  const dk = createEngine('duckdb');
+  check('duckdb kind=duckdb', dk.kind === 'duckdb');
+  check('duckdb ready=false before init', dk.ready === false);
+  check('duckdb has async exec', typeof dk.exec === 'function');
+  check('duckdb has async bulkInsert', typeof dk.bulkInsert === 'function');
+  check('duckdb has init', typeof dk.init === 'function');
+  // Methods must return promises (engine.exec contract is async on both kinds).
+  const fakeProbe = dk.bulkInsert('t', ['x'], []);
+  check('duckdb bulkInsert([]) returns a Promise', fakeProbe && typeof fakeProbe.then === 'function');
+  await fakeProbe;
 
   console.log(`\n${pass} passed, ${fail} failed`);
   process.exit(fail === 0 ? 0 : 1);

@@ -41,6 +41,8 @@ Record big decisions here so the codebase stays coherent.
 - **2026-05-08:** Phase 0 split into 0a–0e to keep one architectural change in flight at a time. Build pipeline (0d) deferred until pain emerges; 3,726 lines in one file is currently fine.
 - **2026-05-08:** AI assistant (was 3.4) and OPFS cache (was 4.1) pulled forward ahead of original Phase 1 — highest wow-per-session, low complexity, work on either engine.
 - **2026-05-08:** Phase 1.3 (time travel), 1.4 (MERGE), 1.5 (COPY INTO) deferred until after Phase 2 ships. Deep semantics, low recruiter visibility.
+- **2026-05-08:** Phase 0a shipped — engine adapter, `?engine=` URL param, all call sites refactored, harness 12/12 + smoke 9/9. Tagged `phase-0a-complete`.
+- **2026-05-08:** Phase 0b shipped — DuckDB-WASM in browser via `@duckdb/duckdb-wasm` jsDelivr ESM, async `exec` + chunked-INSERT `bulkInsert`, Arrow→sql.js result normalization. New `translateForDuckDB` is shorter than `translateForSqljs` (DuckDB native: QUALIFY/ILIKE/::TYPE/IFNULL/DATEDIFF/DATE_TRUNC; still translated: IFF, NVL2, ZEROIFNULL, NULLIFZERO, DIV0, DATEADD, plus CAST-AS-DATE wrapping for VARCHAR date columns). Browser uses `@duckdb/duckdb-wasm` 1.29 over CDN; Node harness uses `@duckdb/node-api` to validate translator output. 12/12 on **both** engines, smoke 14/14. Tagged `phase-0b-complete`.
 - **2026-05-08:** Phase 2.3 (real query plan viz) gets an explicit off-ramp: if the EXPLAIN-parse session goes sideways, fall back to a static text plan and move on.
 - *(add entries as you make them)*
 

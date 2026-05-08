@@ -1840,8 +1840,16 @@ const SCHEMA_META = {
 };
 const ROW_COUNTS = {};
 
-// ---------- Snowflake → SQLite translator ----------
-function translateSnowflake(sql) {
+// ---------- Snowflake → engine translator ----------
+// Dispatches to the right backend translator. Browser caller passes
+// state.engine.kind; Node harness passes 'sqljs' or 'duckdb' explicitly.
+function translateSnowflake(sql, target) {
+  target = target || 'sqljs';
+  if (target === 'duckdb') return translateForDuckDB(sql);
+  return translateForSqljs(sql);
+}
+
+function translateForSqljs(sql) {
   let out = sql;
 
   // Remove fully-qualified prefixes "DB.SCHEMA.TABLE" → just "TABLE"
@@ -1921,6 +1929,86 @@ function translateSnowflake(sql) {
 
   // QUALIFY
   out = transformQualify(out);
+  return out;
+}
+
+// DuckDB-specific translator. DuckDB natively supports QUALIFY, ILIKE,
+// ::TYPE casts, IFNULL, DATEDIFF, DATE_TRUNC, ROW_NUMBER, etc., so this
+// path is much shorter than translateForSqljs. It still has to translate
+// Snowflake-only functions (IFF, NVL/NVL2, ZEROIFNULL, NULLIFZERO, DIV0)
+// and shape DATEADD into INTERVAL arithmetic, plus wrap TEXT-typed date
+// columns in CAST(... AS DATE) where DuckDB's binder is strict.
+function translateForDuckDB(sql) {
+  let out = sql;
+
+  // Strip fully-qualified prefixes — synthetic schema flattens DB.SCHEMA.TABLE
+  out = out.replace(/\b(SNOWFLAKE_SAMPLE_DATA|DEMO_DB)\s*\.\s*(\w+)\s*\.\s*(\w+)/gi, '$3');
+  out = out.replace(/\b(TPCH_SF1|PUBLIC)\s*\.\s*(\w+)/gi, '$2');
+
+  // IFF / IIF — Snowflake-only, run to fixpoint for nesting
+  for (let i = 0; i < 6; i++) {
+    const before = out;
+    out = replaceFunc(out, 'IFF', a => a.length === 3 ? `(CASE WHEN ${a[0]} THEN ${a[1]} ELSE ${a[2]} END)` : null);
+    out = replaceFunc(out, 'IIF', a => a.length === 3 ? `(CASE WHEN ${a[0]} THEN ${a[1]} ELSE ${a[2]} END)` : null);
+    if (out === before) break;
+  }
+
+  // Snowflake-only null helpers
+  out = replaceFunc(out, 'ZEROIFNULL', a => `COALESCE(${a[0]}, 0)`);
+  out = replaceFunc(out, 'NULLIFZERO', a => `NULLIF(${a[0]}, 0)`);
+  out = replaceFunc(out, 'NVL2', a => a.length === 3 ? `(CASE WHEN ${a[0]} IS NOT NULL THEN ${a[1]} ELSE ${a[2]} END)` : null);
+  out = replaceFunc(out, 'NVL', a => `COALESCE(${a.join(', ')})`);
+  out = replaceFunc(out, 'DIV0', a => a.length === 2 ? `(CASE WHEN (${a[1]}) = 0 THEN 0 ELSE (${a[0]}) / (${a[1]}) END)` : null);
+  out = replaceFunc(out, 'DIV0NULL', a => a.length === 2 ? `(CASE WHEN (${a[1]}) = 0 THEN NULL ELSE (${a[0]}) / (${a[1]}) END)` : null);
+
+  // DATEADD(unit, n, x) — DuckDB has no DATEADD function; use INTERVAL arithmetic.
+  // Cast input to DATE, output back to VARCHAR so downstream TEXT-column comparisons stay valid.
+  out = replaceFunc(out, 'DATEADD', a => {
+    if (a.length !== 3) return null;
+    let unit = a[0].replace(/['"]/g, '').toUpperCase();
+    if (/^(DAY|DAYS|D|DD)$/.test(unit)) unit = 'DAY';
+    else if (/^(MONTH|MONTHS|MM|MON)$/.test(unit)) unit = 'MONTH';
+    else if (/^(YEAR|YEARS|YYYY|YY|Y)$/.test(unit)) unit = 'YEAR';
+    else if (/^(WEEK|WEEKS|WK)$/.test(unit)) unit = 'WEEK';
+    else if (/^(HOUR|HOURS|HH|H)$/.test(unit)) unit = 'HOUR';
+    else if (/^(MINUTE|MINUTES|MI|MIN)$/.test(unit)) unit = 'MINUTE';
+    else unit = 'DAY';
+    return `((CAST(${a[2]} AS DATE) + INTERVAL (${a[1]}) ${unit})::VARCHAR)`;
+  });
+
+  // DATEDIFF(unit, a, b) — DuckDB's binder rejects VARCHAR args; wrap both in CAST AS DATE.
+  out = replaceFunc(out, 'DATEDIFF', a => {
+    if (a.length !== 3) return null;
+    return `DATEDIFF(${a[0]}, CAST(${a[1]} AS DATE), CAST(${a[2]} AS DATE))`;
+  });
+
+  // DATE_TRUNC(unit, x) — same VARCHAR issue; cast input + cast result back to VARCHAR.
+  out = replaceFunc(out, 'DATE_TRUNC', a => {
+    if (a.length !== 2) return null;
+    return `(DATE_TRUNC(${a[0]}, CAST(${a[1]} AS DATE))::VARCHAR)`;
+  });
+
+  // YEAR/MONTH/DAY/QUARTER as scalar functions on TEXT columns
+  out = replaceFunc(out, 'YEAR',    a => `EXTRACT(YEAR FROM CAST(${a[0]} AS DATE))`);
+  out = replaceFunc(out, 'MONTH',   a => `EXTRACT(MONTH FROM CAST(${a[0]} AS DATE))`);
+  out = replaceFunc(out, 'DAY',     a => `EXTRACT(DAY FROM CAST(${a[0]} AS DATE))`);
+  out = replaceFunc(out, 'QUARTER', a => `EXTRACT(QUARTER FROM CAST(${a[0]} AS DATE))`);
+
+  // TO_* casts — Snowflake-shape, mapped to DuckDB CAST
+  out = replaceFunc(out, 'TO_DATE', a => `CAST(${a[0]} AS DATE)`);
+  out = replaceFunc(out, 'TO_TIMESTAMP', a => `CAST(${a[0]} AS TIMESTAMP)`);
+  out = replaceFunc(out, 'TO_VARCHAR', a => a.length === 1 ? `CAST(${a[0]} AS VARCHAR)` : `STRFTIME(CAST(${a[0]} AS DATE), ${a[1]})`);
+  out = replaceFunc(out, 'TO_NUMBER', a => `CAST(${a[0]} AS DOUBLE)`);
+  out = replaceFunc(out, 'TRY_CAST',  a => `TRY_CAST(${a[0]} AS ${a[1] || 'VARCHAR'})`);
+
+  // CURRENT_DATE / CURRENT_TIMESTAMP — DuckDB native, but normalize the parenthesized form
+  out = out.replace(/\bCURRENT_DATE\s*\(\s*\)/gi, 'CURRENT_DATE');
+  out = out.replace(/\bCURRENT_TIMESTAMP\s*\(\s*\)/gi, 'CURRENT_TIMESTAMP');
+
+  // LEN → LENGTH (DuckDB has LENGTH; LEN is Snowflake)
+  out = out.replace(/\bLEN\s*\(/gi, 'LENGTH(');
+
+  // ::TYPE, ILIKE, QUALIFY, IFNULL, LISTAGG, ARRAY_AGG, window fns — DuckDB native, no rewrite.
   return out;
 }
 
@@ -2795,7 +2883,7 @@ async function runQuery(runAll = false) {
 
   let translated;
   try {
-    translated = translateSnowflake(sqlToRun);
+    translated = translateSnowflake(sqlToRun, state.engine.kind);
   } catch (err) {
     showError('Translation error: ' + err.message);
     afterRun();
@@ -2813,7 +2901,7 @@ async function runQuery(runAll = false) {
 
   try {
     for (let i = 0; i < stmts.length; i++) {
-      const r = state.engine.exec(stmts[i]);
+      const r = await state.engine.exec(stmts[i]);
       lastResult = r.length ? r[r.length - 1] : { columns: [], values: [] };
       lastSqlOriginal = allOriginalStmts[i] || stmts[i];
     }
@@ -3436,16 +3524,21 @@ function closeAllMenus() {
   $$('.menu').forEach(m => m.classList.remove('open'));
 }
 
-// ---------- Engine adapter (Phase 0a) ----------
-// Wraps the underlying SQL engine behind a stable interface. Phase 0b will
-// add a duckdb-wasm adapter without touching any call site outside this block.
-// Result shape is sql.js-native: Array<{columns: string[], values: any[][]}>.
+// ---------- Engine adapter (Phase 0a/0b) ----------
+// Wraps the underlying SQL engine behind a stable async interface. Both
+// adapters return result sets in the sql.js shape Array<{columns, values}>.
+// engine.kind is consumed by translateSnowflake(sql, target) so the caller
+// gets engine-appropriate SQL without deciding which translator to use.
 function createEngine(kind) {
-  if (kind === 'duckdb') throw new Error('engine=duckdb is not yet implemented (Phase 0b)');
-  if (kind !== 'sqljs') throw new Error(`Unknown engine: ${kind}. Valid: sqljs, duckdb.`);
+  if (kind === 'sqljs')  return createSqljsEngine();
+  if (kind === 'duckdb') return createDuckDBEngine();
+  throw new Error(`Unknown engine: ${kind}. Valid: sqljs, duckdb.`);
+}
+
+function createSqljsEngine() {
   let db = null;
   return {
-    kind,
+    kind: 'sqljs',
     get ready() { return db !== null; },
     async init() {
       const SQL = await initSqlJs({
@@ -3453,10 +3546,10 @@ function createEngine(kind) {
       });
       db = new SQL.Database();
     },
-    exec(sql) {
+    async exec(sql) {
       return db.exec(sql);
     },
-    bulkInsert(table, cols, rows) {
+    async bulkInsert(table, cols, rows) {
       if (!rows.length) return;
       const placeholders = '(' + cols.map(_ => '?').join(',') + ')';
       const stmt = db.prepare(`INSERT INTO ${table} (${cols.join(',')}) VALUES ${placeholders}`);
@@ -3465,6 +3558,92 @@ function createEngine(kind) {
       finally { stmt.free(); db.exec('COMMIT'); }
     }
   };
+}
+
+function createDuckDBEngine() {
+  const DUCKDB_VERSION = '1.29.0';
+  let conn = null;
+  return {
+    kind: 'duckdb',
+    get ready() { return conn !== null; },
+    async init() {
+      const duckdb = await import(`https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${DUCKDB_VERSION}/+esm`);
+      const bundles = duckdb.getJsDelivrBundles();
+      const bundle = await duckdb.selectBundle(bundles);
+      const workerUrl = URL.createObjectURL(
+        new Blob([`importScripts("${bundle.mainWorker}");`], { type: 'text/javascript' })
+      );
+      const worker = new Worker(workerUrl);
+      const logger = new duckdb.ConsoleLogger();
+      const db = new duckdb.AsyncDuckDB(logger, worker);
+      await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
+      URL.revokeObjectURL(workerUrl);
+      conn = await db.connect();
+    },
+    async exec(sql) {
+      const trimmed = String(sql).trim().replace(/;\s*$/, '');
+      if (!trimmed) return [];
+      const table = await conn.query(trimmed);
+      return arrowToSqljs(table);
+    },
+    async bulkInsert(table, cols, rows) {
+      if (!rows.length) return;
+      // Chunked INSERT VALUES — DuckDB-WASM's prepared-statement API differs
+      // enough from sql.js that batched literals are simpler and fast enough
+      // for the synthetic dataset (~36K rows total).
+      const CHUNK = 1000;
+      const colList = cols.join(', ');
+      for (let i = 0; i < rows.length; i += CHUNK) {
+        const chunk = rows.slice(i, i + CHUNK);
+        const valueRows = chunk.map(r =>
+          '(' + r.map(v => duckdbLiteral(v)).join(', ') + ')'
+        ).join(', ');
+        await conn.query(`INSERT INTO ${table} (${colList}) VALUES ${valueRows}`);
+      }
+    }
+  };
+}
+
+// Convert one JS scalar to a DuckDB SQL literal. Handles null/number/string;
+// strings are single-quoted with single-quote doubling.
+function duckdbLiteral(v) {
+  if (v === null || v === undefined) return 'NULL';
+  if (typeof v === 'number') return Number.isFinite(v) ? String(v) : 'NULL';
+  if (typeof v === 'boolean') return v ? 'TRUE' : 'FALSE';
+  return `'${String(v).replace(/'/g, "''")}'`;
+}
+
+// DuckDB Arrow Table → sql.js shape. Normalizes BigInt and Date so the
+// downstream UI (which was written for sql.js) doesn't need to know the
+// difference.
+function arrowToSqljs(table) {
+  if (!table || !table.schema) return [];
+  const columns = table.schema.fields.map(f => f.name);
+  const out = [];
+  for (const row of table.toArray()) {
+    out.push(columns.map(c => normalizeDuckValue(row[c])));
+  }
+  return [{ columns, values: out }];
+}
+
+function normalizeDuckValue(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'bigint') {
+    if (v >= Number.MIN_SAFE_INTEGER && v <= Number.MAX_SAFE_INTEGER) return Number(v);
+    return v.toString();
+  }
+  if (v instanceof Date) return v.toISOString().slice(0, 10);
+  if (typeof v === 'object') {
+    if (typeof v.days !== 'undefined') {
+      const days = Number(v.days);
+      return new Date(days * 86400000).toISOString().slice(0, 10);
+    }
+    if (typeof v.micros !== 'undefined') {
+      const micros = Number(v.micros);
+      return new Date(micros / 1000).toISOString().slice(0, 10);
+    }
+  }
+  return v;
 }
 
 function selectedEngineKind() {
@@ -3561,45 +3740,45 @@ async function boot() {
 async function loadTpchIntoDB(d) {
   const exec = sql => state.engine.exec(sql);
   const bulk = (t, c, r) => state.engine.bulkInsert(t, c, r);
-  exec(`CREATE TABLE region (r_regionkey INTEGER PRIMARY KEY, r_name TEXT, r_comment TEXT);`);
-  exec(`CREATE TABLE nation (n_nationkey INTEGER PRIMARY KEY, n_name TEXT, n_regionkey INTEGER, n_comment TEXT);`);
-  exec(`CREATE TABLE customer (c_custkey INTEGER PRIMARY KEY, c_name TEXT, c_address TEXT, c_nationkey INTEGER, c_phone TEXT, c_acctbal REAL, c_mktsegment TEXT, c_comment TEXT);`);
-  exec(`CREATE TABLE supplier (s_suppkey INTEGER PRIMARY KEY, s_name TEXT, s_address TEXT, s_nationkey INTEGER, s_phone TEXT, s_acctbal REAL, s_comment TEXT);`);
-  exec(`CREATE TABLE part (p_partkey INTEGER PRIMARY KEY, p_name TEXT, p_mfgr TEXT, p_brand TEXT, p_type TEXT, p_size INTEGER, p_container TEXT, p_retailprice REAL, p_comment TEXT);`);
-  exec(`CREATE TABLE partsupp (ps_partkey INTEGER, ps_suppkey INTEGER, ps_availqty INTEGER, ps_supplycost REAL, ps_comment TEXT, PRIMARY KEY (ps_partkey, ps_suppkey));`);
-  exec(`CREATE TABLE orders (o_orderkey INTEGER PRIMARY KEY, o_custkey INTEGER, o_orderstatus TEXT, o_totalprice REAL, o_orderdate TEXT, o_orderpriority TEXT, o_clerk TEXT, o_shippriority INTEGER, o_comment TEXT);`);
-  exec(`CREATE TABLE lineitem (l_orderkey INTEGER, l_partkey INTEGER, l_suppkey INTEGER, l_linenumber INTEGER, l_quantity INTEGER, l_extendedprice REAL, l_discount REAL, l_tax REAL, l_returnflag TEXT, l_linestatus TEXT, l_shipdate TEXT, l_commitdate TEXT, l_receiptdate TEXT, l_shipinstruct TEXT, l_shipmode TEXT, l_comment TEXT, PRIMARY KEY (l_orderkey, l_linenumber));`);
+  await exec(`CREATE TABLE region (r_regionkey INTEGER PRIMARY KEY, r_name TEXT, r_comment TEXT);`);
+  await exec(`CREATE TABLE nation (n_nationkey INTEGER PRIMARY KEY, n_name TEXT, n_regionkey INTEGER, n_comment TEXT);`);
+  await exec(`CREATE TABLE customer (c_custkey INTEGER PRIMARY KEY, c_name TEXT, c_address TEXT, c_nationkey INTEGER, c_phone TEXT, c_acctbal REAL, c_mktsegment TEXT, c_comment TEXT);`);
+  await exec(`CREATE TABLE supplier (s_suppkey INTEGER PRIMARY KEY, s_name TEXT, s_address TEXT, s_nationkey INTEGER, s_phone TEXT, s_acctbal REAL, s_comment TEXT);`);
+  await exec(`CREATE TABLE part (p_partkey INTEGER PRIMARY KEY, p_name TEXT, p_mfgr TEXT, p_brand TEXT, p_type TEXT, p_size INTEGER, p_container TEXT, p_retailprice REAL, p_comment TEXT);`);
+  await exec(`CREATE TABLE partsupp (ps_partkey INTEGER, ps_suppkey INTEGER, ps_availqty INTEGER, ps_supplycost REAL, ps_comment TEXT, PRIMARY KEY (ps_partkey, ps_suppkey));`);
+  await exec(`CREATE TABLE orders (o_orderkey INTEGER PRIMARY KEY, o_custkey INTEGER, o_orderstatus TEXT, o_totalprice REAL, o_orderdate TEXT, o_orderpriority TEXT, o_clerk TEXT, o_shippriority INTEGER, o_comment TEXT);`);
+  await exec(`CREATE TABLE lineitem (l_orderkey INTEGER, l_partkey INTEGER, l_suppkey INTEGER, l_linenumber INTEGER, l_quantity INTEGER, l_extendedprice REAL, l_discount REAL, l_tax REAL, l_returnflag TEXT, l_linestatus TEXT, l_shipdate TEXT, l_commitdate TEXT, l_receiptdate TEXT, l_shipinstruct TEXT, l_shipmode TEXT, l_comment TEXT, PRIMARY KEY (l_orderkey, l_linenumber));`);
 
-  bulk('region',   ['r_regionkey','r_name','r_comment'], d.region);
-  bulk('nation',   ['n_nationkey','n_name','n_regionkey','n_comment'], d.nation);
-  bulk('customer', ['c_custkey','c_name','c_address','c_nationkey','c_phone','c_acctbal','c_mktsegment','c_comment'], d.customer);
-  bulk('supplier', ['s_suppkey','s_name','s_address','s_nationkey','s_phone','s_acctbal','s_comment'], d.supplier);
-  bulk('part',     ['p_partkey','p_name','p_mfgr','p_brand','p_type','p_size','p_container','p_retailprice','p_comment'], d.part);
-  bulk('partsupp', ['ps_partkey','ps_suppkey','ps_availqty','ps_supplycost','ps_comment'], d.partsupp);
-  bulk('orders',   ['o_orderkey','o_custkey','o_orderstatus','o_totalprice','o_orderdate','o_orderpriority','o_clerk','o_shippriority','o_comment'], d.orders);
-  bulk('lineitem', ['l_orderkey','l_partkey','l_suppkey','l_linenumber','l_quantity','l_extendedprice','l_discount','l_tax','l_returnflag','l_linestatus','l_shipdate','l_commitdate','l_receiptdate','l_shipinstruct','l_shipmode','l_comment'], d.lineitem);
+  await bulk('region',   ['r_regionkey','r_name','r_comment'], d.region);
+  await bulk('nation',   ['n_nationkey','n_name','n_regionkey','n_comment'], d.nation);
+  await bulk('customer', ['c_custkey','c_name','c_address','c_nationkey','c_phone','c_acctbal','c_mktsegment','c_comment'], d.customer);
+  await bulk('supplier', ['s_suppkey','s_name','s_address','s_nationkey','s_phone','s_acctbal','s_comment'], d.supplier);
+  await bulk('part',     ['p_partkey','p_name','p_mfgr','p_brand','p_type','p_size','p_container','p_retailprice','p_comment'], d.part);
+  await bulk('partsupp', ['ps_partkey','ps_suppkey','ps_availqty','ps_supplycost','ps_comment'], d.partsupp);
+  await bulk('orders',   ['o_orderkey','o_custkey','o_orderstatus','o_totalprice','o_orderdate','o_orderpriority','o_clerk','o_shippriority','o_comment'], d.orders);
+  await bulk('lineitem', ['l_orderkey','l_partkey','l_suppkey','l_linenumber','l_quantity','l_extendedprice','l_discount','l_tax','l_returnflag','l_linestatus','l_shipdate','l_commitdate','l_receiptdate','l_shipinstruct','l_shipmode','l_comment'], d.lineitem);
 
-  // Indexes
-  exec(`CREATE INDEX idx_orders_custkey ON orders(o_custkey);`);
-  exec(`CREATE INDEX idx_orders_date ON orders(o_orderdate);`);
-  exec(`CREATE INDEX idx_lineitem_orderkey ON lineitem(l_orderkey);`);
-  exec(`CREATE INDEX idx_lineitem_partkey ON lineitem(l_partkey);`);
-  exec(`CREATE INDEX idx_lineitem_suppkey ON lineitem(l_suppkey);`);
-  exec(`CREATE INDEX idx_customer_nation ON customer(c_nationkey);`);
-  exec(`CREATE INDEX idx_supplier_nation ON supplier(s_nationkey);`);
+  // Indexes — sqljs supports them, DuckDB tolerates them.
+  await exec(`CREATE INDEX idx_orders_custkey ON orders(o_custkey);`);
+  await exec(`CREATE INDEX idx_orders_date ON orders(o_orderdate);`);
+  await exec(`CREATE INDEX idx_lineitem_orderkey ON lineitem(l_orderkey);`);
+  await exec(`CREATE INDEX idx_lineitem_partkey ON lineitem(l_partkey);`);
+  await exec(`CREATE INDEX idx_lineitem_suppkey ON lineitem(l_suppkey);`);
+  await exec(`CREATE INDEX idx_customer_nation ON customer(c_nationkey);`);
+  await exec(`CREATE INDEX idx_supplier_nation ON supplier(s_nationkey);`);
 }
 async function loadDemoIntoDB(d) {
   const exec = sql => state.engine.exec(sql);
   const bulk = (t, c, r) => state.engine.bulkInsert(t, c, r);
-  exec(`CREATE TABLE departments (dept_id INTEGER PRIMARY KEY, dept_name TEXT, location TEXT, budget REAL);`);
-  exec(`CREATE TABLE employees (employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, dept_id INTEGER, title TEXT, hire_date TEXT, salary REAL, manager_id INTEGER);`);
-  exec(`CREATE TABLE sales (sale_id INTEGER PRIMARY KEY, employee_id INTEGER, product TEXT, sale_date TEXT, amount REAL, status TEXT);`);
-  bulk('departments', ['dept_id','dept_name','location','budget'], d.departments);
-  bulk('employees',   ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'], d.employees);
-  bulk('sales',       ['sale_id','employee_id','product','sale_date','amount','status'], d.sales);
-  exec(`CREATE INDEX idx_emp_dept ON employees(dept_id);`);
-  exec(`CREATE INDEX idx_sales_emp ON sales(employee_id);`);
-  exec(`CREATE INDEX idx_sales_date ON sales(sale_date);`);
+  await exec(`CREATE TABLE departments (dept_id INTEGER PRIMARY KEY, dept_name TEXT, location TEXT, budget REAL);`);
+  await exec(`CREATE TABLE employees (employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, dept_id INTEGER, title TEXT, hire_date TEXT, salary REAL, manager_id INTEGER);`);
+  await exec(`CREATE TABLE sales (sale_id INTEGER PRIMARY KEY, employee_id INTEGER, product TEXT, sale_date TEXT, amount REAL, status TEXT);`);
+  await bulk('departments', ['dept_id','dept_name','location','budget'], d.departments);
+  await bulk('employees',   ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'], d.employees);
+  await bulk('sales',       ['sale_id','employee_id','product','sale_date','amount','status'], d.sales);
+  await exec(`CREATE INDEX idx_emp_dept ON employees(dept_id);`);
+  await exec(`CREATE INDEX idx_sales_emp ON sales(employee_id);`);
+  await exec(`CREATE INDEX idx_sales_date ON sales(sale_date);`);
 }
 
 // ---------- Wire UI ----------
