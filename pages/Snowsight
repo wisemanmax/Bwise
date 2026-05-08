@@ -1056,6 +1056,80 @@ table.result-table td.string { color: var(–text-1); }
 table.result-table td.date { color: #F5B544; }
 table.result-table td.bool { color: var(–purple); }
 
+/* Result toolbar (Phase 2.7) */
+.result-toolbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  background: var(–bg-1);
+  border-bottom: 1px solid var(–border-1);
+}
+.result-search {
+  background: var(–bg-2); border: 1px solid var(–border-2);
+  border-radius: var(–radius-md); color: var(–text-1);
+  font-size: 12px;
+  height: 28px; padding: 0 10px;
+  width: 240px; max-width: 100%;
+  outline: none; transition: border-color 120ms;
+}
+.result-search:focus { border-color: var(–sf-blue); }
+.result-search::placeholder { color: var(–text-4); }
+.result-filter-toggle {
+  height: 28px; padding: 0 10px;
+  font-size: 12px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.result-filter-toggle svg { width: 13px; height: 13px; }
+.result-filter-toggle.on {
+  background: rgba(41, 181, 232, 0.15) !important;
+  border-color: var(–sf-blue) !important;
+  color: var(–sf-blue) !important;
+}
+.result-clear { height: 28px; padding: 0 10px; font-size: 12px; }
+.result-count {
+  font-size: 11.5px; color: var(–text-3);
+  font-variant-numeric: tabular-nums;
+}
+.result-table-wrap {
+  flex: 1; overflow: auto; min-height: 0;
+}
+.result-footer {
+  padding: 8px 12px; font-size: 11.5px;
+  color: var(–text-3); border-top: 1px solid var(–border-1);
+  background: var(–bg-1); text-align: center;
+}
+/* Sortable headers */
+table.result-table th.col-sortable { cursor: pointer; user-select: none; }
+table.result-table th.col-sortable:hover { background: var(–bg-3); }
+table.result-table th.col-sortable.sorted { color: var(–sf-blue); }
+table.result-table th.col-sortable .col-sort {
+  margin-left: 6px; font-size: 9px; color: var(–sf-blue); width: 10px;
+  display: inline-block;
+}
+table.result-table th.col-sortable.sorted .col-sort { color: var(–sf-blue); }
+/* Per-column filter row */
+table.result-table thead tr.col-filter-row th {
+  background: var(–bg-1);
+  padding: 4px 6px;
+  text-transform: none; letter-spacing: 0; font-weight: 400;
+}
+table.result-table thead tr.col-filter-row th input {
+  width: 100%;
+  background: var(–bg-2); border: 1px solid var(–border-2);
+  border-radius: 4px; color: var(–text-1);
+  font-family: ‘JetBrains Mono’, monospace;
+  font-size: 11px; padding: 2px 6px;
+  height: 22px; outline: none;
+}
+table.result-table thead tr.col-filter-row th input:focus {
+  border-color: var(–sf-blue);
+}
+
+/* Pane-table needs to flex-column so toolbar/wrap/footer stack and only the wrap scrolls. */
+#pane-table.active { display: flex; flex-direction: column; min-height: 0; }
+#pane-table > .result-table-wrap { flex: 1 1 auto; }
+#pane-table > .result-toolbar,
+#pane-table > .result-footer { flex: 0 0 auto; }
+
 /* Query details panel */
 .query-details {
 padding: 16px 20px;
@@ -3730,6 +3804,7 @@ async function runQuery(runAll = false) {
     cacheHit: rng() > 0.7,
     profile: makeFakeProfile(dur)
   };
+  resetResultsView();
   state.chartCfg = detectChartConfig(state.results.columns, state.results.values);
 
   state.history.unshift({
@@ -3785,6 +3860,55 @@ function makeFakeProfile(dur) {
 }
 
 // ---------- Results renderer ----------
+// ---------- Result table view state (Phase 2.7) ----------
+function resetResultsView() {
+  state.resultsView = {
+    search: '',
+    perCol: {},        // { colIdx: query }
+    filtersOpen: false,
+    sortCol: null,
+    sortDir: 'asc'     // 'asc' | 'desc'
+  };
+}
+resetResultsView();
+
+// Apply current view (search + per-column filter + sort) to the loaded result rows.
+// Returns { rows: filtered/sorted rows, total: row count before filtering }.
+function getVisibleResultRows() {
+  const r = state.results;
+  if (!r) return { rows: [], total: 0 };
+  const v = state.resultsView;
+  let rows = r.values;
+  if (v.filtersOpen) {
+    for (const [idxStr, q] of Object.entries(v.perCol)) {
+      if (!q) continue;
+      const idx = +idxStr;
+      const lq = q.toLowerCase();
+      rows = rows.filter(row => {
+        const cell = row[idx];
+        return cell != null && String(cell).toLowerCase().includes(lq);
+      });
+    }
+  }
+  if (v.search) {
+    const lq = v.search.toLowerCase();
+    rows = rows.filter(row => row.some(c => c != null && String(c).toLowerCase().includes(lq)));
+  }
+  if (v.sortCol != null) {
+    const idx = v.sortCol;
+    const dirMul = v.sortDir === 'desc' ? -1 : 1;
+    rows = [...rows].sort((a, b) => {
+      const va = a[idx], vb = b[idx];
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * dirMul;
+      return String(va).localeCompare(String(vb), undefined, { numeric: true }) * dirMul;
+    });
+  }
+  return { rows, total: r.values.length };
+}
+
 function renderResults() {
   const r = state.results;
   const tablePane = $('#pane-table');
@@ -3806,41 +3930,159 @@ function renderResults() {
       <div class="hint">Statement executed but no rows matched</div>
     </div>`;
   } else {
-    const tbl = el('table', { class: 'result-table' });
-    const thead = el('thead');
-    const headRow = el('tr');
-    headRow.appendChild(el('th', { style: 'width: 50px;' }, '#'));
-    const colTypes = r.columns.map((_, j) => inferColType(r.values, j));
-    for (let j = 0; j < r.columns.length; j++) {
-      headRow.appendChild(el('th', {},
-        r.columns[j],
-        el('span', { class: 'col-meta' }, colTypes[j])
-      ));
-    }
-    thead.appendChild(headRow);
-    tbl.appendChild(thead);
-    const tbody = el('tbody');
-    const max = Math.min(r.rows, 1000);
-    for (let i = 0; i < max; i++) {
-      const tr = el('tr', { class: 'row-num' });
-      tr.appendChild(el('td', {}, String(i + 1)));
-      const row = r.values[i];
-      for (let j = 0; j < r.columns.length; j++) {
-        tr.appendChild(renderCell(row[j], colTypes[j]));
-      }
-      tbody.appendChild(tr);
-    }
-    tbl.appendChild(tbody);
     tablePane.innerHTML = '';
-    tablePane.appendChild(tbl);
-    if (r.rows > max) {
-      tablePane.appendChild(el('div', {
-        style: 'padding: 12px 16px; font-size: 12px; color: var(--text-3); border-top: 1px solid var(--border-1); background: var(--bg-2); text-align: center;'
-      }, `Showing first ${formatNum(max)} of ${formatNum(r.rows)} rows · use Export CSV for full result`));
-    }
+    tablePane.appendChild(buildResultsToolbar());
+    const wrap = el('div', { class: 'result-table-wrap' });
+    wrap.appendChild(buildResultsTable());
+    tablePane.appendChild(wrap);
+    tablePane.appendChild(buildResultsFooter());
+    updateResultsFooter();
   }
   renderQueryDetails();
   if (state.chartCfg) renderChart();
+}
+
+function buildResultsToolbar() {
+  const v = state.resultsView;
+  const bar = el('div', { class: 'result-toolbar' });
+  const search = el('input', {
+    class: 'result-search',
+    type: 'search',
+    placeholder: 'Search rows…',
+    value: v.search,
+    oninput: debounce(e => {
+      v.search = e.target.value;
+      rerenderResultsBody();
+    }, 120)
+  });
+  bar.appendChild(search);
+  const filterBtn = el('button', {
+    class: 'btn result-filter-toggle' + (v.filtersOpen ? ' on' : ''),
+    title: 'Toggle per-column filters',
+    onclick: () => {
+      v.filtersOpen = !v.filtersOpen;
+      if (!v.filtersOpen) v.perCol = {};
+      renderResults(); // full re-render so filter inputs row toggles
+    }
+  });
+  filterBtn.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M4 8h8M6 12h4" stroke-linecap="round"/></svg>Filter`;
+  bar.appendChild(filterBtn);
+  if (v.sortCol != null || v.search || Object.values(v.perCol).some(Boolean)) {
+    bar.appendChild(el('button', {
+      class: 'btn result-clear',
+      onclick: () => { resetResultsView(); renderResults(); }
+    }, 'Clear'));
+  }
+  bar.appendChild(el('div', { style: 'flex: 1;' }));
+  bar.appendChild(el('span', { class: 'result-count', id: 'resultCount' }));
+  return bar;
+}
+
+function buildResultsTable() {
+  const r = state.results;
+  const v = state.resultsView;
+  const tbl = el('table', { class: 'result-table' });
+  const thead = el('thead');
+  const headRow = el('tr');
+  headRow.appendChild(el('th', { class: 'col-rownum', style: 'width: 50px;' }, '#'));
+  const colTypes = r.columns.map((_, j) => inferColType(r.values, j));
+  for (let j = 0; j < r.columns.length; j++) {
+    const isSort = v.sortCol === j;
+    const indicator = isSort ? (v.sortDir === 'asc' ? '▲' : '▼') : '';
+    const th = el('th', {
+      class: 'col-sortable' + (isSort ? ' sorted' : ''),
+      'data-col-idx': String(j),
+      title: 'Click to sort'
+    },
+      el('span', { class: 'col-name' }, r.columns[j]),
+      el('span', { class: 'col-meta' }, colTypes[j]),
+      el('span', { class: 'col-sort' }, indicator)
+    );
+    th.addEventListener('click', () => {
+      if (v.sortCol !== j) { v.sortCol = j; v.sortDir = 'asc'; }
+      else if (v.sortDir === 'asc') { v.sortDir = 'desc'; }
+      else { v.sortCol = null; v.sortDir = 'asc'; }
+      renderResults();
+    });
+    headRow.appendChild(th);
+  }
+  thead.appendChild(headRow);
+
+  if (v.filtersOpen) {
+    const filterRow = el('tr', { class: 'col-filter-row' });
+    filterRow.appendChild(el('th', {}));
+    for (let j = 0; j < r.columns.length; j++) {
+      const inp = el('input', {
+        type: 'search',
+        placeholder: 'Filter…',
+        value: v.perCol[j] || '',
+        'data-col-idx': String(j),
+        oninput: debounce(e => {
+          v.perCol[j] = e.target.value;
+          rerenderResultsBody();
+        }, 120)
+      });
+      filterRow.appendChild(el('th', {}, inp));
+    }
+    thead.appendChild(filterRow);
+  }
+  tbl.appendChild(thead);
+  tbl.appendChild(buildResultsTbody(colTypes));
+  return tbl;
+}
+
+function buildResultsTbody(colTypes) {
+  const r = state.results;
+  const { rows: visible } = getVisibleResultRows();
+  const tbody = el('tbody');
+  const max = Math.min(visible.length, 1000);
+  for (let i = 0; i < max; i++) {
+    const tr = el('tr', { class: 'row-num' });
+    tr.appendChild(el('td', {}, String(i + 1)));
+    const row = visible[i];
+    for (let j = 0; j < r.columns.length; j++) {
+      tr.appendChild(renderCell(row[j], colTypes[j]));
+    }
+    tbody.appendChild(tr);
+  }
+  return tbody;
+}
+
+// Lighter-weight body re-render on filter/search input — keeps header focus + scroll.
+function rerenderResultsBody() {
+  const r = state.results;
+  if (!r) return;
+  const tbl = $('#pane-table .result-table');
+  if (!tbl) return;
+  const colTypes = r.columns.map((_, j) => inferColType(r.values, j));
+  const oldBody = tbl.querySelector('tbody');
+  const newBody = buildResultsTbody(colTypes);
+  if (oldBody) oldBody.replaceWith(newBody); else tbl.appendChild(newBody);
+  updateResultsFooter();
+}
+
+function buildResultsFooter() {
+  const wrap = el('div', { class: 'result-footer', id: 'resultFooter' });
+  return wrap;
+}
+
+function updateResultsFooter() {
+  const wrap = $('#resultFooter');
+  if (!wrap) return;
+  const r = state.results;
+  if (!r) { wrap.innerHTML = ''; return; }
+  const { rows: visible, total } = getVisibleResultRows();
+  const max = Math.min(visible.length, 1000);
+  const v = state.resultsView;
+  const filtered = v.search || Object.values(v.perCol).some(Boolean);
+  const parts = [];
+  if (filtered) parts.push(`Showing ${formatNum(max)} of ${formatNum(total)} rows (filtered)`);
+  else if (total > 1000) parts.push(`Showing first ${formatNum(max)} of ${formatNum(total)} rows · use Export CSV for full result`);
+  else parts.push(`${formatNum(max)} rows`);
+  wrap.textContent = parts.join(' · ');
+  // Also keep #resultCount in the toolbar in sync.
+  const countEl = $('#resultCount');
+  if (countEl) countEl.textContent = filtered ? `${formatNum(visible.length)} of ${formatNum(total)}` : `${formatNum(total)} rows`;
 }
 function inferColType(rows, colIdx) {
   for (const r of rows) {
