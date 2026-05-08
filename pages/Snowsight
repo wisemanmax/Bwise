@@ -580,6 +580,145 @@ border-right: 1px solid var(–border-1) !important;
 .cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
 .cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
 .cm-s-default .cm-bracket { color: var(–text-2) !important; }
+/* ===== Query History full-page view ===== */
+.history-view {
+  background: var(–bg-0);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.history-header { padding: 24px 28px 12px; }
+.history-header h2 {
+  font-size: 20px; font-weight: 600; color: var(–text-1);
+  letter-spacing: -0.01em; margin-bottom: 4px;
+}
+.history-sub { font-size: 12.5px; color: var(–text-3); }
+
+.history-filters {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 28px 14px;
+  border-bottom: 1px solid var(–border-1);
+  flex-wrap: wrap;
+}
+.history-search {
+  display: flex; align-items: center;
+  background: var(–bg-1); border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  padding: 0 10px;
+  height: 32px; min-width: 240px; flex: 1; max-width: 360px;
+}
+.history-search:focus-within { border-color: var(–sf-blue); }
+.history-search svg { width: 13px; height: 13px; color: var(–text-3); flex-shrink: 0; margin-right: 6px; }
+.history-search input {
+  background: none; border: none; outline: none; color: var(–text-1);
+  font-size: 13px; flex: 1; height: 100%;
+}
+.history-filters select {
+  background: var(–bg-1); border: 1px solid var(–border-2);
+  border-radius: var(–radius-md); color: var(–text-1);
+  font-size: 12.5px; height: 32px; padding: 0 26px 0 10px;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='%23A6B0BF'><path d='M2 4l3 3 3-3z'/></svg>");
+  background-repeat: no-repeat; background-position: right 8px center;
+}
+.history-filters select:hover { border-color: var(–border-3); }
+.history-filters select:focus { outline: none; border-color: var(–sf-blue); }
+.history-count { font-size: 11.5px; color: var(–text-3); margin-left: 4px; }
+.history-spacer { flex: 1; }
+
+.history-body { flex: 1; overflow: hidden; }
+.history-table-wrap {
+  height: 100%;
+  overflow: auto;
+  padding: 0 28px 28px;
+}
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  table-layout: fixed;
+}
+.history-table thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: var(–bg-0);
+  text-align: left;
+  font-weight: 500; color: var(–text-3);
+  font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(–border-2);
+}
+.history-table .hcol-status { width: 26px; padding-right: 0; }
+.history-table .hcol-num    { width: 90px; text-align: right; }
+.history-table .hcol-meta   { width: 130px; }
+.history-table tbody tr {
+  border-bottom: 1px solid var(–border-1);
+  cursor: pointer;
+  transition: background 80ms;
+}
+.history-table tbody tr:hover { background: var(–surface-hover); }
+.history-table tbody tr.expanded { background: var(–surface-active); }
+.history-table tbody td {
+  padding: 10px 12px;
+  color: var(–text-2);
+  vertical-align: top;
+}
+.history-table tbody td.cell-status { padding: 12px 4px 12px 12px; }
+.history-table tbody td.cell-num { text-align: right; font-variant-numeric: tabular-nums; color: var(–text-1); }
+.history-table tbody td.cell-sql {
+  color: var(–text-1);
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+  font-size: 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.h-status-icon { width: 14px; height: 14px; display: inline-block; }
+.h-status-icon.ok { color: var(–green); }
+.h-status-icon.err { color: #FF7A8C; }
+
+.history-detail-row td { padding: 0 !important; background: var(–bg-1); border-bottom: 1px solid var(–border-2); }
+.history-detail {
+  padding: 16px 28px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.history-detail .hd-meta {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  font-size: 11.5px; color: var(–text-3);
+}
+.history-detail .hd-meta strong { color: var(–text-1); font-weight: 500; }
+.history-detail pre {
+  background: var(–bg-0); border: 1px solid var(–border-1);
+  border-radius: var(–radius-md);
+  padding: 12px 14px;
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+  font-size: 12px; line-height: 1.55;
+  color: var(–text-1);
+  overflow-x: auto;
+  white-space: pre-wrap; word-break: break-word;
+}
+.history-detail .hd-error {
+  border-color: #FF7A8C;
+  color: #FF7A8C;
+}
+.history-detail .hd-actions { display: flex; gap: 8px; }
+
+.history-empty {
+  text-align: center;
+  color: var(–text-3);
+  padding: 60px 0;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .history-header { padding: 16px; }
+  .history-filters { padding: 8px 16px 12px; }
+  .history-search { min-width: 0; max-width: none; }
+  .history-table-wrap { padding: 0 16px 24px; }
+  .history-table .hcol-meta,
+  .history-table .hcol-num { width: auto; }
+  .history-table .hcol-meta { display: none; }
+  .history-table td.cell-meta { display: none; }
+}
+
 /* Autocomplete dropdown (CodeMirror show-hint, themed for Snowsight dark) */
 .CodeMirror-hints {
   background: var(–bg-2) !important;
@@ -1386,7 +1525,7 @@ background-clip: content-box;
       <span class="brand-text">Snowsight</span>
     </div>
     <nav class="nav-tabs">
-      <a class="nav-tab active">
+      <a class="nav-tab active" data-view="worksheet">
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm1.5.5v9h9v-9h-9zm1.5 2h6v1h-6v-1zm0 2h6v1h-6v-1zm0 2h4v1h-4v-1z"/></svg>
         Worksheets
       </a>
@@ -1398,7 +1537,7 @@ background-clip: content-box;
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h9A1.5 1.5 0 0114 3.5v9a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 12.5v-9zm2 .5v8h8V4H4z"/></svg>
         Data
       </a>
-      <a class="nav-tab">
+      <a class="nav-tab" data-view="history">
         <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v4l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Activity
       </a>
@@ -1466,7 +1605,7 @@ background-clip: content-box;
 </aside>
 
 <!-- Workspace -->
-<main class="workspace">
+<main class="workspace" id="worksheetView">
 
   <!-- Tabs -->
   <div class="tabs-bar" id="tabsBar"></div>
@@ -1557,6 +1696,53 @@ background-clip: content-box;
   </div>
 
 </main>
+
+<section class="history-view" id="historyView" hidden>
+  <div class="history-header">
+    <h2>Query History</h2>
+    <p class="history-sub">Every query you've run in this browser session, plus what came back. Stored locally — last 100 entries.</p>
+  </div>
+  <div class="history-filters">
+    <div class="history-search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3" stroke-linecap="round"/></svg>
+      <input type="search" id="histSearch" placeholder="Search query text…" />
+    </div>
+    <select id="histStatus">
+      <option value="">All status</option>
+      <option value="ok">Succeeded</option>
+      <option value="err">Failed</option>
+    </select>
+    <select id="histRange">
+      <option value="">All time</option>
+      <option value="1h">Last hour</option>
+      <option value="24h">Last 24 hours</option>
+      <option value="7d">Last 7 days</option>
+    </select>
+    <span id="histCount" class="history-count"></span>
+    <div class="history-spacer"></div>
+    <button class="btn" id="histClearAllBtn">Clear all</button>
+  </div>
+  <div class="history-body">
+    <div class="history-table-wrap">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th class="hcol-status"></th>
+            <th class="hcol-sql">Query</th>
+            <th class="hcol-num">Rows</th>
+            <th class="hcol-num">Duration</th>
+            <th class="hcol-num">Bytes</th>
+            <th class="hcol-meta">Warehouse</th>
+            <th class="hcol-meta">Time</th>
+          </tr>
+        </thead>
+        <tbody id="histTbody"></tbody>
+      </table>
+      <div id="histEmpty" class="history-empty" hidden>No queries match these filters yet.</div>
+    </div>
+  </div>
+</section>
+
 ```
 
   </div>
@@ -1591,23 +1777,7 @@ background-clip: content-box;
 <div class="menu" id="warehouseMenu"></div>
 <div class="menu" id="tabMenu"></div>
 
-<!-- History modal -->
-
-<div class="modal-backdrop" id="historyModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3>Query History</h3>
-      <button class="icon-btn" data-close>
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-    <div class="modal-body" id="historyBody"></div>
-    <div class="modal-foot">
-      <button class="btn" id="clearHistoryBtn">Clear All</button>
-      <button class="btn primary" data-close>Close</button>
-    </div>
-  </div>
-</div>
+<!-- (Query history is now a full-page view: see <section id="historyView">) -->
 
 <!-- Templates modal -->
 
@@ -3685,40 +3855,114 @@ function addXLabels(svg, data, padL, w, H, padB, ns, xPos) {
 }
 
 // ---------- History modal ----------
-function renderHistory() {
-  const body = $('#historyBody');
-  body.innerHTML = '';
-  if (!state.history.length) {
-    body.appendChild(el('div', {
-      style: 'text-align:center; color:var(--text-3); padding:32px 0; font-size:12.5px;'
-    }, 'No queries run yet'));
+// ---------- View routing (worksheet ↔ history page) ----------
+function switchView(view) {
+  state.activeView = view;
+  $('#worksheetView').hidden = view !== 'worksheet';
+  $('#historyView').hidden  = view !== 'history';
+  $$('.nav-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.view === view);
+  });
+  if (view === 'history') renderHistoryPage();
+}
+
+// ---------- Query History page ----------
+const HIST_FILTERS = { search: '', status: '', range: '' };
+let _histExpandedQid = null;
+
+function applyHistoryFilters(items) {
+  const q = HIST_FILTERS.search.trim().toLowerCase();
+  const st = HIST_FILTERS.status;
+  const range = HIST_FILTERS.range;
+  const now = Date.now();
+  const cutoff = range === '1h' ? now - 3600e3
+               : range === '24h' ? now - 86400e3
+               : range === '7d' ? now - 7 * 86400e3
+               : 0;
+  return items.filter(h => {
+    if (q && !(h.sql || '').toLowerCase().includes(q)) return false;
+    if (st === 'ok'  && !h.ok) return false;
+    if (st === 'err' && h.ok)  return false;
+    if (cutoff && h.ts < cutoff) return false;
+    return true;
+  });
+}
+
+function renderHistoryPage() {
+  const tbody = $('#histTbody');
+  const empty = $('#histEmpty');
+  const count = $('#histCount');
+  tbody.innerHTML = '';
+  const filtered = applyHistoryFilters(state.history);
+  count.textContent = `${filtered.length} of ${state.history.length}`;
+  if (!filtered.length) {
+    empty.hidden = false;
     return;
   }
-  for (const h of state.history) {
-    body.appendChild(el('div', {
-        class: 'history-item',
-        onclick: () => {
-          const ws = newWorksheet('From history', h.sql);
-          setActiveWorksheet(ws.id);
-          $('#historyModal').classList.remove('open');
-        }
-      },
-      el('div', { class: 'h-meta' },
-        el('span', { class: 'h-status ' + (h.ok ? 'ok' : 'err') },
-          el('span', { html: h.ok
-            ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><path d="M3 8l3.5 3.5L13 5"/></svg>'
-            : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><circle cx="8" cy="8" r="6"/><path d="M5 5l6 6M11 5l-6 6"/></svg>'
-          }),
-          h.ok ? `${formatNum(h.rows)} rows` : 'Failed'
-        ),
-        el('span', {}, formatDuration(h.duration)),
-        h.bytesScanned ? el('span', {}, formatBytes(h.bytesScanned)) : null,
-        el('span', {}, formatRelTime(h.ts)),
-        el('span', { style: 'margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:10px;' }, h.qid)
-      ),
-      el('div', { class: 'h-sql' }, h.sql)
-    ));
+  empty.hidden = true;
+  for (const h of filtered) {
+    tbody.appendChild(buildHistoryRow(h));
+    if (h.qid === _histExpandedQid) tbody.appendChild(buildHistoryDetail(h));
   }
+}
+
+function buildHistoryRow(h) {
+  const okIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" class="h-status-icon ok"><path d="M3 8l3.5 3.5L13 5"/></svg>';
+  const errIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" class="h-status-icon err"><circle cx="8" cy="8" r="6"/><path d="M5 5l6 6M11 5l-6 6"/></svg>';
+  const tr = el('tr', {
+    class: h.qid === _histExpandedQid ? 'expanded' : '',
+    onclick: () => {
+      _histExpandedQid = (_histExpandedQid === h.qid) ? null : h.qid;
+      renderHistoryPage();
+    }
+  });
+  tr.appendChild(el('td', { class: 'cell-status', html: h.ok ? okIcon : errIcon }));
+  tr.appendChild(el('td', { class: 'cell-sql', title: h.sql }, (h.sql || '').replace(/\s+/g, ' ').slice(0, 200)));
+  tr.appendChild(el('td', { class: 'cell-num' }, h.ok ? formatNum(h.rows) : '—'));
+  tr.appendChild(el('td', { class: 'cell-num' }, formatDuration(h.duration)));
+  tr.appendChild(el('td', { class: 'cell-num' }, h.bytesScanned ? formatBytes(h.bytesScanned) : '—'));
+  tr.appendChild(el('td', { class: 'cell-meta' }, h.warehouse || '—'));
+  tr.appendChild(el('td', { class: 'cell-meta', title: new Date(h.ts).toLocaleString() }, formatRelTime(h.ts)));
+  return tr;
+}
+
+function buildHistoryDetail(h) {
+  const tr = el('tr', { class: 'history-detail-row' });
+  const td = el('td', { colspan: '7' });
+  const detail = el('div', { class: 'history-detail' });
+  detail.appendChild(el('div', { class: 'hd-meta' },
+    el('span', {}, el('strong', {}, h.qid || ''), ' query id'),
+    el('span', {}, el('strong', {}, h.role || '—'), ' role'),
+    el('span', {}, el('strong', {}, h.warehouse || '—'), ' warehouse'),
+    el('span', {}, el('strong', {}, h.database || '—'), ' database'),
+    el('span', {}, el('strong', {}, h.schema || '—'), ' schema'),
+    el('span', {}, el('strong', {}, new Date(h.ts).toLocaleString()), ' ran at')
+  ));
+  detail.appendChild(el('pre', {}, h.sql || ''));
+  if (!h.ok && h.error) {
+    detail.appendChild(el('pre', { class: 'hd-error' }, h.error));
+  }
+  detail.appendChild(el('div', { class: 'hd-actions' },
+    el('button', {
+      class: 'btn primary',
+      onclick: e => {
+        e.stopPropagation();
+        const ws = newWorksheet('From history', h.sql);
+        setActiveWorksheet(ws.id);
+        switchView('worksheet');
+      }
+    }, 'Open in new worksheet'),
+    el('button', {
+      class: 'btn',
+      onclick: e => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(h.sql || '').then(() => toast('Query copied', 'success'));
+      }
+    }, 'Copy SQL')
+  ));
+  td.appendChild(detail);
+  tr.appendChild(td);
+  return tr;
 }
 
 // ---------- Templates modal ----------
@@ -4230,9 +4474,27 @@ function wireUI() {
   $('#runBtn').addEventListener('click', () => runQuery(false));
   $('#runAllBtn').addEventListener('click', () => runQuery(true));
   $('#formatBtn').addEventListener('click', formatSql);
-  $('#historyBtn').addEventListener('click', () => {
-    renderHistory();
-    $('#historyModal').classList.add('open');
+  $('#historyBtn').addEventListener('click', () => switchView('history'));
+  $$('.nav-tab[data-view]').forEach(t => {
+    t.addEventListener('click', e => { e.preventDefault(); switchView(t.dataset.view); });
+  });
+  $('#histSearch').addEventListener('input', debounce(e => {
+    HIST_FILTERS.search = e.target.value;
+    renderHistoryPage();
+  }, 120));
+  $('#histStatus').addEventListener('change', e => {
+    HIST_FILTERS.status = e.target.value; renderHistoryPage();
+  });
+  $('#histRange').addEventListener('change', e => {
+    HIST_FILTERS.range = e.target.value; renderHistoryPage();
+  });
+  $('#histClearAllBtn').addEventListener('click', () => {
+    if (!state.history.length) return;
+    if (!confirm('Clear all query history? This cannot be undone.')) return;
+    state.history = [];
+    saveState();
+    renderHistoryPage();
+    toast('History cleared', 'success');
   });
   $('#templatesBtn').addEventListener('click', () => {
     renderTemplates();
@@ -4304,13 +4566,7 @@ function wireUI() {
     b.addEventListener('click', e => { if (e.target === b) b.classList.remove('open'); });
   });
 
-  $('#clearHistoryBtn').addEventListener('click', () => {
-    if (!confirm('Clear all query history?')) return;
-    state.history = [];
-    saveState();
-    renderHistory();
-    toast('History cleared', 'success');
-  });
+  // (clearHistoryBtn lived in the old modal; the page-level Clear all button is wired above.)
 
   // Role / warehouse menus
   $('#rolePill').addEventListener('click', e => {
