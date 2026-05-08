@@ -572,6 +572,278 @@
   }
   .CodeMirror-hint { color: var(--ink) !important; padding: 4px 12px !important; }
   li.CodeMirror-hint-active { background: var(--cyan) !important; color: var(--bg) !important; }
+
+  /* ===== IDE CHROME (added) ===== */
+  .editor-panel { position: relative; }
+
+  /* tabs bar */
+  .ide-tabs-bar { display: flex; align-items: stretch; gap: 2px; padding: 6px 12px 0; background: rgba(0,0,0,0.28); border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .ide-tab { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); padding: 7px 8px 6px 12px; border-radius: 6px 6px 0 0; cursor: pointer; transition: all 0.15s; white-space: nowrap; max-width: 240px; border-top: 2px solid transparent; }
+  .ide-tab:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+  .ide-tab.active { color: var(--ink); background: rgba(255,255,255,0.05); border-top-color: var(--green); }
+  .ide-tab .tab-title { overflow: hidden; text-overflow: ellipsis; }
+  .ide-tab .dirty-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex: none; opacity: 0; transition: opacity .15s; box-shadow: 0 0 6px var(--gold); }
+  .ide-tab.dirty .dirty-dot { opacity: 1; }
+  .ide-tab .close-x { color: var(--ink-faint); font-size: 14px; line-height: 1; padding: 2px 5px; opacity: 0.5; transition: all .15s; border-radius: 3px; }
+  .ide-tab .close-x:hover { background: rgba(255,255,255,0.08); color: var(--red); opacity: 1; }
+  .ide-tab-add { font-family: 'JetBrains Mono', monospace; background: transparent; border: none; color: var(--ink-faint); cursor: pointer; padding: 4px 10px; font-size: 16px; line-height: 1; align-self: center; border-radius: 4px; transition: all .15s; }
+  .ide-tab-add:hover { color: var(--green); background: rgba(0, 245, 160, 0.06); }
+
+  /* meta strip */
+  .ide-meta-strip { display: flex; align-items: center; gap: 14px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); flex-wrap: wrap; }
+  .ide-title-input { flex: 1; min-width: 180px; background: transparent; border: none; outline: none; color: var(--ink); font: 500 13px/1.4 'Outfit', sans-serif; padding: 4px 0; border-bottom: 1px solid transparent; transition: border-color .15s; }
+  .ide-title-input:focus, .ide-title-input:hover { border-bottom-color: var(--border-strong); }
+  .meta-tags { display: inline-flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+  .meta-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 3px; color: var(--ink-dim); background: rgba(255,255,255,0.03); border: 1px solid var(--border); letter-spacing: 0.05em; }
+  .meta-author { display: inline-flex; gap: 8px; align-items: center; font: 11px/1 'JetBrains Mono', monospace; color: var(--ink-faint); }
+  .btn-share { font-size: 11px; padding: 6px 12px; border: 1px solid var(--border-strong); background: rgba(0, 217, 245, 0.05); color: var(--cyan); border-radius: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-share:hover { background: rgba(0, 217, 245, 0.12); border-color: var(--cyan); }
+
+  /* avatars */
+  .avatar { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 10px/1 'JetBrains Mono', monospace; color: #0c0c12; flex: none; }
+  .avatar.sm { width: 18px; height: 18px; font-size: 9px; }
+  .avatar.c-1 { background: var(--green); }
+  .avatar.c-2 { background: var(--cyan); }
+  .avatar.c-3 { background: var(--gold); }
+  .avatar.c-4 { background: var(--purple); }
+  .avatar.c-5 { background: var(--amber); }
+
+  /* status bar */
+  .ide-status-bar { display: flex; align-items: center; gap: 14px; padding: 6px 14px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.4); font: 10.5px/1.4 'JetBrains Mono', monospace; color: var(--ink-faint); flex-wrap: wrap; }
+  .ide-status-bar .seg { display: inline-flex; align-items: center; gap: 6px; }
+  .ide-status-bar .seg .s-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .ide-status-bar .seg .s-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .ide-status-bar .seg .s-dot.amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .ide-status-bar .seg .s-dot.cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  .ide-status-bar .seg.right { margin-left: auto; }
+  .ide-status-bar .seg-strong { color: var(--ink-dim); }
+
+  /* command palette */
+  .cmd-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: flex-start; justify-content: center; padding-top: 14vh; }
+  .cmd-overlay.open { display: flex; }
+  .cmd-palette { width: min(640px, 92vw); max-height: 60vh; background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.6); display: flex; flex-direction: column; overflow: hidden; }
+  .cmd-input { padding: 16px 18px; background: transparent; border: none; outline: none; color: var(--ink); font: 16px/1.4 'Outfit', sans-serif; border-bottom: 1px solid var(--border); }
+  .cmd-input::placeholder { color: var(--ink-faint); }
+  .cmd-list { flex: 1; overflow-y: auto; padding: 6px 0; }
+  .cmd-row { display: flex; align-items: center; gap: 12px; padding: 9px 18px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--ink); transition: background .1s; border-left: 2px solid transparent; }
+  .cmd-row:hover { background: rgba(255,255,255,0.04); }
+  .cmd-row.sel { background: rgba(0, 245, 160, 0.08); border-left-color: var(--green); }
+  .cmd-row .cmd-icon { width: 18px; color: var(--ink-faint); font-size: 13px; text-align: center; flex: none; }
+  .cmd-row.sel .cmd-icon { color: var(--green); }
+  .cmd-row .cmd-cat { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--ink-faint); letter-spacing: 0.16em; text-transform: uppercase; flex: none; }
+  .cmd-row .cmd-key { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); padding: 2px 5px; border-radius: 3px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); flex: none; }
+  .cmd-empty { padding: 30px; text-align: center; color: var(--ink-faint); font: 12px 'JetBrains Mono', monospace; }
+  .cmd-hint { padding: 6px 18px; border-top: 1px solid var(--border); font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); display: flex; gap: 14px; background: rgba(0,0,0,0.25); }
+
+  /* workspace tabs (left rail) */
+  .schema-panel { padding-top: 0; }
+  .workspace-tabs { display: flex; gap: 2px; margin: 0 -18px 14px; padding: 8px 14px 0; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.25); }
+  .workspace-tab { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 9px 8px; color: var(--ink-faint); cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all .15s; flex: 1; text-align: center; }
+  .workspace-tab:hover { color: var(--ink-dim); }
+  .workspace-tab.active { color: var(--green); border-bottom-color: var(--green); }
+  .workspace-pane { display: none; }
+  .workspace-pane.active { display: block; }
+  .pane-empty { padding: 30px 12px; text-align: center; color: var(--ink-faint); font: 11px/1.5 'JetBrains Mono', monospace; }
+
+  /* saved/template cards */
+  .q-card { padding: 11px 12px; margin-bottom: 8px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+  .q-card:hover { border-color: rgba(0, 245, 160, 0.3); background: rgba(0, 245, 160, 0.04); }
+  .q-card .q-row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .q-card .q-title { font: 500 12px/1.3 'Outfit', sans-serif; color: var(--ink); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .q-card .q-row2 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .q-card .q-meta { font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); }
+  .q-card .q-tags { display: inline-flex; gap: 3px; flex-wrap: wrap; }
+  .q-card .q-tag { font: 9px 'JetBrains Mono', monospace; padding: 1px 5px; border-radius: 3px; color: var(--ink-dim); background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+  .cert-badge { font: 9px 'JetBrains Mono', monospace; color: var(--green); border: 1px solid rgba(0, 245, 160, 0.3); background: rgba(0, 245, 160, 0.05); padding: 1px 5px; border-radius: 3px; letter-spacing: 0.05em; cursor: help; }
+
+  /* env pill */
+  .env-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03); color: var(--ink); cursor: pointer; font: 11px 'JetBrains Mono', monospace; transition: all .15s; position: relative; }
+  .env-pill:hover { background: rgba(255,255,255,0.06); }
+  .env-pill .pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .env-pill .pill-dot.prod { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .env-pill .pill-dot.staging { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+  .env-pill .pill-dot.dev { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+  .env-pill .chev { color: var(--ink-faint); font-size: 9px; }
+  .env-menu-wrap { position: relative; }
+  .env-menu { position: absolute; top: calc(100% + 6px); right: 0; background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: 8px; min-width: 260px; padding: 4px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); display: none; z-index: 50; }
+  .env-menu.open { display: block; }
+  .env-row { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 6px; cursor: pointer; font: 12px 'JetBrains Mono', monospace; color: var(--ink); transition: background .1s; }
+  .env-row:hover { background: rgba(255,255,255,0.05); }
+  .env-row .env-row-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .env-row .env-warehouse { font-size: 10px; color: var(--ink-faint); }
+  .env-row.active { background: rgba(0, 245, 160, 0.06); }
+  .env-row.active .env-name { color: var(--green); }
+  .env-row .env-check { color: var(--green); font-size: 11px; opacity: 0; }
+  .env-row.active .env-check { opacity: 1; }
+
+  /* results stats strip */
+  .results-stats-strip { display: flex; gap: 16px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.25); font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); flex-wrap: wrap; align-items: center; }
+  .results-stats-strip[hidden] { display: none; }
+  .results-stats-strip .stat { display: inline-flex; align-items: center; gap: 6px; }
+  .results-stats-strip .stat-num { color: var(--ink); }
+  .stat-cache.hit { color: var(--green); }
+  .stat-cache.miss { color: var(--gold); }
+  .stat-bytes { color: var(--cyan); }
+  .stat-cost-bar-track { width: 70px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; }
+  .stat-cost-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--cyan), var(--gold), var(--red)); transition: width .3s; }
+
+  /* schema panel additions */
+  .schema-table-header-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .schema-refresh { font: 9px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.04em; }
+
+  /* share modal */
+  .share-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 119; display: none; }
+  .share-overlay.open { display: block; }
+  .share-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(520px, 92vw); background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: 14px; z-index: 120; padding: 22px 24px; display: none; box-shadow: 0 24px 64px rgba(0,0,0,0.6); }
+  .share-modal.open { display: block; }
+  .share-modal h3 { font: 600 16px/1.3 'Outfit', sans-serif; color: var(--ink); margin: 0 0 4px; }
+  .share-modal .share-sub { font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); margin-bottom: 18px; letter-spacing: 0.04em; }
+  .share-link-row { display: flex; gap: 8px; align-items: center; padding: 10px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; }
+  .share-link-row code { flex: 1; font: 11px 'JetBrains Mono', monospace; color: var(--cyan); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .share-link-row .btn-copy-link { font: 10.5px 'JetBrains Mono', monospace; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.04); color: var(--ink); cursor: pointer; }
+  .share-link-row .btn-copy-link:hover { background: rgba(0, 245, 160, 0.06); border-color: var(--green); color: var(--green); }
+  .share-toggle { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; cursor: pointer; transition: all .15s; }
+  .share-toggle:hover { border-color: var(--border-strong); }
+  .share-toggle .toggle-track { width: 32px; height: 18px; border-radius: 9px; background: rgba(255,255,255,0.1); position: relative; transition: background .2s; flex: none; }
+  .share-toggle .toggle-knob { width: 14px; height: 14px; border-radius: 50%; background: var(--ink); position: absolute; top: 2px; left: 2px; transition: all .2s; }
+  .share-toggle.on .toggle-track { background: var(--green); }
+  .share-toggle.on .toggle-knob { left: 16px; background: var(--bg); }
+  .share-toggle .toggle-text { flex: 1; }
+  .share-toggle .toggle-label { display: block; font: 12.5px/1.3 'Outfit', sans-serif; color: var(--ink); margin-bottom: 2px; }
+  .share-toggle .toggle-sub { display: block; font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); }
+  .share-members-label { font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .share-member { display: flex; align-items: center; gap: 10px; padding: 7px 0; }
+  .share-member .member-name { flex: 1; font: 12.5px 'Outfit', sans-serif; color: var(--ink); }
+  .share-member .member-name .you { color: var(--green); font-size: 10px; margin-left: 6px; }
+  .share-member select.member-role { font: 10.5px 'JetBrains Mono', monospace; color: var(--ink-dim); padding: 3px 8px; border-radius: 5px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); cursor: pointer; }
+  .share-modal .share-close { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--ink-dim); font-size: 22px; line-height: 1; cursor: pointer; padding: 4px; }
+  .share-modal .share-close:hover { color: var(--ink); }
+
+  /* run-selected button accent */
+  .btn-run-sel { background: rgba(0, 245, 160, 0.06); border-color: rgba(0, 245, 160, 0.2); color: var(--green); }
+  .btn-run-sel:hover { background: rgba(0, 245, 160, 0.12); }
+
+  /* ===== RESULT INTELLIGENCE ===== */
+  /* viz picker */
+  .viz-picker { display: flex; gap: 4px; padding: 6px 14px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.18); align-items: center; }
+  .viz-picker .viz-label { font: 9.5px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.18em; text-transform: uppercase; margin-right: 8px; }
+  .viz-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 26px; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--ink-dim); cursor: pointer; font: 12px 'JetBrains Mono', monospace; transition: all .15s; }
+  .viz-btn:hover { color: var(--ink); background: rgba(255,255,255,0.05); }
+  .viz-btn.active { color: var(--green); background: rgba(0, 245, 160, 0.08); border-color: rgba(0, 245, 160, 0.3); }
+  .viz-btn.disabled { opacity: 0.32; cursor: not-allowed; }
+  .viz-btn.disabled:hover { color: var(--ink-dim); background: transparent; }
+
+  /* column type chip */
+  .col-type-chip { display: inline-block; font: 8.5px 'JetBrains Mono', monospace; padding: 1px 5px; border-radius: 3px; margin-left: 6px; letter-spacing: 0.05em; vertical-align: middle; font-weight: 500; }
+  .col-type-chip.t-INT     { background: rgba(0, 217, 245, 0.12); color: var(--cyan); }
+  .col-type-chip.t-DECIMAL { background: rgba(255, 200, 87, 0.12); color: var(--gold); }
+  .col-type-chip.t-VARCHAR { background: rgba(255,255,255,0.05); color: var(--ink-dim); }
+  .col-type-chip.t-DATE    { background: rgba(180, 138, 255, 0.14); color: var(--purple); }
+  .col-type-chip.t-BOOL    { background: rgba(0, 245, 160, 0.12); color: var(--green); }
+  .col-type-chip.t-NULL    { background: rgba(85, 85, 102, 0.2); color: var(--ink-faint); }
+  .results-table th { cursor: pointer; user-select: none; }
+  .results-table th:hover { color: var(--green) !important; }
+
+  /* col stats popover */
+  .col-stats-popover { position: absolute; z-index: 60; width: 280px; background: var(--bg-elev-2); border: 1px solid var(--border-strong); border-radius: 8px; padding: 14px 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.55); display: none; }
+  .col-stats-popover.open { display: block; }
+  .col-stats-popover h5 { margin: 0 0 8px; font: 600 12px 'Outfit', sans-serif; color: var(--ink); }
+  .col-stats-popover .col-stat-type { font: 9px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+  .col-stats-popover .stat-row { display: flex; justify-content: space-between; padding: 4px 0; font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); border-bottom: 1px dashed rgba(255,255,255,0.05); }
+  .col-stats-popover .stat-row:last-child { border-bottom: none; }
+  .col-stats-popover .stat-row .v { color: var(--ink); }
+  .col-stats-popover .stat-row .v.green { color: var(--green); }
+  .col-stats-popover .stat-row .v.red { color: var(--red); }
+  .col-stats-popover .top-vals { margin-top: 10px; }
+  .col-stats-popover .top-val-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font: 11px 'JetBrains Mono', monospace; }
+  .col-stats-popover .top-val-row .name { color: var(--ink); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .col-stats-popover .top-val-row .bar { width: 60px; height: 5px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+  .col-stats-popover .top-val-row .bar-fill { height: 100%; background: var(--cyan); }
+  .col-stats-popover .top-val-row .pct { color: var(--ink-faint); font-size: 10px; min-width: 38px; text-align: right; }
+
+  /* pivot view */
+  .pivot-view { padding: 14px 16px; display: none; }
+  .pivot-view.active { display: block; }
+  .pivot-controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; padding: 10px 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; align-items: center; }
+  .pivot-control { display: inline-flex; align-items: center; gap: 6px; font: 10.5px 'JetBrains Mono', monospace; color: var(--ink-dim); }
+  .pivot-control label { letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); font-size: 9px; }
+  .pivot-control select { font: 11px 'JetBrains Mono', monospace; padding: 4px 8px; border-radius: 5px; background: rgba(255,255,255,0.04); color: var(--ink); border: 1px solid var(--border-strong); cursor: pointer; }
+  .pivot-table { width: 100%; border-collapse: collapse; font: 11px 'JetBrains Mono', monospace; }
+  .pivot-table th, .pivot-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); text-align: right; }
+  .pivot-table th { background: rgba(0,0,0,0.3); color: var(--cyan); font-weight: 600; font-size: 10.5px; letter-spacing: 0.04em; text-align: center; }
+  .pivot-table th.row-label-header, .pivot-table td.row-label { text-align: left; color: var(--ink); background: rgba(255,255,255,0.02); font-weight: 500; }
+  .pivot-table td.heat { color: var(--ink); position: relative; }
+  .pivot-table td.heat::before { content: ""; position: absolute; inset: 0; background: var(--red); opacity: var(--heat, 0); pointer-events: none; }
+  .pivot-table td.heat span { position: relative; z-index: 1; }
+  .pivot-empty { padding: 30px; text-align: center; color: var(--ink-faint); font: 11px 'JetBrains Mono', monospace; line-height: 1.5; }
+  .pivot-truncated { padding: 8px 12px; font: 10px 'JetBrains Mono', monospace; color: var(--gold); background: rgba(255, 200, 87, 0.05); border: 1px solid rgba(255, 200, 87, 0.15); border-radius: 6px; margin-bottom: 12px; }
+
+  /* plan tree SVG */
+  .plan-tree-svg-wrap { padding: 8px 0; max-height: 50vh; overflow: auto; }
+  .plan-node-rect { fill: rgba(20, 20, 31, 0.9); stroke: var(--border-strong); stroke-width: 1; transition: all .15s; cursor: pointer; }
+  .plan-node-rect.selected, .plan-node-rect:hover { stroke: var(--green); stroke-width: 1.5; fill: rgba(0, 245, 160, 0.06); }
+  .plan-node-text { fill: var(--ink); font: 600 11px 'JetBrains Mono', monospace; pointer-events: none; }
+  .plan-node-tableref { fill: var(--green); }
+  .plan-node-cost-bg { fill: rgba(255,255,255,0.05); }
+  .plan-node-cost-fill { transition: all .2s; }
+  .plan-edge { stroke: var(--border-strong); stroke-width: 1.5; fill: none; }
+  .plan-detail { margin-top: 10px; padding: 10px 12px; background: rgba(0, 217, 245, 0.04); border-left: 2px solid var(--cyan); border-radius: 4px; font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); display: none; }
+  .plan-detail.open { display: block; }
+  .plan-raw-toggle { font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); cursor: pointer; padding: 6px 0; user-select: none; }
+  .plan-raw-toggle:hover { color: var(--ink-dim); }
+  .plan-raw { display: none; margin-top: 6px; }
+  .plan-raw.open { display: block; }
+
+  /* ===== LINEAGE / CATALOG CUES ===== */
+  .pii-badge, .verified-badge { display: inline-block; font: 8.5px 'JetBrains Mono', monospace; padding: 1px 5px; border-radius: 3px; margin-left: 6px; letter-spacing: 0.05em; vertical-align: middle; }
+  .pii-badge { color: var(--gold); background: rgba(255, 200, 87, 0.08); border: 1px solid rgba(255, 200, 87, 0.2); }
+  .verified-badge { color: var(--green); background: rgba(0, 245, 160, 0.08); border: 1px solid rgba(0, 245, 160, 0.2); }
+  .lineage-block { margin: 8px 12px 10px; padding: 8px 10px; background: rgba(0,0,0,0.25); border: 1px dashed var(--border); border-radius: 6px; font: 10.5px 'JetBrains Mono', monospace; color: var(--ink-dim); display: none; line-height: 1.55; }
+  .lineage-block.open { display: block; }
+  .lineage-block .label { color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase; font-size: 9px; }
+  .lineage-block .ref { color: var(--cyan); }
+  .lineage-block .down-ref { color: var(--purple); }
+
+  /* ===== AI DRAWER ===== */
+  .ai-fab { position: absolute; bottom: 48px; right: 16px; padding: 10px 16px; border-radius: 999px; background: linear-gradient(135deg, var(--purple), var(--cyan)); color: var(--bg); font: 700 12px 'Outfit', sans-serif; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(180, 138, 255, 0.35); z-index: 5; transition: all .2s; display: inline-flex; align-items: center; gap: 6px; }
+  .ai-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(180, 138, 255, 0.5); }
+  .ai-fab .sparkle { font-size: 14px; }
+  .ai-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 129; opacity: 0; visibility: hidden; transition: all .2s; }
+  .ai-overlay.open { opacity: 1; visibility: visible; }
+  .ai-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 92vw); background: var(--bg-elev); border-left: 1px solid var(--border-strong); z-index: 130; transform: translateX(100%); transition: transform 0.25s ease-out; display: flex; flex-direction: column; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+  .ai-drawer.open { transform: translateX(0); }
+  .ai-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .ai-header h3 { margin: 0; font: 600 14px 'Outfit', sans-serif; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .ai-header h3 .sparkle { background: linear-gradient(135deg, var(--purple), var(--cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .ai-header .ai-model-pill { font: 9px 'JetBrains Mono', monospace; color: var(--ink-faint); padding: 3px 7px; border: 1px solid var(--border); border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ai-close { background: none; border: none; color: var(--ink-dim); font-size: 22px; cursor: pointer; padding: 0 6px; line-height: 1; }
+  .ai-close:hover { color: var(--ink); }
+  .ai-presets { padding: 12px 18px; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .ai-preset-chip { font: 11px 'JetBrains Mono', monospace; padding: 6px 12px; border-radius: 999px; background: rgba(180, 138, 255, 0.06); border: 1px solid rgba(180, 138, 255, 0.2); color: var(--purple); cursor: pointer; transition: all .15s; }
+  .ai-preset-chip:hover { background: rgba(180, 138, 255, 0.14); border-color: var(--purple); }
+  .ai-msgs { flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .ai-msg { display: flex; flex-direction: column; gap: 6px; }
+  .ai-msg .ai-msg-role { font: 9.5px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.16em; text-transform: uppercase; }
+  .ai-msg .ai-msg-body { padding: 10px 12px; border-radius: 8px; font: 12.5px/1.55 'Outfit', sans-serif; color: var(--ink); }
+  .ai-msg.user .ai-msg-body { background: rgba(0, 217, 245, 0.06); border: 1px solid rgba(0, 217, 245, 0.15); align-self: flex-end; max-width: 88%; }
+  .ai-msg.assistant .ai-msg-body { background: rgba(180, 138, 255, 0.04); border: 1px solid rgba(180, 138, 255, 0.15); }
+  .ai-msg pre { font: 11.5px/1.55 'JetBrains Mono', monospace; color: var(--cyan); background: rgba(0,0,0,0.35); padding: 10px 12px; border-radius: 6px; overflow-x: auto; margin: 8px 0 0; white-space: pre-wrap; }
+  .ai-msg .apply-btn { margin-top: 8px; font: 11px 'JetBrains Mono', monospace; padding: 6px 12px; border-radius: 5px; border: 1px solid var(--green); background: rgba(0, 245, 160, 0.08); color: var(--green); cursor: pointer; align-self: flex-start; }
+  .ai-msg .apply-btn:hover { background: rgba(0, 245, 160, 0.18); }
+  .streaming-cursor { display: inline-block; width: 2px; height: 1em; background: var(--purple); animation: blink 0.7s steps(1) infinite; vertical-align: text-bottom; margin-left: 1px; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ai-input-wrap { padding: 12px 18px 16px; border-top: 1px solid var(--border); }
+  .ai-input { width: 100%; min-height: 60px; resize: vertical; background: rgba(0,0,0,0.25); border: 1px solid var(--border-strong); border-radius: 8px; padding: 10px 12px; color: var(--ink); font: 13px/1.4 'Outfit', sans-serif; outline: none; transition: border-color .15s; }
+  .ai-input:focus { border-color: var(--purple); }
+  .ai-actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+  .ai-actions .ai-hint { flex: 1; font: 9.5px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.06em; }
+  .ai-send { font: 11px 'JetBrains Mono', monospace; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--purple), var(--cyan)); color: var(--bg); font-weight: 700; }
+  .ai-send:hover { transform: translateY(-1px); }
+  .ai-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* explain-view replacement defaults so SVG fits */
+  .explain-view .explain-tree { display: none; }
+  .explain-view .explain-tree.legacy-on { display: block; }
 </style>
 </head>
 <body>
@@ -603,6 +875,14 @@
     </div>
   </div>
   <div class="header-meta">
+    <div class="env-menu-wrap">
+      <button class="env-pill" id="env-pill" type="button" aria-haspopup="true" aria-expanded="false">
+        <span class="pill-dot prod" id="env-pill-dot"></span>
+        <span id="env-pill-label">Lending Warehouse · PROD</span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="env-menu" id="env-menu" role="menu"></div>
+    </div>
     <span><span class="status-dot" id="db-status"></span><span id="db-status-text">Schema loaded</span></span>
   </div>
 </div>
@@ -643,12 +923,30 @@
 
 <div class="workspace">
   <div class="schema-panel">
-    <h3>Schema <span class="schema-hint">click table to preview</span></h3>
-    <div id="schema-list"></div>
+    <div class="workspace-tabs" id="workspace-tabs">
+      <div class="workspace-tab active" data-pane="schema">Schema</div>
+      <div class="workspace-tab" data-pane="saved">Saved</div>
+      <div class="workspace-tab" data-pane="templates">Templates</div>
+      <div class="workspace-tab" data-pane="history">History</div>
+    </div>
+    <div class="workspace-pane active" data-pane="schema">
+      <h3>Schema <span class="schema-hint">click table to preview</span></h3>
+      <div id="schema-list"></div>
+    </div>
+    <div class="workspace-pane" data-pane="saved" id="pane-saved"></div>
+    <div class="workspace-pane" data-pane="templates" id="pane-templates"></div>
+    <div class="workspace-pane" data-pane="history" id="pane-history"></div>
   </div>
 
   <div class="editor-stack">
     <div class="editor-panel">
+      <div class="ide-tabs-bar" id="ide-tabs"></div>
+      <div class="ide-meta-strip" id="ide-meta">
+        <input class="ide-title-input" id="ide-title" type="text" spellcheck="false" />
+        <span class="meta-tags" id="ide-tags"></span>
+        <span class="meta-author" id="ide-author"></span>
+        <button class="btn-share" id="btn-share" title="Share this query"><span>⤴</span> Share</button>
+      </div>
       <div class="editor-header">
         <div class="editor-title-wrap">
           <span class="editor-title">Query</span>
@@ -656,9 +954,11 @@
         </div>
         <div class="editor-actions">
           <button class="btn btn-ghost" id="btn-history" title="Show query history">History</button>
+          <button class="btn btn-ghost" id="btn-format" title="Format SQL (⌘+K → Format)">Format</button>
           <button class="btn btn-ghost" id="btn-copy" title="Copy SQL to clipboard">Copy</button>
           <button class="btn btn-ghost" id="btn-solution" style="display:none">Show solution</button>
           <button class="btn btn-ghost" id="btn-clear">Clear</button>
+          <button class="btn btn-run-sel" id="btn-run-sel" title="Run only the highlighted SQL">▶ Selected</button>
           <button class="btn btn-primary" id="btn-run">▶ Run<span class="kbd">⌘ ↵</span></button>
         </div>
       </div>
@@ -670,9 +970,30 @@
         <p id="solution-text"></p>
         <div class="insight" id="solution-insight"></div>
       </div>
+      <button class="ai-fab" id="ai-fab" type="button" title="Ask AI"><span class="sparkle">✨</span> Ask AI</button>
+      <div class="ide-status-bar" id="ide-status">
+        <span class="seg"><span class="s-dot green" id="status-conn-dot"></span><span id="status-conn">Connected</span></span>
+        <span class="seg seg-strong" id="status-warehouse">Lending Warehouse · PROD</span>
+        <span class="seg" id="status-region">us-east-1</span>
+        <span class="seg">role: <span id="status-role">analyst</span></span>
+        <span class="seg" id="status-cursor">Ln 1, Col 1</span>
+        <span class="seg">SQL · SQLite</span>
+        <span class="seg right" id="status-ping">32ms ping</span>
+      </div>
     </div>
 
     <div class="results-panel">
+      <div class="results-stats-strip" id="results-stats" hidden></div>
+      <div class="viz-picker" id="viz-picker">
+        <span class="viz-label">VISUALIZE</span>
+        <button class="viz-btn active" data-view="table" type="button" title="Table view">▦</button>
+        <button class="viz-btn" data-view="chart" id="viz-chart" type="button" title="Chart view">📊</button>
+        <button class="viz-btn" data-view="pivot" id="viz-pivot" type="button" title="Pivot view">⊞</button>
+        <button class="viz-btn" data-view="plan" id="viz-plan" type="button" title="Plan view">⊟</button>
+        <button class="viz-btn disabled" type="button" title="Map — available with full dataset">🗺</button>
+        <button class="viz-btn disabled" type="button" title="Geo — available with full dataset">◎</button>
+        <button class="viz-btn disabled" type="button" title="KPI — available with full dataset">①</button>
+      </div>
       <div class="results-header">
         <div class="results-tabs">
           <div class="results-tab active" data-view="table">Table</div>
@@ -692,6 +1013,9 @@
       </div>
       <div class="explain-view" id="explain-view">
         <div id="explain-empty" class="chart-empty">Run a query, then click <strong style="color:var(--green)">Plan</strong> to see SQLite's execution plan.</div>
+      </div>
+      <div class="pivot-view" id="pivot-view">
+        <div class="pivot-empty">Run a query with at least 2 columns to enable pivot mode.</div>
       </div>
     </div>
   </div>
@@ -713,6 +1037,59 @@
     <button class="history-clear" id="history-clear">Clear all</button>
   </div>
 </div>
+
+<div class="cmd-overlay" id="cmd-overlay" role="dialog" aria-modal="true">
+  <div class="cmd-palette" role="combobox" aria-expanded="true">
+    <input class="cmd-input" id="cmd-input" type="text" placeholder="Type a command — run, format, save, switch tab, open template…" autocomplete="off" spellcheck="false" />
+    <div class="cmd-list" id="cmd-list"></div>
+    <div class="cmd-hint">
+      <span>↑↓ navigate</span><span>↵ run</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<div class="share-overlay" id="share-overlay"></div>
+<div class="share-modal" id="share-modal">
+  <button class="share-close" id="share-close" type="button" aria-label="Close">×</button>
+  <h3>Share query</h3>
+  <div class="share-sub" id="share-sub">// vintage delinquency · v3</div>
+  <div class="share-link-row">
+    <code id="share-link">https://lending-warehouse.byheir.com/q/abc123</code>
+    <button class="btn-copy-link" id="share-copy-link" type="button">Copy link</button>
+  </div>
+  <div class="share-toggle" id="share-toggle">
+    <div class="toggle-track"><div class="toggle-knob"></div></div>
+    <div class="toggle-text">
+      <span class="toggle-label" id="share-toggle-label">Anyone with link · view</span>
+      <span class="toggle-sub" id="share-toggle-sub">Click to require sign-in</span>
+    </div>
+  </div>
+  <div class="share-members-label">Workspace members</div>
+  <div id="share-members"></div>
+</div>
+
+<div class="ai-overlay" id="ai-overlay"></div>
+<div class="ai-drawer" id="ai-drawer" role="dialog" aria-modal="true" aria-labelledby="ai-title">
+  <div class="ai-header">
+    <h3 id="ai-title"><span class="sparkle">✨</span> Ask AI <span class="ai-model-pill">claude · sql copilot · v0.4</span></h3>
+    <button class="ai-close" id="ai-close" type="button" aria-label="Close">×</button>
+  </div>
+  <div class="ai-presets" id="ai-presets">
+    <button class="ai-preset-chip" data-preset="explain" type="button">Explain this query</button>
+    <button class="ai-preset-chip" data-preset="optimize" type="button">Optimize</button>
+    <button class="ai-preset-chip" data-preset="generate" type="button">Generate from English</button>
+  </div>
+  <div class="ai-msgs" id="ai-msgs"></div>
+  <div class="ai-input-wrap">
+    <textarea class="ai-input" id="ai-input" placeholder="Ask anything about your query, schema, or portfolio metrics…" spellcheck="false"></textarea>
+    <div class="ai-actions">
+      <span class="ai-hint">↵ to send · drafts stay in this session</span>
+      <button class="ai-send" id="ai-send" type="button">Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-stats-popover" id="col-stats"></div>
 
 <div class="toast" id="toast">Copied</div>
 
@@ -1880,23 +2257,60 @@ async function boot() {
   wireHistoryPanel();
   wireResultTabs();
 
+  // ===== IDE chrome boot =====
+  initIDETabs();
+  wireTabsBar();
+  wireMetaStrip();
+  renderStatusBar();
+  wireEnvSwitcher();
+  wireWorkspaceTabs();
+  renderSavedPane();
+  renderTemplatesPane();
+  wireFormatAndRunSelected();
+  wireCommandPalette();
+  wireShareModal();
+  wireEditorHooks();
+  // ===== Batch 2 boot =====
+  wireColumnHeaderStats();
+  wireVizPicker();
+  wireAIDrawer();
+
   el('loader').classList.add('gone');
 }
 
 function buildSchemaSidebar() {
   const list = el('schema-list');
+  const mockMin = (s) => { let n = 0; for (const ch of s) n += ch.charCodeAt(0); return 5 + (n % 55); };
+  const LINEAGE = {
+    'DIM_BORROWERS':     { up: ['raw.kyc', 'raw.identity'],                   down: '4 dashboards · 12 models' },
+    'DIM_PRODUCTS':      { up: ['raw.product_catalog'],                       down: '6 dashboards · 3 models' },
+    'FACT_APPLICATIONS': { up: ['raw.web_apps', 'raw.broker_apps'],           down: '8 dashboards · 9 models' },
+    'FACT_LOANS':        { up: ['FACT_APPLICATIONS', 'raw.disbursements'],    down: '9 dashboards · 18 models' },
+    'FACT_PAYMENTS':     { up: ['FACT_LOANS', 'raw.payment_processor'],       down: '7 dashboards · 11 models' }
+  };
+  const isPII      = (n) => /EMAIL|SSN|PHONE|DOB|DATE_OF_BIRTH|FIRST_NAME|LAST_NAME/i.test(n);
+  const isVerified = (n) => /FICO_SCORE|STATUS|APR/i.test(n);
   let html = '';
   for (const t of SCHEMA) {
     const rowCount = countOf(t.table);
+    const refreshed = mockMin(t.table);
+    const lin = LINEAGE[t.table] || { up: ['—'], down: '—' };
     html += `<div class="schema-table">
       <div class="schema-table-header" data-table="${t.table}">
         <span class="schema-table-name ${t.kind}">${t.table}</span>
-        <span class="schema-row-count">${rowCount.toLocaleString()}</span>
+        <span class="schema-table-header-meta">
+          <span class="schema-row-count">${rowCount.toLocaleString()} rows</span>
+          <span class="schema-refresh">refreshed ${refreshed}m ago</span>
+        </span>
+      </div>
+      <div class="lineage-block" data-lineage-for="${t.table}">
+        <div><span class="label">Upstream</span> ${lin.up.map(u => `<span class="ref">${u}</span>`).join(', ')}</div>
+        <div><span class="label">Downstream</span> <span class="down-ref">${lin.down}</span></div>
       </div>
       <div class="schema-cols" data-cols-for="${t.table}">
         ${t.cols.map(([n, ty, pk]) => `
           <div class="schema-col ${pk ? 'pk' : ''}" data-insert="${n}">
-            <span class="schema-col-name">${n}</span>
+            <span class="schema-col-name">${n}${isPII(n) ? '<span class="pii-badge" title="Contains personally identifiable information">PII</span>' : ''}${isVerified(n) ? '<span class="verified-badge" title="Verified by data-platform team">✓</span>' : ''}</span>
             <span class="schema-col-type">${ty}</span>
           </div>`).join('')}
       </div>
@@ -1908,7 +2322,16 @@ function buildSchemaSidebar() {
     const headerEl = e.target.closest('.schema-table-header');
     if (headerEl) {
       const tableName = headerEl.dataset.table;
-      editor.setValue(`SELECT * FROM ${tableName} LIMIT 25;`);
+      // Toggle lineage block for this table
+      document.querySelectorAll('.lineage-block').forEach(b => {
+        b.classList.toggle('open', b.dataset.lineageFor === tableName ? !b.classList.contains('open') : false);
+      });
+      const previewSQL = `SELECT * FROM ${tableName} LIMIT 25;`;
+      if (typeof setActiveSQL === 'function') {
+        setActiveSQL(previewSQL, { title: `Preview: ${tableName}`, tags: ['preview'], markSaved: true });
+      } else {
+        editor.setValue(previewSQL);
+      }
       el('current-prompt-name').textContent = '— scratch query —';
       currentChallenge = null;
       el('btn-solution').style.display = 'none';
@@ -2006,7 +2429,11 @@ function loadChallenge(id) {
     card.classList.toggle('active', card.dataset.id === id);
   });
   el('current-prompt-name').textContent = `${c.num} · ${c.title}`;
-  editor.setValue(c.starter);
+  if (typeof setActiveSQL === 'function') {
+    setActiveSQL(c.starter, { title: `${c.num} · ${c.title}`, tags: [c.category.toLowerCase(), c.difficulty], markSaved: true });
+  } else {
+    editor.setValue(c.starter);
+  }
   el('btn-solution').style.display = 'inline-flex';
   el('btn-solution').textContent = 'Show solution';
   el('solution-drawer').classList.remove('open');
@@ -2057,7 +2484,11 @@ ORDER BY LOAN_COUNT DESC;`);
       el('solution-insight').innerHTML = currentChallenge.insight;
       drawer.classList.add('open');
       el('btn-solution').textContent = 'Hide solution';
-      editor.setValue(currentChallenge.solution);
+      if (typeof setActiveSQL === 'function') {
+        setActiveSQL(currentChallenge.solution, { markSaved: true });
+      } else {
+        editor.setValue(currentChallenge.solution);
+      }
     }
   });
 }
@@ -2114,6 +2545,9 @@ function pushHistory(entry) {
   historyList.unshift(entry);
   if (historyList.length > HISTORY_MAX) historyList = historyList.slice(0, HISTORY_MAX);
   saveHistoryToStorage();
+  // refresh inline history pane if it's visible
+  const inline = document.querySelector('.workspace-pane[data-pane="history"].active');
+  if (inline && typeof renderHistoryInline === 'function') renderHistoryInline();
 }
 
 function wireHistoryPanel() {
@@ -2171,7 +2605,12 @@ function renderHistory() {
       const idx = parseInt(item.dataset.idx);
       const entry = historyList[idx];
       if (!entry) return;
-      editor.setValue(entry.sql);
+      const firstLine = entry.sql.trim().split('\n')[0].slice(0, 50) || 'From history';
+      if (typeof setActiveSQL === 'function') {
+        setActiveSQL(entry.sql, { title: firstLine, markSaved: true });
+      } else {
+        editor.setValue(entry.sql);
+      }
       el('current-prompt-name').textContent = '— from history —';
       currentChallenge = null;
       el('btn-solution').style.display = 'none';
@@ -2198,12 +2637,17 @@ function switchView(view) {
   document.querySelectorAll('.results-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.view === view);
   });
+  document.querySelectorAll('.viz-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
   el('results-body').style.display = view === 'table' ? '' : 'none';
   el('chart-view').classList.toggle('active', view === 'chart');
   el('explain-view').classList.toggle('active', view === 'plan');
+  const pv = el('pivot-view'); if (pv) pv.classList.toggle('active', view === 'pivot');
 
   if (view === 'chart') renderChart();
   if (view === 'plan')  renderExplain();
+  if (view === 'pivot' && typeof renderPivot === 'function') renderPivot();
 }
 
 // ===== CHART AUTO-DETECTION + RENDER =====
@@ -2371,29 +2815,111 @@ function renderExplain() {
       note = '<div class="explain-note"><strong style="color:var(--gold)">Mixed access.</strong> Some steps use indexes (<code>SEARCH</code>) and some scan (<code>SCAN</code>). Check whether the scanned tables are small dims (fine) or fact tables (not fine).</div>';
     }
 
+    // Build SVG tree
+    const flat = [];
+    function flatten(node, depth) {
+      flat.push({ node, depth });
+      node.children.forEach(c => flatten(c, depth + 1));
+    }
+    roots.forEach(rt => flatten(rt, 0));
+    const NODE_W = 320, NODE_H = 46, ROW_H = 64, COL_X = 32;
+    const svgW = Math.max(420, NODE_W + flat.reduce((m, x) => Math.max(m, x.depth), 0) * COL_X + 40);
+    const svgH = flat.length * ROW_H + 16;
+    const COSTS = { 'SCAN': 0.92, 'SEARCH': 0.30, 'USE TEMP B-TREE': 0.72, 'USING TEMP': 0.72, 'CO-ROUTINE': 0.5, 'COMPOUND QUERY': 0.5, 'MERGE': 0.55, 'CORRELATED SCALAR SUBQUERY': 0.65 };
+    function costFor(detail) {
+      const upper = detail.toUpperCase();
+      for (const k in COSTS) if (upper.includes(k)) return COSTS[k];
+      return 0.4;
+    }
+    function escapeAttr(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    let svg = `<svg class="plan-tree-svg" width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+    // edges first
+    flat.forEach((entry, i) => {
+      const parent = entry.node.row[parentIdx];
+      if (parent && rowsById[parent]) {
+        const pIdx = flat.findIndex(x => x.node === rowsById[parent]);
+        if (pIdx >= 0) {
+          const x1 = flat[pIdx].depth * COL_X + 16;
+          const y1 = pIdx * ROW_H + NODE_H + 8;
+          const x2 = entry.depth * COL_X + 16;
+          const y2 = i * ROW_H + 8;
+          svg += `<path class="plan-edge" d="M ${x1} ${y1} L ${x1} ${(y1 + y2) / 2} L ${x2} ${(y1 + y2) / 2} L ${x2} ${y2}" />`;
+        }
+      }
+    });
+    // nodes
+    flat.forEach((entry, i) => {
+      const detail = String(entry.node.row[detailIdx] || '');
+      const cost = costFor(detail);
+      const x = entry.depth * COL_X;
+      const y = i * ROW_H + 8;
+      const opMatch = detail.match(/^(SCAN|SEARCH|USE TEMP B-TREE|USING TEMP|CO-ROUTINE|COMPOUND QUERY|MERGE|CORRELATED SCALAR SUBQUERY)/i);
+      const opcode = opMatch ? opMatch[0].toUpperCase() : detail.split(/\s+/)[0].toUpperCase();
+      const tableMatch = detail.match(/\b(DIM_BORROWERS|DIM_PRODUCTS|FACT_APPLICATIONS|FACT_LOANS|FACT_PAYMENTS)\b/);
+      const table = tableMatch ? tableMatch[1] : '';
+      const usingIdx = detail.match(/USING\s+(?:INDEX|COVERING\s+INDEX|INTEGER\s+PRIMARY\s+KEY|AUTOMATIC\s+(?:COVERING\s+)?INDEX)([^\(]*)/i);
+      const indexStr = usingIdx ? usingIdx[0].slice(0, 38) : '';
+      svg += `<g data-plan-idx="${i}" style="cursor:pointer">`;
+      svg += `<rect class="plan-node-rect" x="${x}" y="${y}" width="${NODE_W}" height="${NODE_H}" rx="6" />`;
+      svg += `<text class="plan-node-text" x="${x + 12}" y="${y + 18}">${escapeAttr(opcode)}${table ? ` <tspan class="plan-node-tableref">${escapeAttr(table)}</tspan>` : ''}</text>`;
+      if (indexStr) svg += `<text x="${x + 12}" y="${y + 33}" style="fill: var(--gold); font: 9.5px 'JetBrains Mono', monospace; pointer-events:none">${escapeAttr(indexStr)}</text>`;
+      // cost bar
+      svg += `<rect class="plan-node-cost-bg" x="${x + 12}" y="${y + NODE_H - 7}" width="${NODE_W - 24}" height="3" rx="1.5" />`;
+      const fillVar = cost > 0.7 ? '--red' : cost > 0.5 ? '--gold' : cost > 0.35 ? '--cyan' : '--green';
+      svg += `<rect class="plan-node-cost-fill" x="${x + 12}" y="${y + NODE_H - 7}" width="${(NODE_W - 24) * cost}" height="3" rx="1.5" style="fill: var(${fillVar})" />`;
+      svg += `</g>`;
+    });
+    svg += '</svg>';
+
+    const detailHtml = flat.map((entry, i) => {
+      const detail = String(entry.node.row[detailIdx] || '');
+      return `<div class="plan-detail-row" data-detail-idx="${i}" style="display:none">${fmt(detail)}</div>`;
+    }).join('');
+
     view.innerHTML =
-      '<div class="explain-tree">' + lines.join('') + '</div>' +
+      `<div class="plan-tree-svg-wrap">${svg}</div>` +
+      `<div class="plan-detail" id="plan-detail"></div>` +
+      `<div style="display:none" id="plan-details-store">${detailHtml}</div>` +
       note +
-      '<div class="explain-note" style="border-color: var(--ink-faint); background: rgba(255,255,255,0.02); margin-top: 8px;">' +
-      '<strong style="color:var(--ink-dim)">How to read:</strong> Each line shows a step in SQLite\'s plan. <code>SCAN</code> = full table read. ' +
-      '<code>SEARCH</code> = indexed lookup. <code>USING INDEX</code> tells you which index. Indented lines are subqueries / joined steps.' +
-      '</div>';
+      '<div class="plan-raw-toggle" id="plan-raw-toggle">▸ show raw plan</div>' +
+      '<div class="plan-raw" id="plan-raw"><div class="explain-tree legacy-on">' + lines.join('') + '</div></div>';
+
+    // wire interactions
+    view.querySelectorAll('[data-plan-idx]').forEach(g => {
+      g.addEventListener('click', () => {
+        view.querySelectorAll('.plan-node-rect').forEach(r => r.classList.remove('selected'));
+        g.querySelector('.plan-node-rect').classList.add('selected');
+        const idx = g.dataset.planIdx;
+        const stored = view.querySelector(`[data-detail-idx="${idx}"]`);
+        const target = el('plan-detail');
+        if (stored) {
+          target.innerHTML = stored.innerHTML;
+          target.classList.add('open');
+        }
+      });
+    });
+    const tgl = el('plan-raw-toggle');
+    if (tgl) tgl.addEventListener('click', () => {
+      const raw = el('plan-raw');
+      raw.classList.toggle('open');
+      tgl.textContent = raw.classList.contains('open') ? '▾ hide raw plan' : '▸ show raw plan';
+    });
   } catch (err) {
     view.innerHTML = '<div class="err-msg" style="margin: 0">EXPLAIN failed: ' + escapeHTML(err.message) + '</div>';
   }
 }
 
-function runQuery() {
+function runQuery(overrideSQL) {
   if (!db) return;
-  const sql = editor.getValue().trim();
+  const sql = (typeof overrideSQL === 'string' ? overrideSQL : editor.getValue()).trim();
   if (!sql) return;
   const status = el('results-status');
   const body = el('results-body');
   status.innerHTML = '<span style="color:var(--amber)">running…</span>';
   el('btn-export').disabled = true;
   lastSQL = sql;
-  // any new run resets us to the table view
   if (currentView !== 'table') switchView('table');
+  if (typeof hideStatsStrip === 'function') hideStatsStrip();
 
   setTimeout(() => {
     const t0 = performance.now();
@@ -2407,6 +2933,9 @@ function runQuery() {
         lastResult = null;
         pushHistory({ ts: Date.now(), sql, ms, rowCount: 0 });
         updateChartTabAvailability();
+      if (typeof updateVizAvailability === 'function') updateVizAvailability();
+        if (typeof renderStatsStrip === 'function') renderStatsStrip({ rows: 0, ms, sql });
+        if (typeof setPing === 'function') setPing(Math.max(8, Math.round(ms / 4) + 12));
         return;
       }
       const result = results[results.length - 1];
@@ -2416,6 +2945,9 @@ function runQuery() {
       el('btn-export').disabled = false;
       pushHistory({ ts: Date.now(), sql, ms, rowCount: result.values.length });
       updateChartTabAvailability();
+      if (typeof updateVizAvailability === 'function') updateVizAvailability();
+      if (typeof renderStatsStrip === 'function') renderStatsStrip({ rows: result.values.length, ms, sql });
+      if (typeof setPing === 'function') setPing(Math.max(8, Math.round(ms / 4) + 12));
     } catch (err) {
       body.className = 'results-body';
       body.innerHTML = `<div class="err-msg"><strong>SQL error:</strong><br/>${escapeHTML(err.message)}</div>`;
@@ -2423,8 +2955,19 @@ function runQuery() {
       lastResult = null;
       pushHistory({ ts: Date.now(), sql, error: err.message });
       updateChartTabAvailability();
+      if (typeof updateVizAvailability === 'function') updateVizAvailability();
     }
   }, 10);
+}
+
+function detectColType(rows, colIdx) {
+  const sample = rows.slice(0, 80).map(r => r[colIdx]).filter(v => v !== null && v !== undefined);
+  if (sample.length === 0) return 'NULL';
+  if (sample.every(v => typeof v === 'number' && Number.isInteger(v))) return 'INT';
+  if (sample.every(v => typeof v === 'number')) return 'DECIMAL';
+  if (sample.every(v => typeof v === 'string' && /^\d{4}-\d{2}(-\d{2})?$/.test(v))) return 'DATE';
+  if (sample.every(v => v === 0 || v === 1 || v === true || v === false)) return 'BOOL';
+  return 'VARCHAR';
 }
 
 function renderTable(result, container) {
@@ -2434,9 +2977,12 @@ function renderTable(result, container) {
   const numericCol = cols.map((_, i) => {
     return rows.length > 0 && rows.slice(0, 50).every(r => r[i] === null || typeof r[i] === 'number');
   });
+  const colTypes = cols.map((_, i) => detectColType(rows, i));
 
   let html = '<table class="results-table"><thead><tr>';
-  cols.forEach((c, i) => { html += `<th class="${numericCol[i] ? 'num' : ''}">${escapeHTML(c)}</th>`; });
+  cols.forEach((c, i) => {
+    html += `<th class="${numericCol[i] ? 'num' : ''}" data-col-idx="${i}" title="Click for column stats">${escapeHTML(c)}<span class="col-type-chip t-${colTypes[i]}">${colTypes[i]}</span></th>`;
+  });
   html += '</tr></thead><tbody>';
   rows.forEach(row => {
     html += '<tr>';
@@ -2465,6 +3011,1201 @@ function formatNumber(n, colName) {
 
 function escapeHTML(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// =====================================================================
+// ===== IDE CHROME MODULE (added) — multi-tab, palette, env, cost =====
+// =====================================================================
+
+const IDE = {
+  tabs: [],
+  activeTabId: null,
+  tabSeq: 0,
+  env: { id: 'PROD', dot: 'prod', warehouse: 'Lending Warehouse', region: 'us-east-1', role: 'analyst' },
+  cachedHits: new Map(),
+  saved: [],
+  templates: [],
+  members: [
+    { name: 'Asha Patel', role: 'Owner',  initials: 'AP', color: 1 },
+    { name: 'Diego Ruiz', role: 'Editor', initials: 'DR', color: 2 },
+    { name: 'Mei Chen',   role: 'Viewer', initials: 'MC', color: 3 },
+    { name: 'Jordan Kim', role: 'Viewer', initials: 'JK', color: 4 },
+    { name: 'You',        role: 'Owner',  initials: 'YN', color: 5, you: true }
+  ],
+  share: { isPublic: true },
+  cmd: { open: false, sel: 0, list: [], matches: [] }
+};
+
+const ENVIRONMENTS = [
+  { id: 'PROD',    dot: 'prod',    warehouse: 'Lending Warehouse',       region: 'us-east-1', role: 'analyst' },
+  { id: 'STAGING', dot: 'staging', warehouse: 'Lending Warehouse · stg', region: 'us-east-1', role: 'analyst' },
+  { id: 'DEV',     dot: 'dev',     warehouse: 'Lending Warehouse · dev', region: 'us-west-2', role: 'developer' }
+];
+
+const DEFAULT_SQL = `-- Welcome. The schema is loaded — try clicking a challenge above,
+-- or write your own query. Cmd/Ctrl + Enter to run.
+
+SELECT
+  PRODUCT_CATEGORY,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(PRINCIPAL), 0) AS AVG_PRINCIPAL,
+  ROUND(AVG(APR) * 100, 2) AS AVG_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS p ON p.PRODUCT_ID = l.PRODUCT_ID
+GROUP BY PRODUCT_CATEGORY
+ORDER BY LOAN_COUNT DESC;`;
+
+IDE.saved = [
+  { id: 's1', title: 'Vintage delinquency · Q3 2024 cohort', tags: ['risk','vintage'], certified: true,
+    owner: { name: 'Asha P.', initials: 'AP', color: 1 }, lastRun: '2h ago',
+    sql: `SELECT
+  STRFTIME('%Y-%m', ORIGINATION_DATE) AS VINTAGE,
+  COUNT(*) AS LOANS,
+  ROUND(100.0 * SUM(CASE WHEN STATUS LIKE '%DPD%' OR STATUS LIKE '%Delinquent%' THEN 1 ELSE 0 END) / COUNT(*), 2) AS DELINQ_RATE_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY 1;` },
+  { id: 's2', title: 'Channel funnel — application → loan', tags: ['funnel','growth'], certified: false,
+    owner: { name: 'Diego R.', initials: 'DR', color: 2 }, lastRun: '5h ago',
+    sql: `SELECT a.CHANNEL, COUNT(*) AS APPS,
+       SUM(CASE WHEN a.STATUS='Approved' THEN 1 ELSE 0 END) AS APPROVED,
+       COUNT(l.LOAN_ID) AS FUNDED
+FROM FACT_APPLICATIONS a
+LEFT JOIN FACT_LOANS l ON l.APPLICATION_ID=a.APPLICATION_ID
+GROUP BY a.CHANNEL
+ORDER BY APPS DESC;` },
+  { id: 's3', title: 'FICO band loss curve', tags: ['risk','credit'], certified: true,
+    owner: { name: 'Asha P.', initials: 'AP', color: 1 }, lastRun: 'yesterday',
+    sql: `SELECT
+  CASE WHEN b.FICO_SCORE<580 THEN '300-579'
+       WHEN b.FICO_SCORE<620 THEN '580-619'
+       WHEN b.FICO_SCORE<680 THEN '620-679'
+       WHEN b.FICO_SCORE<740 THEN '680-739'
+       ELSE '740+' END AS FICO_BAND,
+  COUNT(*) AS LOANS,
+  ROUND(100.0 * AVG(CASE WHEN l.STATUS='Charged Off' THEN 1.0 ELSE 0 END), 2) AS CHARGE_OFF_PCT
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY 1 ORDER BY 1;` },
+  { id: 's4', title: 'Top borrowers by 30+ DPD by state', tags: ['risk','geography'], certified: false,
+    owner: { name: 'Mei C.', initials: 'MC', color: 3 }, lastRun: '3d ago',
+    sql: `SELECT b.STATE, COUNT(DISTINCT l.BORROWER_ID) AS DELINQ_BORROWERS
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+WHERE l.STATUS LIKE '%DPD%' OR l.STATUS LIKE '%Delinq%'
+GROUP BY b.STATE ORDER BY DELINQ_BORROWERS DESC LIMIT 10;` },
+  { id: 's5', title: 'APR distribution by product', tags: ['pricing'], certified: false,
+    owner: { name: 'Jordan K.', initials: 'JK', color: 4 }, lastRun: '4d ago',
+    sql: `SELECT PRODUCT_CATEGORY,
+       ROUND(MIN(APR)*100,2) AS MIN_APR_PCT,
+       ROUND(AVG(APR)*100,2) AS AVG_APR_PCT,
+       ROUND(MAX(APR)*100,2) AS MAX_APR_PCT
+FROM FACT_LOANS GROUP BY 1 ORDER BY AVG_APR_PCT;` },
+  { id: 's6', title: 'Repeat borrower cross-sell signal', tags: ['behavior','growth'], certified: false,
+    owner: { name: 'Diego R.', initials: 'DR', color: 2 }, lastRun: '6d ago',
+    sql: `SELECT BORROWER_ID, COUNT(*) AS LOAN_COUNT
+FROM FACT_LOANS GROUP BY BORROWER_ID
+HAVING LOAN_COUNT > 1 ORDER BY LOAN_COUNT DESC LIMIT 25;` },
+  { id: 's7', title: 'Payment cadence outliers', tags: ['behavior','collections'], certified: false,
+    owner: { name: 'You', initials: 'YN', color: 5 }, lastRun: '1w ago',
+    sql: `SELECT LOAN_ID, COUNT(*) AS LATE_PAYMENTS,
+       ROUND(AVG(DAYS_PAST_DUE), 1) AS AVG_DPD,
+       MAX(DAYS_PAST_DUE) AS MAX_DPD
+FROM FACT_PAYMENTS WHERE DAYS_PAST_DUE > 0
+GROUP BY LOAN_ID ORDER BY AVG_DPD DESC LIMIT 50;` },
+  { id: 's8', title: 'State-level concentration', tags: ['portfolio','geography'], certified: false,
+    owner: { name: 'Asha P.', initials: 'AP', color: 1 }, lastRun: '2w ago',
+    sql: `SELECT b.STATE, COUNT(*) AS LOANS, SUM(l.PRINCIPAL) AS EXPOSURE_USD
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY b.STATE ORDER BY EXPOSURE_USD DESC LIMIT 15;` }
+];
+
+IDE.templates = [
+  { id: 't1', title: 'Top borrowers by 30+ DPD by state', tags: ['risk','geography'],
+    sql: `-- Template: top borrowers by 30+ DPD per state
+SELECT b.STATE,
+       COUNT(DISTINCT l.BORROWER_ID) AS DELINQ_BORROWERS,
+       SUM(l.PRINCIPAL) AS EXPOSURE_USD
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+WHERE l.STATUS LIKE '%DPD%' OR l.STATUS LIKE '%Delinq%'
+GROUP BY b.STATE
+ORDER BY DELINQ_BORROWERS DESC
+LIMIT 10;` },
+  { id: 't2', title: 'Vintage delinquency curve', tags: ['risk','vintage'],
+    sql: `-- Template: vintage delinquency curve
+SELECT STRFTIME('%Y-%m', ORIGINATION_DATE) AS VINTAGE,
+       COUNT(*) AS LOAN_COUNT,
+       ROUND(100.0 * AVG(CASE WHEN STATUS LIKE '%DPD%' OR STATUS LIKE '%Delinquent%' THEN 1.0 ELSE 0 END), 2) AS DELINQ_RATE_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY 1;` },
+  { id: 't3', title: 'Channel funnel conversion', tags: ['funnel','growth'],
+    sql: `-- Template: channel funnel
+SELECT CHANNEL,
+       COUNT(*) AS APPS,
+       SUM(CASE WHEN STATUS='Approved' THEN 1 ELSE 0 END) AS APPROVED,
+       ROUND(100.0 * SUM(CASE WHEN STATUS='Approved' THEN 1 ELSE 0 END) / COUNT(*), 2) AS APPROVAL_RATE_PCT
+FROM FACT_APPLICATIONS
+GROUP BY CHANNEL
+ORDER BY APPS DESC;` },
+  { id: 't4', title: 'Repeat borrower cross-sell signal', tags: ['behavior','growth'],
+    sql: `-- Template: repeat borrowers
+SELECT BORROWER_ID, COUNT(*) AS LOAN_COUNT
+FROM FACT_LOANS
+GROUP BY BORROWER_ID
+HAVING LOAN_COUNT > 1
+ORDER BY LOAN_COUNT DESC
+LIMIT 25;` },
+  { id: 't5', title: 'FICO band loss curve', tags: ['risk','credit'],
+    sql: `-- Template: FICO loss bands
+SELECT CASE
+         WHEN b.FICO_SCORE<580 THEN '300-579'
+         WHEN b.FICO_SCORE<620 THEN '580-619'
+         WHEN b.FICO_SCORE<680 THEN '620-679'
+         WHEN b.FICO_SCORE<740 THEN '680-739'
+         ELSE '740+'
+       END AS FICO_BAND,
+       COUNT(*) AS LOANS,
+       ROUND(100.0 * AVG(CASE WHEN l.STATUS='Charged Off' THEN 1.0 ELSE 0 END), 2) AS CHARGE_OFF_PCT
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY 1
+ORDER BY 1;` },
+  { id: 't6', title: 'APR distribution by product', tags: ['pricing'],
+    sql: `-- Template: APR distribution
+SELECT PRODUCT_CATEGORY,
+       ROUND(MIN(APR)*100,2) AS MIN_APR_PCT,
+       ROUND(AVG(APR)*100,2) AS AVG_APR_PCT,
+       ROUND(MAX(APR)*100,2) AS MAX_APR_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY AVG_APR_PCT;` },
+  { id: 't7', title: 'Payment cadence outliers', tags: ['behavior','collections'],
+    sql: `-- Template: cadence outliers
+SELECT LOAN_ID,
+       COUNT(*) AS LATE_PAYMENTS,
+       ROUND(AVG(DAYS_PAST_DUE), 1) AS AVG_DPD,
+       MAX(DAYS_PAST_DUE) AS MAX_DPD
+FROM FACT_PAYMENTS
+WHERE DAYS_PAST_DUE > 0
+GROUP BY LOAN_ID
+ORDER BY AVG_DPD DESC
+LIMIT 50;` },
+  { id: 't8', title: 'State-level concentration', tags: ['portfolio','geography'],
+    sql: `-- Template: state concentration
+SELECT b.STATE,
+       COUNT(*) AS LOANS,
+       SUM(l.PRINCIPAL) AS EXPOSURE_USD,
+       ROUND(100.0 * SUM(l.PRINCIPAL) / SUM(SUM(l.PRINCIPAL)) OVER (), 2) AS PCT_OF_BOOK
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY b.STATE
+ORDER BY EXPOSURE_USD DESC
+LIMIT 15;` },
+  { id: 't9', title: 'Cohort triangle (90+ DPD)', tags: ['risk','vintage'],
+    sql: `-- Template: 90+ DPD cohort triangle
+SELECT STRFTIME('%Y-%m', l.ORIGINATION_DATE) AS VINTAGE,
+       CAST((JULIANDAY(p.SCHEDULED_DATE) - JULIANDAY(l.ORIGINATION_DATE)) / 30 AS INTEGER) AS MOB,
+       COUNT(DISTINCT CASE WHEN p.DAYS_PAST_DUE >= 90 THEN l.LOAN_ID END) AS C90_LOANS
+FROM FACT_LOANS l
+JOIN FACT_PAYMENTS p ON p.LOAN_ID=l.LOAN_ID
+GROUP BY 1, 2
+ORDER BY 1, 2;` },
+  { id: 't10', title: 'Pricing sensitivity by FICO band', tags: ['pricing','credit'],
+    sql: `-- Template: APR uplift by FICO band
+SELECT CASE
+         WHEN b.FICO_SCORE<580 THEN '300-579'
+         WHEN b.FICO_SCORE<620 THEN '580-619'
+         WHEN b.FICO_SCORE<680 THEN '620-679'
+         WHEN b.FICO_SCORE<740 THEN '680-739'
+         ELSE '740+'
+       END AS FICO_BAND,
+       ROUND(AVG(l.APR) * 100, 2) AS AVG_APR_PCT,
+       COUNT(*) AS LOANS
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY 1
+ORDER BY 1;` }
+];
+
+// ===== TAB MANAGER =====
+function getActiveTab() { return IDE.tabs.find(t => t.id === IDE.activeTabId); }
+function newTabId() { return 'tab-' + (++IDE.tabSeq); }
+
+function renderTabs() {
+  const wrap = el('ide-tabs');
+  if (!wrap) return;
+  const active = IDE.activeTabId;
+  wrap.innerHTML = IDE.tabs.map(t => `
+    <div class="ide-tab ${t.id === active ? 'active' : ''} ${t.dirty ? 'dirty' : ''}" data-tab="${t.id}">
+      <span class="dirty-dot"></span>
+      <span class="tab-title">${escapeHTML(t.title || 'Untitled')}</span>
+      <span class="close-x" data-close="${t.id}" title="Close">×</span>
+    </div>`).join('') + '<button class="ide-tab-add" id="ide-tab-add" type="button" title="New tab">+</button>';
+}
+
+function addTab({ title='Untitled query', sql='', tags=[], owner=null, switchTo=true }) {
+  const id = newTabId();
+  const doc = CodeMirror.Doc(sql, 'text/x-sql');
+  const tab = {
+    id, title, doc,
+    savedSQL: sql, dirty: false,
+    tags: tags.slice(),
+    owner: owner || { name: 'You', initials: 'YN', color: 5 },
+    editedAt: Date.now()
+  };
+  IDE.tabs.push(tab);
+  if (switchTo) switchTab(id); else renderTabs();
+  return tab;
+}
+
+function closeTab(id) {
+  const t = IDE.tabs.find(x => x.id === id);
+  if (!t) return;
+  if (t.dirty && !confirm(`"${t.title}" has unsaved changes. Close anyway?`)) return;
+  const idx = IDE.tabs.indexOf(t);
+  IDE.tabs.splice(idx, 1);
+  if (IDE.tabs.length === 0) {
+    addTab({ title: 'Scratch', sql: DEFAULT_SQL });
+    return;
+  }
+  if (IDE.activeTabId === id) {
+    switchTab(IDE.tabs[Math.max(0, idx - 1)].id);
+  } else {
+    renderTabs();
+  }
+}
+
+function switchTab(id) {
+  const t = IDE.tabs.find(x => x.id === id);
+  if (!t) return;
+  IDE.activeTabId = id;
+  if (editor) {
+    editor.swapDoc(t.doc);
+    setTimeout(() => editor.refresh(), 0);
+  }
+  renderTabs();
+  renderMetaStrip();
+  renderStatusBar();
+}
+
+function setActiveSQL(sql, opts = {}) {
+  const t = getActiveTab(); if (!t) return;
+  t.doc.setValue(sql);
+  if (opts.title) t.title = opts.title;
+  if (opts.tags) t.tags = opts.tags.slice();
+  if (opts.markSaved) { t.savedSQL = sql; t.dirty = false; }
+  else t.dirty = (t.doc.getValue() !== t.savedSQL);
+  t.editedAt = Date.now();
+  if (editor) editor.swapDoc(t.doc);
+  renderTabs();
+  renderMetaStrip();
+}
+
+function initIDETabs() {
+  const findCh = (id) => CHALLENGES.find(c => c.id === id);
+  const c1 = findCh('vintage-curve');
+  const c2 = findCh('funnel');
+  addTab({ title: 'Scratch', sql: DEFAULT_SQL, tags: ['scratch'], switchTo: true });
+  addTab({
+    title: 'Vintage delinquency · v3',
+    sql: c1 ? (c1.solution || c1.starter) : IDE.templates[1].sql,
+    tags: ['risk','vintage'], switchTo: false
+  });
+  addTab({
+    title: 'Channel funnel exploration',
+    sql: c2 ? (c2.solution || c2.starter) : IDE.templates[2].sql,
+    tags: ['funnel','growth'], switchTo: false
+  });
+  switchTab(IDE.tabs[0].id);
+}
+
+function wireTabsBar() {
+  const wrap = el('ide-tabs');
+  wrap.addEventListener('click', (e) => {
+    const closeEl = e.target.closest('[data-close]');
+    if (closeEl) { e.stopPropagation(); closeTab(closeEl.dataset.close); return; }
+    if (e.target.id === 'ide-tab-add') { addTab({ title: 'Untitled query', sql: '' }); return; }
+    const tabEl = e.target.closest('[data-tab]');
+    if (tabEl) switchTab(tabEl.dataset.tab);
+  });
+}
+
+// ===== META STRIP =====
+function timeAgoFromMs(ms) {
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
+function renderMetaStrip() {
+  const t = getActiveTab(); if (!t) return;
+  const titleInput = el('ide-title');
+  if (document.activeElement !== titleInput) titleInput.value = t.title || '';
+  el('ide-tags').innerHTML = (t.tags || []).map(tg => `<span class="meta-tag">${escapeHTML(tg)}</span>`).join('');
+  el('ide-author').innerHTML = `<span class="avatar sm c-${t.owner.color || 5}">${t.owner.initials}</span> Edited ${timeAgoFromMs(Date.now() - t.editedAt)}`;
+}
+function wireMetaStrip() {
+  el('ide-title').addEventListener('input', (e) => {
+    const t = getActiveTab(); if (!t) return;
+    t.title = e.target.value || 'Untitled';
+    renderTabs();
+  });
+  el('btn-share').addEventListener('click', openShare);
+}
+
+// ===== STATUS BAR =====
+function renderStatusBar() {
+  const e = IDE.env;
+  const dot = el('status-conn-dot');
+  if (!dot) return;
+  dot.className = 's-dot ' + (e.dot === 'prod' ? 'green' : e.dot === 'staging' ? 'amber' : 'cyan');
+  el('status-warehouse').textContent = `${e.warehouse} · ${e.id}`;
+  el('status-region').textContent = e.region;
+  el('status-role').textContent = e.role;
+  el('env-pill-label').textContent = `${e.warehouse} · ${e.id}`;
+  el('env-pill-dot').className = 'pill-dot ' + e.dot;
+}
+function setCursorStatus(line, col) {
+  const seg = el('status-cursor');
+  if (seg) seg.textContent = `Ln ${line}, Col ${col}`;
+}
+function setPing(ms) {
+  const seg = el('status-ping');
+  if (seg) seg.textContent = `${ms}ms ping`;
+}
+
+// ===== ENV SWITCHER =====
+function wireEnvSwitcher() {
+  const pill = el('env-pill');
+  const menu = el('env-menu');
+  const renderMenu = () => {
+    menu.innerHTML = ENVIRONMENTS.map(e => `
+      <div class="env-row ${IDE.env.id === e.id ? 'active' : ''}" data-env-id="${e.id}">
+        <span class="pill-dot ${e.dot}"></span>
+        <div class="env-row-info">
+          <span class="env-name">${e.warehouse} · ${e.id}</span>
+          <span class="env-warehouse">${e.region} · role: ${e.role}</span>
+        </div>
+        <span class="env-check">✓</span>
+      </div>`).join('');
+  };
+  renderMenu();
+  pill.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = menu.classList.toggle('open');
+    pill.setAttribute('aria-expanded', String(open));
+  });
+  menu.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-env-id]');
+    if (!row) return;
+    const env = ENVIRONMENTS.find(x => x.id === row.dataset.envId);
+    if (env) {
+      IDE.env = { ...env };
+      renderStatusBar();
+      renderMenu();
+      showToast('Env: ' + env.id);
+    }
+    menu.classList.remove('open');
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#env-menu') && !e.target.closest('#env-pill')) {
+      menu.classList.remove('open');
+    }
+  });
+}
+
+// ===== WORKSPACE TABS =====
+function wireWorkspaceTabs() {
+  el('workspace-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('[data-pane]');
+    if (!tab) return;
+    const pane = tab.dataset.pane;
+    document.querySelectorAll('.workspace-tab').forEach(t => t.classList.toggle('active', t.dataset.pane === pane));
+    document.querySelectorAll('.workspace-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === pane));
+    if (pane === 'history') renderHistoryInline();
+  });
+}
+
+function renderSavedPane() {
+  const wrap = el('pane-saved');
+  wrap.innerHTML = IDE.saved.map(s => `
+    <div class="q-card" data-saved-id="${s.id}">
+      <div class="q-row1">
+        <span class="avatar sm c-${s.owner.color}">${s.owner.initials}</span>
+        <span class="q-title">${escapeHTML(s.title)}</span>
+        ${s.certified ? '<span class="cert-badge" title="Reviewed by data-platform team · 2026-04-12">✓ certified</span>' : ''}
+      </div>
+      <div class="q-row2">
+        <span class="q-meta">${escapeHTML(s.lastRun)}</span>
+        <span class="q-tags">${(s.tags||[]).map(t => `<span class="q-tag">${escapeHTML(t)}</span>`).join('')}</span>
+      </div>
+    </div>`).join('');
+  wrap.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-saved-id]');
+    if (!card) return;
+    const s = IDE.saved.find(x => x.id === card.dataset.savedId);
+    if (!s) return;
+    setActiveSQL(s.sql, { title: s.title, tags: s.tags, markSaved: true });
+    showToast('Loaded into active tab');
+  });
+}
+
+function renderTemplatesPane() {
+  const wrap = el('pane-templates');
+  wrap.innerHTML = IDE.templates.map(t => `
+    <div class="q-card" data-tpl-id="${t.id}">
+      <div class="q-row1"><span class="q-title">${escapeHTML(t.title)}</span></div>
+      <div class="q-row2">
+        <span class="q-tags">${(t.tags||[]).map(tg => `<span class="q-tag">${escapeHTML(tg)}</span>`).join('')}</span>
+      </div>
+    </div>`).join('');
+  wrap.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-tpl-id]');
+    if (!card) return;
+    const t = IDE.templates.find(x => x.id === card.dataset.tplId);
+    if (!t) return;
+    addTab({ title: t.title, sql: t.sql, tags: t.tags });
+    showToast('Template opened in new tab');
+  });
+}
+
+function renderHistoryInline() {
+  const target = el('pane-history');
+  if (!target) return;
+  if (historyList.length === 0) {
+    target.innerHTML = '<div class="pane-empty">No queries yet.<br/>Run a few — they\'ll show up here.</div>';
+    return;
+  }
+  target.innerHTML = historyList.map((h, i) => {
+    const status = h.error
+      ? '<span style="color:var(--red); font: 9px JetBrains Mono, monospace">✗ error</span>'
+      : '<span style="color:var(--green); font: 9px JetBrains Mono, monospace">✓ ' + (h.rowCount != null ? h.rowCount.toLocaleString() + ' row' + (h.rowCount === 1 ? '' : 's') : 'ok') + '</span>';
+    return `<div class="q-card" data-hist-idx="${i}">
+      <div class="q-row1"><span class="q-title">${escapeHTML(h.sql.trim().split('\n')[0].slice(0, 60))}</span></div>
+      <div class="q-row2"><span class="q-meta">${timeAgo(h.ts)}${h.ms != null ? ' · ' + h.ms + 'ms' : ''}</span>${status}</div>
+    </div>`;
+  }).join('');
+  target.querySelectorAll('[data-hist-idx]').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.histIdx, 10);
+      const entry = historyList[idx];
+      if (!entry) return;
+      const firstLine = entry.sql.trim().split('\n')[0].slice(0, 50) || 'From history';
+      setActiveSQL(entry.sql, { title: firstLine, markSaved: true });
+      showToast('Loaded from history');
+    });
+  });
+}
+
+// ===== STATS STRIP / COST =====
+function djb2(s) { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h) ^ s.charCodeAt(i); return h >>> 0; }
+function fmtBytes(n) {
+  if (n < 1024) return n + 'B';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + 'KB';
+  if (n < 1024 * 1024 * 1024) return (n / 1024 / 1024).toFixed(1) + 'MB';
+  return (n / 1024 / 1024 / 1024).toFixed(2) + 'GB';
+}
+function renderStatsStrip({ rows, ms, sql }) {
+  const strip = el('results-stats');
+  if (!strip) return;
+  const cols = (lastResult && lastResult.columns) ? lastResult.columns.length : 1;
+  const bytes = Math.max(rows * cols * 200, 512);
+  const hash = djb2(sql);
+  const cache = IDE.cachedHits.has(hash) ? 'HIT' : 'MISS';
+  IDE.cachedHits.set(hash, true);
+  // synthetic cost % from ms (cap 100ms = 100% scale)
+  const costPct = Math.min(99, Math.round(Math.log10(Math.max(ms, 1) + 1) * 30));
+  strip.hidden = false;
+  strip.innerHTML = `
+    <span class="stat"><span class="stat-num">${rows.toLocaleString()}</span> rows</span>
+    <span class="stat"><span class="stat-num">${ms}</span> ms</span>
+    <span class="stat stat-bytes">${fmtBytes(bytes)} scanned</span>
+    <span class="stat stat-cache ${cache.toLowerCase()}">cache ${cache}</span>
+    <span class="stat stat-cost-bar">cost <span class="stat-cost-bar-track"><span class="stat-cost-bar-fill" style="width:${costPct}%"></span></span></span>
+    <span class="stat" style="margin-left:auto; color: var(--ink-faint);">queryId: q_${hash.toString(16).slice(0,8)}</span>
+  `;
+}
+function hideStatsStrip() { const s = el('results-stats'); if (s) s.hidden = true; }
+
+// ===== FORMAT SQL =====
+function formatSQL(input) {
+  if (!input) return input;
+  const parts = [];
+  let i = 0;
+  while (i < input.length) {
+    const ch = input[i];
+    if (ch === "'") {
+      let j = i + 1;
+      while (j < input.length && input[j] !== "'") {
+        if (input[j] === '\\') j += 2; else j++;
+      }
+      parts.push({ raw: input.slice(i, Math.min(j + 1, input.length)) });
+      i = j + 1;
+    } else if (ch === '-' && input[i + 1] === '-') {
+      let j = i;
+      while (j < input.length && input[j] !== '\n') j++;
+      parts.push({ raw: input.slice(i, j) });
+      i = j;
+    } else if (ch === '/' && input[i + 1] === '*') {
+      let j = i + 2;
+      while (j < input.length - 1 && !(input[j] === '*' && input[j + 1] === '/')) j++;
+      parts.push({ raw: input.slice(i, Math.min(j + 2, input.length)) });
+      i = j + 2;
+    } else {
+      let j = i;
+      while (j < input.length && input[j] !== "'" &&
+             !(input[j] === '-' && input[j + 1] === '-') &&
+             !(input[j] === '/' && input[j + 1] === '*')) j++;
+      parts.push({ code: input.slice(i, j) });
+      i = j;
+    }
+  }
+  const KEYWORDS = ['SELECT','FROM','WHERE','GROUP BY','ORDER BY','HAVING','LIMIT','LEFT JOIN','RIGHT JOIN','INNER JOIN','FULL OUTER JOIN','CROSS JOIN','JOIN','ON','AS','AND','OR','CASE','WHEN','THEN','ELSE','END','WITH','UNION ALL','UNION','INSERT','UPDATE','DELETE','COUNT','SUM','AVG','MIN','MAX','DISTINCT','IS NOT NULL','IS NULL','NOT IN','IN','BETWEEN','OVER','PARTITION BY','LIKE','NULL'];
+  const NEWLINE_BEFORE = ['SELECT','FROM','WHERE','GROUP BY','ORDER BY','HAVING','LIMIT','LEFT JOIN','RIGHT JOIN','INNER JOIN','FULL OUTER JOIN','CROSS JOIN','JOIN','UNION ALL','UNION','WITH'];
+  const sortedK = KEYWORDS.slice().sort((a, b) => b.length - a.length);
+  let out = '';
+  for (const p of parts) {
+    if (p.raw !== undefined) { out += p.raw; continue; }
+    let code = p.code.replace(/\s+/g, ' ');
+    for (const k of sortedK) {
+      const re = new RegExp('\\b' + k.replace(/ /g, '\\s+') + '\\b', 'gi');
+      code = code.replace(re, k);
+    }
+    for (const k of NEWLINE_BEFORE) {
+      const re = new RegExp('(?:^|\\s+)\\b' + k.replace(/ /g, '\\s+') + '\\b', 'g');
+      code = code.replace(re, '\n' + k);
+    }
+    code = code.replace(/,\s*/g, ',\n  ');
+    out += code;
+  }
+  return out.trim() + '\n';
+}
+function formatActiveDoc() {
+  const t = getActiveTab(); if (!t) return;
+  const sel = editor.getSelection();
+  if (sel) {
+    editor.replaceSelection(formatSQL(sel));
+  } else {
+    const v = editor.getValue();
+    editor.setValue(formatSQL(v));
+  }
+  showToast('Formatted');
+}
+function runSelectedQuery() {
+  const sel = editor.getSelection();
+  if (!sel || !sel.trim()) { showToast('Select SQL to run a fragment'); return; }
+  runQuery(sel);
+}
+function saveActiveTab() {
+  const t = getActiveTab(); if (!t) return;
+  t.savedSQL = t.doc.getValue();
+  t.dirty = false;
+  t.editedAt = Date.now();
+  renderTabs();
+  renderMetaStrip();
+  showToast('Query saved');
+}
+
+function wireFormatAndRunSelected() {
+  el('btn-format').addEventListener('click', formatActiveDoc);
+  el('btn-run-sel').addEventListener('click', runSelectedQuery);
+}
+
+// ===== COMMAND PALETTE =====
+function buildCommands() {
+  const list = [
+    { id: 'run',        label: 'Run query',         cat: 'Editor', key: '⌘ ↵', icon: '▶', fn: () => runQuery() },
+    { id: 'run-sel',    label: 'Run selected',      cat: 'Editor', icon: '▶', fn: runSelectedQuery },
+    { id: 'format',     label: 'Format SQL',        cat: 'Editor', icon: '⤳', fn: formatActiveDoc },
+    { id: 'save',       label: 'Save query',        cat: 'Editor', icon: '⤓', fn: saveActiveTab },
+    { id: 'copy',       label: 'Copy SQL to clipboard', cat: 'Editor', icon: '⎘', fn: () => { navigator.clipboard.writeText(editor.getValue()); showToast('Copied'); } },
+    { id: 'clear',      label: 'Clear editor',      cat: 'Editor', icon: '⌫', fn: () => { editor.setValue(''); editor.focus(); } },
+    { id: 'new-tab',    label: 'New tab',           cat: 'Tabs', icon: '+', fn: () => addTab({ title: 'Untitled query', sql: '' }) },
+    { id: 'close-tab',  label: 'Close current tab', cat: 'Tabs', icon: '×', fn: () => closeTab(IDE.activeTabId) },
+    { id: 'history',    label: 'Open history',      cat: 'View', icon: '⏱', fn: openHistory },
+    { id: 'share',      label: 'Share query…',      cat: 'View', icon: '⤴', fn: openShare },
+  ];
+  IDE.tabs.forEach(t => {
+    if (t.id !== IDE.activeTabId) {
+      list.push({ id: 'switch-' + t.id, label: 'Switch to: ' + t.title, cat: 'Tabs', icon: '↹', fn: () => switchTab(t.id) });
+    }
+  });
+  IDE.templates.forEach(t => {
+    list.push({ id: 'tpl-' + t.id, label: 'Open template: ' + t.title, cat: 'Templates', icon: '⊞', fn: () => addTab({ title: t.title, sql: t.sql, tags: t.tags }) });
+  });
+  ENVIRONMENTS.forEach(e => {
+    if (e.id !== IDE.env.id) {
+      list.push({ id: 'env-' + e.id, label: 'Switch env: ' + e.id, cat: 'Env', icon: '◉', fn: () => { IDE.env = { ...e }; renderStatusBar(); showToast('Env: ' + e.id); } });
+    }
+  });
+  return list;
+}
+function fuzzyScore(needle, hay) {
+  if (!needle) return 1;
+  needle = needle.toLowerCase(); hay = hay.toLowerCase();
+  let i = 0, score = 0, lastIdx = -2;
+  for (let k = 0; k < hay.length && i < needle.length; k++) {
+    if (hay[k] === needle[i]) {
+      score += (k === lastIdx + 1) ? 3 : 1;
+      lastIdx = k; i++;
+    }
+  }
+  return i === needle.length ? score : -1;
+}
+function renderCmdList(query) {
+  const list = el('cmd-list');
+  const all = IDE.cmd.list;
+  const matches = all.map(c => ({ c, s: fuzzyScore(query, c.label) }))
+                     .filter(x => x.s >= 0)
+                     .sort((a, b) => b.s - a.s);
+  IDE.cmd.matches = matches.map(m => m.c);
+  if (matches.length === 0) {
+    list.innerHTML = '<div class="cmd-empty">No commands match.</div>';
+    IDE.cmd.sel = 0;
+    return;
+  }
+  IDE.cmd.sel = Math.min(IDE.cmd.sel, matches.length - 1);
+  list.innerHTML = matches.map((m, i) => `
+    <div class="cmd-row ${i === IDE.cmd.sel ? 'sel' : ''}" data-cmd-idx="${i}">
+      <span class="cmd-icon">${m.c.icon || '•'}</span>
+      <span>${escapeHTML(m.c.label)}</span>
+      ${m.c.key ? `<span class="cmd-key">${m.c.key}</span>` : ''}
+      <span class="cmd-cat">${m.c.cat}</span>
+    </div>`).join('');
+  const selEl = list.querySelector('.cmd-row.sel');
+  if (selEl) selEl.scrollIntoView({ block: 'nearest' });
+}
+function openPalette() {
+  IDE.cmd.list = buildCommands();
+  IDE.cmd.sel = 0;
+  IDE.cmd.open = true;
+  el('cmd-overlay').classList.add('open');
+  const input = el('cmd-input');
+  input.value = '';
+  renderCmdList('');
+  setTimeout(() => input.focus(), 0);
+}
+function closePalette() {
+  IDE.cmd.open = false;
+  el('cmd-overlay').classList.remove('open');
+  if (editor) editor.focus();
+}
+function runCmdAt(idx) {
+  const cmd = (IDE.cmd.matches || [])[idx];
+  if (!cmd) return;
+  closePalette();
+  setTimeout(() => cmd.fn(), 0);
+}
+function wireCommandPalette() {
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (IDE.cmd.open) closePalette(); else openPalette();
+      return;
+    }
+    if (IDE.cmd.open && e.key === 'Escape') {
+      e.preventDefault(); closePalette();
+    }
+  });
+  el('cmd-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'cmd-overlay') closePalette();
+  });
+  const input = el('cmd-input');
+  input.addEventListener('input', (e) => { IDE.cmd.sel = 0; renderCmdList(e.target.value); });
+  input.addEventListener('keydown', (e) => {
+    const matches = IDE.cmd.matches || [];
+    if (e.key === 'ArrowDown') {
+      IDE.cmd.sel = Math.min((IDE.cmd.sel || 0) + 1, matches.length - 1);
+      renderCmdList(input.value); e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      IDE.cmd.sel = Math.max((IDE.cmd.sel || 0) - 1, 0);
+      renderCmdList(input.value); e.preventDefault();
+    } else if (e.key === 'Enter') {
+      runCmdAt(IDE.cmd.sel || 0); e.preventDefault();
+    }
+  });
+  el('cmd-list').addEventListener('click', (e) => {
+    const row = e.target.closest('[data-cmd-idx]');
+    if (row) runCmdAt(parseInt(row.dataset.cmdIdx, 10));
+  });
+}
+
+// ===== SHARE MODAL =====
+function openShare() {
+  const t = getActiveTab(); if (!t) return;
+  el('share-sub').textContent = `// ${t.title}`;
+  el('share-link').textContent = `https://lending-warehouse.byheir.com/q/${t.id}`;
+  el('share-members').innerHTML = IDE.members.map(m => `
+    <div class="share-member">
+      <span class="avatar sm c-${m.color}">${m.initials}</span>
+      <span class="member-name">${escapeHTML(m.name)}${m.you ? ' <span class="you">YOU</span>' : ''}</span>
+      <select class="member-role">
+        <option ${m.role==='Owner'?'selected':''}>Owner</option>
+        <option ${m.role==='Editor'?'selected':''}>Editor</option>
+        <option ${m.role==='Viewer'?'selected':''}>Viewer</option>
+      </select>
+    </div>`).join('');
+  const toggle = el('share-toggle');
+  toggle.classList.toggle('on', IDE.share.isPublic);
+  el('share-toggle-label').textContent = IDE.share.isPublic ? 'Anyone with link · view' : 'Restricted · members only';
+  el('share-toggle-sub').textContent = IDE.share.isPublic ? 'Click to require sign-in' : 'Click to allow link sharing';
+  el('share-overlay').classList.add('open');
+  el('share-modal').classList.add('open');
+}
+function closeShare() {
+  el('share-overlay').classList.remove('open');
+  el('share-modal').classList.remove('open');
+}
+function wireShareModal() {
+  el('share-close').addEventListener('click', closeShare);
+  el('share-overlay').addEventListener('click', closeShare);
+  el('share-toggle').addEventListener('click', () => {
+    IDE.share.isPublic = !IDE.share.isPublic;
+    el('share-toggle').classList.toggle('on', IDE.share.isPublic);
+    el('share-toggle-label').textContent = IDE.share.isPublic ? 'Anyone with link · view' : 'Restricted · members only';
+    el('share-toggle-sub').textContent = IDE.share.isPublic ? 'Click to require sign-in' : 'Click to allow link sharing';
+  });
+  el('share-copy-link').addEventListener('click', () => {
+    const link = el('share-link').textContent;
+    navigator.clipboard.writeText(link).then(() => showToast('Link copied'));
+  });
+}
+
+// =====================================================================
+// ===== RESULT INTELLIGENCE (Batch 2) — col stats / pivot / viz =======
+// =====================================================================
+
+// ===== COLUMN STATS POPOVER =====
+function computeColumnStats(result, colIdx) {
+  const cols = result.columns;
+  const rows = result.values;
+  const name = cols[colIdx];
+  const vals = rows.map(r => r[colIdx]);
+  const nulls = vals.filter(v => v === null || v === undefined).length;
+  const non = vals.filter(v => v !== null && v !== undefined);
+  const distinct = new Set(non.map(v => String(v))).size;
+  const type = detectColType(rows, colIdx);
+  const stats = { name, type, count: rows.length, nulls, nullsPct: rows.length ? (nulls / rows.length * 100) : 0, distinct };
+  if (type === 'INT' || type === 'DECIMAL') {
+    const nums = non.filter(v => typeof v === 'number');
+    if (nums.length) {
+      stats.min = Math.min(...nums);
+      stats.max = Math.max(...nums);
+      stats.avg = nums.reduce((s, v) => s + v, 0) / nums.length;
+    }
+  } else {
+    const counts = new Map();
+    for (const v of non) {
+      const k = String(v);
+      counts.set(k, (counts.get(k) || 0) + 1);
+    }
+    stats.topVals = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  }
+  return stats;
+}
+function showColStatsPopover(thEl, colIdx) {
+  if (!lastResult) return;
+  const stats = computeColumnStats(lastResult, colIdx);
+  const pop = el('col-stats');
+  let html = `<h5>${escapeHTML(stats.name)}</h5>
+    <div class="col-stat-type">type: ${stats.type}</div>
+    <div class="stat-row"><span>Rows</span><span class="v">${stats.count.toLocaleString()}</span></div>
+    <div class="stat-row"><span>Distinct</span><span class="v">${stats.distinct.toLocaleString()}</span></div>
+    <div class="stat-row"><span>Nulls</span><span class="v ${stats.nulls > 0 ? 'red' : 'green'}">${stats.nulls.toLocaleString()} (${stats.nullsPct.toFixed(1)}%)</span></div>`;
+  if (stats.min !== undefined) {
+    html += `<div class="stat-row"><span>Min</span><span class="v">${formatNumber(stats.min, stats.name)}</span></div>
+      <div class="stat-row"><span>Max</span><span class="v">${formatNumber(stats.max, stats.name)}</span></div>
+      <div class="stat-row"><span>Avg</span><span class="v">${formatNumber(stats.avg, stats.name)}</span></div>`;
+  } else if (stats.topVals && stats.topVals.length) {
+    const max = stats.topVals[0][1];
+    html += `<div class="top-vals"><div class="col-stat-type" style="margin: 8px 0 4px">Top values</div>`;
+    for (const [k, c] of stats.topVals) {
+      const pct = stats.count ? (c / stats.count * 100).toFixed(1) : '0';
+      const w = max ? (c / max * 100) : 0;
+      html += `<div class="top-val-row">
+        <span class="name" title="${escapeHTML(k)}">${escapeHTML(k)}</span>
+        <span class="bar"><span class="bar-fill" style="width:${w}%"></span></span>
+        <span class="pct">${pct}%</span>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+  pop.innerHTML = html;
+  pop.classList.add('open');
+  // position
+  const rect = thEl.getBoundingClientRect();
+  const popRect = pop.getBoundingClientRect();
+  let left = rect.left + window.scrollX;
+  let top = rect.bottom + window.scrollY + 6;
+  if (left + popRect.width > window.innerWidth - 12) left = window.innerWidth - popRect.width - 12;
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+}
+function hideColStatsPopover() { el('col-stats').classList.remove('open'); }
+function wireColumnHeaderStats() {
+  // Delegate clicks on results-body table headers
+  document.addEventListener('click', (e) => {
+    const th = e.target.closest('.results-table th[data-col-idx]');
+    if (th && lastResult) {
+      e.stopPropagation();
+      showColStatsPopover(th, parseInt(th.dataset.colIdx, 10));
+      return;
+    }
+    if (!e.target.closest('#col-stats')) {
+      hideColStatsPopover();
+    }
+  });
+}
+
+// ===== PIVOT VIEW =====
+function renderPivot() {
+  const view = el('pivot-view');
+  if (!lastResult || lastResult.columns.length < 2) {
+    view.innerHTML = '<div class="pivot-empty">Run a query with at least 2 columns to enable pivot mode.</div>';
+    return;
+  }
+  const cols = lastResult.columns;
+  const rows = lastResult.values;
+  const types = cols.map((_, i) => detectColType(rows, i));
+  const cfg = IDE.pivotConfig || (IDE.pivotConfig = {});
+  // pick sensible defaults
+  if (!cfg.row || cols.indexOf(cfg.row) < 0) cfg.row = cols[0];
+  if (!cfg.col || cols.indexOf(cfg.col) < 0) {
+    const stringCols = cols.filter((c, i) => types[i] === 'VARCHAR' && c !== cfg.row);
+    cfg.col = stringCols[0] || '';
+  }
+  if (!cfg.val || cols.indexOf(cfg.val) < 0) {
+    const numCol = cols.find((c, i) => (types[i] === 'INT' || types[i] === 'DECIMAL') && c !== cfg.row && c !== cfg.col);
+    cfg.val = numCol || cols[cols.length - 1];
+  }
+  if (!cfg.agg) cfg.agg = 'SUM';
+
+  const opt = (sel, current) => cols.map(c => `<option ${c === current ? 'selected' : ''}>${escapeHTML(c)}</option>`).join('');
+  const aggOpts = ['SUM','AVG','COUNT','MIN','MAX'].map(a => `<option ${a === cfg.agg ? 'selected' : ''}>${a}</option>`).join('');
+  const controls = `
+    <div class="pivot-controls">
+      <span class="pivot-control"><label>Rows</label><select id="pivot-row">${opt(0, cfg.row)}</select></span>
+      <span class="pivot-control"><label>Cols</label><select id="pivot-col"><option ${!cfg.col ? 'selected' : ''}>(none)</option>${opt(1, cfg.col)}</select></span>
+      <span class="pivot-control"><label>Values</label><select id="pivot-val">${opt(2, cfg.val)}</select></span>
+      <span class="pivot-control"><label>Agg</label><select id="pivot-agg">${aggOpts}</select></span>
+    </div>`;
+
+  // Build pivot
+  const rowIdx = cols.indexOf(cfg.row);
+  const colIdx = cfg.col && cfg.col !== '(none)' ? cols.indexOf(cfg.col) : -1;
+  const valIdx = cols.indexOf(cfg.val);
+  const rowKeys = []; const rowSet = new Set();
+  const colKeys = []; const colSet = new Set();
+  const map = {}; // map[rowKey][colKey] = [aggregator state]
+  for (const r of rows) {
+    const rk = String(r[rowIdx] === null ? '∅' : r[rowIdx]);
+    const ck = colIdx >= 0 ? String(r[colIdx] === null ? '∅' : r[colIdx]) : 'Total';
+    if (!rowSet.has(rk)) { rowSet.add(rk); rowKeys.push(rk); }
+    if (!colSet.has(ck)) { colSet.add(ck); colKeys.push(ck); }
+    const v = r[valIdx];
+    map[rk] = map[rk] || {};
+    const cur = map[rk][ck] || { sum: 0, count: 0, min: Infinity, max: -Infinity };
+    if (typeof v === 'number') {
+      cur.sum += v; cur.count += 1;
+      if (v < cur.min) cur.min = v;
+      if (v > cur.max) cur.max = v;
+    } else {
+      cur.count += 1;
+    }
+    map[rk][ck] = cur;
+  }
+  // Sort keys
+  rowKeys.sort();
+  colKeys.sort();
+  const cells = rowKeys.length * colKeys.length;
+  let truncatedNote = '';
+  let useRows = rowKeys; let useCols = colKeys;
+  if (cells > 1000 || rowKeys.length > 80 || colKeys.length > 30) {
+    useRows = rowKeys.slice(0, Math.min(80, rowKeys.length));
+    useCols = colKeys.slice(0, Math.min(30, colKeys.length));
+    truncatedNote = `<div class="pivot-truncated">Pivot truncated for performance — showing ${useRows.length} × ${useCols.length} of ${rowKeys.length} × ${colKeys.length} cells.</div>`;
+  }
+  function aggregate(cell) {
+    if (!cell) return null;
+    if (cfg.agg === 'COUNT') return cell.count;
+    if (cell.count === 0) return null;
+    if (cfg.agg === 'SUM') return cell.sum;
+    if (cfg.agg === 'AVG') return cell.sum / cell.count;
+    if (cfg.agg === 'MIN') return cell.min === Infinity ? null : cell.min;
+    if (cfg.agg === 'MAX') return cell.max === -Infinity ? null : cell.max;
+    return null;
+  }
+  const numericCells = [];
+  useRows.forEach(rk => useCols.forEach(ck => {
+    const v = aggregate((map[rk] || {})[ck]);
+    if (typeof v === 'number') numericCells.push(v);
+  }));
+  const minV = numericCells.length ? Math.min(...numericCells) : 0;
+  const maxV = numericCells.length ? Math.max(...numericCells) : 0;
+  function heat(v) {
+    if (typeof v !== 'number' || maxV === minV) return 0;
+    return (v - minV) / (maxV - minV);
+  }
+  let table = `<table class="pivot-table"><thead><tr><th class="row-label-header">${escapeHTML(cfg.row)}</th>`;
+  useCols.forEach(ck => { table += `<th>${escapeHTML(ck)}</th>`; });
+  table += `</tr></thead><tbody>`;
+  useRows.forEach(rk => {
+    table += `<tr><td class="row-label">${escapeHTML(rk)}</td>`;
+    useCols.forEach(ck => {
+      const v = aggregate((map[rk] || {})[ck]);
+      if (v === null || v === undefined) {
+        table += `<td>—</td>`;
+      } else if (typeof v === 'number') {
+        const h = heat(v) * 0.55;
+        table += `<td class="heat" style="--heat:${h.toFixed(3)}"><span>${formatNumber(v, cfg.val)}</span></td>`;
+      } else {
+        table += `<td><span>${escapeHTML(String(v))}</span></td>`;
+      }
+    });
+    table += `</tr>`;
+  });
+  table += `</tbody></table>`;
+  view.innerHTML = controls + truncatedNote + table;
+
+  // wire control changes
+  ['pivot-row','pivot-col','pivot-val','pivot-agg'].forEach(id => {
+    const sel = el(id);
+    if (!sel) return;
+    sel.addEventListener('change', () => {
+      cfg.row = el('pivot-row').value;
+      cfg.col = el('pivot-col').value === '(none)' ? '' : el('pivot-col').value;
+      cfg.val = el('pivot-val').value;
+      cfg.agg = el('pivot-agg').value;
+      renderPivot();
+    });
+  });
+}
+
+// ===== VIZ PICKER =====
+function wireVizPicker() {
+  el('viz-picker').addEventListener('click', (e) => {
+    const btn = e.target.closest('.viz-btn');
+    if (!btn || btn.classList.contains('disabled')) return;
+    const view = btn.dataset.view;
+    if (!view) return;
+    if (view === 'chart' && el('tab-chart').classList.contains('disabled')) {
+      showToast('Chart needs a category + numeric column'); return;
+    }
+    if (view === 'pivot' && (!lastResult || lastResult.columns.length < 2)) {
+      showToast('Pivot needs at least 2 columns'); return;
+    }
+    switchView(view);
+  });
+}
+function updateVizAvailability() {
+  const chartBtn = el('viz-chart');
+  const pivotBtn = el('viz-pivot');
+  const planBtn  = el('viz-plan');
+  if (chartBtn) chartBtn.classList.toggle('disabled', el('tab-chart').classList.contains('disabled'));
+  if (pivotBtn) pivotBtn.classList.toggle('disabled', !lastResult || lastResult.columns.length < 2);
+  if (planBtn)  planBtn.classList.toggle('disabled', !lastSQL);
+}
+
+// ===== AI DRAWER (mocked) =====
+const AI_RESPONSES = [
+  {
+    match: /^(explain|what does|describe)/i, label: 'Explain',
+    pickSql: () => null,
+    text: `This query rolls loans up by **product category** and computes three per-group metrics:
+
+1. \`COUNT(*)\` — how many loans live in each category.
+2. \`AVG(PRINCIPAL)\` rounded to whole dollars — gives you the typical loan size.
+3. \`AVG(APR) * 100\` formatted as a percentage — the weighted-average rate (weighted by loan count, not by dollars).
+
+Joining \`DIM_PRODUCTS\` is only needed to expose \`PRODUCT_CATEGORY\` for the GROUP BY. If you want **dollar-weighted APR** instead of loan-count-weighted, swap \`AVG(APR)\` for \`SUM(APR * PRINCIPAL) / SUM(PRINCIPAL)\`.`
+  },
+  {
+    match: /(optimi[sz]e|faster|slow|perf)/i, label: 'Optimize',
+    pickSql: () => `-- Optimized: skip the join (PRODUCT_CATEGORY already lives on FACT_LOANS via index)
+SELECT
+  p.PRODUCT_CATEGORY,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(l.PRINCIPAL), 0) AS AVG_PRINCIPAL,
+  ROUND(SUM(l.APR * l.PRINCIPAL) / NULLIF(SUM(l.PRINCIPAL), 0) * 100, 2) AS DOLLAR_WTD_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS p USING (PRODUCT_ID)
+GROUP BY p.PRODUCT_CATEGORY
+ORDER BY LOAN_COUNT DESC;`,
+    text: `A few easy wins:
+
+- Use \`USING (PRODUCT_ID)\` to flatten the join condition — same plan, cleaner SQL.
+- For APR, switch to a **dollar-weighted** average; it's the metric finance actually wants and uses one extra multiplication.
+- \`NULLIF(SUM(PRINCIPAL), 0)\` keeps the division safe if a category is empty.
+
+The plan stays index-driven: \`SEARCH FACT_LOANS USING IDX_LOANS_*\` then a \`SEARCH DIM_PRODUCTS USING INTEGER PRIMARY KEY\` per group. No full-table scans.`
+  },
+  {
+    match: /(top|borrowers?|state|dpd|delinq)/i, label: 'Generate',
+    pickSql: () => `-- Top 10 states by 30+ DPD borrowers (with exposure)
+SELECT
+  b.STATE,
+  COUNT(DISTINCT l.BORROWER_ID) AS DELINQ_BORROWERS,
+  SUM(l.PRINCIPAL)              AS EXPOSURE_USD,
+  ROUND(100.0 * COUNT(DISTINCT l.BORROWER_ID) / SUM(COUNT(DISTINCT l.BORROWER_ID)) OVER (), 2) AS PCT_OF_DELINQ
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+WHERE l.STATUS LIKE '%DPD%' OR l.STATUS LIKE '%Delinq%'
+GROUP BY b.STATE
+ORDER BY DELINQ_BORROWERS DESC
+LIMIT 10;`,
+    text: `Generated a state-level delinquency rollup. It counts **distinct borrowers** with any delinquent loan (so a borrower with 2 bad loans only counts once), exposes principal exposure per state, and shows each state's share of the delinquent population using a window function. Pair this with a heatmap pivot for the deck.`
+  },
+  {
+    match: /(funnel|channel|conversion|approval)/i, label: 'Generate',
+    pickSql: () => `-- Channel funnel — apps → approved → funded
+SELECT
+  a.CHANNEL,
+  COUNT(*)                                                  AS APPS,
+  SUM(CASE WHEN a.STATUS = 'Approved' THEN 1 ELSE 0 END)    AS APPROVED,
+  COUNT(l.LOAN_ID)                                          AS FUNDED,
+  ROUND(100.0 * COUNT(l.LOAN_ID) / COUNT(*), 2)             AS APP_TO_FUND_PCT
+FROM FACT_APPLICATIONS a
+LEFT JOIN FACT_LOANS l ON l.APPLICATION_ID = a.APPLICATION_ID
+GROUP BY a.CHANNEL
+ORDER BY APPS DESC;`,
+    text: `Channel-level funnel: applications → approvals → fundings, plus an end-to-end conversion rate. The \`LEFT JOIN\` to \`FACT_LOANS\` is what lets you count fundings without dropping channels that have zero fundings — important for spotting weak channels rather than just hiding them.`
+  },
+  {
+    match: /.*/i, label: 'Generate',
+    pickSql: (currentSQL) => currentSQL && currentSQL.trim() ? null : `SELECT * FROM FACT_LOANS LIMIT 25;`,
+    text: `I can answer questions about the schema (\`DIM_BORROWERS\`, \`DIM_PRODUCTS\`, \`FACT_APPLICATIONS\`, \`FACT_LOANS\`, \`FACT_PAYMENTS\`), explain or optimize the active query, or draft a new query from a plain-English description. Try: *"top 5 products by charge-off rate"*, *"vintage curve for Q3 2024"*, or *"cohort triangle of 90+ DPD"*.`
+  }
+];
+
+const AIState = { open: false, history: [], stream: null };
+function openAI() {
+  AIState.open = true;
+  el('ai-overlay').classList.add('open');
+  el('ai-drawer').classList.add('open');
+  setTimeout(() => el('ai-input').focus(), 250);
+  if (AIState.history.length === 0) {
+    appendAI({ role: 'assistant', text: 'Hi — ask me about the active query, the schema, or draft a new query from a description. The presets above are the fastest way in.' });
+  }
+}
+function closeAI() {
+  AIState.open = false;
+  el('ai-overlay').classList.remove('open');
+  el('ai-drawer').classList.remove('open');
+  if (AIState.stream) { clearInterval(AIState.stream); AIState.stream = null; }
+}
+function appendAI(msg) {
+  AIState.history.push(msg);
+  const wrap = el('ai-msgs');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + msg.role;
+  div.innerHTML = `<div class="ai-msg-role">${msg.role === 'user' ? 'YOU' : 'COPILOT'}</div><div class="ai-msg-body" data-body></div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  if (msg.role === 'assistant' && msg.streaming) {
+    return div.querySelector('[data-body]');
+  } else {
+    div.querySelector('[data-body]').innerHTML = renderAIBody(msg.text, msg.sqlInsert);
+    return div;
+  }
+}
+function renderAIBody(text, sqlInsert) {
+  const md = String(text || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,0.3); padding:1px 4px; border-radius:3px; color:var(--cyan); font-family:JetBrains Mono,monospace; font-size:11.5px">$1</code>')
+    .replace(/\n\n/g, '<br/><br/>');
+  return md + (sqlInsert ? `<pre>${escapeHTML(sqlInsert)}</pre><button class="apply-btn" data-apply="${escapeHTML(btoa(unescape(encodeURIComponent(sqlInsert))))}">Apply to editor</button>` : '');
+}
+function pickAIResponse(prompt, currentSQL) {
+  for (const r of AI_RESPONSES) {
+    if (r.match.test(prompt)) {
+      const sql = r.pickSql ? r.pickSql(currentSQL) : null;
+      return { text: r.text, sql };
+    }
+  }
+  return { text: 'I don\'t have a canned response for that yet — but the schema is loaded; try a more specific question about a table or metric.', sql: null };
+}
+function streamAIResponse(prompt) {
+  if (AIState.stream) { clearInterval(AIState.stream); AIState.stream = null; }
+  const currentSQL = editor ? editor.getValue() : '';
+  const { text, sql } = pickAIResponse(prompt, currentSQL);
+  const target = appendAI({ role: 'assistant', streaming: true });
+  // streaming caret
+  let caret = document.createElement('span');
+  caret.className = 'streaming-cursor';
+  target.appendChild(caret);
+  let i = 0;
+  AIState.stream = setInterval(() => {
+    const chunk = 2 + Math.floor(Math.random() * 3);
+    for (let k = 0; k < chunk && i < text.length; k++) {
+      caret.before(document.createTextNode(text[i]));
+      i++;
+    }
+    el('ai-msgs').scrollTop = el('ai-msgs').scrollHeight;
+    if (i >= text.length) {
+      clearInterval(AIState.stream); AIState.stream = null;
+      caret.remove();
+      target.innerHTML = renderAIBody(text, sql);
+      el('ai-msgs').scrollTop = el('ai-msgs').scrollHeight;
+    }
+  }, 14);
+}
+function sendAI() {
+  const input = el('ai-input');
+  const text = input.value.trim();
+  if (!text) return;
+  appendAI({ role: 'user', text });
+  input.value = '';
+  setTimeout(() => streamAIResponse(text), 180);
+}
+function wireAIDrawer() {
+  el('ai-fab').addEventListener('click', openAI);
+  el('ai-close').addEventListener('click', closeAI);
+  el('ai-overlay').addEventListener('click', closeAI);
+  el('ai-presets').addEventListener('click', (e) => {
+    const chip = e.target.closest('.ai-preset-chip');
+    if (!chip) return;
+    const preset = chip.dataset.preset;
+    const promptText = preset === 'explain' ? 'Explain this query'
+                     : preset === 'optimize' ? 'Optimize this query for performance'
+                     : 'Generate from English: top 10 states by 30+ DPD borrowers with exposure';
+    el('ai-input').value = promptText;
+    sendAI();
+  });
+  el('ai-send').addEventListener('click', sendAI);
+  el('ai-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAI(); }
+  });
+  el('ai-msgs').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-apply]');
+    if (!btn) return;
+    try {
+      const sql = decodeURIComponent(escape(atob(btn.dataset.apply)));
+      setActiveSQL(sql, { markSaved: false });
+      showToast('Inserted');
+      closeAI();
+    } catch (err) { console.warn(err); }
+  });
+}
+
+// ===== EDITOR HOOKS (cursor + dirty tracking) =====
+function wireEditorHooks() {
+  if (!editor) return;
+  editor.on('cursorActivity', () => {
+    const c = editor.getCursor();
+    setCursorStatus(c.line + 1, c.ch + 1);
+  });
+  editor.on('change', () => {
+    const t = getActiveTab(); if (!t) return;
+    const wasDirty = t.dirty;
+    t.dirty = (t.doc.getValue() !== t.savedSQL);
+    if (wasDirty !== t.dirty) renderTabs();
+  });
 }
 
 boot().catch(err => {
