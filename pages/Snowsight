@@ -2920,7 +2920,31 @@ function generateDemoDB() {
     const dt = new Date(startD + rng() * (endD - startD)).toISOString().slice(0, 10);
     sales.push([i, eid, product, dt, amt, pick(['Closed Won','Closed Won','Closed Won','Closed Lost'])]);
   }
-  return { departments, employees, sales };
+
+  // VARIANT_DATA — semi-structured event stream demoing Snowflake's VARIANT path syntax.
+  // Stored as TEXT holding JSON; both engines have json_extract / json_object / json_array.
+  const variant_data = [];
+  const eventTypes = ['page_view', 'click', 'signup', 'export', 'query_run'];
+  const paths = ['/home', '/dashboard', '/pricing', '/docs', '/admin', '/explore'];
+  const plans = ['free', 'pro', 'pro', 'enterprise'];
+  const tagSets = [['web'], ['web','beta'], ['mobile'], ['web','admin'], ['mobile','beta']];
+  const targets = ['upgrade-btn', 'export-btn', 'login-link', 'menu-toggle', null];
+  for (let i = 1; i <= 80; i++) {
+    const et = pick(eventTypes);
+    const uid = rint(1, 80);
+    const props = {
+      path: pick(paths),
+      plan: pick(plans),
+      tier: rint(1, 5),
+      tags: pick(tagSets)
+    };
+    if (et === 'click') props.target = pick(targets);
+    if (et === 'page_view') props.referrer = pick(['google','direct','twitter','newsletter']);
+    if (et === 'query_run') props.warehouse = pick(['COMPUTE_WH','ANALYTICS_WH','LOAD_WH']);
+    variant_data.push([i, et, uid, JSON.stringify(props)]);
+  }
+
+  return { departments, employees, sales, variant_data };
 }
 
 // ---------- Schema metadata ----------
@@ -2947,9 +2971,10 @@ const SCHEMA_META = {
       schemas: [{
         name: 'PUBLIC',
         tables: [
-          { name: 'DEPARTMENTS', type: 'TABLE', columns: [['DEPT_ID','NUMBER'],['DEPT_NAME','VARCHAR'],['LOCATION','VARCHAR'],['BUDGET','NUMBER(12,2)']]},
-          { name: 'EMPLOYEES',   type: 'TABLE', columns: [['EMPLOYEE_ID','NUMBER'],['FIRST_NAME','VARCHAR'],['LAST_NAME','VARCHAR'],['EMAIL','VARCHAR'],['DEPT_ID','NUMBER'],['TITLE','VARCHAR'],['HIRE_DATE','DATE'],['SALARY','NUMBER(12,2)'],['MANAGER_ID','NUMBER']]},
-          { name: 'SALES',       type: 'TABLE', columns: [['SALE_ID','NUMBER'],['EMPLOYEE_ID','NUMBER'],['PRODUCT','VARCHAR'],['SALE_DATE','DATE'],['AMOUNT','NUMBER(12,2)'],['STATUS','VARCHAR']]}
+          { name: 'DEPARTMENTS',  type: 'TABLE', columns: [['DEPT_ID','NUMBER'],['DEPT_NAME','VARCHAR'],['LOCATION','VARCHAR'],['BUDGET','NUMBER(12,2)']]},
+          { name: 'EMPLOYEES',    type: 'TABLE', columns: [['EMPLOYEE_ID','NUMBER'],['FIRST_NAME','VARCHAR'],['LAST_NAME','VARCHAR'],['EMAIL','VARCHAR'],['DEPT_ID','NUMBER'],['TITLE','VARCHAR'],['HIRE_DATE','DATE'],['SALARY','NUMBER(12,2)'],['MANAGER_ID','NUMBER']]},
+          { name: 'SALES',        type: 'TABLE', columns: [['SALE_ID','NUMBER'],['EMPLOYEE_ID','NUMBER'],['PRODUCT','VARCHAR'],['SALE_DATE','DATE'],['AMOUNT','NUMBER(12,2)'],['STATUS','VARCHAR']]},
+          { name: 'VARIANT_DATA', type: 'TABLE', columns: [['EVENT_ID','NUMBER'],['EVENT_TYPE','VARCHAR'],['USER_ID','NUMBER'],['PROPS','VARIANT']]}
         ]
       }]
     }
@@ -2977,9 +3002,46 @@ function applySharedRewrites(sql) {
   // Snowflake's APPROX_COUNT_DISTINCT uses HLL; both engines also support it natively,
   // but COUNT(DISTINCT) gives an exact answer everywhere with no portability surprises.
   out = replaceFunc(out, 'APPROX_COUNT_DISTINCT', a => `COUNT(DISTINCT ${a[0]})`);
+  // VARIANT helpers — both sql.js (json1) and DuckDB ship the json_* family.
+  out = replaceFunc(out, 'PARSE_JSON',       a => `json(${a[0]})`);
+  out = replaceFunc(out, 'OBJECT_CONSTRUCT', a => `json_object(${a.join(', ')})`);
+  out = replaceFunc(out, 'ARRAY_CONSTRUCT',  a => `json_array(${a.join(', ')})`);
+  // Snowflake colon-path syntax: obj:key.path[0] → json_extract(obj, '$.key.path[0]')
+  out = rewriteVariantColonPath(out);
   // RATIO_TO_REPORT(x) OVER (...) → ((x) * 1.0 / NULLIF(SUM(x) OVER (...), 0))
   // Needs OVER-aware rewriting because the OVER clause must attach to SUM, not the wrapper.
   out = rewriteRatioToReport(out);
+  return out;
+}
+
+// Rewrite Snowflake's VARIANT colon-path syntax to portable json_extract calls.
+// Walks string-/comment-aware so date literals like '12:34:56' aren't touched.
+// Skips ::TYPE casts (negative lookahead on second colon).
+function rewriteVariantColonPath(sql) {
+  let out = '';
+  let i = 0, inStr = null, inLine = false, inBlock = false;
+  while (i < sql.length) {
+    const ch = sql[i], nx = sql[i + 1];
+    if (inLine)  { out += ch; if (ch === '\n') inLine = false; i++; continue; }
+    if (inBlock) { out += ch; if (ch === '*' && nx === '/') { out += nx; i += 2; inBlock = false; continue; } i++; continue; }
+    if (inStr)   { out += ch; if (ch === inStr && sql[i-1] !== '\\') inStr = null; i++; continue; }
+    if (ch === '-' && nx === '-') { out += ch; inLine = true; i++; continue; }
+    if (ch === '/' && nx === '*') { out += ch; inBlock = true; i++; continue; }
+    if (ch === "'" || ch === '"') { out += ch; inStr = ch; i++; continue; }
+    // Try to match identifier:path here (only at a word boundary).
+    if (/[A-Za-z_]/.test(ch) && (i === 0 || /[^A-Za-z0-9_]/.test(sql[i - 1]))) {
+      const m = sql.slice(i).match(/^(\w+):(?!:)((?:\w+|\[\d+\])(?:\.(?:\w+|\[\d+\])|\[\d+\])*)/);
+      if (m) {
+        const obj = m[1];
+        const path = m[2];
+        out += `json_extract(${obj}, '$.${path}')`;
+        i += m[0].length;
+        continue;
+      }
+    }
+    out += ch;
+    i++;
+  }
   return out;
 }
 
@@ -3187,6 +3249,9 @@ function translateForDuckDB(sql) {
   out = replaceFunc(out, 'BITAND_AGG',   a => `bit_and(${a[0]})`);
   out = replaceFunc(out, 'BITOR_AGG',    a => `bit_or(${a[0]})`);
   out = replaceFunc(out, 'BITXOR_AGG',   a => `bit_xor(${a[0]})`);
+  // VARIANT extras — DuckDB-native, sqljs has no equivalent.
+  out = replaceFunc(out, 'OBJECT_KEYS',  a => `json_keys(${a[0]})`);
+  out = replaceFunc(out, 'GET',          a => a.length === 2 ? `(${a[0]})[${a[1]}]` : null);
 
   // ::TYPE, ILIKE, QUALIFY, IFNULL, LISTAGG, ARRAY_AGG, MEDIAN, MODE, window fns — DuckDB native, no rewrite.
   return out;
@@ -3676,6 +3741,21 @@ JOIN nation n   ON s.s_nationkey = n.n_nationkey
 QUALIFY ROW_NUMBER() OVER (PARTITION BY p.p_partkey ORDER BY ps.ps_supplycost) = 1
 ORDER BY p.p_partkey
 LIMIT 20;`
+  },
+  { id: 'variant', tag: 'VARIANT', title: 'Event Funnel from JSON Props', desc: 'Snowflake colon-path syntax over a VARIANT-style props column.',
+    sql: `-- Mix of structured columns + JSON path extraction
+-- Plan tier and referrer come straight out of the JSON props.
+SELECT
+  event_type,
+  props:plan          AS plan_tier,
+  props:referrer      AS referrer,
+  COUNT(*)            AS events,
+  COUNT(DISTINCT user_id) AS users
+FROM demo_db.public.variant_data
+WHERE props:plan IS NOT NULL
+GROUP BY 1, 2, 3
+ORDER BY events DESC
+LIMIT 25;`
   },
   { id: 'startswith', tag: 'STRING', title: 'Customer Search with STARTSWITH', desc: 'Snowflake STARTSWITH / CONTAINS rewritten to portable LIKE.',
     sql: `-- Customers whose address contains "Main" and whose phone starts with the area-code prefix "12"
@@ -6151,9 +6231,10 @@ async function boot() {
   ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP'] = tpch.partsupp.length;
   ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS'] = tpch.orders.length;
   ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM'] = tpch.lineitem.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.DEPARTMENTS'] = demo.departments.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.EMPLOYEES'] = demo.employees.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.SALES'] = demo.sales.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.DEPARTMENTS']  = demo.departments.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.EMPLOYEES']    = demo.employees.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.SALES']        = demo.sales.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.VARIANT_DATA'] = demo.variant_data.length;
 
   setBootText('Ready', 100);
   await new Promise(r => setTimeout(r, 250));
@@ -6228,12 +6309,16 @@ async function loadDemoIntoDB(d) {
   await exec(`CREATE TABLE departments (dept_id INTEGER PRIMARY KEY, dept_name TEXT, location TEXT, budget REAL);`);
   await exec(`CREATE TABLE employees (employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, dept_id INTEGER, title TEXT, hire_date TEXT, salary REAL, manager_id INTEGER);`);
   await exec(`CREATE TABLE sales (sale_id INTEGER PRIMARY KEY, employee_id INTEGER, product TEXT, sale_date TEXT, amount REAL, status TEXT);`);
-  await bulk('departments', ['dept_id','dept_name','location','budget'], d.departments);
-  await bulk('employees',   ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'], d.employees);
-  await bulk('sales',       ['sale_id','employee_id','product','sale_date','amount','status'], d.sales);
+  // VARIANT_DATA: props column stored as TEXT but treated as JSON via json_extract / json_object.
+  await exec(`CREATE TABLE variant_data (event_id INTEGER PRIMARY KEY, event_type TEXT, user_id INTEGER, props TEXT);`);
+  await bulk('departments',  ['dept_id','dept_name','location','budget'], d.departments);
+  await bulk('employees',    ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'], d.employees);
+  await bulk('sales',        ['sale_id','employee_id','product','sale_date','amount','status'], d.sales);
+  await bulk('variant_data', ['event_id','event_type','user_id','props'], d.variant_data);
   await exec(`CREATE INDEX idx_emp_dept ON employees(dept_id);`);
   await exec(`CREATE INDEX idx_sales_emp ON sales(employee_id);`);
   await exec(`CREATE INDEX idx_sales_date ON sales(sale_date);`);
+  await exec(`CREATE INDEX idx_variant_user ON variant_data(user_id);`);
 }
 
 // ---------- Ask AI ----------

@@ -94,7 +94,8 @@ const TPCH_DDL = [
 const DEMO_DDL = [
   `CREATE TABLE departments (dept_id INTEGER PRIMARY KEY, dept_name TEXT, location TEXT, budget REAL)`,
   `CREATE TABLE employees (employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, dept_id INTEGER, title TEXT, hire_date TEXT, salary REAL, manager_id INTEGER)`,
-  `CREATE TABLE sales (sale_id INTEGER PRIMARY KEY, employee_id INTEGER, product TEXT, sale_date TEXT, amount REAL, status TEXT)`
+  `CREATE TABLE sales (sale_id INTEGER PRIMARY KEY, employee_id INTEGER, product TEXT, sale_date TEXT, amount REAL, status TEXT)`,
+  `CREATE TABLE variant_data (event_id INTEGER PRIMARY KEY, event_type TEXT, user_id INTEGER, props TEXT)`
 ];
 
 const TPCH_COLS = {
@@ -108,9 +109,10 @@ const TPCH_COLS = {
   lineitem: ['l_orderkey','l_partkey','l_suppkey','l_linenumber','l_quantity','l_extendedprice','l_discount','l_tax','l_returnflag','l_linestatus','l_shipdate','l_commitdate','l_receiptdate','l_shipinstruct','l_shipmode','l_comment']
 };
 const DEMO_COLS = {
-  departments: ['dept_id','dept_name','location','budget'],
-  employees:   ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'],
-  sales:       ['sale_id','employee_id','product','sale_date','amount','status']
+  departments:  ['dept_id','dept_name','location','budget'],
+  employees:    ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'],
+  sales:        ['sale_id','employee_id','product','sale_date','amount','status'],
+  variant_data: ['event_id','event_type','user_id','props']
 };
 
 // ---------- Engine adapters (Node-side) ----------
