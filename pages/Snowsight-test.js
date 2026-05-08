@@ -214,10 +214,15 @@ function normalizeDuck(v) {
   console.log(`Engine: ${ENGINE} (${adapter.label()})`);
   console.log(`Loaded ${rowTotal.toLocaleString()} rows in ${dataMs}ms\n`);
 
-  let pass = 0, fail = 0;
+  let pass = 0, fail = 0, skip = 0;
   const failures = [];
   for (const t of TEMPLATES) {
     const id = t.id.padEnd(10);
+    if (Array.isArray(t.engines) && !t.engines.includes(ENGINE)) {
+      console.log(`  SKIP  ${id}                       ${t.title}  (engine: ${t.engines.join(',')})`);
+      skip++;
+      continue;
+    }
     const tStart = Date.now();
     try {
       const translated = translateSnowflake(t.sql, ENGINE);
@@ -236,8 +241,8 @@ function normalizeDuck(v) {
     }
   }
 
-  const total = TEMPLATES.length;
-  console.log(`\n${pass}/${total} templates pass on engine=${ENGINE}`);
+  const total = TEMPLATES.length - skip;
+  console.log(`\n${pass}/${total} templates pass on engine=${ENGINE}${skip ? ` (${skip} skipped)` : ''}`);
   if (fail > 0) {
     console.log('\nFailures:');
     for (const f of failures) console.log(`  - ${f.id}: ${f.error.split('\n')[0]}`);

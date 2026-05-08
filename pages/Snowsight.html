@@ -2173,6 +2173,80 @@ background-clip: content-box;
   font-family: 'JetBrains Mono', monospace;
 }
 .ai-status.error { color: #FF7A8C; white-space: pre-wrap; word-break: break-word; }
+.ai-status.success { color: var(--green); }
+
+/* Share & Stage modals (Phase 3.5 / 2.4) */
+.share-body { display: flex; flex-direction: column; gap: 18px; }
+.share-section { display: flex; flex-direction: column; gap: 8px; }
+.share-section h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.share-hint { color: var(--text-3); font-size: 12px; line-height: 1.5; }
+.share-hint code { background: var(--bg-1); padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-2); }
+.share-row { display: flex; gap: 8px; align-items: center; }
+.share-input {
+  flex: 1;
+  background: var(--bg-1);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-md);
+  color: var(--text-1);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  padding: 8px 10px;
+  outline: none;
+}
+.share-input:focus { border-color: var(--sf-blue); }
+
+.stage-dropzone {
+  border: 2px dashed var(--border-3);
+  border-radius: var(--radius-lg);
+  padding: 28px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-3);
+  transition: border-color 120ms, background 120ms;
+}
+.stage-dropzone.over {
+  border-color: var(--sf-blue);
+  background: rgba(41, 181, 232, 0.05);
+  color: var(--text-1);
+}
+.stage-drop-title { font-size: 14px; font-weight: 500; color: var(--text-1); }
+.stage-drop-hint { font-size: 12px; color: var(--text-3); }
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.stage-list:empty { display: none; }
+.stage-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+}
+.stage-row .name { flex: 1; font-family: 'JetBrains Mono', monospace; color: var(--text-1); }
+.stage-row .meta { color: var(--text-3); font-size: 11px; }
+.stage-row .remove {
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 4px; color: var(--text-3);
+}
+.stage-row .remove:hover { background: var(--bg-3); color: var(--red); }
+.stage-row .remove svg { width: 11px; height: 11px; }
 
 /* Utility */
 .hidden { display: none !important; }
@@ -2333,6 +2407,11 @@ background-clip: content-box;
     <span id="warehouseName">COMPUTE_WH</span>
     <svg class="caret" viewBox="0 0 10 10" fill="currentColor"><path d="M2 4l3 3 3-3z"/></svg>
   </button>
+  <button class="pill" id="datasetPill" title="Dataset source">
+    <span class="label">Data</span>
+    <span id="datasetName">Synthetic</span>
+    <svg class="caret" viewBox="0 0 10 10" fill="currentColor"><path d="M2 4l3 3 3-3z"/></svg>
+  </button>
   <button class="icon-btn" id="aboutBtn" title="About this demo">
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M6 6.5c0-1 .9-2 2-2s2 .9 2 1.8c0 .9-.5 1.4-1 1.7s-1 .5-1 1.5"/><circle cx="8" cy="11.5" r="0.5" fill="currentColor"/></svg>
   </button>
@@ -2414,6 +2493,14 @@ background-clip: content-box;
     <button class="btn" id="templatesBtn" title="New from template">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M2.5 6h11M6 6v7.5"/></svg>
       Templates
+    </button>
+    <button class="btn" id="shareBtn" title="Share or export workspace">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4" cy="8" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="12" r="2"/><path d="M5.7 7l4.6-2.3M5.7 9l4.6 2.3" stroke-linecap="round"/></svg>
+      Share
+    </button>
+    <button class="btn" id="stageBtn" title="Upload CSV / JSON / Parquet (DuckDB engine)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2M8 2v8M5 5l3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Upload
     </button>
     <div class="spacer"></div>
     <div class="toolbar-meta" id="toolbarMeta">
@@ -2660,6 +2747,7 @@ background-clip: content-box;
 
 <div class="menu" id="roleMenu"></div>
 <div class="menu" id="warehouseMenu"></div>
+<div class="menu" id="datasetMenu"></div>
 <div class="menu" id="tabMenu"></div>
 
 <!-- (Query history is now a full-page view: see <section id="historyView">) -->
@@ -2712,6 +2800,81 @@ background-clip: content-box;
   </div>
 </div>
 
+<div class="modal-backdrop" id="shareModal">
+  <div class="modal" style="max-width: 600px;">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;color:var(--sf-blue);margin-right:6px;"><circle cx="4" cy="8" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="12" cy="12" r="2"/><path d="M5.7 7l4.6-2.3M5.7 9l4.6 2.3" stroke-linecap="round"/></svg>
+        Share &amp; Export
+      </h3>
+      <button class="icon-btn" data-close>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body share-body">
+      <div class="share-section">
+        <h4>Permalink for this worksheet</h4>
+        <p class="share-hint">Anyone with this URL opens directly to the current worksheet's SQL.</p>
+        <div class="share-row">
+          <input type="text" id="shareUrlInput" class="share-input" readonly />
+          <button class="btn primary" id="shareCopyBtn">Copy</button>
+        </div>
+      </div>
+      <div class="share-section">
+        <h4>Export workspace</h4>
+        <p class="share-hint">Download every worksheet, folder, notebook, dashboard tile, and history entry as JSON.</p>
+        <button class="btn" id="shareExportBtn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9M5 8l3 3 3-3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 13h10"/></svg>
+          Download workspace.json
+        </button>
+      </div>
+      <div class="share-section">
+        <h4>Import workspace</h4>
+        <p class="share-hint">Restore a previously-exported JSON file. Merges into the current workspace; existing items keep their IDs.</p>
+        <button class="btn" id="shareImportBtn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14V5M5 8l3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 3h10"/></svg>
+          Choose JSON file…
+        </button>
+        <input type="file" id="shareImportFile" accept="application/json,.json" style="display:none" />
+      </div>
+      <div id="shareStatus" class="ai-status"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="stageModal">
+  <div class="modal" style="max-width: 620px;">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;color:var(--sf-blue);margin-right:6px;"><path d="M3 11v2a1 1 0 001 1h8a1 1 0 001-1v-2M8 2v8M5 5l3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Upload to Stage
+      </h3>
+      <button class="icon-btn" data-close>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="stageDuckdbRequired" class="ai-panel" hidden>
+        <p class="ai-lead">File upload requires the DuckDB engine.</p>
+        <p class="ai-hint">Append <code>?engine=duckdb</code> to the URL to switch engines, then reload. Synthetic TPCH data is rebuilt on each engine boot, so worksheets carry over.</p>
+        <button class="btn primary" id="stageSwitchEngineBtn" style="width:100%;justify-content:center;">Switch to DuckDB engine</button>
+      </div>
+      <div id="stagePanel" class="ai-panel" hidden>
+        <p class="ai-lead">Drop a CSV, JSON, NDJSON, or Parquet file. We'll register it as a table and add it to the catalog under <code>STAGE.PUBLIC</code>.</p>
+        <div id="stageDropzone" class="stage-dropzone">
+          <svg viewBox="0 0 32 32" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 22v4a2 2 0 002 2h16a2 2 0 002-2v-4M16 4v16M10 10l6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="stage-drop-title">Drop file here</div>
+          <div class="stage-drop-hint">or</div>
+          <button class="btn primary" id="stageBrowseBtn">Choose file…</button>
+          <input type="file" id="stageFileInput" accept=".csv,.tsv,.json,.ndjson,.parquet,application/json,text/csv" style="display:none" />
+        </div>
+        <div id="stageList" class="stage-list"></div>
+        <div id="stageStatus" class="ai-status"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="aboutModal">
   <div class="modal" style="max-width: 640px;">
     <div class="modal-head">
@@ -2734,8 +2897,9 @@ background-clip: content-box;
   <div class="about-section">
     <h4>What's real vs simulated</h4>
     <ul>
-      <li><strong>Real:</strong> SQL execution (sql.js / SQLite-WASM), TPCH-shaped data (~35K rows), charts, query history, multi-tab worksheets persisted to localStorage</li>
-      <li><strong>Real:</strong> Snowflake-to-SQLite SQL translator (handles <code>QUALIFY</code>, <code>IFF</code>, <code>DATEADD</code>, <code>::TYPE</code> casts, <code>ZEROIFNULL</code>, multi-DB qualifiers, and more)</li>
+      <li><strong>Real:</strong> SQL execution (sql.js / SQLite-WASM <em>or</em> DuckDB-WASM), TPCH-shaped data (~36K rows), charts, query history, multi-tab worksheets persisted to localStorage</li>
+      <li><strong>Real:</strong> Snowflake-to-engine SQL translator (handles <code>QUALIFY</code>, <code>IFF</code>, <code>DATEADD</code>, <code>::TYPE</code> casts, <code>ZEROIFNULL</code>, <code>RATIO_TO_REPORT</code>, VARIANT colon-paths, <code>LATERAL FLATTEN</code>, multi-DB qualifiers)</li>
+      <li><strong>Real:</strong> Parquet dataset path with OPFS browser-cache (<code>?dataset=parquet</code>), drag-and-drop CSV/JSON/Parquet upload (Stages), permalink + workspace JSON export</li>
       <li><strong>Simulated:</strong> Bytes scanned, micro-partitions, query IDs, warehouse sizing, role switching</li>
     </ul>
   </div>
@@ -2743,7 +2907,8 @@ background-clip: content-box;
   <div class="about-section">
     <h4>Tech stack</h4>
     <ul>
-      <li><a href="https://sql.js.org" target="_blank" rel="noopener">sql.js</a> — SQLite compiled to WebAssembly</li>
+      <li><a href="https://sql.js.org" target="_blank" rel="noopener">sql.js</a> — SQLite compiled to WebAssembly (default)</li>
+      <li><a href="https://duckdb.org/docs/api/wasm/overview" target="_blank" rel="noopener">DuckDB-WASM</a> — opt-in via <code>?engine=duckdb</code> for Parquet, FLATTEN, EXPLAIN plans</li>
       <li><a href="https://codemirror.net" target="_blank" rel="noopener">CodeMirror 5</a> — SQL editor with syntax highlighting</li>
       <li>Vanilla JavaScript — no React, no build step, single HTML file</li>
       <li>Hand-rolled SVG charts and Snowflake-faithful CSS</li>
@@ -2753,11 +2918,13 @@ background-clip: content-box;
   <div class="about-section">
     <h4>Try this</h4>
     <ul>
-      <li>Open <strong>Templates ▸</strong> for 12 ready-to-run queries</li>
-      <li><code>⌘↵</code> / <code>Ctrl+↵</code> runs the statement at your cursor</li>
-      <li><code>⌘⇧↵</code> runs all statements in the worksheet</li>
+      <li>Open <strong>Templates ▸</strong> for ready-to-run queries (FLATTEN/VARIANT/window/CTE)</li>
+      <li><code>⌘↵</code> / <code>Ctrl+↵</code> runs the statement at your cursor; <code>⌘⇧↵</code> runs all</li>
+      <li><strong>Share ▸</strong> generates a permalink that opens directly to a worksheet, or exports / imports a workspace as JSON</li>
+      <li><strong>Upload ▸</strong> (DuckDB only) drops a CSV / JSON / Parquet file straight into a queryable <code>STAGE.PUBLIC</code> table</li>
+      <li><strong>Data pill</strong> in the topbar switches between in-memory synthetic and committed Parquet TPCH (cached in OPFS for instant repeat loads)</li>
       <li>Double-click a table in the sidebar to open its detail page (columns, preview, DDL)</li>
-      <li>Click a column name to insert it at the cursor</li>
+      <li>Click a column name to insert it at the cursor; <code>⌘I</code> opens the AI assistant</li>
     </ul>
   </div>
 
@@ -3131,6 +3298,66 @@ function applySharedRewrites(sql) {
   return out;
 }
 
+// Snowflake's table-valued FLATTEN function explodes a VARIANT/JSON array
+// into one row per element with standard alias columns. Rewrite each
+// occurrence to a LATERAL subquery over `json_each` — supported by both
+// sql.js (json1) and DuckDB (json extension).
+function rewriteLateralFlatten(sql) {
+  const re = /\b(?:LATERAL\s+)?FLATTEN\s*\(/gi;
+  let result = '', lastIdx = 0, m, aliasCounter = 0;
+  // Tokens that look like an alias to the alias-detector but really begin a
+  // following clause; never consume them as the FLATTEN alias.
+  const KEYWORDS = /^(ON|USING|WHERE|GROUP|HAVING|ORDER|LIMIT|JOIN|LEFT|RIGHT|INNER|OUTER|FULL|CROSS|NATURAL|UNION|INTERSECT|EXCEPT|QUALIFY|AS)$/i;
+  while ((m = re.exec(sql)) !== null) {
+    const start = m.index;
+    let depth = 1, i = m.index + m[0].length, inStr = null;
+    while (i < sql.length && depth > 0) {
+      const ch = sql[i];
+      if (inStr) { if (ch === inStr && sql[i - 1] !== '\\') inStr = null; }
+      else if (ch === "'" || ch === '"') inStr = ch;
+      else if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      i++;
+    }
+    if (depth !== 0) break;
+    const close = i - 1;
+    const inside = sql.slice(m.index + m[0].length, close);
+    const args = splitArgs(inside);
+    let inputExpr = null;
+    for (const a of args) {
+      const km = /^\s*input\s*=>\s*([\s\S]+)$/i.exec(a);
+      if (km) { inputExpr = km[1].trim(); break; }
+    }
+    if (!inputExpr && args.length === 1 && !/=>/.test(args[0])) inputExpr = args[0].trim();
+    if (!inputExpr) {
+      lastIdx = close + 1;
+      re.lastIndex = close + 1;
+      continue;
+    }
+    // Optional trailing alias: [AS] <name>. Reject SQL keywords so we don't
+    // accidentally swallow the next clause.
+    const after = sql.slice(close + 1);
+    let alias, consumed = 0;
+    const aliasRe = /^\s*(?:AS\s+)?([A-Za-z_]\w*)\b/i;
+    const am = aliasRe.exec(after);
+    if (am && !KEYWORDS.test(am[1])) {
+      alias = am[1];
+      consumed = am[0].length;
+    } else {
+      alias = `_flat_${aliasCounter++}`;
+    }
+    const repl =
+      `LATERAL (SELECT je.key AS "index", je.value AS value, ` +
+      `NULL AS "key", NULL AS path, je.key AS seq, (${inputExpr}) AS this ` +
+      `FROM json_each(${inputExpr}) AS je) ${alias}`;
+    result += sql.slice(lastIdx, start) + repl;
+    lastIdx = close + 1 + consumed;
+    re.lastIndex = lastIdx;
+  }
+  result += sql.slice(lastIdx);
+  return result;
+}
+
 // Rewrite Snowflake's VARIANT colon-path syntax to portable json_extract calls.
 // Walks string-/comment-aware so date literals like '12:34:56' aren't touched.
 // Skips ::TYPE casts (negative lookahead on second colon).
@@ -3369,6 +3596,10 @@ function translateForDuckDB(sql) {
   // VARIANT extras — DuckDB-native, sqljs has no equivalent.
   out = replaceFunc(out, 'OBJECT_KEYS',  a => `json_keys(${a[0]})`);
   out = replaceFunc(out, 'GET',          a => a.length === 2 ? `(${a[0]})[${a[1]}]` : null);
+
+  // [LATERAL] FLATTEN(input => arr) → LATERAL (SELECT … FROM json_each(arr))
+  // DuckDB-only: sql.js's bundled SQLite doesn't ship the LATERAL keyword.
+  out = rewriteLateralFlatten(out);
 
   // ::TYPE, ILIKE, QUALIFY, IFNULL, LISTAGG, ARRAY_AGG, MEDIAN, MODE, window fns — DuckDB native, no rewrite.
   return out;
@@ -3901,6 +4132,22 @@ SELECT
 FROM customer
 GROUP BY c_mktsegment
 ORDER BY pct_of_total DESC;`
+  },
+  { id: 'flatten', tag: 'VARIANT', title: 'Plan Membership with FLATTEN', desc: 'Snowflake LATERAL FLATTEN over an inline ARRAY_CONSTRUCT.', engines: ['duckdb'],
+    sql: `-- FLATTEN explodes an array into one row per element with the standard
+-- alias columns (value, index, seq, ...). DuckDB-only: the translator rewrites
+-- LATERAL FLATTEN(...) to a LATERAL subquery over json_each().
+WITH cohort AS (
+  SELECT 'enterprise' AS plan, ARRAY_CONSTRUCT('Acme','Globex','Initech','Umbrella') AS customers UNION ALL
+  SELECT 'business',           ARRAY_CONSTRUCT('Stark Industries','Wayne Enterprises') UNION ALL
+  SELECT 'starter',            ARRAY_CONSTRUCT('Bobs Tacos','Local Co','Side Hustle')
+)
+SELECT
+  c.plan,
+  f.index AS pos,
+  f.value AS customer
+FROM cohort c, LATERAL FLATTEN(input => c.customers) f
+ORDER BY c.plan, f.index;`
   },
   { id: 'shipmode', tag: 'GROUPING', title: 'Ship Mode Performance', desc: 'On-time delivery rate by shipping mode.',
     sql: `-- On-time delivery rate by ship mode
@@ -6394,11 +6641,16 @@ function createSqljsEngine() {
 function createDuckDBEngine() {
   const DUCKDB_VERSION = '1.29.0';
   let conn = null;
-  return {
+  let dbInstance = null;
+  let duckdbModule = null;
+  const engine = {
     kind: 'duckdb',
     get ready() { return conn !== null; },
+    get db() { return dbInstance; },
+    get duckdb() { return duckdbModule; },
     async init() {
       const duckdb = await import(`https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${DUCKDB_VERSION}/+esm`);
+      duckdbModule = duckdb;
       const bundles = duckdb.getJsDelivrBundles();
       const bundle = await duckdb.selectBundle(bundles);
       const workerUrl = URL.createObjectURL(
@@ -6409,6 +6661,7 @@ function createDuckDBEngine() {
       const db = new duckdb.AsyncDuckDB(logger, worker);
       await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
       URL.revokeObjectURL(workerUrl);
+      dbInstance = db;
       conn = await db.connect();
     },
     async exec(sql) {
@@ -6433,6 +6686,7 @@ function createDuckDBEngine() {
       }
     }
   };
+  return engine;
 }
 
 // Convert one JS scalar to a DuckDB SQL literal. Handles null/number/string;
@@ -6484,6 +6738,117 @@ function selectedEngineKind() {
   } catch (_) { return 'sqljs'; }
 }
 
+// ---------- Parquet dataset (Phase 0e) + OPFS cache (PF2) ----------
+// `?dataset=parquet` switches the DuckDB boot path away from the synthetic
+// row generators and toward committed parquet files under
+// pages/Snowsight-data/. Falls back to synthetic if the manifest can't be
+// loaded or the engine is sql.js (which has no parquet reader).
+const PARQUET_BASE = 'Snowsight-data';
+const OPFS_DIR = 'snowsight-data-v1';
+
+function selectedDataset() {
+  try {
+    const v = new URLSearchParams(window.location.search).get('dataset');
+    return v === 'parquet' ? 'parquet' : 'synthetic';
+  } catch (_) { return 'synthetic'; }
+}
+function setDatasetParam(value) {
+  const url = new URL(location.href);
+  if (value === 'parquet') {
+    url.searchParams.set('dataset', 'parquet');
+    url.searchParams.set('engine', 'duckdb');
+  } else {
+    url.searchParams.delete('dataset');
+  }
+  location.href = url.toString();
+}
+
+async function fetchParquetWithOpfsCache(filename, setBootText, idx, total) {
+  // Try OPFS first; on miss, fetch the network copy and write it back so the
+  // next load is instant. Failures fall back to plain fetch — the page
+  // still works on browsers that don't expose OPFS (Safari < 16, etc.).
+  let opfsRoot = null;
+  try {
+    if (navigator.storage && navigator.storage.getDirectory) {
+      opfsRoot = await navigator.storage.getDirectory();
+    }
+  } catch (_) {}
+  if (opfsRoot) {
+    try {
+      const dir = await opfsRoot.getDirectoryHandle(OPFS_DIR, { create: true });
+      try {
+        const handle = await dir.getFileHandle(filename, { create: false });
+        const file = await handle.getFile();
+        if (file.size > 0) {
+          if (setBootText) setBootText(`Loading ${filename} (cached)…`, 35 + Math.round(idx / total * 30));
+          return new Uint8Array(await file.arrayBuffer());
+        }
+      } catch (_) { /* miss — fall through to network */ }
+      if (setBootText) setBootText(`Fetching ${filename}…`, 35 + Math.round(idx / total * 30));
+      const resp = await fetch(`${PARQUET_BASE}/${filename}`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status} for ${filename}`);
+      const buf = new Uint8Array(await resp.arrayBuffer());
+      try {
+        const handle = await dir.getFileHandle(filename, { create: true });
+        const writable = await handle.createWritable();
+        await writable.write(buf);
+        await writable.close();
+      } catch (_) { /* OPFS write best-effort; ignore quota / permission errors */ }
+      return buf;
+    } catch (_) { /* fall through to plain fetch */ }
+  }
+  if (setBootText) setBootText(`Fetching ${filename}…`, 35 + Math.round(idx / total * 30));
+  const resp = await fetch(`${PARQUET_BASE}/${filename}`);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status} for ${filename}`);
+  return new Uint8Array(await resp.arrayBuffer());
+}
+
+// Wipe the cached parquet directory in OPFS — useful if the dataset shape
+// ever changes and we want users on subsequent visits to pull fresh files.
+async function clearParquetCache() {
+  try {
+    if (!navigator.storage || !navigator.storage.getDirectory) return false;
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(OPFS_DIR, { recursive: true });
+    return true;
+  } catch (_) { return false; }
+}
+
+// Load all parquet files into the active DuckDB engine. Runs only on
+// state.engine.kind === 'duckdb'. Returns row counts so the catalog +
+// boot UI can show the same numbers the synthetic path produces.
+async function loadParquetIntoDB(setBootText) {
+  if (!state.engine || state.engine.kind !== 'duckdb') {
+    throw new Error('Parquet dataset requires the DuckDB engine.');
+  }
+  const db = state.engine.db;
+  if (!db || typeof db.registerFileBuffer !== 'function') {
+    throw new Error('DuckDB-WASM file registration is unavailable.');
+  }
+  // Manifest tells us which tables to load + acts as cache invalidator.
+  let manifest;
+  try {
+    const mResp = await fetch(`${PARQUET_BASE}/manifest.json`);
+    if (!mResp.ok) throw new Error(`manifest HTTP ${mResp.status}`);
+    manifest = await mResp.json();
+  } catch (e) {
+    throw new Error(`Could not read parquet manifest: ${e.message}`);
+  }
+  const tables = Object.keys(manifest.tables || {});
+  if (!tables.length) throw new Error('Parquet manifest is empty.');
+
+  const counts = {};
+  for (let i = 0; i < tables.length; i++) {
+    const t = tables[i];
+    const filename = `${t}.parquet`;
+    const buf = await fetchParquetWithOpfsCache(filename, setBootText, i, tables.length);
+    await db.registerFileBuffer(filename, buf);
+    await state.engine.exec(`CREATE OR REPLACE TABLE ${t} AS SELECT * FROM read_parquet('${filename}')`);
+    counts[t] = manifest.tables[t].rows;
+  }
+  return counts;
+}
+
 // ---------- Boot ----------
 async function boot() {
   loadState();
@@ -6507,38 +6872,47 @@ async function boot() {
   }
   await new Promise(r => setTimeout(r, 100));
 
-  setBootText('Generating SNOWFLAKE_SAMPLE_DATA.TPCH_SF1...', 35);
-  const tpch = generateTPCH();
-  await new Promise(r => setTimeout(r, 50));
-
-  setBootText('Materializing micro-partitions...', 55);
-  await loadTpchIntoDB(tpch);
-
-  setBootText('Generating DEMO_DB.PUBLIC...', 75);
-  const demo = generateDemoDB();
-  await loadDemoIntoDB(demo);
-
-  setBootText('Indexing object catalog...', 90);
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION'] = tpch.region.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION'] = tpch.nation.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER'] = tpch.customer.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER'] = tpch.supplier.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART'] = tpch.part.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP'] = tpch.partsupp.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS'] = tpch.orders.length;
-  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM'] = tpch.lineitem.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.DEPARTMENTS']  = demo.departments.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.EMPLOYEES']    = demo.employees.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.SALES']        = demo.sales.length;
-  ROW_COUNTS['DEMO_DB.PUBLIC.VARIANT_DATA'] = demo.variant_data.length;
+  // Parquet dataset (Phase 0e + PF2) — only on the DuckDB engine; sql.js
+  // has no parquet reader, so it always falls through to the synthetic path.
+  const dataset = selectedDataset();
+  const useParquet = dataset === 'parquet' && engineKind === 'duckdb';
+  if (useParquet) {
+    setBootText('Loading TPCH SF0.01 (parquet)…', 35);
+    try {
+      const counts = await loadParquetIntoDB(setBootText);
+      setBootText('Indexing object catalog…', 90);
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION']   = counts.region   || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION']   = counts.nation   || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER'] = counts.customer || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER'] = counts.supplier || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART']     = counts.part     || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP'] = counts.partsupp || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS']   = counts.orders   || 0;
+      ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM'] = counts.lineitem || 0;
+      ROW_COUNTS['DEMO_DB.PUBLIC.DEPARTMENTS']  = counts.departments  || 0;
+      ROW_COUNTS['DEMO_DB.PUBLIC.EMPLOYEES']    = counts.employees    || 0;
+      ROW_COUNTS['DEMO_DB.PUBLIC.SALES']        = counts.sales        || 0;
+      ROW_COUNTS['DEMO_DB.PUBLIC.VARIANT_DATA'] = counts.variant_data || 0;
+    } catch (err) {
+      console.error('Parquet load failed, falling back to synthetic:', err);
+      setBootText(`Parquet load failed (${err.message}); using synthetic`, 40);
+      await loadSyntheticIntoDB(setBootText);
+    }
+  } else {
+    await loadSyntheticIntoDB(setBootText);
+  }
 
   setBootText('Ready', 100);
+  $('#datasetName').textContent = useParquet ? 'Parquet (SF0.01)' : 'Synthetic';
   await new Promise(r => setTimeout(r, 250));
 
   initEditor();
   renderTree();
   renderTabs();
   renderWorksheetList();
+
+  // Permalinks (Phase 3.5) — open #share=<base64> as a new worksheet.
+  consumeShareHashIfPresent();
 
   // Ensure there's at least one open worksheet
   if (!state.activeWsId || !state.worksheets[state.activeWsId]) {
@@ -6567,6 +6941,32 @@ async function boot() {
     toast('Welcome — try Templates ▸ for sample queries, or click ⓘ for the About', 'success');
     localStorage.setItem('snowsight_v1_welcomed', '1');
   }
+}
+
+// Synthetic-row loading path (default). Pulled out of boot() so the parquet
+// branch can short-circuit it without duplicating the `setBootText` plumbing.
+async function loadSyntheticIntoDB(setBootText) {
+  setBootText('Generating SNOWFLAKE_SAMPLE_DATA.TPCH_SF1...', 35);
+  const tpch = generateTPCH();
+  await new Promise(r => setTimeout(r, 50));
+  setBootText('Materializing micro-partitions...', 55);
+  await loadTpchIntoDB(tpch);
+  setBootText('Generating DEMO_DB.PUBLIC...', 75);
+  const demo = generateDemoDB();
+  await loadDemoIntoDB(demo);
+  setBootText('Indexing object catalog...', 90);
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION'] = tpch.region.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION'] = tpch.nation.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER'] = tpch.customer.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER'] = tpch.supplier.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART'] = tpch.part.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP'] = tpch.partsupp.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS'] = tpch.orders.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM'] = tpch.lineitem.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.DEPARTMENTS']  = demo.departments.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.EMPLOYEES']    = demo.employees.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.SALES']        = demo.sales.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.VARIANT_DATA'] = demo.variant_data.length;
 }
 
 async function loadTpchIntoDB(d) {
@@ -6745,6 +7145,293 @@ ${schema}`;
   }
 }
 
+// ---------- Share / permalinks (Phase 3.5) ----------
+// Encodes the active worksheet's SQL + name into a base64-encoded JSON in
+// the URL hash. Uses URL-safe base64 so the link survives copy-paste in
+// chat/email clients that mangle '+', '/', and '='.
+function encodeShare(payload) {
+  const json = JSON.stringify(payload);
+  // Unicode-safe utf8 → base64; replace base64 chars that are reserved in URLs.
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function decodeShare(s) {
+  try {
+    const padded = s.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((s.length + 3) % 4);
+    const json = decodeURIComponent(escape(atob(padded)));
+    return JSON.parse(json);
+  } catch (e) {
+    return null;
+  }
+}
+function buildShareUrl(ws) {
+  const payload = { sql: ws.sql || '', name: ws.name || 'Shared worksheet', mode: ws.mode || 'sql' };
+  if (ws.mode === 'notebook' && Array.isArray(ws.cells)) payload.cells = ws.cells;
+  const base = location.origin + location.pathname + location.search;
+  return `${base}#share=${encodeShare(payload)}`;
+}
+function openShareModal() {
+  const ws = state.worksheets[state.activeWsId];
+  const status = $('#shareStatus');
+  status.textContent = '';
+  status.className = 'ai-status';
+  if (!ws) {
+    $('#shareUrlInput').value = '';
+    status.textContent = 'Open a worksheet first to generate a permalink.';
+    status.classList.add('error');
+  } else {
+    $('#shareUrlInput').value = buildShareUrl(ws);
+  }
+  $('#shareModal').classList.add('open');
+}
+async function copyShareUrl() {
+  const input = $('#shareUrlInput');
+  if (!input.value) return;
+  try {
+    await navigator.clipboard.writeText(input.value);
+    toast('Permalink copied', 'success');
+  } catch (_) {
+    input.select();
+    document.execCommand('copy');
+    toast('Permalink copied', 'success');
+  }
+}
+function exportWorkspaceJson() {
+  const payload = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    worksheets: state.worksheets,
+    worksheetOrder: state.worksheetOrder,
+    folders: state.folders,
+    folderOrder: state.folderOrder,
+    dashTiles: state.dashTiles,
+    history: state.history.slice(0, 100)
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `snowsight-workspace-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast('Workspace exported', 'success');
+}
+function importWorkspaceJson(file) {
+  const status = $('#shareStatus');
+  status.className = 'ai-status';
+  status.textContent = 'Reading file…';
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data || typeof data !== 'object' || !data.worksheets) {
+        throw new Error('File does not look like a Snowsight workspace export.');
+      }
+      let added = 0;
+      for (const [id, ws] of Object.entries(data.worksheets || {})) {
+        if (!state.worksheets[id]) {
+          state.worksheets[id] = ws;
+          if (!state.worksheetOrder.includes(id)) state.worksheetOrder.push(id);
+          added++;
+        }
+      }
+      for (const [id, fld] of Object.entries(data.folders || {})) {
+        if (!state.folders[id]) {
+          state.folders[id] = fld;
+          if (!state.folderOrder.includes(id)) state.folderOrder.push(id);
+        }
+      }
+      if (Array.isArray(data.dashTiles)) {
+        const have = new Set(state.dashTiles.map(t => t.id));
+        for (const tile of data.dashTiles) {
+          if (!have.has(tile.id)) state.dashTiles.push(tile);
+        }
+      }
+      saveState();
+      renderTabs();
+      renderWorksheetList();
+      status.classList.add('success');
+      status.textContent = `Imported ${added} worksheet${added === 1 ? '' : 's'}.`;
+      toast(`Imported ${added} worksheet${added === 1 ? '' : 's'}`, 'success');
+    } catch (err) {
+      status.classList.add('error');
+      status.textContent = `Import failed: ${err.message}`;
+    }
+  };
+  reader.onerror = () => {
+    status.classList.add('error');
+    status.textContent = 'Could not read file.';
+  };
+  reader.readAsText(file);
+}
+// On boot, if URL hash has #share=…, decode and open as a fresh worksheet.
+function consumeShareHashIfPresent() {
+  const m = /#share=([^&]+)/.exec(location.hash);
+  if (!m) return;
+  const payload = decodeShare(m[1]);
+  if (!payload) {
+    toast('Permalink could not be decoded', 'error');
+    return;
+  }
+  if (payload.mode === 'notebook' && Array.isArray(payload.cells)) {
+    const id = uid();
+    const now = Date.now();
+    state.worksheets[id] = {
+      id, mode: 'notebook',
+      name: payload.name || 'Shared notebook',
+      cells: payload.cells,
+      createdAt: now, updatedAt: now
+    };
+    if (!state.worksheetOrder.includes(id)) state.worksheetOrder.push(id);
+    state.activeWsId = id;
+  } else {
+    newWorksheet(payload.name || 'Shared worksheet', payload.sql || '');
+  }
+  saveState();
+  // Strip the hash so a refresh doesn't keep adding the same worksheet.
+  history.replaceState(null, '', location.pathname + location.search);
+  toast('Opened shared worksheet', 'success');
+}
+
+// ---------- Stages / file upload (Phase 2.4) ----------
+// state.stagedFiles tracks every file the user has registered with DuckDB
+// so we can render the list, dedupe on re-upload, and unregister on remove.
+state.stagedFiles = state.stagedFiles || [];
+function stageTableNameFor(filename) {
+  // <name>.<ext> → safe SQL identifier; lowercase, [a-z0-9_], deduped against existing tables.
+  const stem = filename.replace(/\.[^.]+$/, '').toLowerCase();
+  let base = stem.replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '') || 'staged';
+  if (/^\d/.test(base)) base = '_' + base;
+  let candidate = base;
+  let i = 2;
+  const taken = new Set(state.stagedFiles.map(f => f.tableName));
+  while (taken.has(candidate)) candidate = `${base}_${i++}`;
+  return candidate;
+}
+function detectStageFormat(filename) {
+  const ext = (filename.match(/\.([^.]+)$/) || [, ''])[1].toLowerCase();
+  if (ext === 'csv' || ext === 'tsv') return 'csv';
+  if (ext === 'json') return 'json';
+  if (ext === 'ndjson' || ext === 'jsonl') return 'ndjson';
+  if (ext === 'parquet' || ext === 'pq') return 'parquet';
+  return 'csv';
+}
+function openStageModal() {
+  const isDuck = state.engine && state.engine.kind === 'duckdb';
+  $('#stageDuckdbRequired').hidden = isDuck;
+  $('#stagePanel').hidden = !isDuck;
+  if (isDuck) renderStageList();
+  $('#stageStatus').textContent = '';
+  $('#stageStatus').className = 'ai-status';
+  $('#stageModal').classList.add('open');
+}
+function renderStageList() {
+  const list = $('#stageList');
+  list.innerHTML = '';
+  for (const f of state.stagedFiles) {
+    const row = el('div', { class: 'stage-row' },
+      el('span', { class: 'name' }, f.tableName),
+      el('span', { class: 'meta' }, `${f.format} · ${formatBytes(f.size)} · ${formatNum(f.rows)} rows`),
+      el('button', {
+          class: 'icon-btn remove',
+          title: 'Remove from stage',
+          onclick: () => removeStagedFile(f.tableName),
+          html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>'
+        })
+    );
+    list.appendChild(row);
+  }
+}
+async function handleStageFile(file) {
+  const status = $('#stageStatus');
+  status.className = 'ai-status';
+  if (!state.engine || state.engine.kind !== 'duckdb') {
+    status.textContent = 'DuckDB engine required.';
+    status.classList.add('error');
+    return;
+  }
+  const tableName = stageTableNameFor(file.name);
+  const format = detectStageFormat(file.name);
+  status.textContent = `Reading ${file.name}…`;
+  try {
+    const buf = new Uint8Array(await file.arrayBuffer());
+    const virtualName = `${tableName}.${format === 'ndjson' ? 'json' : format}`;
+    const db = state.engine.db;
+    if (!db || typeof db.registerFileBuffer !== 'function') {
+      throw new Error('DuckDB file registration unavailable on this engine version.');
+    }
+    await db.registerFileBuffer(virtualName, buf);
+    let createSql;
+    if (format === 'csv') {
+      createSql = `CREATE OR REPLACE TABLE "${tableName}" AS SELECT * FROM read_csv_auto('${virtualName}', SAMPLE_SIZE=-1)`;
+    } else if (format === 'json') {
+      createSql = `CREATE OR REPLACE TABLE "${tableName}" AS SELECT * FROM read_json_auto('${virtualName}')`;
+    } else if (format === 'ndjson') {
+      createSql = `CREATE OR REPLACE TABLE "${tableName}" AS SELECT * FROM read_ndjson_auto('${virtualName}')`;
+    } else {
+      createSql = `CREATE OR REPLACE TABLE "${tableName}" AS SELECT * FROM read_parquet('${virtualName}')`;
+    }
+    await state.engine.exec(createSql);
+    const countRes = await state.engine.exec(`SELECT COUNT(*) AS n FROM "${tableName}"`);
+    const rows = countRes && countRes[0] && countRes[0].values[0] ? Number(countRes[0].values[0][0]) || 0 : 0;
+    const colsRes = await state.engine.exec(`SELECT column_name, data_type FROM information_schema.columns WHERE lower(table_name) = lower('${tableName}') ORDER BY ordinal_position`);
+    const columns = (colsRes && colsRes[0] ? colsRes[0].values : []).map(r => [r[0], r[1]]);
+    // Replace any existing entry with the same table name
+    state.stagedFiles = state.stagedFiles.filter(f => f.tableName !== tableName);
+    state.stagedFiles.push({
+      tableName, format, size: file.size, originalName: file.name, rows, columns
+    });
+    addStageTableToCatalog(tableName, columns, rows);
+    renderStageList();
+    renderTree();
+    status.classList.add('success');
+    status.textContent = `Loaded ${formatNum(rows)} row${rows === 1 ? '' : 's'} into ${tableName}`;
+    toast(`Staged ${tableName}`, 'success');
+  } catch (err) {
+    status.classList.add('error');
+    status.textContent = `Failed: ${err.message.split('\n')[0]}`;
+  }
+}
+function addStageTableToCatalog(tableName, columns, rows) {
+  let stageDb = SCHEMA_META.databases.find(d => d.name === 'STAGE');
+  if (!stageDb) {
+    stageDb = { name: 'STAGE', schemas: [{ name: 'PUBLIC', tables: [] }] };
+    SCHEMA_META.databases.push(stageDb);
+  }
+  const stageSchema = stageDb.schemas[0];
+  stageSchema.tables = stageSchema.tables.filter(t => t.name.toLowerCase() !== tableName.toLowerCase());
+  stageSchema.tables.push({
+    name: tableName.toUpperCase(),
+    type: 'TABLE',
+    columns: columns.map(([n, t]) => [String(n).toUpperCase(), String(t).toUpperCase()])
+  });
+  ROW_COUNTS[`STAGE.PUBLIC.${tableName.toUpperCase()}`] = rows;
+  state.expandedTreeNodes.add('db:STAGE');
+  state.expandedTreeNodes.add('schema:STAGE.PUBLIC');
+}
+async function removeStagedFile(tableName) {
+  if (!state.engine || state.engine.kind !== 'duckdb') return;
+  try {
+    await state.engine.exec(`DROP TABLE IF EXISTS "${tableName}"`);
+  } catch (_) {}
+  state.stagedFiles = state.stagedFiles.filter(f => f.tableName !== tableName);
+  const stageDb = SCHEMA_META.databases.find(d => d.name === 'STAGE');
+  if (stageDb) {
+    const sch = stageDb.schemas[0];
+    sch.tables = sch.tables.filter(t => t.name.toLowerCase() !== tableName.toLowerCase());
+    delete ROW_COUNTS[`STAGE.PUBLIC.${tableName.toUpperCase()}`];
+    if (!sch.tables.length) {
+      const idx = SCHEMA_META.databases.indexOf(stageDb);
+      if (idx >= 0) SCHEMA_META.databases.splice(idx, 1);
+    }
+  }
+  renderStageList();
+  renderTree();
+  toast(`Removed ${tableName}`, 'info');
+}
+
 // ---------- Wire UI ----------
 function wireUI() {
   $('#runBtn').addEventListener('click', () => runQuery(false));
@@ -6797,6 +7484,46 @@ function wireUI() {
     $('#aboutModal').classList.add('open');
   });
   $('#aiBtn').addEventListener('click', openAiModal);
+  $('#shareBtn').addEventListener('click', openShareModal);
+  $('#shareCopyBtn').addEventListener('click', copyShareUrl);
+  $('#shareExportBtn').addEventListener('click', exportWorkspaceJson);
+  $('#shareImportBtn').addEventListener('click', () => $('#shareImportFile').click());
+  $('#shareImportFile').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if (f) importWorkspaceJson(f);
+    e.target.value = '';
+  });
+  $('#stageBtn').addEventListener('click', openStageModal);
+  $('#stageBrowseBtn').addEventListener('click', () => $('#stageFileInput').click());
+  $('#stageFileInput').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if (f) handleStageFile(f);
+    e.target.value = '';
+  });
+  $('#stageSwitchEngineBtn').addEventListener('click', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('engine', 'duckdb');
+    location.href = url.toString();
+  });
+  // Drag-and-drop wiring on the stage dropzone (and a global guard so the
+  // browser doesn't hijack a stray drop and navigate away from the app).
+  const dz = $('#stageDropzone');
+  if (dz) {
+    ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => {
+      e.preventDefault(); e.stopPropagation(); dz.classList.add('over');
+    }));
+    ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => {
+      e.preventDefault(); e.stopPropagation(); dz.classList.remove('over');
+    }));
+    dz.addEventListener('drop', e => {
+      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) handleStageFile(f);
+    });
+  }
+  // Page-level dragover/drop guard — without this, a missed drop reloads the page.
+  ['dragover', 'drop'].forEach(ev => window.addEventListener(ev, e => {
+    if (!e.target.closest('#stageDropzone')) { e.preventDefault(); }
+  }));
   $('#aiKeySaveBtn').addEventListener('click', saveAiKey);
   $('#aiKeyInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); saveAiKey(); }
@@ -6886,6 +7613,34 @@ function wireUI() {
           toast(`Role switched to ${r}`, 'success');
         }
       }))
+    ]);
+  });
+  $('#datasetPill').addEventListener('click', e => {
+    e.stopPropagation();
+    const current = selectedDataset();
+    const engineKind = state.engine ? state.engine.kind : selectedEngineKind();
+    openMenu($('#datasetMenu'), $('#datasetPill'), [
+      { section: 'Dataset' },
+      {
+        label: 'Synthetic TPCH (~36K rows)',
+        active: current === 'synthetic',
+        right: 'in-memory',
+        onClick: () => setDatasetParam('synthetic')
+      },
+      {
+        label: 'Parquet TPCH SF0.01 (~36K rows)',
+        active: current === 'parquet',
+        right: engineKind === 'duckdb' ? 'cached in OPFS' : 'requires DuckDB',
+        onClick: () => setDatasetParam('parquet')
+      },
+      { divider: true },
+      {
+        label: 'Clear OPFS cache',
+        onClick: async () => {
+          const ok = await clearParquetCache();
+          toast(ok ? 'Cleared cached parquet files' : 'No OPFS cache to clear', ok ? 'success' : 'info');
+        }
+      }
     ]);
   });
   $('#warehousePill').addEventListener('click', e => {
