@@ -572,6 +572,156 @@
   }
   .CodeMirror-hint { color: var(--ink) !important; padding: 4px 12px !important; }
   li.CodeMirror-hint-active { background: var(--cyan) !important; color: var(--bg) !important; }
+
+  /* ===== IDE CHROME (added) ===== */
+  .editor-panel { position: relative; }
+
+  /* tabs bar */
+  .ide-tabs-bar { display: flex; align-items: stretch; gap: 2px; padding: 6px 12px 0; background: rgba(0,0,0,0.28); border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .ide-tab { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); padding: 7px 8px 6px 12px; border-radius: 6px 6px 0 0; cursor: pointer; transition: all 0.15s; white-space: nowrap; max-width: 240px; border-top: 2px solid transparent; }
+  .ide-tab:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+  .ide-tab.active { color: var(--ink); background: rgba(255,255,255,0.05); border-top-color: var(--green); }
+  .ide-tab .tab-title { overflow: hidden; text-overflow: ellipsis; }
+  .ide-tab .dirty-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex: none; opacity: 0; transition: opacity .15s; box-shadow: 0 0 6px var(--gold); }
+  .ide-tab.dirty .dirty-dot { opacity: 1; }
+  .ide-tab .close-x { color: var(--ink-faint); font-size: 14px; line-height: 1; padding: 2px 5px; opacity: 0.5; transition: all .15s; border-radius: 3px; }
+  .ide-tab .close-x:hover { background: rgba(255,255,255,0.08); color: var(--red); opacity: 1; }
+  .ide-tab-add { font-family: 'JetBrains Mono', monospace; background: transparent; border: none; color: var(--ink-faint); cursor: pointer; padding: 4px 10px; font-size: 16px; line-height: 1; align-self: center; border-radius: 4px; transition: all .15s; }
+  .ide-tab-add:hover { color: var(--green); background: rgba(0, 245, 160, 0.06); }
+
+  /* meta strip */
+  .ide-meta-strip { display: flex; align-items: center; gap: 14px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); flex-wrap: wrap; }
+  .ide-title-input { flex: 1; min-width: 180px; background: transparent; border: none; outline: none; color: var(--ink); font: 500 13px/1.4 'Outfit', sans-serif; padding: 4px 0; border-bottom: 1px solid transparent; transition: border-color .15s; }
+  .ide-title-input:focus, .ide-title-input:hover { border-bottom-color: var(--border-strong); }
+  .meta-tags { display: inline-flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+  .meta-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 7px; border-radius: 3px; color: var(--ink-dim); background: rgba(255,255,255,0.03); border: 1px solid var(--border); letter-spacing: 0.05em; }
+  .meta-author { display: inline-flex; gap: 8px; align-items: center; font: 11px/1 'JetBrains Mono', monospace; color: var(--ink-faint); }
+  .btn-share { font-size: 11px; padding: 6px 12px; border: 1px solid var(--border-strong); background: rgba(0, 217, 245, 0.05); color: var(--cyan); border-radius: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-share:hover { background: rgba(0, 217, 245, 0.12); border-color: var(--cyan); }
+
+  /* avatars */
+  .avatar { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 10px/1 'JetBrains Mono', monospace; color: #0c0c12; flex: none; }
+  .avatar.sm { width: 18px; height: 18px; font-size: 9px; }
+  .avatar.c-1 { background: var(--green); }
+  .avatar.c-2 { background: var(--cyan); }
+  .avatar.c-3 { background: var(--gold); }
+  .avatar.c-4 { background: var(--purple); }
+  .avatar.c-5 { background: var(--amber); }
+
+  /* status bar */
+  .ide-status-bar { display: flex; align-items: center; gap: 14px; padding: 6px 14px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.4); font: 10.5px/1.4 'JetBrains Mono', monospace; color: var(--ink-faint); flex-wrap: wrap; }
+  .ide-status-bar .seg { display: inline-flex; align-items: center; gap: 6px; }
+  .ide-status-bar .seg .s-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .ide-status-bar .seg .s-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .ide-status-bar .seg .s-dot.amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .ide-status-bar .seg .s-dot.cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+  .ide-status-bar .seg.right { margin-left: auto; }
+  .ide-status-bar .seg-strong { color: var(--ink-dim); }
+
+  /* command palette */
+  .cmd-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: none; align-items: flex-start; justify-content: center; padding-top: 14vh; }
+  .cmd-overlay.open { display: flex; }
+  .cmd-palette { width: min(640px, 92vw); max-height: 60vh; background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.6); display: flex; flex-direction: column; overflow: hidden; }
+  .cmd-input { padding: 16px 18px; background: transparent; border: none; outline: none; color: var(--ink); font: 16px/1.4 'Outfit', sans-serif; border-bottom: 1px solid var(--border); }
+  .cmd-input::placeholder { color: var(--ink-faint); }
+  .cmd-list { flex: 1; overflow-y: auto; padding: 6px 0; }
+  .cmd-row { display: flex; align-items: center; gap: 12px; padding: 9px 18px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; color: var(--ink); transition: background .1s; border-left: 2px solid transparent; }
+  .cmd-row:hover { background: rgba(255,255,255,0.04); }
+  .cmd-row.sel { background: rgba(0, 245, 160, 0.08); border-left-color: var(--green); }
+  .cmd-row .cmd-icon { width: 18px; color: var(--ink-faint); font-size: 13px; text-align: center; flex: none; }
+  .cmd-row.sel .cmd-icon { color: var(--green); }
+  .cmd-row .cmd-cat { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--ink-faint); letter-spacing: 0.16em; text-transform: uppercase; flex: none; }
+  .cmd-row .cmd-key { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); padding: 2px 5px; border-radius: 3px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); flex: none; }
+  .cmd-empty { padding: 30px; text-align: center; color: var(--ink-faint); font: 12px 'JetBrains Mono', monospace; }
+  .cmd-hint { padding: 6px 18px; border-top: 1px solid var(--border); font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); display: flex; gap: 14px; background: rgba(0,0,0,0.25); }
+
+  /* workspace tabs (left rail) */
+  .schema-panel { padding-top: 0; }
+  .workspace-tabs { display: flex; gap: 2px; margin: 0 -18px 14px; padding: 8px 14px 0; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.25); }
+  .workspace-tab { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 9px 8px; color: var(--ink-faint); cursor: pointer; letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all .15s; flex: 1; text-align: center; }
+  .workspace-tab:hover { color: var(--ink-dim); }
+  .workspace-tab.active { color: var(--green); border-bottom-color: var(--green); }
+  .workspace-pane { display: none; }
+  .workspace-pane.active { display: block; }
+  .pane-empty { padding: 30px 12px; text-align: center; color: var(--ink-faint); font: 11px/1.5 'JetBrains Mono', monospace; }
+
+  /* saved/template cards */
+  .q-card { padding: 11px 12px; margin-bottom: 8px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+  .q-card:hover { border-color: rgba(0, 245, 160, 0.3); background: rgba(0, 245, 160, 0.04); }
+  .q-card .q-row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .q-card .q-title { font: 500 12px/1.3 'Outfit', sans-serif; color: var(--ink); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .q-card .q-row2 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .q-card .q-meta { font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); }
+  .q-card .q-tags { display: inline-flex; gap: 3px; flex-wrap: wrap; }
+  .q-card .q-tag { font: 9px 'JetBrains Mono', monospace; padding: 1px 5px; border-radius: 3px; color: var(--ink-dim); background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+  .cert-badge { font: 9px 'JetBrains Mono', monospace; color: var(--green); border: 1px solid rgba(0, 245, 160, 0.3); background: rgba(0, 245, 160, 0.05); padding: 1px 5px; border-radius: 3px; letter-spacing: 0.05em; cursor: help; }
+
+  /* env pill */
+  .env-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03); color: var(--ink); cursor: pointer; font: 11px 'JetBrains Mono', monospace; transition: all .15s; position: relative; }
+  .env-pill:hover { background: rgba(255,255,255,0.06); }
+  .env-pill .pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .env-pill .pill-dot.prod { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .env-pill .pill-dot.staging { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+  .env-pill .pill-dot.dev { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+  .env-pill .chev { color: var(--ink-faint); font-size: 9px; }
+  .env-menu-wrap { position: relative; }
+  .env-menu { position: absolute; top: calc(100% + 6px); right: 0; background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: 8px; min-width: 260px; padding: 4px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); display: none; z-index: 50; }
+  .env-menu.open { display: block; }
+  .env-row { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 6px; cursor: pointer; font: 12px 'JetBrains Mono', monospace; color: var(--ink); transition: background .1s; }
+  .env-row:hover { background: rgba(255,255,255,0.05); }
+  .env-row .env-row-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .env-row .env-warehouse { font-size: 10px; color: var(--ink-faint); }
+  .env-row.active { background: rgba(0, 245, 160, 0.06); }
+  .env-row.active .env-name { color: var(--green); }
+  .env-row .env-check { color: var(--green); font-size: 11px; opacity: 0; }
+  .env-row.active .env-check { opacity: 1; }
+
+  /* results stats strip */
+  .results-stats-strip { display: flex; gap: 16px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.25); font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); flex-wrap: wrap; align-items: center; }
+  .results-stats-strip[hidden] { display: none; }
+  .results-stats-strip .stat { display: inline-flex; align-items: center; gap: 6px; }
+  .results-stats-strip .stat-num { color: var(--ink); }
+  .stat-cache.hit { color: var(--green); }
+  .stat-cache.miss { color: var(--gold); }
+  .stat-bytes { color: var(--cyan); }
+  .stat-cost-bar-track { width: 70px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; }
+  .stat-cost-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--cyan), var(--gold), var(--red)); transition: width .3s; }
+
+  /* schema panel additions */
+  .schema-table-header-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .schema-refresh { font: 9px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.04em; }
+
+  /* share modal */
+  .share-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 119; display: none; }
+  .share-overlay.open { display: block; }
+  .share-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(520px, 92vw); background: var(--bg-elev); border: 1px solid var(--border-strong); border-radius: 14px; z-index: 120; padding: 22px 24px; display: none; box-shadow: 0 24px 64px rgba(0,0,0,0.6); }
+  .share-modal.open { display: block; }
+  .share-modal h3 { font: 600 16px/1.3 'Outfit', sans-serif; color: var(--ink); margin: 0 0 4px; }
+  .share-modal .share-sub { font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); margin-bottom: 18px; letter-spacing: 0.04em; }
+  .share-link-row { display: flex; gap: 8px; align-items: center; padding: 10px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; }
+  .share-link-row code { flex: 1; font: 11px 'JetBrains Mono', monospace; color: var(--cyan); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .share-link-row .btn-copy-link { font: 10.5px 'JetBrains Mono', monospace; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.04); color: var(--ink); cursor: pointer; }
+  .share-link-row .btn-copy-link:hover { background: rgba(0, 245, 160, 0.06); border-color: var(--green); color: var(--green); }
+  .share-toggle { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 14px; cursor: pointer; transition: all .15s; }
+  .share-toggle:hover { border-color: var(--border-strong); }
+  .share-toggle .toggle-track { width: 32px; height: 18px; border-radius: 9px; background: rgba(255,255,255,0.1); position: relative; transition: background .2s; flex: none; }
+  .share-toggle .toggle-knob { width: 14px; height: 14px; border-radius: 50%; background: var(--ink); position: absolute; top: 2px; left: 2px; transition: all .2s; }
+  .share-toggle.on .toggle-track { background: var(--green); }
+  .share-toggle.on .toggle-knob { left: 16px; background: var(--bg); }
+  .share-toggle .toggle-text { flex: 1; }
+  .share-toggle .toggle-label { display: block; font: 12.5px/1.3 'Outfit', sans-serif; color: var(--ink); margin-bottom: 2px; }
+  .share-toggle .toggle-sub { display: block; font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); }
+  .share-members-label { font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .share-member { display: flex; align-items: center; gap: 10px; padding: 7px 0; }
+  .share-member .member-name { flex: 1; font: 12.5px 'Outfit', sans-serif; color: var(--ink); }
+  .share-member .member-name .you { color: var(--green); font-size: 10px; margin-left: 6px; }
+  .share-member select.member-role { font: 10.5px 'JetBrains Mono', monospace; color: var(--ink-dim); padding: 3px 8px; border-radius: 5px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); cursor: pointer; }
+  .share-modal .share-close { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--ink-dim); font-size: 22px; line-height: 1; cursor: pointer; padding: 4px; }
+  .share-modal .share-close:hover { color: var(--ink); }
+
+  /* run-selected button accent */
+  .btn-run-sel { background: rgba(0, 245, 160, 0.06); border-color: rgba(0, 245, 160, 0.2); color: var(--green); }
+  .btn-run-sel:hover { background: rgba(0, 245, 160, 0.12); }
 </style>
 </head>
 <body>
@@ -603,6 +753,14 @@
     </div>
   </div>
   <div class="header-meta">
+    <div class="env-menu-wrap">
+      <button class="env-pill" id="env-pill" type="button" aria-haspopup="true" aria-expanded="false">
+        <span class="pill-dot prod" id="env-pill-dot"></span>
+        <span id="env-pill-label">Lending Warehouse · PROD</span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="env-menu" id="env-menu" role="menu"></div>
+    </div>
     <span><span class="status-dot" id="db-status"></span><span id="db-status-text">Schema loaded</span></span>
   </div>
 </div>
@@ -643,12 +801,30 @@
 
 <div class="workspace">
   <div class="schema-panel">
-    <h3>Schema <span class="schema-hint">click table to preview</span></h3>
-    <div id="schema-list"></div>
+    <div class="workspace-tabs" id="workspace-tabs">
+      <div class="workspace-tab active" data-pane="schema">Schema</div>
+      <div class="workspace-tab" data-pane="saved">Saved</div>
+      <div class="workspace-tab" data-pane="templates">Templates</div>
+      <div class="workspace-tab" data-pane="history">History</div>
+    </div>
+    <div class="workspace-pane active" data-pane="schema">
+      <h3>Schema <span class="schema-hint">click table to preview</span></h3>
+      <div id="schema-list"></div>
+    </div>
+    <div class="workspace-pane" data-pane="saved" id="pane-saved"></div>
+    <div class="workspace-pane" data-pane="templates" id="pane-templates"></div>
+    <div class="workspace-pane" data-pane="history" id="pane-history"></div>
   </div>
 
   <div class="editor-stack">
     <div class="editor-panel">
+      <div class="ide-tabs-bar" id="ide-tabs"></div>
+      <div class="ide-meta-strip" id="ide-meta">
+        <input class="ide-title-input" id="ide-title" type="text" spellcheck="false" />
+        <span class="meta-tags" id="ide-tags"></span>
+        <span class="meta-author" id="ide-author"></span>
+        <button class="btn-share" id="btn-share" title="Share this query"><span>⤴</span> Share</button>
+      </div>
       <div class="editor-header">
         <div class="editor-title-wrap">
           <span class="editor-title">Query</span>
@@ -656,9 +832,11 @@
         </div>
         <div class="editor-actions">
           <button class="btn btn-ghost" id="btn-history" title="Show query history">History</button>
+          <button class="btn btn-ghost" id="btn-format" title="Format SQL (⌘+K → Format)">Format</button>
           <button class="btn btn-ghost" id="btn-copy" title="Copy SQL to clipboard">Copy</button>
           <button class="btn btn-ghost" id="btn-solution" style="display:none">Show solution</button>
           <button class="btn btn-ghost" id="btn-clear">Clear</button>
+          <button class="btn btn-run-sel" id="btn-run-sel" title="Run only the highlighted SQL">▶ Selected</button>
           <button class="btn btn-primary" id="btn-run">▶ Run<span class="kbd">⌘ ↵</span></button>
         </div>
       </div>
@@ -670,9 +848,19 @@
         <p id="solution-text"></p>
         <div class="insight" id="solution-insight"></div>
       </div>
+      <div class="ide-status-bar" id="ide-status">
+        <span class="seg"><span class="s-dot green" id="status-conn-dot"></span><span id="status-conn">Connected</span></span>
+        <span class="seg seg-strong" id="status-warehouse">Lending Warehouse · PROD</span>
+        <span class="seg" id="status-region">us-east-1</span>
+        <span class="seg">role: <span id="status-role">analyst</span></span>
+        <span class="seg" id="status-cursor">Ln 1, Col 1</span>
+        <span class="seg">SQL · SQLite</span>
+        <span class="seg right" id="status-ping">32ms ping</span>
+      </div>
     </div>
 
     <div class="results-panel">
+      <div class="results-stats-strip" id="results-stats" hidden></div>
       <div class="results-header">
         <div class="results-tabs">
           <div class="results-tab active" data-view="table">Table</div>
@@ -712,6 +900,36 @@
     <span id="history-count">0 queries</span>
     <button class="history-clear" id="history-clear">Clear all</button>
   </div>
+</div>
+
+<div class="cmd-overlay" id="cmd-overlay" role="dialog" aria-modal="true">
+  <div class="cmd-palette" role="combobox" aria-expanded="true">
+    <input class="cmd-input" id="cmd-input" type="text" placeholder="Type a command — run, format, save, switch tab, open template…" autocomplete="off" spellcheck="false" />
+    <div class="cmd-list" id="cmd-list"></div>
+    <div class="cmd-hint">
+      <span>↑↓ navigate</span><span>↵ run</span><span>esc close</span>
+    </div>
+  </div>
+</div>
+
+<div class="share-overlay" id="share-overlay"></div>
+<div class="share-modal" id="share-modal">
+  <button class="share-close" id="share-close" type="button" aria-label="Close">×</button>
+  <h3>Share query</h3>
+  <div class="share-sub" id="share-sub">// vintage delinquency · v3</div>
+  <div class="share-link-row">
+    <code id="share-link">https://lending-warehouse.byheir.com/q/abc123</code>
+    <button class="btn-copy-link" id="share-copy-link" type="button">Copy link</button>
+  </div>
+  <div class="share-toggle" id="share-toggle">
+    <div class="toggle-track"><div class="toggle-knob"></div></div>
+    <div class="toggle-text">
+      <span class="toggle-label" id="share-toggle-label">Anyone with link · view</span>
+      <span class="toggle-sub" id="share-toggle-sub">Click to require sign-in</span>
+    </div>
+  </div>
+  <div class="share-members-label">Workspace members</div>
+  <div id="share-members"></div>
 </div>
 
 <div class="toast" id="toast">Copied</div>
@@ -1880,18 +2098,37 @@ async function boot() {
   wireHistoryPanel();
   wireResultTabs();
 
+  // ===== IDE chrome boot =====
+  initIDETabs();
+  wireTabsBar();
+  wireMetaStrip();
+  renderStatusBar();
+  wireEnvSwitcher();
+  wireWorkspaceTabs();
+  renderSavedPane();
+  renderTemplatesPane();
+  wireFormatAndRunSelected();
+  wireCommandPalette();
+  wireShareModal();
+  wireEditorHooks();
+
   el('loader').classList.add('gone');
 }
 
 function buildSchemaSidebar() {
   const list = el('schema-list');
+  const mockMin = (s) => { let n = 0; for (const ch of s) n += ch.charCodeAt(0); return 5 + (n % 55); };
   let html = '';
   for (const t of SCHEMA) {
     const rowCount = countOf(t.table);
+    const refreshed = mockMin(t.table);
     html += `<div class="schema-table">
       <div class="schema-table-header" data-table="${t.table}">
         <span class="schema-table-name ${t.kind}">${t.table}</span>
-        <span class="schema-row-count">${rowCount.toLocaleString()}</span>
+        <span class="schema-table-header-meta">
+          <span class="schema-row-count">${rowCount.toLocaleString()} rows</span>
+          <span class="schema-refresh">refreshed ${refreshed}m ago</span>
+        </span>
       </div>
       <div class="schema-cols" data-cols-for="${t.table}">
         ${t.cols.map(([n, ty, pk]) => `
@@ -1908,7 +2145,12 @@ function buildSchemaSidebar() {
     const headerEl = e.target.closest('.schema-table-header');
     if (headerEl) {
       const tableName = headerEl.dataset.table;
-      editor.setValue(`SELECT * FROM ${tableName} LIMIT 25;`);
+      const previewSQL = `SELECT * FROM ${tableName} LIMIT 25;`;
+      if (typeof setActiveSQL === 'function') {
+        setActiveSQL(previewSQL, { title: `Preview: ${tableName}`, tags: ['preview'], markSaved: true });
+      } else {
+        editor.setValue(previewSQL);
+      }
       el('current-prompt-name').textContent = '— scratch query —';
       currentChallenge = null;
       el('btn-solution').style.display = 'none';
@@ -2006,7 +2248,11 @@ function loadChallenge(id) {
     card.classList.toggle('active', card.dataset.id === id);
   });
   el('current-prompt-name').textContent = `${c.num} · ${c.title}`;
-  editor.setValue(c.starter);
+  if (typeof setActiveSQL === 'function') {
+    setActiveSQL(c.starter, { title: `${c.num} · ${c.title}`, tags: [c.category.toLowerCase(), c.difficulty], markSaved: true });
+  } else {
+    editor.setValue(c.starter);
+  }
   el('btn-solution').style.display = 'inline-flex';
   el('btn-solution').textContent = 'Show solution';
   el('solution-drawer').classList.remove('open');
@@ -2057,7 +2303,11 @@ ORDER BY LOAN_COUNT DESC;`);
       el('solution-insight').innerHTML = currentChallenge.insight;
       drawer.classList.add('open');
       el('btn-solution').textContent = 'Hide solution';
-      editor.setValue(currentChallenge.solution);
+      if (typeof setActiveSQL === 'function') {
+        setActiveSQL(currentChallenge.solution, { markSaved: true });
+      } else {
+        editor.setValue(currentChallenge.solution);
+      }
     }
   });
 }
@@ -2114,6 +2364,9 @@ function pushHistory(entry) {
   historyList.unshift(entry);
   if (historyList.length > HISTORY_MAX) historyList = historyList.slice(0, HISTORY_MAX);
   saveHistoryToStorage();
+  // refresh inline history pane if it's visible
+  const inline = document.querySelector('.workspace-pane[data-pane="history"].active');
+  if (inline && typeof renderHistoryInline === 'function') renderHistoryInline();
 }
 
 function wireHistoryPanel() {
@@ -2171,7 +2424,12 @@ function renderHistory() {
       const idx = parseInt(item.dataset.idx);
       const entry = historyList[idx];
       if (!entry) return;
-      editor.setValue(entry.sql);
+      const firstLine = entry.sql.trim().split('\n')[0].slice(0, 50) || 'From history';
+      if (typeof setActiveSQL === 'function') {
+        setActiveSQL(entry.sql, { title: firstLine, markSaved: true });
+      } else {
+        editor.setValue(entry.sql);
+      }
       el('current-prompt-name').textContent = '— from history —';
       currentChallenge = null;
       el('btn-solution').style.display = 'none';
@@ -2383,17 +2641,17 @@ function renderExplain() {
   }
 }
 
-function runQuery() {
+function runQuery(overrideSQL) {
   if (!db) return;
-  const sql = editor.getValue().trim();
+  const sql = (typeof overrideSQL === 'string' ? overrideSQL : editor.getValue()).trim();
   if (!sql) return;
   const status = el('results-status');
   const body = el('results-body');
   status.innerHTML = '<span style="color:var(--amber)">running…</span>';
   el('btn-export').disabled = true;
   lastSQL = sql;
-  // any new run resets us to the table view
   if (currentView !== 'table') switchView('table');
+  if (typeof hideStatsStrip === 'function') hideStatsStrip();
 
   setTimeout(() => {
     const t0 = performance.now();
@@ -2407,6 +2665,8 @@ function runQuery() {
         lastResult = null;
         pushHistory({ ts: Date.now(), sql, ms, rowCount: 0 });
         updateChartTabAvailability();
+        if (typeof renderStatsStrip === 'function') renderStatsStrip({ rows: 0, ms, sql });
+        if (typeof setPing === 'function') setPing(Math.max(8, Math.round(ms / 4) + 12));
         return;
       }
       const result = results[results.length - 1];
@@ -2416,6 +2676,8 @@ function runQuery() {
       el('btn-export').disabled = false;
       pushHistory({ ts: Date.now(), sql, ms, rowCount: result.values.length });
       updateChartTabAvailability();
+      if (typeof renderStatsStrip === 'function') renderStatsStrip({ rows: result.values.length, ms, sql });
+      if (typeof setPing === 'function') setPing(Math.max(8, Math.round(ms / 4) + 12));
     } catch (err) {
       body.className = 'results-body';
       body.innerHTML = `<div class="err-msg"><strong>SQL error:</strong><br/>${escapeHTML(err.message)}</div>`;
@@ -2465,6 +2727,783 @@ function formatNumber(n, colName) {
 
 function escapeHTML(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// =====================================================================
+// ===== IDE CHROME MODULE (added) — multi-tab, palette, env, cost =====
+// =====================================================================
+
+const IDE = {
+  tabs: [],
+  activeTabId: null,
+  tabSeq: 0,
+  env: { id: 'PROD', dot: 'prod', warehouse: 'Lending Warehouse', region: 'us-east-1', role: 'analyst' },
+  cachedHits: new Map(),
+  saved: [],
+  templates: [],
+  members: [
+    { name: 'Asha Patel', role: 'Owner',  initials: 'AP', color: 1 },
+    { name: 'Diego Ruiz', role: 'Editor', initials: 'DR', color: 2 },
+    { name: 'Mei Chen',   role: 'Viewer', initials: 'MC', color: 3 },
+    { name: 'Jordan Kim', role: 'Viewer', initials: 'JK', color: 4 },
+    { name: 'You',        role: 'Owner',  initials: 'YN', color: 5, you: true }
+  ],
+  share: { isPublic: true },
+  cmd: { open: false, sel: 0, list: [], matches: [] }
+};
+
+const ENVIRONMENTS = [
+  { id: 'PROD',    dot: 'prod',    warehouse: 'Lending Warehouse',       region: 'us-east-1', role: 'analyst' },
+  { id: 'STAGING', dot: 'staging', warehouse: 'Lending Warehouse · stg', region: 'us-east-1', role: 'analyst' },
+  { id: 'DEV',     dot: 'dev',     warehouse: 'Lending Warehouse · dev', region: 'us-west-2', role: 'developer' }
+];
+
+const DEFAULT_SQL = `-- Welcome. The schema is loaded — try clicking a challenge above,
+-- or write your own query. Cmd/Ctrl + Enter to run.
+
+SELECT
+  PRODUCT_CATEGORY,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(PRINCIPAL), 0) AS AVG_PRINCIPAL,
+  ROUND(AVG(APR) * 100, 2) AS AVG_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS p ON p.PRODUCT_ID = l.PRODUCT_ID
+GROUP BY PRODUCT_CATEGORY
+ORDER BY LOAN_COUNT DESC;`;
+
+IDE.saved = [
+  { id: 's1', title: 'Vintage delinquency · Q3 2024 cohort', tags: ['risk','vintage'], certified: true,
+    owner: { name: 'Asha P.', initials: 'AP', color: 1 }, lastRun: '2h ago',
+    sql: `SELECT
+  STRFTIME('%Y-%m', ORIGINATION_DATE) AS VINTAGE,
+  COUNT(*) AS LOANS,
+  ROUND(100.0 * SUM(CASE WHEN STATUS LIKE '%DPD%' OR STATUS LIKE '%Delinquent%' THEN 1 ELSE 0 END) / COUNT(*), 2) AS DELINQ_RATE_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY 1;` },
+  { id: 's2', title: 'Channel funnel — application → loan', tags: ['funnel','growth'], certified: false,
+    owner: { name: 'Diego R.', initials: 'DR', color: 2 }, lastRun: '5h ago',
+    sql: `SELECT a.CHANNEL, COUNT(*) AS APPS,
+       SUM(CASE WHEN a.STATUS='Approved' THEN 1 ELSE 0 END) AS APPROVED,
+       COUNT(l.LOAN_ID) AS FUNDED
+FROM FACT_APPLICATIONS a
+LEFT JOIN FACT_LOANS l ON l.APPLICATION_ID=a.APPLICATION_ID
+GROUP BY a.CHANNEL
+ORDER BY APPS DESC;` },
+  { id: 's3', title: 'FICO band loss curve', tags: ['risk','credit'], certified: true,
+    owner: { name: 'Asha P.', initials: 'AP', color: 1 }, lastRun: 'yesterday',
+    sql: `SELECT
+  CASE WHEN b.FICO_SCORE<580 THEN '300-579'
+       WHEN b.FICO_SCORE<620 THEN '580-619'
+       WHEN b.FICO_SCORE<680 THEN '620-679'
+       WHEN b.FICO_SCORE<740 THEN '680-739'
+       ELSE '740+' END AS FICO_BAND,
+  COUNT(*) AS LOANS,
+  ROUND(100.0 * AVG(CASE WHEN l.STATUS='Charged Off' THEN 1.0 ELSE 0 END), 2) AS CHARGE_OFF_PCT
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY 1 ORDER BY 1;` },
+  { id: 's4', title: 'Top borrowers by 30+ DPD by state', tags: ['risk','geography'], certified: false,
+    owner: { name: 'Mei C.', initials: 'MC', color: 3 }, lastRun: '3d ago',
+    sql: `SELECT b.STATE, COUNT(DISTINCT l.BORROWER_ID) AS DELINQ_BORROWERS
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+WHERE l.STATUS LIKE '%DPD%' OR l.STATUS LIKE '%Delinq%'
+GROUP BY b.STATE ORDER BY DELINQ_BORROWERS DESC LIMIT 10;` },
+  { id: 's5', title: 'APR distribution by product', tags: ['pricing'], certified: false,
+    owner: { name: 'Jordan K.', initials: 'JK', color: 4 }, lastRun: '4d ago',
+    sql: `SELECT PRODUCT_CATEGORY,
+       ROUND(MIN(APR)*100,2) AS MIN_APR_PCT,
+       ROUND(AVG(APR)*100,2) AS AVG_APR_PCT,
+       ROUND(MAX(APR)*100,2) AS MAX_APR_PCT
+FROM FACT_LOANS GROUP BY 1 ORDER BY AVG_APR_PCT;` },
+  { id: 's6', title: 'Repeat borrower cross-sell signal', tags: ['behavior','growth'], certified: false,
+    owner: { name: 'Diego R.', initials: 'DR', color: 2 }, lastRun: '6d ago',
+    sql: `SELECT BORROWER_ID, COUNT(*) AS LOAN_COUNT
+FROM FACT_LOANS GROUP BY BORROWER_ID
+HAVING LOAN_COUNT > 1 ORDER BY LOAN_COUNT DESC LIMIT 25;` },
+  { id: 's7', title: 'Payment cadence outliers', tags: ['behavior','collections'], certified: false,
+    owner: { name: 'You', initials: 'YN', color: 5 }, lastRun: '1w ago',
+    sql: `SELECT LOAN_ID, COUNT(*) AS LATE_PAYMENTS,
+       ROUND(AVG(DAYS_PAST_DUE), 1) AS AVG_DPD,
+       MAX(DAYS_PAST_DUE) AS MAX_DPD
+FROM FACT_PAYMENTS WHERE DAYS_PAST_DUE > 0
+GROUP BY LOAN_ID ORDER BY AVG_DPD DESC LIMIT 50;` },
+  { id: 's8', title: 'State-level concentration', tags: ['portfolio','geography'], certified: false,
+    owner: { name: 'Asha P.', initials: 'AP', color: 1 }, lastRun: '2w ago',
+    sql: `SELECT b.STATE, COUNT(*) AS LOANS, SUM(l.PRINCIPAL) AS EXPOSURE_USD
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY b.STATE ORDER BY EXPOSURE_USD DESC LIMIT 15;` }
+];
+
+IDE.templates = [
+  { id: 't1', title: 'Top borrowers by 30+ DPD by state', tags: ['risk','geography'],
+    sql: `-- Template: top borrowers by 30+ DPD per state
+SELECT b.STATE,
+       COUNT(DISTINCT l.BORROWER_ID) AS DELINQ_BORROWERS,
+       SUM(l.PRINCIPAL) AS EXPOSURE_USD
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+WHERE l.STATUS LIKE '%DPD%' OR l.STATUS LIKE '%Delinq%'
+GROUP BY b.STATE
+ORDER BY DELINQ_BORROWERS DESC
+LIMIT 10;` },
+  { id: 't2', title: 'Vintage delinquency curve', tags: ['risk','vintage'],
+    sql: `-- Template: vintage delinquency curve
+SELECT STRFTIME('%Y-%m', ORIGINATION_DATE) AS VINTAGE,
+       COUNT(*) AS LOAN_COUNT,
+       ROUND(100.0 * AVG(CASE WHEN STATUS LIKE '%DPD%' OR STATUS LIKE '%Delinquent%' THEN 1.0 ELSE 0 END), 2) AS DELINQ_RATE_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY 1;` },
+  { id: 't3', title: 'Channel funnel conversion', tags: ['funnel','growth'],
+    sql: `-- Template: channel funnel
+SELECT CHANNEL,
+       COUNT(*) AS APPS,
+       SUM(CASE WHEN STATUS='Approved' THEN 1 ELSE 0 END) AS APPROVED,
+       ROUND(100.0 * SUM(CASE WHEN STATUS='Approved' THEN 1 ELSE 0 END) / COUNT(*), 2) AS APPROVAL_RATE_PCT
+FROM FACT_APPLICATIONS
+GROUP BY CHANNEL
+ORDER BY APPS DESC;` },
+  { id: 't4', title: 'Repeat borrower cross-sell signal', tags: ['behavior','growth'],
+    sql: `-- Template: repeat borrowers
+SELECT BORROWER_ID, COUNT(*) AS LOAN_COUNT
+FROM FACT_LOANS
+GROUP BY BORROWER_ID
+HAVING LOAN_COUNT > 1
+ORDER BY LOAN_COUNT DESC
+LIMIT 25;` },
+  { id: 't5', title: 'FICO band loss curve', tags: ['risk','credit'],
+    sql: `-- Template: FICO loss bands
+SELECT CASE
+         WHEN b.FICO_SCORE<580 THEN '300-579'
+         WHEN b.FICO_SCORE<620 THEN '580-619'
+         WHEN b.FICO_SCORE<680 THEN '620-679'
+         WHEN b.FICO_SCORE<740 THEN '680-739'
+         ELSE '740+'
+       END AS FICO_BAND,
+       COUNT(*) AS LOANS,
+       ROUND(100.0 * AVG(CASE WHEN l.STATUS='Charged Off' THEN 1.0 ELSE 0 END), 2) AS CHARGE_OFF_PCT
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY 1
+ORDER BY 1;` },
+  { id: 't6', title: 'APR distribution by product', tags: ['pricing'],
+    sql: `-- Template: APR distribution
+SELECT PRODUCT_CATEGORY,
+       ROUND(MIN(APR)*100,2) AS MIN_APR_PCT,
+       ROUND(AVG(APR)*100,2) AS AVG_APR_PCT,
+       ROUND(MAX(APR)*100,2) AS MAX_APR_PCT
+FROM FACT_LOANS
+GROUP BY 1
+ORDER BY AVG_APR_PCT;` },
+  { id: 't7', title: 'Payment cadence outliers', tags: ['behavior','collections'],
+    sql: `-- Template: cadence outliers
+SELECT LOAN_ID,
+       COUNT(*) AS LATE_PAYMENTS,
+       ROUND(AVG(DAYS_PAST_DUE), 1) AS AVG_DPD,
+       MAX(DAYS_PAST_DUE) AS MAX_DPD
+FROM FACT_PAYMENTS
+WHERE DAYS_PAST_DUE > 0
+GROUP BY LOAN_ID
+ORDER BY AVG_DPD DESC
+LIMIT 50;` },
+  { id: 't8', title: 'State-level concentration', tags: ['portfolio','geography'],
+    sql: `-- Template: state concentration
+SELECT b.STATE,
+       COUNT(*) AS LOANS,
+       SUM(l.PRINCIPAL) AS EXPOSURE_USD,
+       ROUND(100.0 * SUM(l.PRINCIPAL) / SUM(SUM(l.PRINCIPAL)) OVER (), 2) AS PCT_OF_BOOK
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY b.STATE
+ORDER BY EXPOSURE_USD DESC
+LIMIT 15;` },
+  { id: 't9', title: 'Cohort triangle (90+ DPD)', tags: ['risk','vintage'],
+    sql: `-- Template: 90+ DPD cohort triangle
+SELECT STRFTIME('%Y-%m', l.ORIGINATION_DATE) AS VINTAGE,
+       CAST((JULIANDAY(p.SCHEDULED_DATE) - JULIANDAY(l.ORIGINATION_DATE)) / 30 AS INTEGER) AS MOB,
+       COUNT(DISTINCT CASE WHEN p.DAYS_PAST_DUE >= 90 THEN l.LOAN_ID END) AS C90_LOANS
+FROM FACT_LOANS l
+JOIN FACT_PAYMENTS p ON p.LOAN_ID=l.LOAN_ID
+GROUP BY 1, 2
+ORDER BY 1, 2;` },
+  { id: 't10', title: 'Pricing sensitivity by FICO band', tags: ['pricing','credit'],
+    sql: `-- Template: APR uplift by FICO band
+SELECT CASE
+         WHEN b.FICO_SCORE<580 THEN '300-579'
+         WHEN b.FICO_SCORE<620 THEN '580-619'
+         WHEN b.FICO_SCORE<680 THEN '620-679'
+         WHEN b.FICO_SCORE<740 THEN '680-739'
+         ELSE '740+'
+       END AS FICO_BAND,
+       ROUND(AVG(l.APR) * 100, 2) AS AVG_APR_PCT,
+       COUNT(*) AS LOANS
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID=l.BORROWER_ID
+GROUP BY 1
+ORDER BY 1;` }
+];
+
+// ===== TAB MANAGER =====
+function getActiveTab() { return IDE.tabs.find(t => t.id === IDE.activeTabId); }
+function newTabId() { return 'tab-' + (++IDE.tabSeq); }
+
+function renderTabs() {
+  const wrap = el('ide-tabs');
+  if (!wrap) return;
+  const active = IDE.activeTabId;
+  wrap.innerHTML = IDE.tabs.map(t => `
+    <div class="ide-tab ${t.id === active ? 'active' : ''} ${t.dirty ? 'dirty' : ''}" data-tab="${t.id}">
+      <span class="dirty-dot"></span>
+      <span class="tab-title">${escapeHTML(t.title || 'Untitled')}</span>
+      <span class="close-x" data-close="${t.id}" title="Close">×</span>
+    </div>`).join('') + '<button class="ide-tab-add" id="ide-tab-add" type="button" title="New tab">+</button>';
+}
+
+function addTab({ title='Untitled query', sql='', tags=[], owner=null, switchTo=true }) {
+  const id = newTabId();
+  const doc = CodeMirror.Doc(sql, 'text/x-sql');
+  const tab = {
+    id, title, doc,
+    savedSQL: sql, dirty: false,
+    tags: tags.slice(),
+    owner: owner || { name: 'You', initials: 'YN', color: 5 },
+    editedAt: Date.now()
+  };
+  IDE.tabs.push(tab);
+  if (switchTo) switchTab(id); else renderTabs();
+  return tab;
+}
+
+function closeTab(id) {
+  const t = IDE.tabs.find(x => x.id === id);
+  if (!t) return;
+  if (t.dirty && !confirm(`"${t.title}" has unsaved changes. Close anyway?`)) return;
+  const idx = IDE.tabs.indexOf(t);
+  IDE.tabs.splice(idx, 1);
+  if (IDE.tabs.length === 0) {
+    addTab({ title: 'Scratch', sql: DEFAULT_SQL });
+    return;
+  }
+  if (IDE.activeTabId === id) {
+    switchTab(IDE.tabs[Math.max(0, idx - 1)].id);
+  } else {
+    renderTabs();
+  }
+}
+
+function switchTab(id) {
+  const t = IDE.tabs.find(x => x.id === id);
+  if (!t) return;
+  IDE.activeTabId = id;
+  if (editor) {
+    editor.swapDoc(t.doc);
+    setTimeout(() => editor.refresh(), 0);
+  }
+  renderTabs();
+  renderMetaStrip();
+  renderStatusBar();
+}
+
+function setActiveSQL(sql, opts = {}) {
+  const t = getActiveTab(); if (!t) return;
+  t.doc.setValue(sql);
+  if (opts.title) t.title = opts.title;
+  if (opts.tags) t.tags = opts.tags.slice();
+  if (opts.markSaved) { t.savedSQL = sql; t.dirty = false; }
+  else t.dirty = (t.doc.getValue() !== t.savedSQL);
+  t.editedAt = Date.now();
+  if (editor) editor.swapDoc(t.doc);
+  renderTabs();
+  renderMetaStrip();
+}
+
+function initIDETabs() {
+  const findCh = (id) => CHALLENGES.find(c => c.id === id);
+  const c1 = findCh('vintage-curve');
+  const c2 = findCh('funnel');
+  addTab({ title: 'Scratch', sql: DEFAULT_SQL, tags: ['scratch'], switchTo: true });
+  addTab({
+    title: 'Vintage delinquency · v3',
+    sql: c1 ? (c1.solution || c1.starter) : IDE.templates[1].sql,
+    tags: ['risk','vintage'], switchTo: false
+  });
+  addTab({
+    title: 'Channel funnel exploration',
+    sql: c2 ? (c2.solution || c2.starter) : IDE.templates[2].sql,
+    tags: ['funnel','growth'], switchTo: false
+  });
+  switchTab(IDE.tabs[0].id);
+}
+
+function wireTabsBar() {
+  const wrap = el('ide-tabs');
+  wrap.addEventListener('click', (e) => {
+    const closeEl = e.target.closest('[data-close]');
+    if (closeEl) { e.stopPropagation(); closeTab(closeEl.dataset.close); return; }
+    if (e.target.id === 'ide-tab-add') { addTab({ title: 'Untitled query', sql: '' }); return; }
+    const tabEl = e.target.closest('[data-tab]');
+    if (tabEl) switchTab(tabEl.dataset.tab);
+  });
+}
+
+// ===== META STRIP =====
+function timeAgoFromMs(ms) {
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  return Math.floor(s / 86400) + 'd ago';
+}
+function renderMetaStrip() {
+  const t = getActiveTab(); if (!t) return;
+  const titleInput = el('ide-title');
+  if (document.activeElement !== titleInput) titleInput.value = t.title || '';
+  el('ide-tags').innerHTML = (t.tags || []).map(tg => `<span class="meta-tag">${escapeHTML(tg)}</span>`).join('');
+  el('ide-author').innerHTML = `<span class="avatar sm c-${t.owner.color || 5}">${t.owner.initials}</span> Edited ${timeAgoFromMs(Date.now() - t.editedAt)}`;
+}
+function wireMetaStrip() {
+  el('ide-title').addEventListener('input', (e) => {
+    const t = getActiveTab(); if (!t) return;
+    t.title = e.target.value || 'Untitled';
+    renderTabs();
+  });
+  el('btn-share').addEventListener('click', openShare);
+}
+
+// ===== STATUS BAR =====
+function renderStatusBar() {
+  const e = IDE.env;
+  const dot = el('status-conn-dot');
+  if (!dot) return;
+  dot.className = 's-dot ' + (e.dot === 'prod' ? 'green' : e.dot === 'staging' ? 'amber' : 'cyan');
+  el('status-warehouse').textContent = `${e.warehouse} · ${e.id}`;
+  el('status-region').textContent = e.region;
+  el('status-role').textContent = e.role;
+  el('env-pill-label').textContent = `${e.warehouse} · ${e.id}`;
+  el('env-pill-dot').className = 'pill-dot ' + e.dot;
+}
+function setCursorStatus(line, col) {
+  const seg = el('status-cursor');
+  if (seg) seg.textContent = `Ln ${line}, Col ${col}`;
+}
+function setPing(ms) {
+  const seg = el('status-ping');
+  if (seg) seg.textContent = `${ms}ms ping`;
+}
+
+// ===== ENV SWITCHER =====
+function wireEnvSwitcher() {
+  const pill = el('env-pill');
+  const menu = el('env-menu');
+  const renderMenu = () => {
+    menu.innerHTML = ENVIRONMENTS.map(e => `
+      <div class="env-row ${IDE.env.id === e.id ? 'active' : ''}" data-env-id="${e.id}">
+        <span class="pill-dot ${e.dot}"></span>
+        <div class="env-row-info">
+          <span class="env-name">${e.warehouse} · ${e.id}</span>
+          <span class="env-warehouse">${e.region} · role: ${e.role}</span>
+        </div>
+        <span class="env-check">✓</span>
+      </div>`).join('');
+  };
+  renderMenu();
+  pill.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = menu.classList.toggle('open');
+    pill.setAttribute('aria-expanded', String(open));
+  });
+  menu.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-env-id]');
+    if (!row) return;
+    const env = ENVIRONMENTS.find(x => x.id === row.dataset.envId);
+    if (env) {
+      IDE.env = { ...env };
+      renderStatusBar();
+      renderMenu();
+      showToast('Env: ' + env.id);
+    }
+    menu.classList.remove('open');
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#env-menu') && !e.target.closest('#env-pill')) {
+      menu.classList.remove('open');
+    }
+  });
+}
+
+// ===== WORKSPACE TABS =====
+function wireWorkspaceTabs() {
+  el('workspace-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('[data-pane]');
+    if (!tab) return;
+    const pane = tab.dataset.pane;
+    document.querySelectorAll('.workspace-tab').forEach(t => t.classList.toggle('active', t.dataset.pane === pane));
+    document.querySelectorAll('.workspace-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === pane));
+    if (pane === 'history') renderHistoryInline();
+  });
+}
+
+function renderSavedPane() {
+  const wrap = el('pane-saved');
+  wrap.innerHTML = IDE.saved.map(s => `
+    <div class="q-card" data-saved-id="${s.id}">
+      <div class="q-row1">
+        <span class="avatar sm c-${s.owner.color}">${s.owner.initials}</span>
+        <span class="q-title">${escapeHTML(s.title)}</span>
+        ${s.certified ? '<span class="cert-badge" title="Reviewed by data-platform team · 2026-04-12">✓ certified</span>' : ''}
+      </div>
+      <div class="q-row2">
+        <span class="q-meta">${escapeHTML(s.lastRun)}</span>
+        <span class="q-tags">${(s.tags||[]).map(t => `<span class="q-tag">${escapeHTML(t)}</span>`).join('')}</span>
+      </div>
+    </div>`).join('');
+  wrap.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-saved-id]');
+    if (!card) return;
+    const s = IDE.saved.find(x => x.id === card.dataset.savedId);
+    if (!s) return;
+    setActiveSQL(s.sql, { title: s.title, tags: s.tags, markSaved: true });
+    showToast('Loaded into active tab');
+  });
+}
+
+function renderTemplatesPane() {
+  const wrap = el('pane-templates');
+  wrap.innerHTML = IDE.templates.map(t => `
+    <div class="q-card" data-tpl-id="${t.id}">
+      <div class="q-row1"><span class="q-title">${escapeHTML(t.title)}</span></div>
+      <div class="q-row2">
+        <span class="q-tags">${(t.tags||[]).map(tg => `<span class="q-tag">${escapeHTML(tg)}</span>`).join('')}</span>
+      </div>
+    </div>`).join('');
+  wrap.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-tpl-id]');
+    if (!card) return;
+    const t = IDE.templates.find(x => x.id === card.dataset.tplId);
+    if (!t) return;
+    addTab({ title: t.title, sql: t.sql, tags: t.tags });
+    showToast('Template opened in new tab');
+  });
+}
+
+function renderHistoryInline() {
+  const target = el('pane-history');
+  if (!target) return;
+  if (historyList.length === 0) {
+    target.innerHTML = '<div class="pane-empty">No queries yet.<br/>Run a few — they\'ll show up here.</div>';
+    return;
+  }
+  target.innerHTML = historyList.map((h, i) => {
+    const status = h.error
+      ? '<span style="color:var(--red); font: 9px JetBrains Mono, monospace">✗ error</span>'
+      : '<span style="color:var(--green); font: 9px JetBrains Mono, monospace">✓ ' + (h.rowCount != null ? h.rowCount.toLocaleString() + ' row' + (h.rowCount === 1 ? '' : 's') : 'ok') + '</span>';
+    return `<div class="q-card" data-hist-idx="${i}">
+      <div class="q-row1"><span class="q-title">${escapeHTML(h.sql.trim().split('\n')[0].slice(0, 60))}</span></div>
+      <div class="q-row2"><span class="q-meta">${timeAgo(h.ts)}${h.ms != null ? ' · ' + h.ms + 'ms' : ''}</span>${status}</div>
+    </div>`;
+  }).join('');
+  target.querySelectorAll('[data-hist-idx]').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.histIdx, 10);
+      const entry = historyList[idx];
+      if (!entry) return;
+      const firstLine = entry.sql.trim().split('\n')[0].slice(0, 50) || 'From history';
+      setActiveSQL(entry.sql, { title: firstLine, markSaved: true });
+      showToast('Loaded from history');
+    });
+  });
+}
+
+// ===== STATS STRIP / COST =====
+function djb2(s) { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h) ^ s.charCodeAt(i); return h >>> 0; }
+function fmtBytes(n) {
+  if (n < 1024) return n + 'B';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + 'KB';
+  if (n < 1024 * 1024 * 1024) return (n / 1024 / 1024).toFixed(1) + 'MB';
+  return (n / 1024 / 1024 / 1024).toFixed(2) + 'GB';
+}
+function renderStatsStrip({ rows, ms, sql }) {
+  const strip = el('results-stats');
+  if (!strip) return;
+  const cols = (lastResult && lastResult.columns) ? lastResult.columns.length : 1;
+  const bytes = Math.max(rows * cols * 200, 512);
+  const hash = djb2(sql);
+  const cache = IDE.cachedHits.has(hash) ? 'HIT' : 'MISS';
+  IDE.cachedHits.set(hash, true);
+  // synthetic cost % from ms (cap 100ms = 100% scale)
+  const costPct = Math.min(99, Math.round(Math.log10(Math.max(ms, 1) + 1) * 30));
+  strip.hidden = false;
+  strip.innerHTML = `
+    <span class="stat"><span class="stat-num">${rows.toLocaleString()}</span> rows</span>
+    <span class="stat"><span class="stat-num">${ms}</span> ms</span>
+    <span class="stat stat-bytes">${fmtBytes(bytes)} scanned</span>
+    <span class="stat stat-cache ${cache.toLowerCase()}">cache ${cache}</span>
+    <span class="stat stat-cost-bar">cost <span class="stat-cost-bar-track"><span class="stat-cost-bar-fill" style="width:${costPct}%"></span></span></span>
+    <span class="stat" style="margin-left:auto; color: var(--ink-faint);">queryId: q_${hash.toString(16).slice(0,8)}</span>
+  `;
+}
+function hideStatsStrip() { const s = el('results-stats'); if (s) s.hidden = true; }
+
+// ===== FORMAT SQL =====
+function formatSQL(input) {
+  if (!input) return input;
+  const parts = [];
+  let i = 0;
+  while (i < input.length) {
+    const ch = input[i];
+    if (ch === "'") {
+      let j = i + 1;
+      while (j < input.length && input[j] !== "'") {
+        if (input[j] === '\\') j += 2; else j++;
+      }
+      parts.push({ raw: input.slice(i, Math.min(j + 1, input.length)) });
+      i = j + 1;
+    } else if (ch === '-' && input[i + 1] === '-') {
+      let j = i;
+      while (j < input.length && input[j] !== '\n') j++;
+      parts.push({ raw: input.slice(i, j) });
+      i = j;
+    } else if (ch === '/' && input[i + 1] === '*') {
+      let j = i + 2;
+      while (j < input.length - 1 && !(input[j] === '*' && input[j + 1] === '/')) j++;
+      parts.push({ raw: input.slice(i, Math.min(j + 2, input.length)) });
+      i = j + 2;
+    } else {
+      let j = i;
+      while (j < input.length && input[j] !== "'" &&
+             !(input[j] === '-' && input[j + 1] === '-') &&
+             !(input[j] === '/' && input[j + 1] === '*')) j++;
+      parts.push({ code: input.slice(i, j) });
+      i = j;
+    }
+  }
+  const KEYWORDS = ['SELECT','FROM','WHERE','GROUP BY','ORDER BY','HAVING','LIMIT','LEFT JOIN','RIGHT JOIN','INNER JOIN','FULL OUTER JOIN','CROSS JOIN','JOIN','ON','AS','AND','OR','CASE','WHEN','THEN','ELSE','END','WITH','UNION ALL','UNION','INSERT','UPDATE','DELETE','COUNT','SUM','AVG','MIN','MAX','DISTINCT','IS NOT NULL','IS NULL','NOT IN','IN','BETWEEN','OVER','PARTITION BY','LIKE','NULL'];
+  const NEWLINE_BEFORE = ['SELECT','FROM','WHERE','GROUP BY','ORDER BY','HAVING','LIMIT','LEFT JOIN','RIGHT JOIN','INNER JOIN','FULL OUTER JOIN','CROSS JOIN','JOIN','UNION ALL','UNION','WITH'];
+  const sortedK = KEYWORDS.slice().sort((a, b) => b.length - a.length);
+  let out = '';
+  for (const p of parts) {
+    if (p.raw !== undefined) { out += p.raw; continue; }
+    let code = p.code.replace(/\s+/g, ' ');
+    for (const k of sortedK) {
+      const re = new RegExp('\\b' + k.replace(/ /g, '\\s+') + '\\b', 'gi');
+      code = code.replace(re, k);
+    }
+    for (const k of NEWLINE_BEFORE) {
+      const re = new RegExp('(?:^|\\s+)\\b' + k.replace(/ /g, '\\s+') + '\\b', 'g');
+      code = code.replace(re, '\n' + k);
+    }
+    code = code.replace(/,\s*/g, ',\n  ');
+    out += code;
+  }
+  return out.trim() + '\n';
+}
+function formatActiveDoc() {
+  const t = getActiveTab(); if (!t) return;
+  const sel = editor.getSelection();
+  if (sel) {
+    editor.replaceSelection(formatSQL(sel));
+  } else {
+    const v = editor.getValue();
+    editor.setValue(formatSQL(v));
+  }
+  showToast('Formatted');
+}
+function runSelectedQuery() {
+  const sel = editor.getSelection();
+  if (!sel || !sel.trim()) { showToast('Select SQL to run a fragment'); return; }
+  runQuery(sel);
+}
+function saveActiveTab() {
+  const t = getActiveTab(); if (!t) return;
+  t.savedSQL = t.doc.getValue();
+  t.dirty = false;
+  t.editedAt = Date.now();
+  renderTabs();
+  renderMetaStrip();
+  showToast('Query saved');
+}
+
+function wireFormatAndRunSelected() {
+  el('btn-format').addEventListener('click', formatActiveDoc);
+  el('btn-run-sel').addEventListener('click', runSelectedQuery);
+}
+
+// ===== COMMAND PALETTE =====
+function buildCommands() {
+  const list = [
+    { id: 'run',        label: 'Run query',         cat: 'Editor', key: '⌘ ↵', icon: '▶', fn: () => runQuery() },
+    { id: 'run-sel',    label: 'Run selected',      cat: 'Editor', icon: '▶', fn: runSelectedQuery },
+    { id: 'format',     label: 'Format SQL',        cat: 'Editor', icon: '⤳', fn: formatActiveDoc },
+    { id: 'save',       label: 'Save query',        cat: 'Editor', icon: '⤓', fn: saveActiveTab },
+    { id: 'copy',       label: 'Copy SQL to clipboard', cat: 'Editor', icon: '⎘', fn: () => { navigator.clipboard.writeText(editor.getValue()); showToast('Copied'); } },
+    { id: 'clear',      label: 'Clear editor',      cat: 'Editor', icon: '⌫', fn: () => { editor.setValue(''); editor.focus(); } },
+    { id: 'new-tab',    label: 'New tab',           cat: 'Tabs', icon: '+', fn: () => addTab({ title: 'Untitled query', sql: '' }) },
+    { id: 'close-tab',  label: 'Close current tab', cat: 'Tabs', icon: '×', fn: () => closeTab(IDE.activeTabId) },
+    { id: 'history',    label: 'Open history',      cat: 'View', icon: '⏱', fn: openHistory },
+    { id: 'share',      label: 'Share query…',      cat: 'View', icon: '⤴', fn: openShare },
+  ];
+  IDE.tabs.forEach(t => {
+    if (t.id !== IDE.activeTabId) {
+      list.push({ id: 'switch-' + t.id, label: 'Switch to: ' + t.title, cat: 'Tabs', icon: '↹', fn: () => switchTab(t.id) });
+    }
+  });
+  IDE.templates.forEach(t => {
+    list.push({ id: 'tpl-' + t.id, label: 'Open template: ' + t.title, cat: 'Templates', icon: '⊞', fn: () => addTab({ title: t.title, sql: t.sql, tags: t.tags }) });
+  });
+  ENVIRONMENTS.forEach(e => {
+    if (e.id !== IDE.env.id) {
+      list.push({ id: 'env-' + e.id, label: 'Switch env: ' + e.id, cat: 'Env', icon: '◉', fn: () => { IDE.env = { ...e }; renderStatusBar(); showToast('Env: ' + e.id); } });
+    }
+  });
+  return list;
+}
+function fuzzyScore(needle, hay) {
+  if (!needle) return 1;
+  needle = needle.toLowerCase(); hay = hay.toLowerCase();
+  let i = 0, score = 0, lastIdx = -2;
+  for (let k = 0; k < hay.length && i < needle.length; k++) {
+    if (hay[k] === needle[i]) {
+      score += (k === lastIdx + 1) ? 3 : 1;
+      lastIdx = k; i++;
+    }
+  }
+  return i === needle.length ? score : -1;
+}
+function renderCmdList(query) {
+  const list = el('cmd-list');
+  const all = IDE.cmd.list;
+  const matches = all.map(c => ({ c, s: fuzzyScore(query, c.label) }))
+                     .filter(x => x.s >= 0)
+                     .sort((a, b) => b.s - a.s);
+  IDE.cmd.matches = matches.map(m => m.c);
+  if (matches.length === 0) {
+    list.innerHTML = '<div class="cmd-empty">No commands match.</div>';
+    IDE.cmd.sel = 0;
+    return;
+  }
+  IDE.cmd.sel = Math.min(IDE.cmd.sel, matches.length - 1);
+  list.innerHTML = matches.map((m, i) => `
+    <div class="cmd-row ${i === IDE.cmd.sel ? 'sel' : ''}" data-cmd-idx="${i}">
+      <span class="cmd-icon">${m.c.icon || '•'}</span>
+      <span>${escapeHTML(m.c.label)}</span>
+      ${m.c.key ? `<span class="cmd-key">${m.c.key}</span>` : ''}
+      <span class="cmd-cat">${m.c.cat}</span>
+    </div>`).join('');
+  const selEl = list.querySelector('.cmd-row.sel');
+  if (selEl) selEl.scrollIntoView({ block: 'nearest' });
+}
+function openPalette() {
+  IDE.cmd.list = buildCommands();
+  IDE.cmd.sel = 0;
+  IDE.cmd.open = true;
+  el('cmd-overlay').classList.add('open');
+  const input = el('cmd-input');
+  input.value = '';
+  renderCmdList('');
+  setTimeout(() => input.focus(), 0);
+}
+function closePalette() {
+  IDE.cmd.open = false;
+  el('cmd-overlay').classList.remove('open');
+  if (editor) editor.focus();
+}
+function runCmdAt(idx) {
+  const cmd = (IDE.cmd.matches || [])[idx];
+  if (!cmd) return;
+  closePalette();
+  setTimeout(() => cmd.fn(), 0);
+}
+function wireCommandPalette() {
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (IDE.cmd.open) closePalette(); else openPalette();
+      return;
+    }
+    if (IDE.cmd.open && e.key === 'Escape') {
+      e.preventDefault(); closePalette();
+    }
+  });
+  el('cmd-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'cmd-overlay') closePalette();
+  });
+  const input = el('cmd-input');
+  input.addEventListener('input', (e) => { IDE.cmd.sel = 0; renderCmdList(e.target.value); });
+  input.addEventListener('keydown', (e) => {
+    const matches = IDE.cmd.matches || [];
+    if (e.key === 'ArrowDown') {
+      IDE.cmd.sel = Math.min((IDE.cmd.sel || 0) + 1, matches.length - 1);
+      renderCmdList(input.value); e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      IDE.cmd.sel = Math.max((IDE.cmd.sel || 0) - 1, 0);
+      renderCmdList(input.value); e.preventDefault();
+    } else if (e.key === 'Enter') {
+      runCmdAt(IDE.cmd.sel || 0); e.preventDefault();
+    }
+  });
+  el('cmd-list').addEventListener('click', (e) => {
+    const row = e.target.closest('[data-cmd-idx]');
+    if (row) runCmdAt(parseInt(row.dataset.cmdIdx, 10));
+  });
+}
+
+// ===== SHARE MODAL =====
+function openShare() {
+  const t = getActiveTab(); if (!t) return;
+  el('share-sub').textContent = `// ${t.title}`;
+  el('share-link').textContent = `https://lending-warehouse.byheir.com/q/${t.id}`;
+  el('share-members').innerHTML = IDE.members.map(m => `
+    <div class="share-member">
+      <span class="avatar sm c-${m.color}">${m.initials}</span>
+      <span class="member-name">${escapeHTML(m.name)}${m.you ? ' <span class="you">YOU</span>' : ''}</span>
+      <select class="member-role">
+        <option ${m.role==='Owner'?'selected':''}>Owner</option>
+        <option ${m.role==='Editor'?'selected':''}>Editor</option>
+        <option ${m.role==='Viewer'?'selected':''}>Viewer</option>
+      </select>
+    </div>`).join('');
+  const toggle = el('share-toggle');
+  toggle.classList.toggle('on', IDE.share.isPublic);
+  el('share-toggle-label').textContent = IDE.share.isPublic ? 'Anyone with link · view' : 'Restricted · members only';
+  el('share-toggle-sub').textContent = IDE.share.isPublic ? 'Click to require sign-in' : 'Click to allow link sharing';
+  el('share-overlay').classList.add('open');
+  el('share-modal').classList.add('open');
+}
+function closeShare() {
+  el('share-overlay').classList.remove('open');
+  el('share-modal').classList.remove('open');
+}
+function wireShareModal() {
+  el('share-close').addEventListener('click', closeShare);
+  el('share-overlay').addEventListener('click', closeShare);
+  el('share-toggle').addEventListener('click', () => {
+    IDE.share.isPublic = !IDE.share.isPublic;
+    el('share-toggle').classList.toggle('on', IDE.share.isPublic);
+    el('share-toggle-label').textContent = IDE.share.isPublic ? 'Anyone with link · view' : 'Restricted · members only';
+    el('share-toggle-sub').textContent = IDE.share.isPublic ? 'Click to require sign-in' : 'Click to allow link sharing';
+  });
+  el('share-copy-link').addEventListener('click', () => {
+    const link = el('share-link').textContent;
+    navigator.clipboard.writeText(link).then(() => showToast('Link copied'));
+  });
+}
+
+// ===== EDITOR HOOKS (cursor + dirty tracking) =====
+function wireEditorHooks() {
+  if (!editor) return;
+  editor.on('cursorActivity', () => {
+    const c = editor.getCursor();
+    setCursorStatus(c.line + 1, c.ch + 1);
+  });
+  editor.on('change', () => {
+    const t = getActiveTab(); if (!t) return;
+    const wasDirty = t.dirty;
+    t.dirty = (t.doc.getValue() !== t.savedSQL);
+    if (wasDirty !== t.dirty) renderTabs();
+  });
 }
 
 boot().catch(err => {
