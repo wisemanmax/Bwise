@@ -646,6 +646,110 @@ border-right: 1px solid var(–border-1) !important;
 .cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
 .cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
 .cm-s-default .cm-bracket { color: var(–text-2) !important; }
+/* ===== Dashboard full-page view (Phase 3.2) ===== */
+.dashboard-view {
+  background: var(–bg-0);
+  display: flex; flex-direction: column;
+  min-height: 0; overflow: hidden;
+}
+.dash-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 22px 28px 14px;
+  border-bottom: 1px solid var(–border-1);
+}
+.dash-header > div:first-child { flex: 1; min-width: 0; }
+.dash-breadcrumb { font-size: 11.5px; color: var(–text-3); letter-spacing: 0.02em; margin-bottom: 4px; }
+.dash-header h2 {
+  font-size: 22px; font-weight: 600; color: var(–text-1);
+  letter-spacing: -0.01em;
+}
+.dash-sub { margin-top: 4px; font-size: 12px; color: var(–text-3); }
+.dash-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.dash-grid {
+  flex: 1; overflow: auto;
+  padding: 18px 28px 28px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  align-content: start;
+}
+
+.dash-tile {
+  background: var(–bg-1);
+  border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  display: flex; flex-direction: column;
+  min-height: 240px;
+  overflow: hidden;
+  transition: border-color 120ms;
+}
+.dash-tile:hover { border-color: var(–border-3); }
+.dash-tile-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(–border-1);
+}
+.dash-tile-title {
+  flex: 1; min-width: 0;
+  font-size: 13px; font-weight: 600;
+  color: var(–text-1);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  cursor: text;
+}
+.dash-tile-head .actions {
+  display: inline-flex; gap: 2px;
+  opacity: 0; transition: opacity 80ms;
+}
+.dash-tile:hover .dash-tile-head .actions,
+.dash-tile:focus-within .dash-tile-head .actions { opacity: 1; }
+.dash-tile-head .icon-btn { width: 26px; height: 26px; }
+.dash-tile-head .icon-btn svg { width: 12px; height: 12px; }
+
+.dash-tile-status {
+  padding: 6px 12px;
+  font-size: 11px; color: var(–text-3);
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+  border-bottom: 1px solid var(–border-1);
+}
+.dash-tile-status.error { color: #FF7A8C; white-space: pre-wrap; }
+.dash-tile-body { flex: 1; overflow: auto; padding: 0; min-height: 0; position: relative; }
+.dash-tile-body .chart-area { width: 100%; height: 100%; min-height: 180px; }
+
+.dash-tile-bignum {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; padding: 20px;
+  text-align: center;
+}
+.dash-tile-bignum .num {
+  font-size: 36px; font-weight: 600;
+  color: var(–sf-blue);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.dash-tile-bignum .lbl {
+  margin-top: 6px;
+  font-size: 12px; color: var(–text-3);
+  font-family: ‘Inter’, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dash-empty {
+  text-align: center;
+  padding: 60px 28px;
+  color: var(–text-3);
+  font-size: 13px;
+  grid-column: 1 / -1;
+}
+.dash-empty .title { font-size: 14px; color: var(–text-2); margin-bottom: 4px; }
+
+@media (max-width: 768px) {
+  .dash-header { padding: 14px 16px 10px; flex-wrap: wrap; }
+  .dash-actions { order: 2; flex: 1 1 100%; }
+  .dash-grid { padding: 12px 16px 24px; grid-template-columns: 1fr; }
+}
+
 /* ===== Notebook full-page view (Phase 3.1) ===== */
 .notebook-view {
   background: var(–bg-0);
@@ -2200,8 +2304,8 @@ background-clip: content-box;
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm1.5.5v9h9v-9h-9zm1.5 2h6v1h-6v-1zm0 2h6v1h-6v-1zm0 2h4v1h-4v-1z"/></svg>
         Worksheets
       </a>
-      <a class="nav-tab">
-        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h10v2H3V3zm0 4h10v2H3V7zm0 4h7v2H3v-2z"/></svg>
+      <a class="nav-tab" data-view="dashboard">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="6" rx="1"/><rect x="9" y="2" width="5" height="3" rx="1"/><rect x="9" y="7" width="5" height="7" rx="1"/><rect x="2" y="10" width="5" height="4" rx="1"/></svg>
         Dashboards
       </a>
       <a class="nav-tab" data-view="admin">
@@ -2354,6 +2458,9 @@ background-clip: content-box;
         </button>
         <div class="spacer"></div>
         <div class="actions">
+          <button class="icon-btn" id="addToDashBtn" title="Add to dashboard">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="6" rx="1"/><rect x="9" y="2" width="5" height="3" rx="1"/><rect x="9" y="7" width="5" height="7" rx="1"/><rect x="2" y="10" width="5" height="4" rx="1"/></svg>
+          </button>
           <button class="icon-btn" id="exportCsvBtn" title="Export CSV">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9M5 8l3 3 3-3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 13h10"/></svg>
           </button>
@@ -2378,6 +2485,21 @@ background-clip: content-box;
   </div>
 
 </main>
+
+<section class="dashboard-view" id="dashboardView" hidden>
+  <div class="dash-header">
+    <div>
+      <div class="dash-breadcrumb">My Dashboards</div>
+      <h2 id="dashTitle">Dashboard</h2>
+      <div class="dash-sub" id="dashMeta">Tiles refresh by re-running their saved SQL against the active engine.</div>
+    </div>
+    <div class="dash-actions">
+      <button class="btn" id="dashRefreshAllBtn">Refresh all</button>
+      <button class="btn primary" id="dashAddCurrentBtn" title="Capture the current query as a new tile">+ Add current result</button>
+    </div>
+  </div>
+  <div class="dash-grid" id="dashGrid"></div>
+</section>
 
 <section class="notebook-view" id="notebookView" hidden>
   <div class="nb-toolbar">
@@ -3510,6 +3632,7 @@ const state = {
   history: [],
   folders: {},
   folderOrder: [],
+  dashTiles: [],
   context: {
     role: 'SYSADMIN',
     warehouse: 'COMPUTE_WH',
@@ -3529,7 +3652,8 @@ const STORAGE = {
   ACTIVE:       'snowsight_v1_active',
   HISTORY:      'snowsight_v1_history',
   FOLDERS:      'snowsight_v1_folders',
-  FOLDER_ORDER: 'snowsight_v1_folder_order'
+  FOLDER_ORDER: 'snowsight_v1_folder_order',
+  DASH_TILES:   'snowsight_v1_dash_tiles'
 };
 
 function uid() { return 'ws_' + Math.random().toString(36).slice(2, 10); }
@@ -3543,6 +3667,7 @@ function saveState() {
     localStorage.setItem(STORAGE.HISTORY, JSON.stringify(state.history.slice(0, 100)));
     localStorage.setItem(STORAGE.FOLDERS, JSON.stringify(state.folders));
     localStorage.setItem(STORAGE.FOLDER_ORDER, JSON.stringify(state.folderOrder));
+    localStorage.setItem(STORAGE.DASH_TILES, JSON.stringify(state.dashTiles));
   } catch (_) {}
 }
 function loadState() {
@@ -3553,9 +3678,11 @@ function loadState() {
     state.history = JSON.parse(localStorage.getItem(STORAGE.HISTORY) || '[]');
     state.folders = JSON.parse(localStorage.getItem(STORAGE.FOLDERS) || '{}');
     state.folderOrder = JSON.parse(localStorage.getItem(STORAGE.FOLDER_ORDER) || '[]');
+    state.dashTiles = JSON.parse(localStorage.getItem(STORAGE.DASH_TILES) || '[]');
   } catch (_) {
     state.worksheets = {}; state.worksheetOrder = []; state.activeWsId = null;
     state.history = []; state.folders = {}; state.folderOrder = [];
+    state.dashTiles = [];
   }
   // Filter out broken entries
   state.worksheetOrder = state.worksheetOrder.filter(id => state.worksheets[id]);
@@ -4261,6 +4388,178 @@ async function runAllNotebookCells() {
   for (const c of nb.cells) {
     if (c.type === 'sql') await runNotebookCell(c.id);
   }
+}
+
+// ---------- Dashboards (Phase 3.2) ----------
+// One implicit dashboard for v1, persisted as state.dashTiles. A tile is a
+// saved query plus the chart config the user had when it was captured.
+// On view-load every tile re-runs its SQL through the active engine; tiles
+// are independent, so a slow or failing tile doesn't block the others.
+function dashboardCanAddTile() {
+  return !!(state.results && state.results.sql && state.results.values && state.results.values.length);
+}
+function addCurrentResultsAsTile() {
+  if (!dashboardCanAddTile()) {
+    toast('Run a query first, then add it to the dashboard', 'warn');
+    return;
+  }
+  const r = state.results;
+  const defaultTitle = (r.sql || '').split('\n').find(l => /^\s*SELECT/i.test(l))?.slice(0, 60).trim() || 'New tile';
+  const title = prompt('Tile title', defaultTitle) || defaultTitle;
+  const tile = {
+    id: 'tile_' + Math.random().toString(36).slice(2, 10),
+    title: title.trim() || defaultTitle,
+    sql: r.sql,
+    chart: state.chartCfg ? { ...state.chartCfg } : null,
+    createdAt: Date.now()
+  };
+  state.dashTiles.push(tile);
+  saveState();
+  toast(`Added "${tile.title}" to dashboard`, 'success');
+}
+function removeTile(id) {
+  if (!confirm('Remove this tile?')) return;
+  state.dashTiles = state.dashTiles.filter(t => t.id !== id);
+  saveState();
+  renderDashboardView();
+}
+function renameTile(id) {
+  const t = state.dashTiles.find(x => x.id === id);
+  if (!t) return;
+  const v = prompt('Rename tile', t.title);
+  if (v === null) return;
+  t.title = v.trim() || t.title;
+  saveState();
+  renderDashboardView();
+}
+
+function renderDashboardView() {
+  const grid = $('#dashGrid');
+  grid.innerHTML = '';
+  $('#dashAddCurrentBtn').disabled = !dashboardCanAddTile();
+  if (!state.dashTiles.length) {
+    grid.appendChild(el('div', { class: 'dash-empty' },
+      el('div', { class: 'title' }, 'No tiles yet'),
+      el('div', {}, 'Run a query in a worksheet, then click "+ Add current result" to capture it as a tile here.')
+    ));
+    return;
+  }
+  for (const tile of state.dashTiles) grid.appendChild(buildDashTile(tile));
+  for (const tile of state.dashTiles) refreshTile(tile.id);
+}
+
+function buildDashTile(tile) {
+  const wrap = el('div', { class: 'dash-tile', 'data-tile-id': tile.id });
+  const head = el('div', { class: 'dash-tile-head' });
+  const titleEl = el('div', {
+    class: 'dash-tile-title', title: tile.title,
+    ondblclick: () => renameTile(tile.id)
+  }, tile.title);
+  head.appendChild(titleEl);
+  const actions = el('span', { class: 'actions' });
+  actions.appendChild(el('button', {
+    class: 'icon-btn', title: 'Refresh',
+    onclick: () => refreshTile(tile.id),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 018-3.5M13 8a5 5 0 01-8 3.5"/><path d="M11 2v3h-3M5 14v-3h3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  }));
+  actions.appendChild(el('button', {
+    class: 'icon-btn', title: 'Open in worksheet',
+    onclick: () => {
+      const ws = newWorksheet(tile.title, tile.sql);
+      setActiveWorksheet(ws.id);
+    },
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4a1 1 0 011-1h7l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1V4z"/><path d="M10 3v3h3"/></svg>'
+  }));
+  actions.appendChild(el('button', {
+    class: 'icon-btn', title: 'Rename',
+    onclick: () => renameTile(tile.id),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 2l3 3-7 7H4v-3l7-7z"/></svg>'
+  }));
+  actions.appendChild(el('button', {
+    class: 'icon-btn', title: 'Remove',
+    onclick: () => removeTile(tile.id),
+    html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h10M6 5V3h4v2M5 5l1 9h4l1-9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  }));
+  head.appendChild(actions);
+  wrap.appendChild(head);
+  const status = el('div', { class: 'dash-tile-status', 'data-role': 'status' }, 'Loading…');
+  wrap.appendChild(status);
+  const body = el('div', { class: 'dash-tile-body', 'data-role': 'body' });
+  wrap.appendChild(body);
+  return wrap;
+}
+
+async function refreshTile(id) {
+  const tile = state.dashTiles.find(t => t.id === id);
+  if (!tile) return;
+  const wrap = document.querySelector(`[data-tile-id="${id}"]`);
+  if (!wrap) return;
+  const status = wrap.querySelector('[data-role="status"]');
+  const body = wrap.querySelector('[data-role="body"]');
+  if (!state.engine || !state.engine.ready) {
+    status.classList.add('error');
+    status.textContent = 'Engine not ready';
+    return;
+  }
+  status.classList.remove('error');
+  status.textContent = 'Running…';
+  body.innerHTML = '';
+  const start = performance.now();
+  let lastResult = null;
+  try {
+    const translated = translateSnowflake(tile.sql, state.engine.kind);
+    const stmts = splitStatements(translated);
+    for (const s of stmts) {
+      const r = await state.engine.exec(s);
+      if (r && r.length) lastResult = r[r.length - 1];
+    }
+  } catch (err) {
+    status.classList.add('error');
+    status.textContent = err.message.split('\n')[0];
+    return;
+  }
+  const dur = performance.now() - start;
+  if (!lastResult || !lastResult.values || !lastResult.values.length) {
+    status.textContent = `0 rows · ${formatDuration(dur)}`;
+    return;
+  }
+  status.textContent = `${formatNum(lastResult.values.length)} rows · ${formatDuration(dur)}`;
+  renderTileBody(body, lastResult, tile);
+}
+
+function renderTileBody(body, rs, tile) {
+  // Big-number tile: single-row, single numeric column
+  if (rs.values.length === 1 && rs.columns.length === 1 && typeof rs.values[0][0] === 'number') {
+    body.appendChild(el('div', { class: 'dash-tile-bignum' },
+      el('div', { class: 'num' }, formatNumber(rs.values[0][0])),
+      el('div', { class: 'lbl' }, rs.columns[0])
+    ));
+    return;
+  }
+  // Try chart if config or auto-detect succeeds
+  let cfg = tile.chart;
+  if (!cfg) cfg = detectChartConfig(rs.columns, rs.values);
+  if (cfg && rs.columns[cfg.xIdx] != null && rs.columns[cfg.yIdx] != null) {
+    const area = el('div', { class: 'chart-area' });
+    body.appendChild(area);
+    requestAnimationFrame(() => {
+      const W = area.clientWidth || 320;
+      const H = area.clientHeight || 200;
+      const data = rs.values.slice(0, 200).map(row => ({ x: row[cfg.xIdx], y: row[cfg.yIdx] }))
+        .filter(d => d.y != null && typeof d.y === 'number');
+      area.innerHTML = '';
+      area.appendChild(buildChartSVG(data, cfg.type || 'bar', W, H, rs.columns[cfg.xIdx], rs.columns[cfg.yIdx]));
+    });
+    return;
+  }
+  // Fallback: small table
+  const wrap = el('div', { class: 'nb-cell-table-wrap', style: 'max-height:100%;' });
+  wrap.appendChild(buildSimpleResultTable(rs));
+  body.appendChild(wrap);
+}
+
+async function refreshAllTiles() {
+  for (const t of state.dashTiles) await refreshTile(t.id);
 }
 
 // ---------- Admin pages (Phase 2.5) ----------
@@ -5831,6 +6130,7 @@ function switchView(view) {
   $('#tableDetailView').hidden  = view !== 'table-detail';
   $('#adminView').hidden        = view !== 'admin';
   $('#notebookView').hidden     = view !== 'notebook';
+  $('#dashboardView').hidden    = view !== 'dashboard';
   $$('.nav-tab').forEach(t => {
     // Notebook + table-detail are sub-routes of Worksheets; keep that nav-tab active.
     const target = (view === 'table-detail' || view === 'notebook') ? 'worksheet' : view;
@@ -5839,6 +6139,7 @@ function switchView(view) {
   if (view === 'history') renderHistoryPage();
   if (view === 'admin') renderAdminPage();
   if (view === 'notebook') renderNotebookView();
+  if (view === 'dashboard') renderDashboardView();
 }
 
 // ---------- Query History page ----------
@@ -6559,6 +6860,12 @@ function wireUI() {
 
   $('#exportCsvBtn').addEventListener('click', exportCsv);
   $('#copyCsvBtn').addEventListener('click', copyCsv);
+  $('#addToDashBtn').addEventListener('click', addCurrentResultsAsTile);
+  $('#dashAddCurrentBtn').addEventListener('click', () => {
+    addCurrentResultsAsTile();
+    if (state.activeView === 'dashboard') renderDashboardView();
+  });
+  $('#dashRefreshAllBtn').addEventListener('click', () => refreshAllTiles());
 
   // Modals close
   $$('[data-close]').forEach(b => b.addEventListener('click', e => {
