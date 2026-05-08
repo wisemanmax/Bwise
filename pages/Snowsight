@@ -1458,6 +1458,156 @@ table.result-table thead tr.col-filter-row th input:focus {
 #pane-table > .result-toolbar,
 #pane-table > .result-footer { flex: 0 0 auto; }
 
+/* ===== Query plan visualization (Phase 2.3) ===== */
+.plan-status {
+  padding: 8px 16px;
+  font-size: 11.5px; color: var(–text-3);
+  border-bottom: 1px solid var(–border-1);
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+}
+.plan-status.error { color: #FF7A8C; }
+.plan-canvas {
+  padding: 24px 12px 32px;
+  overflow: auto;
+  height: 100%;
+  background: var(–bg-0);
+}
+.plan-tree {
+  display: flex; flex-direction: column; align-items: center;
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+}
+.plan-row {
+  display: flex; flex-direction: row; align-items: stretch; justify-content: center;
+  gap: 16px;
+  position: relative;
+  padding: 18px 0 0;
+}
+.plan-subtree { display: flex; flex-direction: column; align-items: center; }
+.plan-node {
+  background: var(–bg-2);
+  border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  padding: 10px 14px;
+  min-width: 160px;
+  max-width: 240px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 100ms, transform 100ms;
+}
+.plan-node:hover {
+  border-color: var(–sf-blue);
+  transform: translateY(-1px);
+}
+.plan-node.selected {
+  border-color: var(–sf-blue);
+  box-shadow: 0 0 0 2px rgba(41, 181, 232, 0.2);
+}
+.plan-node .pn-name {
+  font-size: 11.5px; font-weight: 600;
+  color: var(–text-1);
+  letter-spacing: 0.04em;
+}
+.plan-node .pn-detail {
+  font-size: 11px; color: var(–text-3);
+  margin-top: 4px;
+  font-family: ‘JetBrains Mono’, monospace;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.plan-node .pn-est {
+  font-size: 10.5px; color: var(–text-4);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+/* Operator color hints — keyed by data-op-class */
+.plan-node[data-op-class="join"]   { border-left: 3px solid var(–sf-blue); }
+.plan-node[data-op-class="scan"]   { border-left: 3px solid var(–green); }
+.plan-node[data-op-class="filter"] { border-left: 3px solid #F5B544; }
+.plan-node[data-op-class="agg"]    { border-left: 3px solid var(–purple); }
+.plan-node[data-op-class="sort"]   { border-left: 3px solid #FF7A8C; }
+.plan-node[data-op-class="proj"]   { border-left: 3px solid var(–text-3); }
+.plan-node[data-op-class="output"] { border-left: 3px solid var(–sf-blue); background: rgba(41,181,232,0.08); }
+
+.plan-edge {
+  width: 1px;
+  background: var(–border-3);
+  margin: 0 auto;
+  flex: 0 0 auto;
+  height: 18px;
+}
+.plan-row::before {
+  /* Horizontal connector across siblings */
+  content: ‘’;
+  position: absolute;
+  top: 0;
+  left: 0; right: 0;
+  height: 0;
+}
+.plan-row > .plan-subtree { position: relative; }
+.plan-row > .plan-subtree::before {
+  content: ‘’;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 18px;
+  background: var(–border-3);
+}
+.plan-row > .plan-subtree:not(:only-child)::after {
+  /* Horizontal trunk to siblings */
+  content: ‘’;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 1px;
+  background: var(–border-3);
+}
+.plan-row > .plan-subtree:first-child::after {
+  left: 50%; width: 50%;
+}
+.plan-row > .plan-subtree:last-child::after {
+  left: 0; width: 50%;
+}
+.plan-row > .plan-subtree:only-child::after { display: none; }
+
+.plan-detail-panel {
+  position: sticky; bottom: 0; left: 0;
+  margin: 16px;
+  background: var(–bg-1);
+  border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  padding: 14px 16px;
+  font-size: 12px;
+  display: none;
+}
+.plan-detail-panel.open { display: block; }
+.plan-detail-panel h4 {
+  font-size: 12px; font-weight: 600;
+  color: var(–sf-blue);
+  font-family: ‘JetBrains Mono’, monospace;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.plan-detail-panel dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+.plan-detail-panel dt {
+  color: var(–text-3); font-size: 11px;
+  font-family: ‘Inter’, sans-serif;
+  font-weight: 500;
+}
+.plan-detail-panel dd {
+  color: var(–text-1); font-size: 11.5px;
+  font-family: ‘JetBrains Mono’, monospace;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.plan-text-fallback {
+  margin: 0; padding: 16px;
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+  font-size: 11.5px; line-height: 1.5;
+  color: var(–text-2);
+  white-space: pre;
+  overflow-x: auto;
+}
+
 /* Query details panel */
 .query-details {
 padding: 16px 20px;
@@ -2194,6 +2344,10 @@ background-clip: content-box;
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 13.5h11M4 11V7M7 11V4M10 11V8M13 11V5" stroke-linecap="round"/></svg>
           Chart
         </button>
+        <button class="result-tab" data-pane="plan">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="4" height="3" rx=".5"/><rect x="2" y="11" width="4" height="3" rx=".5"/><rect x="10" y="11" width="4" height="3" rx=".5"/><path d="M8 5v2M8 7H4v4M8 7h4v4" stroke-linecap="round"/></svg>
+          Plan
+        </button>
         <button class="result-tab" data-pane="details">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5M8 11v.01" stroke-linecap="round"/></svg>
           Query Details
@@ -2217,6 +2371,7 @@ background-clip: content-box;
           </div>
         </div>
         <div class="result-pane" id="pane-chart"></div>
+        <div class="result-pane" id="pane-plan"></div>
         <div class="result-pane" id="pane-details"></div>
       </div>
     </div>
@@ -5168,6 +5323,146 @@ function switchResultPane(name) {
   });
   if (name === 'chart' && state.results) renderChart();
   if (name === 'details' && state.results) renderQueryDetails();
+  if (name === 'plan' && state.results) renderPlanPane();
+}
+
+// ---------- Query plan visualization (Phase 2.3) ----------
+async function renderPlanPane() {
+  const pane = $('#pane-plan');
+  pane.innerHTML = '';
+  if (!state.engine) {
+    pane.appendChild(el('div', { class: 'plan-status' }, 'No engine.'));
+    return;
+  }
+  if (!state.results || !state.results.translated) {
+    pane.appendChild(el('div', { class: 'plan-status' }, 'No query has been run yet.'));
+    return;
+  }
+  if (state.engine.kind !== 'duckdb') {
+    const status = el('div', { class: 'plan-status' });
+    status.appendChild(document.createTextNode('Query plan visualization requires the DuckDB engine — reload with '));
+    status.appendChild(el('code', { style: 'background:var(--bg-2);padding:1px 5px;border-radius:3px;' }, '?engine=duckdb'));
+    status.appendChild(document.createTextNode('.'));
+    pane.appendChild(status);
+    return;
+  }
+  // Cache the parsed plan on the result object so re-clicking the tab doesn't refetch.
+  if (!state.results.plan && !state.results.planText && !state.results.planError) {
+    pane.appendChild(el('div', { class: 'plan-status' }, 'Loading EXPLAIN (FORMAT JSON)…'));
+    try {
+      const last = lastStatementOf(state.results.translated);
+      const r = await state.engine.exec(`EXPLAIN (FORMAT JSON) ${last}`);
+      const explainJsonText = (r[r.length - 1].values || []).map(row => row[1]).join('\n');
+      const parsed = JSON.parse(explainJsonText);
+      state.results.plan = Array.isArray(parsed) ? parsed[0] : parsed;
+    } catch (err) {
+      // Off-ramp: text plan
+      try {
+        const last = lastStatementOf(state.results.translated);
+        const r2 = await state.engine.exec(`EXPLAIN ${last}`);
+        state.results.planText = (r2[r2.length - 1].values || []).map(row => row[1]).join('\n');
+      } catch (err2) {
+        state.results.planError = `${err.message} | text fallback: ${err2.message}`;
+      }
+    }
+    pane.innerHTML = '';
+  }
+  if (state.results.planError) {
+    pane.appendChild(el('div', { class: 'plan-status error' }, `Plan unavailable: ${state.results.planError}`));
+    return;
+  }
+  if (state.results.plan) {
+    pane.appendChild(el('div', { class: 'plan-status' }, 'Click any operator for details. Bottom-up data flow: leaves are scans, root is the output.'));
+    const canvas = el('div', { class: 'plan-canvas' });
+    const tree = el('div', { class: 'plan-tree' });
+    tree.appendChild(buildPlanNodeTree(state.results.plan));
+    canvas.appendChild(tree);
+    canvas.appendChild(el('div', { class: 'plan-detail-panel', id: 'planDetailPanel' }));
+    pane.appendChild(canvas);
+    return;
+  }
+  if (state.results.planText) {
+    pane.appendChild(el('div', { class: 'plan-status' }, 'JSON plan unavailable for this query — text plan shown.'));
+    pane.appendChild(el('pre', { class: 'plan-text-fallback' }, state.results.planText));
+    return;
+  }
+}
+
+function lastStatementOf(sql) {
+  const stmts = splitStatements(sql);
+  return stmts[stmts.length - 1] || sql;
+}
+
+function operatorClass(name) {
+  const u = (name || '').toUpperCase();
+  if (u.includes('JOIN')) return 'join';
+  if (u.includes('SCAN')) return 'scan';
+  if (u === 'FILTER') return 'filter';
+  if (u.includes('AGGREGATE') || u.includes('HASH_GROUP') || u.includes('PERFECT_HASH')) return 'agg';
+  if (u.includes('SORT') || u.includes('TOP_N') || u.includes('ORDER_BY')) return 'sort';
+  if (u.includes('PROJECTION')) return 'proj';
+  if (u === 'EXPLAIN_ANALYZE' || u === 'EXPLAIN' || u === 'QUERY' || u === 'RESULT_COLLECTOR') return 'output';
+  return '';
+}
+
+function buildPlanNodeTree(node) {
+  const wrap = el('div', { class: 'plan-subtree' });
+  const opClass = operatorClass(node.name || '');
+  const card = el('div', {
+    class: 'plan-node',
+    'data-op-class': opClass
+  });
+  card.appendChild(el('div', { class: 'pn-name' }, node.name || 'OP'));
+  const preview = formatNodeDetailLine(node);
+  if (preview) card.appendChild(el('div', { class: 'pn-detail', title: preview }, preview));
+  const est = node.extra_info && node.extra_info['Estimated Cardinality'];
+  if (est != null) card.appendChild(el('div', { class: 'pn-est' }, `~${formatNum(Number(est))} rows est.`));
+  card.addEventListener('click', e => { e.stopPropagation(); selectPlanNode(card, node); });
+  wrap.appendChild(card);
+  if (node.children && node.children.length) {
+    wrap.appendChild(el('div', { class: 'plan-edge' }));
+    const row = el('div', { class: 'plan-row' });
+    for (const child of node.children) row.appendChild(buildPlanNodeTree(child));
+    wrap.appendChild(row);
+  }
+  return wrap;
+}
+
+function formatNodeDetailLine(node) {
+  const e = node.extra_info || {};
+  const fmt = v => Array.isArray(v) ? v.join(', ') : String(v);
+  if (e.Table) return fmt(e.Table);
+  if (e.Conditions) return fmt(e.Conditions);
+  if (e.Expression) return fmt(e.Expression);
+  if (e.Filters) return fmt(e.Filters);
+  if (e.Aggregates) return fmt(e.Aggregates);
+  if (e.Projections) return fmt(e.Projections).slice(0, 60);
+  return '';
+}
+
+function selectPlanNode(cardEl, node) {
+  document.querySelectorAll('.plan-node.selected').forEach(n => n.classList.remove('selected'));
+  cardEl.classList.add('selected');
+  const panel = $('#planDetailPanel');
+  if (!panel) return;
+  panel.innerHTML = '';
+  panel.appendChild(el('h4', {}, node.name || 'Operator'));
+  const dl = el('dl');
+  const e = node.extra_info || {};
+  const keys = Object.keys(e);
+  if (keys.length) {
+    for (const k of keys) {
+      const v = e[k];
+      const display = Array.isArray(v) ? v.join('\n') : String(v);
+      dl.appendChild(el('dt', {}, k));
+      dl.appendChild(el('dd', {}, display));
+    }
+  } else {
+    dl.appendChild(el('dt', {}, 'extra_info'));
+    dl.appendChild(el('dd', {}, '— none —'));
+  }
+  panel.appendChild(dl);
+  panel.classList.add('open');
 }
 
 // ---------- Query Details ----------
