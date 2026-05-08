@@ -1,0 +1,13 @@
+{
+  "name": "bwise-portfolio",
+  "private": true,
+  "description": "Dev tooling for byheir.com — site itself is static (no build step required for end users).",
+  "scripts": {
+    "test:snowsight": "node pages/Snowsight-test.js",
+    "test:snowsight:sqljs": "node pages/Snowsight-test.js --engine=sqljs",
+    "test:snowsight:duckdb": "node pages/Snowsight-test.js --engine=duckdb"
+  },
+  "devDependencies": {
+    "sql.js": "^1.14.0"
+  }
+}
