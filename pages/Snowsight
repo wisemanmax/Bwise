@@ -580,6 +580,125 @@ border-right: 1px solid var(–border-1) !important;
 .cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
 .cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
 .cm-s-default .cm-bracket { color: var(–text-2) !important; }
+/* ===== Table Detail full-page view ===== */
+.detail-view {
+  background: var(–bg-0);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.detail-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 18px 28px 14px;
+  border-bottom: 1px solid var(–border-1);
+}
+.detail-back {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.detail-back svg { width: 14px; height: 14px; }
+.detail-title-block { flex: 1; min-width: 0; }
+.detail-breadcrumb {
+  font-size: 11.5px; color: var(–text-3);
+  letter-spacing: 0.02em; margin-bottom: 4px;
+}
+.detail-title-block h2 {
+  font-size: 20px; font-weight: 600; color: var(–text-1);
+  letter-spacing: -0.01em;
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+}
+.detail-stats {
+  margin-top: 6px;
+  display: flex; flex-wrap: wrap; gap: 14px;
+  font-size: 11.5px; color: var(–text-3);
+}
+.detail-stats strong { color: var(–text-1); font-weight: 500; }
+.detail-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.detail-tabs {
+  display: flex;
+  padding: 0 28px;
+  border-bottom: 1px solid var(–border-1);
+  gap: 0;
+}
+.detail-tab {
+  background: none; border: none; cursor: pointer;
+  color: var(–text-2);
+  padding: 10px 14px;
+  font-size: 12.5px; font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 120ms;
+}
+.detail-tab:hover { color: var(–text-1); }
+.detail-tab.active {
+  color: var(–text-1);
+  border-bottom-color: var(–sf-blue);
+}
+.detail-body { flex: 1; overflow: hidden; min-height: 0; }
+.td-pane { display: none; height: 100%; overflow: hidden; flex-direction: column; }
+.td-pane.active { display: flex; }
+.td-pane-status {
+  padding: 8px 28px;
+  font-size: 11.5px;
+  color: var(–text-3);
+  border-bottom: 1px solid var(–border-1);
+  min-height: 0;
+}
+.td-pane-status:empty { display: none; }
+.td-table-wrap { flex: 1; overflow: auto; padding: 0 28px 28px; }
+.td-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.td-table thead th {
+  position: sticky; top: 0;
+  background: var(–bg-0);
+  text-align: left;
+  font-weight: 500; color: var(–text-3);
+  font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(–border-2);
+  white-space: nowrap;
+}
+.td-table tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(–border-1);
+  color: var(–text-1);
+  vertical-align: top;
+  white-space: nowrap;
+}
+.td-table tbody td.muted { color: var(–text-3); }
+.td-table tbody td.colname { font-family: ‘JetBrains Mono’, monospace; font-size: 12px; }
+.td-table tbody td.coltype { font-family: ‘JetBrains Mono’, monospace; font-size: 11px; color: var(–sf-blue-pale); }
+.td-table tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.td-table tbody tr:hover { background: var(–surface-hover); }
+
+.td-ddl {
+  margin: 16px 28px 28px;
+  padding: 16px 18px;
+  background: var(–bg-1);
+  border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  font-family: ‘JetBrains Mono’, ui-monospace, monospace;
+  font-size: 12px; line-height: 1.6;
+  color: var(–text-1);
+  overflow-x: auto;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .detail-header { flex-wrap: wrap; padding: 14px 16px; }
+  .detail-title-block { order: 1; flex: 1 1 100%; }
+  .detail-actions { order: 2; }
+  .detail-tabs { padding: 0 16px; }
+  .td-table-wrap { padding: 0 16px 24px; }
+  .td-ddl { margin: 12px 16px 24px; }
+}
+
 /* ===== Query History full-page view ===== */
 .history-view {
   background: var(–bg-0);
@@ -1697,6 +1816,45 @@ background-clip: content-box;
 
 </main>
 
+<section class="detail-view" id="tableDetailView" hidden>
+  <div class="detail-header">
+    <button class="btn detail-back" id="tableDetailBack">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to worksheet
+    </button>
+    <div class="detail-title-block">
+      <div class="detail-breadcrumb" id="tdBreadcrumb"></div>
+      <h2 id="tdTitle"></h2>
+      <div class="detail-stats" id="tdStats"></div>
+    </div>
+    <div class="detail-actions">
+      <button class="btn" id="tdPreviewBtn">Preview in new worksheet</button>
+    </div>
+  </div>
+  <div class="detail-tabs">
+    <button class="detail-tab active" data-td-tab="columns">Columns</button>
+    <button class="detail-tab" data-td-tab="data">Data Preview</button>
+    <button class="detail-tab" data-td-tab="ddl">DDL</button>
+  </div>
+  <div class="detail-body">
+    <div class="td-pane active" id="tdPane-columns">
+      <div class="td-pane-status" id="tdColumnsStatus"></div>
+      <div class="td-table-wrap">
+        <table class="td-table" id="tdColumnsTable"></table>
+      </div>
+    </div>
+    <div class="td-pane" id="tdPane-data" hidden>
+      <div class="td-pane-status" id="tdDataStatus"></div>
+      <div class="td-table-wrap">
+        <table class="td-table" id="tdDataTable"></table>
+      </div>
+    </div>
+    <div class="td-pane" id="tdPane-ddl" hidden>
+      <pre id="tdDdl" class="td-ddl"></pre>
+    </div>
+  </div>
+</section>
+
 <section class="history-view" id="historyView" hidden>
   <div class="history-header">
     <h2>Query History</h2>
@@ -1872,7 +2030,7 @@ background-clip: content-box;
       <li>Open <strong>Templates ▸</strong> for 12 ready-to-run queries</li>
       <li><code>⌘↵</code> / <code>Ctrl+↵</code> runs the statement at your cursor</li>
       <li><code>⌘⇧↵</code> runs all statements in the worksheet</li>
-      <li>Double-click a table in the sidebar to preview rows</li>
+      <li>Double-click a table in the sidebar to open its detail page (columns, preview, DDL)</li>
       <li>Click a column name to insert it at the cursor</li>
     </ul>
   </div>
@@ -2726,7 +2884,7 @@ const TEMPLATES = [
   { id: 'starter', tag: 'GETTING STARTED', title: 'Schema Tour', desc: 'Quick tour of all tables and their row counts.',
     sql: `-- Welcome to your in-browser Snowsight!
 -- Click any table in the left sidebar to expand columns,
--- or double-click a table to preview the first 100 rows.
+-- or double-click a table to open its detail page (columns, preview, DDL).
 
 SELECT 'REGION'   AS table_name, COUNT(*) AS rows FROM region   UNION ALL
 SELECT 'NATION'   ,                COUNT(*)        FROM nation   UNION ALL
@@ -3094,7 +3252,7 @@ function renderTree() {
         tblNode.appendChild(el('div', {
             class: `tree-row ${cls}` + (tblExpanded ? ' expanded' : ''),
             onclick: (e) => { e.stopPropagation(); toggleNode(tblKey); },
-            ondblclick: (e) => { e.stopPropagation(); previewTable(db.name, sch.name, tbl.name); }
+            ondblclick: (e) => { e.stopPropagation(); openTableDetail(db.name, sch.name, tbl.name); }
           },
           el('span', { class: 'twisty', html: ICON.caret }),
           el('span', { class: 'icon', html: tbl.type === 'VIEW' ? ICON.view : ICON.table }),
@@ -3133,6 +3291,174 @@ function previewTable(dbName, schName, tblName) {
   const ws = newWorksheet(`Preview: ${tblName}`, sql);
   setActiveWorksheet(ws.id);
   setTimeout(() => runQuery(true), 100);
+}
+
+// ---------- Table detail page (Phase 2.2) ----------
+function findTableMeta(dbName, schName, tblName) {
+  const db = SCHEMA_META.databases.find(d => d.name === dbName);
+  const sch = db && db.schemas.find(s => s.name === schName);
+  const tbl = sch && sch.tables.find(t => t.name === tblName);
+  return tbl ? { db, sch, tbl } : null;
+}
+
+function openTableDetail(dbName, schName, tblName) {
+  const meta = findTableMeta(dbName, schName, tblName);
+  if (!meta) return;
+  state.activeTable = { db: dbName, sch: schName, tbl: tblName };
+  switchView('table-detail');
+  renderTableDetail();
+}
+
+function switchTdTab(tab) {
+  $$('.detail-tab').forEach(t => t.classList.toggle('active', t.dataset.tdTab === tab));
+  $$('.td-pane').forEach(p => {
+    const match = p.id === `tdPane-${tab}`;
+    p.hidden = !match;
+    p.classList.toggle('active', match);
+  });
+}
+
+function renderTableDetail() {
+  if (!state.activeTable) return;
+  const { db, sch, tbl } = state.activeTable;
+  const meta = findTableMeta(db, sch, tbl);
+  if (!meta) return;
+  const fq = `${db}.${sch}.${tbl}`;
+  const rowCount = ROW_COUNTS[fq];
+
+  $('#tdBreadcrumb').textContent = `${db} / ${sch}`;
+  $('#tdTitle').textContent = tbl;
+  $('#tdStats').innerHTML = '';
+  $('#tdStats').appendChild(el('span', {}, el('strong', {}, meta.tbl.type), ' type'));
+  $('#tdStats').appendChild(el('span', {}, el('strong', {}, formatNum(meta.tbl.columns.length)), ' columns'));
+  if (rowCount != null) $('#tdStats').appendChild(el('span', {}, el('strong', {}, formatNum(rowCount)), ' rows'));
+
+  switchTdTab('columns');
+  renderTdColumns(meta);
+  renderTdDdl(meta);
+  // Data preview is loaded lazily on tab open
+  $('#tdDataTable').innerHTML = '';
+  $('#tdDataStatus').textContent = '';
+  state._tdDataLoaded = false;
+}
+
+function renderTdColumns(meta) {
+  const tbl = $('#tdColumnsTable');
+  const status = $('#tdColumnsStatus');
+  tbl.innerHTML = '';
+  const thead = el('thead', {}, el('tr', {},
+    el('th', {}, 'Column'),
+    el('th', {}, 'Type'),
+    el('th', {}, 'Nullable'),
+    el('th', { class: 'num' }, 'Distinct'),
+    el('th', { class: 'num' }, 'Null %'),
+    el('th', {}, 'Min'),
+    el('th', {}, 'Max')
+  ));
+  tbl.appendChild(thead);
+  const tbody = el('tbody');
+  for (const [name, type] of meta.tbl.columns) {
+    tbody.appendChild(el('tr', { 'data-col': name.toLowerCase() },
+      el('td', { class: 'colname' }, name),
+      el('td', { class: 'coltype' }, type),
+      el('td', { class: 'muted' }, 'YES'),
+      el('td', { class: 'num muted' }, '—'),
+      el('td', { class: 'num muted' }, '—'),
+      el('td', { class: 'muted' }, '—'),
+      el('td', { class: 'muted' }, '—')
+    ));
+  }
+  tbl.appendChild(tbody);
+
+  if (state.engine && state.engine.kind === 'duckdb') {
+    status.textContent = 'Loading column statistics from DuckDB SUMMARIZE…';
+    loadDuckDBSummarize(meta.tbl.name).then(rows => {
+      status.textContent = `Statistics from SUMMARIZE ${meta.tbl.name.toLowerCase()}.`;
+      applyDuckDBSummarize(tbody, rows);
+    }).catch(err => {
+      status.textContent = `Could not load statistics: ${err.message}`;
+    });
+  } else {
+    status.textContent = 'Column statistics are available when running on the DuckDB engine. Try ?engine=duckdb.';
+  }
+}
+
+async function loadDuckDBSummarize(tableName) {
+  const t = String(tableName).toLowerCase();
+  const result = await state.engine.exec(`SUMMARIZE ${t}`);
+  if (!result.length) return [];
+  const { columns, values } = result[0];
+  return values.map(row => Object.fromEntries(columns.map((c, i) => [c, row[i]])));
+}
+
+function applyDuckDBSummarize(tbody, rows) {
+  for (const r of rows) {
+    const name = String(r.column_name || '').toLowerCase();
+    const tr = tbody.querySelector(`tr[data-col="${CSS.escape(name)}"]`);
+    if (!tr) continue;
+    const cells = tr.children;
+    // [0]=name [1]=type [2]=nullable [3]=distinct [4]=null% [5]=min [6]=max
+    cells[2].textContent = (r.null_percentage != null && Number(r.null_percentage) > 0) ? 'YES' : 'NO';
+    cells[2].classList.toggle('muted', cells[2].textContent === 'YES');
+    if (r.approx_unique != null) {
+      cells[3].textContent = formatNum(Number(r.approx_unique));
+      cells[3].classList.remove('muted');
+    }
+    if (r.null_percentage != null) {
+      cells[4].textContent = `${Number(r.null_percentage).toFixed(1)}%`;
+      cells[4].classList.remove('muted');
+    }
+    if (r.min != null) {
+      cells[5].textContent = String(r.min).slice(0, 40);
+      cells[5].classList.remove('muted');
+    }
+    if (r.max != null) {
+      cells[6].textContent = String(r.max).slice(0, 40);
+      cells[6].classList.remove('muted');
+    }
+  }
+}
+
+function renderTdDdl(meta) {
+  const lines = [`CREATE TABLE ${meta.tbl.name.toLowerCase()} (`];
+  const colLines = meta.tbl.columns.map(([n, t], i) =>
+    `  ${n.toLowerCase()} ${t}${i < meta.tbl.columns.length - 1 ? ',' : ''}`
+  );
+  lines.push(...colLines);
+  lines.push(');');
+  $('#tdDdl').textContent = lines.join('\n');
+}
+
+async function loadTdDataPreview() {
+  if (!state.activeTable) return;
+  if (state._tdDataLoaded) return;
+  state._tdDataLoaded = true;
+  const { tbl } = state.activeTable;
+  const status = $('#tdDataStatus');
+  const tbl_el = $('#tdDataTable');
+  status.textContent = 'Loading first 100 rows…';
+  tbl_el.innerHTML = '';
+  try {
+    const result = await state.engine.exec(`SELECT * FROM ${tbl.toLowerCase()} LIMIT 100`);
+    if (!result.length || !result[0].values.length) {
+      status.textContent = 'Table is empty.';
+      return;
+    }
+    const { columns, values } = result[0];
+    const thead = el('thead', {}, el('tr', {}, ...columns.map(c => el('th', {}, c))));
+    const tbody = el('tbody');
+    for (const row of values) {
+      tbody.appendChild(el('tr', {}, ...row.map(v => {
+        const display = v == null ? 'NULL' : String(v);
+        return el('td', v == null ? { class: 'muted' } : {}, display.length > 60 ? display.slice(0, 57) + '…' : display);
+      })));
+    }
+    tbl_el.appendChild(thead);
+    tbl_el.appendChild(tbody);
+    status.textContent = `Showing first ${values.length} rows.`;
+  } catch (err) {
+    status.textContent = `Preview failed: ${err.message}`;
+  }
 }
 function insertAtCursor(text) {
   if (!editor) return;
@@ -3855,13 +4181,16 @@ function addXLabels(svg, data, padL, w, H, padB, ns, xPos) {
 }
 
 // ---------- History modal ----------
-// ---------- View routing (worksheet ↔ history page) ----------
+// ---------- View routing (worksheet ↔ history ↔ table-detail) ----------
 function switchView(view) {
   state.activeView = view;
-  $('#worksheetView').hidden = view !== 'worksheet';
-  $('#historyView').hidden  = view !== 'history';
+  $('#worksheetView').hidden    = view !== 'worksheet';
+  $('#historyView').hidden      = view !== 'history';
+  $('#tableDetailView').hidden  = view !== 'table-detail';
   $$('.nav-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.view === view);
+    // Top nav highlights worksheet/history; table-detail keeps Worksheets active visually.
+    const target = (view === 'table-detail') ? 'worksheet' : view;
+    t.classList.toggle('active', t.dataset.view === target);
   });
   if (view === 'history') renderHistoryPage();
 }
@@ -4487,6 +4816,20 @@ function wireUI() {
   });
   $('#histRange').addEventListener('change', e => {
     HIST_FILTERS.range = e.target.value; renderHistoryPage();
+  });
+  // Table detail page
+  $('#tableDetailBack').addEventListener('click', () => switchView('worksheet'));
+  $('#tdPreviewBtn').addEventListener('click', () => {
+    if (!state.activeTable) return;
+    const { db, sch, tbl } = state.activeTable;
+    previewTable(db, sch, tbl);
+  });
+  $$('.detail-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const tab = t.dataset.tdTab;
+      switchTdTab(tab);
+      if (tab === 'data') loadTdDataPreview();
+    });
   });
   $('#histClearAllBtn').addEventListener('click', () => {
     if (!state.history.length) return;
