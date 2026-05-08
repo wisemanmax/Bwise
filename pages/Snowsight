@@ -100,6 +100,7 @@ APP SHELL
 display: grid;
 grid-template-rows: var(–header-h) 1fr var(–status-h);
 height: 100vh;
+height: 100dvh; /* mobile: respects iOS Safari address bar */
 }
 
 /* ===== Top header (Snowflake nav) ===== */
@@ -1191,6 +1192,77 @@ background-clip: content-box;
 
 /* Utility */
 .hidden { display: none !important; }
+
+/* ============================================================
+   MOBILE (≤768px) — sidebar drawer, single-column main grid
+   ============================================================ */
+.mobile-menu-btn { display: none; }
+.scrim { display: none; }
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: inline-flex;
+    width: 44px; height: 44px;
+    margin-right: 4px;
+  }
+  .mobile-menu-btn svg { width: 18px; height: 18px; }
+
+  .brand-text { display: none; }
+  .nav-tabs { display: none; }
+
+  /* Pills shrink — keep value, drop label, shrink padding */
+  .pill { height: 36px; padding: 0 8px; }
+  .pill .label { display: none; }
+
+  /* Touch target floor */
+  .icon-btn { width: 44px; height: 44px; }
+  .avatar { width: 36px; height: 36px; font-size: 12px; }
+
+  /* Single-column main; sidebar becomes a fixed left drawer */
+  .main { grid-template-columns: 1fr; }
+
+  .sidebar {
+    position: fixed;
+    top: var(–header-h);
+    left: 0;
+    bottom: var(–status-h);
+    width: min(85vw, 320px);
+    z-index: 110;
+    transform: translateX(-100%);
+    transition: transform 220ms ease;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    border-right: 1px solid var(–border-2);
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: var(–header-h) 0 var(–status-h) 0;
+    background: rgba(0,0,0,0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+    z-index: 100;
+  }
+  .scrim.visible { opacity: 1; pointer-events: auto; }
+
+  /* Modals: pull in the desktop padding so the dialog fits the screen */
+  .modal-backdrop { padding: 12px; }
+  .modal { max-height: calc(100dvh - 24px); max-width: 100%; }
+
+  /* Editor toolbar buttons: keep them tappable */
+  .toolbar-btn { min-height: 36px; }
+
+  /* Result tabs: scrollable to keep all visible */
+  .results-tabs { overflow-x: auto; }
+  .results-tabs::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 480px) {
+  /* Hide role/wh pills on tiny screens — drawer / menu offer them anyway */
+  #rolePill, #warehousePill { display: none; }
+}
 </style>
 
 </head>
@@ -1224,6 +1296,9 @@ background-clip: content-box;
   <!-- Top bar -->
 
   <header class="topbar">
+    <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Open sidebar">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h12M2 8h12M2 12h12"/></svg>
+    </button>
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 64 64" fill="none">
         <g fill="#29B5E8">
@@ -1287,10 +1362,11 @@ background-clip: content-box;
   <!-- Main grid: sidebar + workspace -->
 
   <div class="main">
+    <div class="scrim" id="sidebarScrim"></div>
 
 ```
 <!-- Sidebar -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <div class="sidebar-section">
     <div class="sidebar-header">
       <span>Databases</span>
@@ -3802,6 +3878,28 @@ function wireUI() {
   $('#refreshDbBtn').addEventListener('click', () => {
     renderTree();
     toast('Catalog refreshed', 'success');
+  });
+
+  // Mobile sidebar drawer
+  const sidebar = $('#sidebar');
+  const scrim = $('#sidebarScrim');
+  const closeMobileSidebar = () => {
+    sidebar.classList.remove('open');
+    scrim.classList.remove('visible');
+  };
+  $('#mobileMenuBtn').addEventListener('click', () => {
+    const open = sidebar.classList.toggle('open');
+    scrim.classList.toggle('visible', open);
+  });
+  scrim.addEventListener('click', closeMobileSidebar);
+  // Close drawer when desktop reflow takes over so state can't get stuck open
+  window.addEventListener('resize', debounce(() => {
+    if (window.innerWidth > 768) closeMobileSidebar();
+  }, 100));
+  // Close drawer after a sidebar selection on mobile so the user sees results
+  sidebar.addEventListener('click', e => {
+    if (window.innerWidth > 768) return;
+    if (e.target.closest('.tree-row, .ws-item')) closeMobileSidebar();
   });
 
   $('#dbSearch').addEventListener('input', e => {
