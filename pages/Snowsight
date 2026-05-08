@@ -1,0 +1,3726 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Snowsight — Browser-based Snowflake Console (Demo)</title>
+<meta name="description" content="A pixel-faithful, fully interactive Snowflake Snowsight clone running entirely in the browser. Multi-tab worksheets, TPCH sample data, real SQL execution via sql.js, and a Snowflake-to-SQLite translator that handles QUALIFY, IFF, DATEADD, ::TYPE casts, and more." />
+<meta name="author" content="Bwise" />
+<meta name="theme-color" content="#11161E" />
+
+<!-- Open Graph -->
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Snowsight — Browser-based Snowflake Console" />
+<meta property="og:description" content="An interactive Snowflake clone running entirely in your browser. Real SQL execution, TPCH sample data, no backend." />
+<meta property="og:site_name" content="Snowsight Clone" />
+
+<!-- Twitter -->
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Snowsight — Browser-based Snowflake Console" />
+<meta name="twitter:description" content="A pixel-faithful Snowflake clone in a single HTML file. SQL execution, charts, query history — all in-browser." />
+
+<!-- Inline SVG favicon — Snowsight ice-blue snowflake -->
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g fill='none' stroke='%2329B5E8' stroke-width='2' stroke-linecap='round'><path d='M16 4v24M4 16h24M7.5 7.5l17 17M24.5 7.5l-17 17'/><circle cx='16' cy='4' r='1.5' fill='%2329B5E8'/><circle cx='16' cy='28' r='1.5' fill='%2329B5E8'/><circle cx='4' cy='16' r='1.5' fill='%2329B5E8'/><circle cx='28' cy='16' r='1.5' fill='%2329B5E8'/><circle cx='7.5' cy='7.5' r='1.5' fill='%2329B5E8'/><circle cx='24.5' cy='24.5' r='1.5' fill='%2329B5E8'/><circle cx='24.5' cy='7.5' r='1.5' fill='%2329B5E8'/><circle cx='7.5' cy='24.5' r='1.5' fill='%2329B5E8'/></g></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css" />
+<style>
+:root {
+  /* Snowflake brand palette */
+  --sf-blue: #29B5E8;
+  --sf-blue-dark: #11A6DC;
+  --sf-blue-deep: #1A6F94;
+  --sf-blue-pale: #6FCFEF;
+  --sf-navy: #11567F;
+
+/* Snowsight dark theme */
+–bg-0: #0B0F19;
+–bg-1: #11161F;
+–bg-2: #161C28;
+–bg-3: #1D2532;
+–bg-4: #242C3B;
+–surface-hover: #1F2632;
+–surface-active: #243043;
+
+–border-1: #1F2632;
+–border-2: #2A3343;
+–border-3: #354054;
+
+–text-1: #E6EBF2;
+–text-2: #9AA5B8;
+–text-3: #6C7689;
+–text-4: #4A5468;
+
+–green: #2DD4A8;
+–green-bg: rgba(45, 212, 168, 0.12);
+–amber: #F5B544;
+–red: #F86F7C;
+–red-bg: rgba(248, 111, 124, 0.12);
+–purple: #B088F9;
+
+–shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+–shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+–shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+
+–radius-sm: 4px;
+–radius-md: 6px;
+–radius-lg: 8px;
+
+–header-h: 44px;
+–tabs-h: 36px;
+–status-h: 28px;
+–sidebar-w: 280px;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+  font-family: ‘Inter’, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(–bg-0);
+  color: var(–text-1);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input, select, textarea { font-family: inherit; }
+
+/* ============================================================
+APP SHELL
+============================================================ */
+.app {
+display: grid;
+grid-template-rows: var(–header-h) 1fr var(–status-h);
+height: 100vh;
+}
+
+/* ===== Top header (Snowflake nav) ===== */
+.topbar {
+display: flex;
+align-items: center;
+background: var(–bg-1);
+border-bottom: 1px solid var(–border-1);
+height: var(–header-h);
+padding: 0 12px;
+gap: 4px;
+position: relative;
+z-index: 50;
+}
+.brand {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 0 12px 0 4px;
+margin-right: 8px;
+}
+.brand-mark {
+width: 22px;
+height: 22px;
+flex-shrink: 0;
+}
+.brand-text {
+font-weight: 600;
+font-size: 14px;
+color: var(–text-1);
+letter-spacing: -0.01em;
+}
+.nav-tabs {
+display: flex;
+gap: 0;
+height: 100%;
+align-items: stretch;
+}
+.nav-tab {
+display: flex;
+align-items: center;
+padding: 0 14px;
+font-size: 13px;
+font-weight: 500;
+color: var(–text-2);
+border-bottom: 2px solid transparent;
+margin-bottom: -1px;
+transition: color 120ms;
+}
+.nav-tab:hover { color: var(–text-1); }
+.nav-tab.active {
+color: var(–text-1);
+border-bottom-color: var(–sf-blue);
+}
+.nav-tab svg { width: 14px; height: 14px; margin-right: 6px; }
+
+.topbar-spacer { flex: 1; }
+
+.context-pills {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.pill {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+height: 28px;
+padding: 0 10px;
+background: var(–bg-2);
+border: 1px solid var(–border-2);
+border-radius: var(–radius-md);
+color: var(–text-1);
+font-size: 12px;
+font-weight: 500;
+white-space: nowrap;
+transition: background 120ms, border-color 120ms;
+}
+.pill:hover { background: var(–surface-hover); border-color: var(–border-3); }
+.pill .label {
+color: var(–text-3);
+font-weight: 400;
+font-size: 11px;
+}
+.pill .caret {
+width: 10px; height: 10px; opacity: 0.6;
+}
+.pill .dot {
+width: 6px; height: 6px; border-radius: 50%;
+background: var(–green);
+box-shadow: 0 0 6px rgba(45, 212, 168, 0.6);
+}
+.icon-btn {
+width: 30px; height: 30px;
+border-radius: var(–radius-md);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+color: var(–text-2);
+transition: background 120ms, color 120ms;
+}
+.icon-btn:hover { background: var(–bg-2); color: var(–text-1); }
+.icon-btn svg { width: 16px; height: 16px; }
+
+.avatar {
+width: 28px; height: 28px;
+border-radius: 50%;
+background: linear-gradient(135deg, var(–sf-blue), var(–sf-blue-deep));
+color: white;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: 11px;
+font-weight: 600;
+margin-left: 4px;
+text-decoration: none;
+cursor: pointer;
+transition: transform 120ms;
+}
+.avatar:hover { transform: scale(1.05); }
+
+/* ===== Main grid ===== */
+.main {
+display: grid;
+grid-template-columns: var(–sidebar-w) 1fr;
+overflow: hidden;
+min-height: 0;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+background: var(–bg-1);
+border-right: 1px solid var(–border-1);
+display: flex;
+flex-direction: column;
+min-width: 0;
+overflow: hidden;
+}
+.sidebar-section { border-bottom: 1px solid var(–border-1); display: flex; flex-direction: column; min-height: 0; }
+.sidebar-section.flex { flex: 1; }
+.sidebar-header {
+display: flex;
+align-items: center;
+padding: 10px 12px 6px;
+font-size: 11px;
+font-weight: 600;
+color: var(–text-3);
+text-transform: uppercase;
+letter-spacing: 0.05em;
+user-select: none;
+}
+.sidebar-header .actions {
+margin-left: auto;
+display: flex;
+gap: 2px;
+opacity: 0;
+transition: opacity 120ms;
+}
+.sidebar-section:hover .sidebar-header .actions { opacity: 1; }
+.sidebar-header .icon-btn {
+width: 22px; height: 22px;
+}
+.sidebar-header .icon-btn svg { width: 12px; height: 12px; }
+
+.search-box {
+margin: 0 8px 8px;
+position: relative;
+}
+.search-box svg {
+position: absolute;
+left: 8px;
+top: 50%;
+transform: translateY(-50%);
+width: 12px;
+height: 12px;
+color: var(–text-3);
+pointer-events: none;
+}
+.search-box input {
+width: 100%;
+height: 26px;
+padding: 0 8px 0 26px;
+background: var(–bg-2);
+border: 1px solid var(–border-2);
+border-radius: var(–radius-md);
+color: var(–text-1);
+font-size: 12px;
+outline: none;
+transition: border-color 120ms;
+}
+.search-box input:focus { border-color: var(–sf-blue); }
+.search-box input::placeholder { color: var(–text-3); }
+
+.tree {
+overflow-y: auto;
+padding: 0 4px 8px;
+flex: 1;
+}
+.tree-node {
+user-select: none;
+}
+.tree-row {
+display: flex;
+align-items: center;
+padding: 3px 4px 3px 0;
+font-size: 12.5px;
+color: var(–text-1);
+border-radius: var(–radius-sm);
+cursor: pointer;
+white-space: nowrap;
+overflow: hidden;
+transition: background 80ms;
+}
+.tree-row:hover { background: var(–surface-hover); }
+.tree-row.active { background: var(–surface-active); color: var(–sf-blue); }
+.tree-row .twisty {
+width: 16px; height: 16px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+color: var(–text-3);
+transition: transform 120ms;
+}
+.tree-row .twisty svg { width: 9px; height: 9px; }
+.tree-row.expanded .twisty { transform: rotate(90deg); }
+.tree-row.no-twisty .twisty { visibility: hidden; }
+.tree-row .icon {
+width: 16px; height: 16px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+margin-right: 4px;
+color: var(–text-2);
+}
+.tree-row .icon svg { width: 13px; height: 13px; }
+.tree-row .label {
+flex: 1;
+overflow: hidden;
+text-overflow: ellipsis;
+font-weight: 400;
+}
+.tree-row .badge {
+font-size: 10px;
+color: var(–text-3);
+background: var(–bg-2);
+padding: 1px 5px;
+border-radius: 3px;
+margin-left: 6px;
+}
+.tree-children { margin-left: 12px; display: none; }
+.tree-node.expanded > .tree-children { display: block; }
+
+.col-database .icon { color: var(–sf-blue); }
+.col-schema .icon { color: var(–purple); }
+.col-table .icon { color: var(–text-2); }
+.col-view .icon { color: var(–green); }
+.col-column .icon { color: var(–text-3); font-size: 10px; }
+.col-column .icon span { font-family: ‘JetBrains Mono’, monospace; font-size: 9px; font-weight: 600; }
+
+.worksheet-list { padding: 0 4px 8px; flex: 1; overflow-y: auto; }
+.ws-item {
+display: flex;
+align-items: center;
+padding: 5px 6px;
+border-radius: var(–radius-sm);
+cursor: pointer;
+font-size: 12.5px;
+color: var(–text-1);
+gap: 6px;
+}
+.ws-item:hover { background: var(–surface-hover); }
+.ws-item.active { background: var(–surface-active); }
+.ws-item .icon { color: var(–text-2); flex-shrink: 0; }
+.ws-item .icon svg { width: 13px; height: 13px; }
+.ws-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ws-item .meta { font-size: 10.5px; color: var(–text-3); }
+
+/* ===== Workspace ===== */
+.workspace {
+display: grid;
+grid-template-rows: var(–tabs-h) auto 1fr;
+background: var(–bg-0);
+min-width: 0;
+overflow: hidden;
+}
+
+.tabs-bar {
+display: flex;
+align-items: stretch;
+background: var(–bg-1);
+border-bottom: 1px solid var(–border-1);
+height: var(–tabs-h);
+overflow-x: auto;
+overflow-y: hidden;
+}
+.tabs-bar::-webkit-scrollbar { height: 0; }
+.tab {
+display: flex;
+align-items: center;
+gap: 6px;
+padding: 0 10px 0 12px;
+height: 100%;
+border-right: 1px solid var(–border-1);
+font-size: 12.5px;
+color: var(–text-2);
+cursor: pointer;
+background: var(–bg-1);
+position: relative;
+white-space: nowrap;
+user-select: none;
+min-width: 110px;
+max-width: 200px;
+}
+.tab:hover { color: var(–text-1); background: var(–bg-2); }
+.tab.active {
+color: var(–text-1);
+background: var(–bg-0);
+}
+.tab.active::after {
+content: ‘’;
+position: absolute;
+inset: 0 0 -1px 0;
+border-bottom: 1px solid var(–bg-0);
+pointer-events: none;
+}
+.tab.active::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: var(–sf-blue);
+}
+.tab .icon svg { width: 12px; height: 12px; color: var(–text-3); }
+.tab .name {
+overflow: hidden;
+text-overflow: ellipsis;
+flex: 1;
+font-weight: 500;
+}
+.tab .close {
+width: 16px; height: 16px;
+border-radius: 3px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+color: var(–text-3);
+opacity: 0.5;
+transition: background 120ms, opacity 120ms;
+}
+.tab:hover .close { opacity: 1; }
+.tab .close:hover { background: var(–bg-3); color: var(–text-1); }
+.tab .close svg { width: 10px; height: 10px; }
+.tab .dirty-dot {
+width: 6px; height: 6px;
+border-radius: 50%;
+background: var(–sf-blue);
+}
+.tab-add {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 36px;
+color: var(–text-3);
+background: var(–bg-1);
+}
+.tab-add:hover { color: var(–text-1); background: var(–bg-2); }
+.tab-add svg { width: 14px; height: 14px; }
+
+/* ===== Toolbar ===== */
+.toolbar {
+display: flex;
+align-items: center;
+height: 44px;
+padding: 0 12px;
+gap: 8px;
+background: var(–bg-0);
+border-bottom: 1px solid var(–border-1);
+}
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+height: 30px;
+padding: 0 12px;
+border-radius: var(–radius-md);
+font-size: 12.5px;
+font-weight: 500;
+background: var(–bg-2);
+color: var(–text-1);
+border: 1px solid var(–border-2);
+transition: background 100ms, border-color 100ms;
+}
+.btn:hover:not(:disabled) { background: var(–surface-hover); border-color: var(–border-3); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn svg { width: 13px; height: 13px; }
+.btn.primary {
+background: var(–sf-blue);
+border-color: var(–sf-blue);
+color: #06121A;
+font-weight: 600;
+}
+.btn.primary:hover:not(:disabled) {
+background: var(–sf-blue-dark);
+border-color: var(–sf-blue-dark);
+}
+.btn.primary svg { fill: currentColor; }
+.btn.split {
+padding-right: 4px;
+}
+.btn.split .divider {
+width: 1px;
+height: 16px;
+background: rgba(0,0,0,0.2);
+margin: 0 4px 0 8px;
+}
+.kbd {
+display: inline-flex;
+align-items: center;
+font-family: ‘Inter’, sans-serif;
+font-size: 10.5px;
+font-weight: 500;
+padding: 1px 5px;
+background: rgba(0,0,0,0.18);
+border-radius: 3px;
+margin-left: 6px;
+letter-spacing: 0.02em;
+}
+.toolbar .spacer { flex: 1; }
+.toolbar-meta {
+display: flex;
+align-items: center;
+gap: 8px;
+color: var(–text-3);
+font-size: 11.5px;
+}
+.toolbar-meta .sep { width: 1px; height: 14px; background: var(–border-2); }
+
+/* ===== Editor + results split ===== */
+.split {
+display: grid;
+grid-template-rows: 1fr 8px minmax(120px, var(–results-h, 360px));
+min-height: 0;
+}
+.editor-pane {
+background: var(–bg-0);
+overflow: hidden;
+position: relative;
+min-height: 0;
+}
+.CodeMirror {
+height: 100% !important;
+background: var(–bg-0) !important;
+color: var(–text-1) !important;
+font-family: ‘JetBrains Mono’, ui-monospace, monospace !important;
+font-size: 13.5px !important;
+line-height: 1.6 !important;
+}
+.CodeMirror-gutters {
+background: var(–bg-0) !important;
+border-right: 1px solid var(–border-1) !important;
+}
+.CodeMirror-linenumber { color: var(–text-4) !important; padding: 0 8px 0 12px !important; font-size: 11.5px !important; }
+.CodeMirror-cursor { border-left: 1.5px solid var(–sf-blue) !important; }
+.CodeMirror-selected { background: rgba(41, 181, 232, 0.18) !important; }
+.CodeMirror-focused .CodeMirror-selected { background: rgba(41, 181, 232, 0.25) !important; }
+.CodeMirror-activeline-background { background: rgba(255,255,255,0.025) !important; }
+.cm-s-default .cm-keyword { color: #FF7A8C !important; font-weight: 500; }
+.cm-s-default .cm-atom { color: #B088F9 !important; }
+.cm-s-default .cm-number { color: #F5B544 !important; }
+.cm-s-default .cm-string { color: #2DD4A8 !important; }
+.cm-s-default .cm-string-2 { color: var(–sf-blue-pale) !important; }
+.cm-s-default .cm-comment { color: var(–text-3) !important; font-style: italic; }
+.cm-s-default .cm-operator { color: var(–text-2) !important; }
+.cm-s-default .cm-variable, .cm-s-default .cm-variable-2 { color: var(–text-1) !important; }
+.cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
+.cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
+.cm-s-default .cm-bracket { color: var(–text-2) !important; }
+.cm-statement-active {
+background: rgba(41, 181, 232, 0.06);
+border-left: 2px solid var(–sf-blue);
+margin-left: -2px;
+}
+.editor-empty {
+position: absolute;
+inset: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+pointer-events: none;
+color: var(–text-3);
+font-size: 13px;
+font-family: ‘JetBrains Mono’, monospace;
+}
+
+.resizer {
+background: var(–bg-1);
+cursor: ns-resize;
+position: relative;
+border-top: 1px solid var(–border-1);
+border-bottom: 1px solid var(–border-1);
+}
+.resizer::before {
+content: ‘’;
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%);
+width: 32px;
+height: 2px;
+background: var(–border-3);
+border-radius: 1px;
+}
+.resizer:hover::before { background: var(–sf-blue); }
+
+/* ===== Results pane ===== */
+.results-pane {
+background: var(–bg-1);
+display: grid;
+grid-template-rows: 36px 1fr;
+min-height: 0;
+overflow: hidden;
+}
+.results-tabs {
+display: flex;
+align-items: stretch;
+background: var(–bg-1);
+border-bottom: 1px solid var(–border-1);
+padding: 0 4px;
+gap: 0;
+}
+.result-tab {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+height: 100%;
+padding: 0 12px;
+font-size: 12px;
+color: var(–text-2);
+font-weight: 500;
+border-bottom: 2px solid transparent;
+margin-bottom: -1px;
+}
+.result-tab:hover { color: var(–text-1); }
+.result-tab.active { color: var(–sf-blue); border-bottom-color: var(–sf-blue); }
+.result-tab svg { width: 13px; height: 13px; }
+.result-tab .count {
+font-size: 10.5px;
+background: var(–bg-3);
+padding: 1px 5px;
+border-radius: 3px;
+color: var(–text-2);
+font-weight: 500;
+}
+.result-tab.active .count { background: rgba(41, 181, 232, 0.15); color: var(–sf-blue); }
+.results-tabs .spacer { flex: 1; }
+.results-tabs .actions {
+display: flex; gap: 2px; padding: 4px 4px 0 0; align-items: center;
+}
+
+.result-content {
+overflow: hidden;
+position: relative;
+min-height: 0;
+}
+.result-pane {
+position: absolute;
+inset: 0;
+overflow: auto;
+display: none;
+}
+.result-pane.active { display: block; }
+
+/* Results table */
+.result-empty {
+position: absolute; inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+color: var(–text-3);
+gap: 8px;
+}
+.result-empty svg { width: 48px; height: 48px; opacity: 0.4; }
+.result-empty .title { font-size: 13px; color: var(–text-2); }
+.result-empty .hint { font-size: 11.5px; color: var(–text-4); }
+
+.result-error {
+position: absolute; inset: 0;
+padding: 24px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.result-error .err-head {
+display: flex; align-items: center; gap: 8px;
+color: var(–red); font-weight: 600; font-size: 13px;
+}
+.result-error .err-head svg { width: 16px; height: 16px; }
+.result-error .err-body {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 12px;
+color: var(–text-1);
+background: var(–red-bg);
+border: 1px solid rgba(248, 111, 124, 0.25);
+padding: 12px;
+border-radius: var(–radius-md);
+white-space: pre-wrap;
+line-height: 1.5;
+}
+.result-error .err-hint {
+color: var(–text-3); font-size: 12px; margin-top: 4px;
+}
+
+table.result-table {
+border-collapse: separate;
+border-spacing: 0;
+width: 100%;
+font-size: 12.5px;
+font-family: ‘JetBrains Mono’, monospace;
+}
+table.result-table th, table.result-table td {
+border-right: 1px solid var(–border-1);
+border-bottom: 1px solid var(–border-1);
+padding: 5px 10px;
+text-align: left;
+white-space: nowrap;
+max-width: 360px;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+table.result-table thead {
+position: sticky;
+top: 0;
+z-index: 2;
+}
+table.result-table th {
+background: var(–bg-2);
+color: var(–text-2);
+font-weight: 600;
+font-size: 11px;
+text-transform: uppercase;
+letter-spacing: 0.04em;
+font-family: ‘Inter’, sans-serif;
+padding: 7px 10px;
+border-bottom: 1px solid var(–border-2);
+}
+table.result-table th .col-meta {
+color: var(–text-4);
+font-size: 9.5px;
+margin-left: 6px;
+font-weight: 400;
+text-transform: lowercase;
+letter-spacing: 0;
+}
+table.result-table tr.row-num td:first-child {
+background: var(–bg-2);
+color: var(–text-3);
+width: 40px;
+text-align: right;
+font-size: 11px;
+user-select: none;
+}
+table.result-table tbody tr:hover td {
+background: rgba(41, 181, 232, 0.04);
+}
+table.result-table td.numeric { text-align: right; color: var(–sf-blue-pale); }
+table.result-table td.null {
+color: var(–text-4); font-style: italic;
+}
+table.result-table td.string { color: var(–text-1); }
+table.result-table td.date { color: #F5B544; }
+table.result-table td.bool { color: var(–purple); }
+
+/* Query details panel */
+.query-details {
+padding: 16px 20px;
+display: grid;
+gap: 16px;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+align-content: start;
+}
+.detail-card {
+background: var(–bg-2);
+border: 1px solid var(–border-2);
+border-radius: var(–radius-md);
+padding: 14px 16px;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+.detail-card .key {
+font-size: 10.5px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+color: var(–text-3);
+font-weight: 600;
+}
+.detail-card .val {
+font-size: 18px;
+font-weight: 600;
+color: var(–text-1);
+font-family: ‘JetBrains Mono’, monospace;
+}
+.detail-card .val.small { font-size: 13px; }
+.detail-card .sub {
+font-size: 11px;
+color: var(–text-3);
+margin-top: 2px;
+}
+.detail-card.full { grid-column: 1 / -1; }
+
+.profile {
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+.profile-row {
+display: grid;
+grid-template-columns: 140px 1fr 80px;
+align-items: center;
+font-size: 12px;
+gap: 12px;
+}
+.profile-row .pname { color: var(–text-2); font-weight: 500; }
+.profile-row .pbar {
+height: 14px; background: var(–bg-3); border-radius: 3px; position: relative;
+overflow: hidden;
+}
+.profile-row .pbar-fill {
+height: 100%; background: linear-gradient(90deg, var(–sf-blue-deep), var(–sf-blue));
+border-radius: 3px;
+}
+.profile-row .pval { font-family: ‘JetBrains Mono’, monospace; color: var(–text-1); text-align: right; font-size: 11.5px; }
+
+/* Chart pane */
+.chart-toolbar {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 10px 14px;
+border-bottom: 1px solid var(–border-1);
+background: var(–bg-2);
+font-size: 12px;
+color: var(–text-2);
+}
+.chart-toolbar select {
+background: var(–bg-3);
+border: 1px solid var(–border-2);
+color: var(–text-1);
+height: 26px;
+padding: 0 8px;
+border-radius: var(–radius-sm);
+font-size: 12px;
+outline: none;
+}
+.chart-toolbar select:focus { border-color: var(–sf-blue); }
+.chart-area {
+position: absolute;
+top: 47px; left: 0; right: 0; bottom: 0;
+padding: 16px 20px;
+}
+.chart-svg { width: 100%; height: 100%; }
+.chart-svg .axis { stroke: var(–border-2); stroke-width: 1; }
+.chart-svg .grid { stroke: var(–border-1); stroke-width: 1; stroke-dasharray: 2 3; }
+.chart-svg .axis-label { fill: var(–text-3); font-size: 10.5px; font-family: ‘Inter’, sans-serif; }
+.chart-svg .axis-title { fill: var(–text-2); font-size: 11px; font-weight: 500; font-family: ‘Inter’, sans-serif; }
+.chart-svg .bar { fill: url(#bar-gradient); transition: opacity 100ms; }
+.chart-svg .bar:hover { opacity: 0.8; }
+.chart-svg .line { stroke: var(–sf-blue); stroke-width: 2; fill: none; }
+.chart-svg .area { fill: url(#area-gradient); }
+.chart-svg .point { fill: var(–sf-blue); stroke: var(–bg-1); stroke-width: 2; }
+
+/* ===== Status bar ===== */
+.statusbar {
+display: flex;
+align-items: center;
+height: var(–status-h);
+padding: 0 12px;
+background: var(–bg-1);
+border-top: 1px solid var(–border-1);
+font-size: 11px;
+color: var(–text-3);
+gap: 12px;
+}
+.statusbar .item {
+display: flex; align-items: center; gap: 5px;
+}
+.statusbar .item svg { width: 11px; height: 11px; }
+.statusbar .item.ok { color: var(–green); }
+.statusbar .item.err { color: var(–red); }
+.statusbar .item.warn { color: var(–amber); }
+.statusbar .spacer { flex: 1; }
+
+/* ===== Toasts ===== */
+.toasts {
+position: fixed;
+bottom: 36px;
+right: 16px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+z-index: 200;
+pointer-events: none;
+}
+.toast {
+background: var(–bg-3);
+border: 1px solid var(–border-3);
+border-left: 3px solid var(–sf-blue);
+padding: 10px 14px;
+border-radius: var(–radius-md);
+box-shadow: var(–shadow-lg);
+font-size: 12.5px;
+color: var(–text-1);
+display: flex;
+align-items: center;
+gap: 8px;
+pointer-events: auto;
+animation: toast-in 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+max-width: 360px;
+}
+.toast.success { border-left-color: var(–green); }
+.toast.error { border-left-color: var(–red); }
+.toast.warn { border-left-color: var(–amber); }
+.toast svg { width: 14px; height: 14px; flex-shrink: 0; }
+@keyframes toast-in {
+from { opacity: 0; transform: translateX(20px); }
+to { opacity: 1; transform: translateX(0); }
+}
+
+/* ===== Loading bar ===== */
+.loading-bar {
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: var(–bg-2);
+overflow: hidden;
+z-index: 10;
+display: none;
+}
+.loading-bar.active { display: block; }
+.loading-bar::after {
+content: ‘’;
+position: absolute;
+top: 0; left: -30%;
+width: 30%;
+height: 100%;
+background: linear-gradient(90deg, transparent, var(–sf-blue), transparent);
+animation: loading-slide 1.2s ease-in-out infinite;
+}
+@keyframes loading-slide {
+0% { left: -30%; }
+100% { left: 100%; }
+}
+
+/* ===== Boot overlay ===== */
+.boot-overlay {
+position: fixed;
+inset: 0;
+background: var(–bg-0);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+gap: 20px;
+}
+.boot-overlay.hide { animation: boot-fade 400ms forwards; }
+@keyframes boot-fade {
+to { opacity: 0; visibility: hidden; }
+}
+.boot-mark {
+width: 64px; height: 64px;
+animation: boot-pulse 1.4s ease-in-out infinite;
+}
+@keyframes boot-pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50% { opacity: 0.7; transform: scale(0.95); }
+}
+.boot-text {
+font-size: 13px;
+color: var(–text-3);
+font-family: ‘JetBrains Mono’, monospace;
+}
+.boot-progress {
+width: 240px;
+height: 2px;
+background: var(–bg-2);
+border-radius: 1px;
+overflow: hidden;
+}
+.boot-progress-fill {
+height: 100%;
+background: var(–sf-blue);
+width: 0%;
+transition: width 200ms ease;
+}
+
+/* ===== Modals ===== */
+.modal-backdrop {
+position: fixed; inset: 0;
+background: rgba(5, 8, 14, 0.7);
+backdrop-filter: blur(2px);
+z-index: 100;
+display: none;
+align-items: center;
+justify-content: center;
+padding: 40px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+background: var(–bg-2);
+border: 1px solid var(–border-3);
+border-radius: var(–radius-lg);
+box-shadow: var(–shadow-lg);
+width: 100%;
+max-width: 720px;
+max-height: 80vh;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+.modal-head {
+display: flex; align-items: center;
+padding: 14px 18px;
+border-bottom: 1px solid var(–border-2);
+}
+.modal-head h3 { font-size: 14px; font-weight: 600; color: var(–text-1); flex: 1; }
+.modal-body { padding: 16px 18px; overflow-y: auto; flex: 1; }
+.modal-foot {
+padding: 12px 18px;
+border-top: 1px solid var(–border-2);
+display: flex;
+justify-content: flex-end;
+gap: 8px;
+}
+
+.history-item {
+padding: 10px 12px;
+border: 1px solid var(–border-2);
+border-radius: var(–radius-md);
+margin-bottom: 8px;
+cursor: pointer;
+transition: border-color 120ms;
+background: var(–bg-1);
+}
+.history-item:hover { border-color: var(–sf-blue); }
+.history-item .h-meta {
+display: flex; gap: 12px; font-size: 11px; color: var(–text-3); margin-bottom: 6px;
+align-items: center;
+}
+.history-item .h-meta .h-status {
+display: inline-flex; align-items: center; gap: 4px;
+}
+.history-item .h-meta .h-status.ok { color: var(–green); }
+.history-item .h-meta .h-status.err { color: var(–red); }
+.history-item .h-sql {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 12px;
+color: var(–text-1);
+white-space: pre-wrap;
+max-height: 120px;
+overflow: hidden;
+position: relative;
+}
+.history-item .h-sql::after {
+content: ‘’;
+position: absolute;
+bottom: 0; left: 0; right: 0;
+height: 30px;
+background: linear-gradient(transparent, var(–bg-1));
+pointer-events: none;
+}
+
+/* Dropdown menu */
+.menu {
+position: absolute;
+background: var(–bg-3);
+border: 1px solid var(–border-3);
+border-radius: var(–radius-md);
+box-shadow: var(–shadow-lg);
+padding: 4px;
+min-width: 200px;
+z-index: 80;
+display: none;
+}
+.menu.open { display: block; }
+.menu-item {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 7px 10px;
+font-size: 12.5px;
+color: var(–text-1);
+border-radius: var(–radius-sm);
+cursor: pointer;
+}
+.menu-item:hover { background: var(–surface-active); color: var(–sf-blue); }
+.menu-item svg { width: 13px; height: 13px; color: var(–text-2); }
+.menu-item .right { margin-left: auto; color: var(–text-3); font-size: 10.5px; }
+.menu-item.active { color: var(–sf-blue); }
+.menu-divider { height: 1px; background: var(–border-2); margin: 4px 0; }
+.menu-section {
+font-size: 10.5px;
+text-transform: uppercase;
+color: var(–text-3);
+padding: 6px 10px 4px;
+letter-spacing: 0.05em;
+font-weight: 600;
+}
+
+/* Templates panel */
+.templates-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 10px;
+}
+.template-card {
+background: var(–bg-1);
+border: 1px solid var(–border-2);
+border-radius: var(–radius-md);
+padding: 12px 14px;
+cursor: pointer;
+transition: border-color 120ms;
+}
+.template-card:hover { border-color: var(–sf-blue); }
+.template-card .t-title { font-size: 13px; font-weight: 600; color: var(–text-1); margin-bottom: 4px; }
+.template-card .t-desc { font-size: 11.5px; color: var(–text-3); line-height: 1.4; }
+.template-card .t-tag {
+display: inline-block;
+font-size: 9.5px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+color: var(–sf-blue);
+background: rgba(41, 181, 232, 0.1);
+padding: 2px 6px;
+border-radius: 3px;
+margin-top: 8px;
+font-weight: 600;
+}
+
+/* About modal */
+.about-body { font-size: 13px; color: var(–text-2); line-height: 1.55; }
+.about-body p { margin: 0 0 14px; }
+.about-hero {
+display: flex; align-items: center; gap: 14px;
+padding: 14px 16px; margin-bottom: 18px;
+background: linear-gradient(135deg, rgba(41,181,232,0.08), rgba(41,181,232,0.02));
+border: 1px solid rgba(41,181,232,0.18);
+border-radius: 8px;
+}
+.about-section { margin: 16px 0; }
+.about-section h4 {
+font-size: 11px; font-weight: 600; color: var(–text-3);
+text-transform: uppercase; letter-spacing: 0.06em;
+margin: 0 0 8px;
+}
+.about-section ul { margin: 0; padding-left: 18px; }
+.about-section li { margin-bottom: 6px; }
+.about-body code {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11.5px;
+background: rgba(255,255,255,0.06);
+border: 1px solid var(–border-1);
+padding: 1px 5px;
+border-radius: 3px;
+color: var(–text-1);
+}
+.about-body a { color: var(–sf-blue); text-decoration: none; }
+.about-body a:hover { text-decoration: underline; }
+.about-foot {
+margin-top: 18px; padding-top: 14px;
+border-top: 1px solid var(–border-1);
+display: flex; gap: 8px; align-items: center;
+font-size: 12px; color: var(–text-3);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+background: var(–bg-3);
+border-radius: 5px;
+border: 2px solid transparent;
+background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(–bg-4); background-clip: content-box; border: 2px solid transparent; }
+
+/* Utility */
+.hidden { display: none !important; }
+</style>
+
+</head>
+<body>
+
+<!-- Boot overlay -->
+
+<div class="boot-overlay" id="bootOverlay">
+  <svg class="boot-mark" viewBox="0 0 64 64" fill="none">
+    <g fill="#29B5E8">
+      <path d="M32 4 L32 60 M4 32 L60 32 M11.5 11.5 L52.5 52.5 M11.5 52.5 L52.5 11.5" stroke="#29B5E8" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="32" cy="32" r="3.5"/>
+      <circle cx="32" cy="10" r="2.5"/>
+      <circle cx="32" cy="54" r="2.5"/>
+      <circle cx="10" cy="32" r="2.5"/>
+      <circle cx="54" cy="32" r="2.5"/>
+      <circle cx="14.5" cy="14.5" r="2.5"/>
+      <circle cx="49.5" cy="49.5" r="2.5"/>
+      <circle cx="14.5" cy="49.5" r="2.5"/>
+      <circle cx="49.5" cy="14.5" r="2.5"/>
+    </g>
+  </svg>
+  <div class="boot-text" id="bootText">Initializing virtual warehouse...</div>
+  <div class="boot-progress"><div class="boot-progress-fill" id="bootProgress"></div></div>
+</div>
+
+<!-- App shell -->
+
+<div class="app">
+
+  <!-- Top bar -->
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none">
+        <g fill="#29B5E8">
+          <path d="M32 4 L32 60 M4 32 L60 32 M11.5 11.5 L52.5 52.5 M11.5 52.5 L52.5 11.5" stroke="#29B5E8" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="32" cy="32" r="3.5"/>
+          <circle cx="32" cy="10" r="2.5"/>
+          <circle cx="32" cy="54" r="2.5"/>
+          <circle cx="10" cy="32" r="2.5"/>
+          <circle cx="54" cy="32" r="2.5"/>
+          <circle cx="14.5" cy="14.5" r="2.5"/>
+          <circle cx="49.5" cy="49.5" r="2.5"/>
+          <circle cx="14.5" cy="49.5" r="2.5"/>
+          <circle cx="49.5" cy="14.5" r="2.5"/>
+        </g>
+      </svg>
+      <span class="brand-text">Snowsight</span>
+    </div>
+    <nav class="nav-tabs">
+      <a class="nav-tab active">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3a1 1 0 011-1h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm1.5.5v9h9v-9h-9zm1.5 2h6v1h-6v-1zm0 2h6v1h-6v-1zm0 2h4v1h-4v-1z"/></svg>
+        Worksheets
+      </a>
+      <a class="nav-tab">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h10v2H3V3zm0 4h10v2H3V7zm0 4h7v2H3v-2z"/></svg>
+        Dashboards
+      </a>
+      <a class="nav-tab">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h9A1.5 1.5 0 0114 3.5v9a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 12.5v-9zm2 .5v8h8V4H4z"/></svg>
+        Data
+      </a>
+      <a class="nav-tab">
+        <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v4l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Activity
+      </a>
+    </nav>
+
+```
+<div class="topbar-spacer"></div>
+
+<div class="context-pills">
+  <button class="pill" id="rolePill">
+    <span class="label">Role</span>
+    <span id="roleName">SYSADMIN</span>
+    <svg class="caret" viewBox="0 0 10 10" fill="currentColor"><path d="M2 4l3 3 3-3z"/></svg>
+  </button>
+  <button class="pill" id="warehousePill">
+    <span class="dot"></span>
+    <span class="label">WH</span>
+    <span id="warehouseName">COMPUTE_WH</span>
+    <svg class="caret" viewBox="0 0 10 10" fill="currentColor"><path d="M2 4l3 3 3-3z"/></svg>
+  </button>
+  <button class="icon-btn" id="aboutBtn" title="About this demo">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M6 6.5c0-1 .9-2 2-2s2 .9 2 1.8c0 .9-.5 1.4-1 1.7s-1 .5-1 1.5"/><circle cx="8" cy="11.5" r="0.5" fill="currentColor"/></svg>
+  </button>
+  <a class="avatar" href="https://byheir.com" target="_blank" rel="noopener" title="Bwise · byheir.com">BW</a>
+</div>
+```
+
+  </header>
+
+  <!-- Main grid: sidebar + workspace -->
+
+  <div class="main">
+
+```
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-header">
+      <span>Databases</span>
+      <div class="actions">
+        <button class="icon-btn" title="Refresh" id="refreshDbBtn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 018-3.5M13 8a5 5 0 01-8 3.5"/><path d="M11 2v3h-3M5 14v-3h3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3" stroke-linecap="round"/></svg>
+      <input type="text" id="dbSearch" placeholder="Search databases" />
+    </div>
+    <div class="tree" id="dbTree"></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-header">
+      <span>Worksheets</span>
+      <div class="actions">
+        <button class="icon-btn" title="New worksheet" id="newWsBtn2">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="worksheet-list" id="worksheetList"></div>
+  </div>
+</aside>
+
+<!-- Workspace -->
+<main class="workspace">
+
+  <!-- Tabs -->
+  <div class="tabs-bar" id="tabsBar"></div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="btn primary" id="runBtn">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 3l8 5-8 5V3z"/></svg>
+      Run<span class="kbd">⌘↵</span>
+    </button>
+    <button class="btn" id="runAllBtn" title="Run all statements">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3l5 5-5 5V3zm6 0l5 5-5 5V3z"/></svg>
+      Run All
+    </button>
+    <button class="btn" id="formatBtn" title="Format SQL">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10M3 8h7M3 12h10" stroke-linecap="round"/></svg>
+      Format
+    </button>
+    <button class="btn" id="historyBtn" title="Query history">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2" stroke-linecap="round"/></svg>
+      History
+    </button>
+    <button class="btn" id="templatesBtn" title="New from template">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M2.5 6h11M6 6v7.5"/></svg>
+      Templates
+    </button>
+    <div class="spacer"></div>
+    <div class="toolbar-meta" id="toolbarMeta">
+      <span id="ctxDb">SNOWFLAKE_SAMPLE_DATA</span>
+      <span class="sep"></span>
+      <span id="ctxSchema">TPCH_SF1</span>
+    </div>
+  </div>
+
+  <!-- Editor + results split -->
+  <div class="split">
+    <!-- Editor -->
+    <div class="editor-pane">
+      <div class="loading-bar" id="editorLoading"></div>
+      <textarea id="editor"></textarea>
+    </div>
+
+    <!-- Resizer -->
+    <div class="resizer" id="resizer"></div>
+
+    <!-- Results -->
+    <div class="results-pane">
+      <div class="results-tabs">
+        <button class="result-tab active" data-pane="table">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><path d="M2.5 6h11M6 2.5v11"/></svg>
+          Results
+          <span class="count" id="rowCount">—</span>
+        </button>
+        <button class="result-tab" data-pane="chart">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 13.5h11M4 11V7M7 11V4M10 11V8M13 11V5" stroke-linecap="round"/></svg>
+          Chart
+        </button>
+        <button class="result-tab" data-pane="details">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5M8 11v.01" stroke-linecap="round"/></svg>
+          Query Details
+        </button>
+        <div class="spacer"></div>
+        <div class="actions">
+          <button class="icon-btn" id="exportCsvBtn" title="Export CSV">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v9M5 8l3 3 3-3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 13h10"/></svg>
+          </button>
+          <button class="icon-btn" id="copyCsvBtn" title="Copy as CSV">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1"/><path d="M11 5V3a1 1 0 00-1-1H3a1 1 0 00-1 1v7a1 1 0 001 1h2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="result-content" id="resultContent">
+        <div class="result-pane active" id="pane-table">
+          <div class="result-empty" id="resultEmpty">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="14" width="44" height="36" rx="2"/><path d="M10 24h44M22 14v36"/></svg>
+            <div class="title">No results yet</div>
+            <div class="hint">Press Run or ⌘↵ to execute the worksheet</div>
+          </div>
+        </div>
+        <div class="result-pane" id="pane-chart"></div>
+        <div class="result-pane" id="pane-details"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+```
+
+  </div>
+
+  <!-- Status bar -->
+
+  <footer class="statusbar">
+    <span class="item ok" id="statusMain">
+      <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="3"/></svg>
+      <span>Idle</span>
+    </span>
+    <span class="item" id="statusDuration"></span>
+    <span class="item" id="statusRows"></span>
+    <span class="item" id="statusBytes"></span>
+    <span class="spacer"></span>
+    <span class="item" id="statusQid"></span>
+    <span class="item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 0110 0M3 8a5 5 0 0010 0M3 8h10" stroke-linecap="round"/></svg>
+      US-EAST-1
+    </span>
+    <span class="item">v8.45.1</span>
+  </footer>
+</div>
+
+<!-- Toasts -->
+
+<div class="toasts" id="toasts"></div>
+
+<!-- Dropdown menus -->
+
+<div class="menu" id="roleMenu"></div>
+<div class="menu" id="warehouseMenu"></div>
+<div class="menu" id="tabMenu"></div>
+
+<!-- History modal -->
+
+<div class="modal-backdrop" id="historyModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Query History</h3>
+      <button class="icon-btn" data-close>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="historyBody"></div>
+    <div class="modal-foot">
+      <button class="btn" id="clearHistoryBtn">Clear All</button>
+      <button class="btn primary" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Templates modal -->
+
+<div class="modal-backdrop" id="templatesModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>New Worksheet from Template</h3>
+      <button class="icon-btn" data-close>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="templates-grid" id="templatesGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="aboutModal">
+  <div class="modal" style="max-width: 640px;">
+    <div class="modal-head">
+      <h3>About this Demo</h3>
+      <button class="icon-btn" data-close>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body about-body">
+      <div class="about-hero">
+        <svg viewBox="0 0 32 32" width="36" height="36" style="flex-shrink:0;"><g fill="none" stroke="#29B5E8" stroke-width="2" stroke-linecap="round"><path d="M16 4v24M4 16h24M7.5 7.5l17 17M24.5 7.5l-17 17"/><circle cx="16" cy="4" r="1.5" fill="#29B5E8"/><circle cx="16" cy="28" r="1.5" fill="#29B5E8"/><circle cx="4" cy="16" r="1.5" fill="#29B5E8"/><circle cx="28" cy="16" r="1.5" fill="#29B5E8"/></g></svg>
+        <div>
+          <div style="font-size:16px; font-weight:600; color:var(--text-1); margin-bottom:4px;">Snowsight Clone</div>
+          <div style="font-size:13px; color:var(--text-3);">A pixel-faithful Snowflake console — all in one HTML file</div>
+        </div>
+      </div>
+
+```
+  <p>This is an interactive recreation of <strong>Snowflake's Snowsight</strong> SQL workspace, running entirely in your browser. It mimics the real product's worksheets, database tree, query results panel, charting, and query history — backed by a real SQL engine and seeded sample data.</p>
+
+  <div class="about-section">
+    <h4>What's real vs simulated</h4>
+    <ul>
+      <li><strong>Real:</strong> SQL execution (sql.js / SQLite-WASM), TPCH-shaped data (~35K rows), charts, query history, multi-tab worksheets persisted to localStorage</li>
+      <li><strong>Real:</strong> Snowflake-to-SQLite SQL translator (handles <code>QUALIFY</code>, <code>IFF</code>, <code>DATEADD</code>, <code>::TYPE</code> casts, <code>ZEROIFNULL</code>, multi-DB qualifiers, and more)</li>
+      <li><strong>Simulated:</strong> Bytes scanned, micro-partitions, query IDs, warehouse sizing, role switching</li>
+    </ul>
+  </div>
+
+  <div class="about-section">
+    <h4>Tech stack</h4>
+    <ul>
+      <li><a href="https://sql.js.org" target="_blank" rel="noopener">sql.js</a> — SQLite compiled to WebAssembly</li>
+      <li><a href="https://codemirror.net" target="_blank" rel="noopener">CodeMirror 5</a> — SQL editor with syntax highlighting</li>
+      <li>Vanilla JavaScript — no React, no build step, single HTML file</li>
+      <li>Hand-rolled SVG charts and Snowflake-faithful CSS</li>
+    </ul>
+  </div>
+
+  <div class="about-section">
+    <h4>Try this</h4>
+    <ul>
+      <li>Open <strong>Templates ▸</strong> for 12 ready-to-run queries</li>
+      <li><code>⌘↵</code> / <code>Ctrl+↵</code> runs the statement at your cursor</li>
+      <li><code>⌘⇧↵</code> runs all statements in the worksheet</li>
+      <li>Double-click a table in the sidebar to preview rows</li>
+      <li>Click a column name to insert it at the cursor</li>
+    </ul>
+  </div>
+
+  <div class="about-foot">
+    <span>Built by <a href="https://byheir.com" target="_blank" rel="noopener">Bwise</a></span>
+    <span>·</span>
+    <!-- Replace YOUR-USERNAME/snowsight-clone with your actual repo URL -->
+    <a href="https://github.com/YOUR-USERNAME/snowsight-clone" target="_blank" rel="noopener" id="aboutSourceLink">View source on GitHub</a>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- Scripts -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/sql/sql.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/sql-hint.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/comment/comment.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.min.js"></script>
+
+<script>
+/* ============================================================
+   SNOWSIGHT CLONE - PART 1: data + translator
+   ============================================================ */
+'use strict';
+
+// ---------- Seeded RNG ----------
+function srand(seed) {
+  let s = seed >>> 0;
+  return function() {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 0x100000000;
+  };
+}
+const rng = srand(42);
+const rint = (a, b) => Math.floor(rng() * (b - a + 1)) + a;
+const rfloat = (a, b) => rng() * (b - a) + a;
+const pick = arr => arr[Math.floor(rng() * arr.length)];
+function pickWeighted(items, weights) {
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = rng() * total;
+  for (let i = 0; i < items.length; i++) { r -= weights[i]; if (r <= 0) return items[i]; }
+  return items[items.length - 1];
+}
+function dateAddDays(d, n) {
+  const x = new Date(d);
+  x.setDate(x.getDate() + n);
+  return x.toISOString().slice(0, 10);
+}
+
+// ---------- TPCH constants ----------
+const TPCH_REGIONS = [
+  [0, 'AFRICA',      'lar deposits. blithely final packages cajole'],
+  [1, 'AMERICA',     'hs use ironic, even requests'],
+  [2, 'ASIA',        'ges. thinly even pinto beans cajole'],
+  [3, 'EUROPE',      'ly final courts cajole furiously'],
+  [4, 'MIDDLE EAST', 'uickly special accounts cajole carefully']
+];
+const TPCH_NATIONS = [
+  [0,'ALGERIA',0],[1,'ARGENTINA',1],[2,'BRAZIL',1],[3,'CANADA',1],[4,'EGYPT',4],
+  [5,'ETHIOPIA',0],[6,'FRANCE',3],[7,'GERMANY',3],[8,'INDIA',2],[9,'INDONESIA',2],
+  [10,'IRAN',4],[11,'IRAQ',4],[12,'JAPAN',2],[13,'JORDAN',4],[14,'KENYA',0],
+  [15,'MOROCCO',0],[16,'MOZAMBIQUE',0],[17,'PERU',1],[18,'CHINA',2],[19,'ROMANIA',3],
+  [20,'SAUDI ARABIA',4],[21,'VIETNAM',2],[22,'RUSSIA',3],[23,'UNITED KINGDOM',3],[24,'UNITED STATES',1]
+];
+const MKT_SEGMENTS = ['BUILDING','AUTOMOBILE','FURNITURE','MACHINERY','HOUSEHOLD'];
+const ORDER_PRIORITIES = ['1-URGENT','2-HIGH','3-MEDIUM','4-NOT SPECIFIED','5-LOW'];
+const SHIP_MODES = ['AIR','SHIP','TRUCK','MAIL','REG AIR','FOB','RAIL'];
+const SHIP_INSTRUCT = ['DELIVER IN PERSON','COLLECT COD','NONE','TAKE BACK RETURN'];
+const PART_TYPES = ['SMALL ANODIZED COPPER','LARGE BURNISHED STEEL','MEDIUM PLATED BRASS','SMALL BRUSHED NICKEL','PROMO POLISHED TIN','STANDARD ANODIZED STEEL','ECONOMY BURNISHED COPPER','LARGE PLATED TIN'];
+const PART_CONTAINERS = ['SM CASE','LG BOX','MED PKG','JUMBO DRUM','WRAP CAN','LG PACK','MED CAN','SM PACK'];
+const COLORS = ['blue','red','green','yellow','black','white','orange','purple','pink','grey','brown','azure','sienna','khaki','salmon'];
+const FIRST_NAMES = ['James','Mary','John','Patricia','Robert','Jennifer','Michael','Linda','William','Elizabeth','David','Barbara','Richard','Susan','Joseph','Jessica','Thomas','Sarah','Charles','Karen','Christopher','Nancy','Daniel','Lisa','Matthew','Betty','Anthony','Sandra','Donald','Margaret','Mark','Carol','Paul','Ruth','Steven','Sharon','Andrew','Michelle','Kenneth','Laura','Joshua','Emily','Kevin','Kimberly','Brian','Donna','Edward','Amanda','Ronald','Stephanie'];
+const LAST_NAMES = ['Smith','Johnson','Williams','Jones','Brown','Davis','Miller','Wilson','Moore','Taylor','Anderson','Thomas','Jackson','White','Harris','Martin','Thompson','Garcia','Martinez','Robinson','Clark','Rodriguez','Lewis','Lee','Walker','Hall','Allen','Young','King','Wright','Lopez','Hill','Scott','Green','Adams','Baker','Gonzalez','Nelson','Carter','Mitchell','Perez','Roberts','Turner','Phillips','Campbell','Parker','Evans','Edwards','Collins','Stewart'];
+
+// ---------- TPCH data generator ----------
+function generateTPCH() {
+  const out = { region: [], nation: [], customer: [], supplier: [], part: [], partsupp: [], orders: [], lineitem: [] };
+  for (const r of TPCH_REGIONS) out.region.push(r);
+  for (const n of TPCH_NATIONS) out.nation.push([n[0], n[1], n[2], `nation ${n[1]} comment`]);
+
+  const N_CUSTOMERS = 600;
+  for (let i = 1; i <= N_CUSTOMERS; i++) {
+    out.customer.push([
+      i,
+      `Customer#${String(i).padStart(9, '0')}`,
+      `${rint(1, 9999)} ${pick(['Main','Oak','Pine','Maple','Elm'])} St`,
+      rint(0, 24),
+      `${rint(10,34)}-${rint(100,999)}-${rint(100,999)}-${rint(1000,9999)}`,
+      Math.round(rfloat(-1000, 10000) * 100) / 100,
+      pick(MKT_SEGMENTS),
+      'regular accounts pending'
+    ]);
+  }
+
+  const N_SUPPLIERS = 50;
+  for (let i = 1; i <= N_SUPPLIERS; i++) {
+    out.supplier.push([
+      i,
+      `Supplier#${String(i).padStart(9, '0')}`,
+      `${rint(1, 9999)} ${pick(['Industrial','Commerce','Trade','Market'])} Way`,
+      rint(0, 24),
+      `${rint(10,34)}-${rint(100,999)}-${rint(100,999)}-${rint(1000,9999)}`,
+      Math.round(rfloat(-1000, 10000) * 100) / 100,
+      'each slyly bold'
+    ]);
+  }
+
+  const N_PARTS = 800;
+  for (let i = 1; i <= N_PARTS; i++) {
+    const mfgrId = rint(1, 5);
+    out.part.push([
+      i,
+      `${pick(COLORS)} ${pick(COLORS)} ${pick(['oxide','metal','polish','stain'])} part`,
+      `Manufacturer#${mfgrId}`,
+      `Brand#${mfgrId}${rint(1,5)}`,
+      pick(PART_TYPES),
+      rint(1, 50),
+      pick(PART_CONTAINERS),
+      Math.round(rfloat(900, 2099) * 100) / 100,
+      'p comment'
+    ]);
+  }
+
+  // Build supplier list per part once for efficiency
+  const partSuppliers = new Map();
+  for (let pk = 1; pk <= N_PARTS; pk++) {
+    const supps = new Set();
+    while (supps.size < 4) supps.add(rint(1, N_SUPPLIERS));
+    const arr = [...supps];
+    partSuppliers.set(pk, arr);
+    for (const sk of arr) {
+      out.partsupp.push([
+        pk, sk, rint(1, 9999),
+        Math.round(rfloat(1, 1000) * 100) / 100,
+        'ps comment'
+      ]);
+    }
+  }
+
+  const N_ORDERS = 6000;
+  const startDate = new Date('1998-01-01').getTime();
+  const endDate = new Date('2024-06-30').getTime();
+  for (let i = 1; i <= N_ORDERS; i++) {
+    const orderDate = new Date(startDate + rng() * (endDate - startDate)).toISOString().slice(0, 10);
+    const status = pickWeighted(['O','F','P'], [3, 5, 1]);
+    out.orders.push([
+      i,
+      rint(1, N_CUSTOMERS),
+      status,
+      0,
+      orderDate,
+      pick(ORDER_PRIORITIES),
+      `Clerk#${String(rint(1, 50)).padStart(9, '0')}`,
+      0,
+      'order comment'
+    ]);
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  for (const o of out.orders) {
+    const orderKey = o[0];
+    const orderDate = o[4];
+    const numLines = rint(1, 7);
+    let total = 0;
+    for (let ln = 1; ln <= numLines; ln++) {
+      const partKey = rint(1, N_PARTS);
+      const part = out.part[partKey - 1];
+      const supps = partSuppliers.get(partKey);
+      const suppKey = supps[rint(0, supps.length - 1)];
+      const qty = rint(1, 50);
+      const price = part[7];
+      const extPrice = Math.round(qty * price * 100) / 100;
+      const discount = Math.round(rfloat(0, 0.10) * 100) / 100;
+      const tax = Math.round(rfloat(0, 0.08) * 100) / 100;
+      const shipDate = dateAddDays(orderDate, rint(1, 121));
+      const commitDate = dateAddDays(orderDate, rint(30, 90));
+      const receiptDate = dateAddDays(shipDate, rint(1, 30));
+      const returnFlag = receiptDate < today ? pickWeighted(['R','A'], [1, 4]) : 'N';
+      const lineStatus = shipDate < today ? 'F' : 'O';
+      out.lineitem.push([
+        orderKey, partKey, suppKey, ln,
+        qty, extPrice, discount, tax,
+        returnFlag, lineStatus,
+        shipDate, commitDate, receiptDate,
+        pick(SHIP_INSTRUCT), pick(SHIP_MODES),
+        'l comment'
+      ]);
+      total += extPrice * (1 - discount) * (1 + tax);
+    }
+    o[3] = Math.round(total * 100) / 100;
+  }
+
+  return out;
+}
+
+// ---------- DEMO_DB generator ----------
+function generateDemoDB() {
+  const departments = [
+    [1, 'Engineering',     'Bear, DE',          500000],
+    [2, 'Sales',           'New York, NY',      300000],
+    [3, 'Marketing',       'Austin, TX',        200000],
+    [4, 'Finance',         'Bear, DE',          180000],
+    [5, 'HR',              'Bear, DE',          120000],
+    [6, 'Customer Success','Remote',            250000],
+    [7, 'Product',         'San Francisco, CA', 350000],
+    [8, 'Operations',      'Bear, DE',          150000]
+  ];
+  const employees = [];
+  const managerByDept = {};
+  for (let d = 1; d <= 8; d++) {
+    const eid = d;
+    employees.push([
+      eid, pick(FIRST_NAMES), pick(LAST_NAMES),
+      `mgr${d}@example.com`, d, 'Manager',
+      `2015-0${rint(1,9)}-${String(rint(10,28)).padStart(2,'0')}`,
+      rint(140000, 220000), null
+    ]);
+    managerByDept[d] = eid;
+  }
+  const titles = {
+    1: ['Engineer I','Engineer II','Senior Engineer','Staff Engineer'],
+    2: ['Sales Rep','Account Executive','Senior AE'],
+    3: ['Marketing Specialist','Brand Manager'],
+    4: ['Analyst','Senior Analyst','Controller'],
+    5: ['HRBP','Recruiter'],
+    6: ['CS Manager','CSM','Senior CSM'],
+    7: ['PM','Senior PM','Group PM'],
+    8: ['Ops Coordinator','Ops Manager']
+  };
+  const baseSalary = {
+    'Engineer I': 95000, 'Engineer II': 125000, 'Senior Engineer': 165000, 'Staff Engineer': 215000,
+    'Sales Rep': 70000, 'Account Executive': 105000, 'Senior AE': 145000,
+    'Marketing Specialist': 75000, 'Brand Manager': 110000,
+    'Analyst': 80000, 'Senior Analyst': 110000, 'Controller': 145000,
+    'HRBP': 85000, 'Recruiter': 70000,
+    'CS Manager': 95000, 'CSM': 80000, 'Senior CSM': 115000,
+    'PM': 115000, 'Senior PM': 155000, 'Group PM': 195000,
+    'Ops Coordinator': 65000, 'Ops Manager': 95000
+  };
+  for (let i = 9; i <= 80; i++) {
+    const dept = rint(1, 8);
+    const title = pick(titles[dept]);
+    const base = baseSalary[title] || 85000;
+    const fn = pick(FIRST_NAMES);
+    const ln = pick(LAST_NAMES);
+    employees.push([
+      i, fn, ln,
+      `${fn.toLowerCase()}.${ln.toLowerCase()}${i}@example.com`,
+      dept, title,
+      `${rint(2018, 2024)}-${String(rint(1, 12)).padStart(2,'0')}-${String(rint(1, 28)).padStart(2,'0')}`,
+      Math.round((base + rfloat(-8000, 12000)) / 1000) * 1000,
+      managerByDept[dept]
+    ]);
+  }
+  const sales = [];
+  const products = ['Snowflake-Plus','DataLake-Pro','Stream-Engine','BI-Suite','ML-Platform','Connect-API'];
+  const startD = new Date('2022-01-01').getTime();
+  const endD = new Date('2024-12-31').getTime();
+  const salesEligible = employees.filter(e => e[4] === 2 || e[4] === 6).map(e => e[0]);
+  for (let i = 1; i <= 1500; i++) {
+    const eid = pick(salesEligible);
+    const product = pick(products);
+    const amt = Math.round(rfloat(2000, 80000) * 100) / 100;
+    const dt = new Date(startD + rng() * (endD - startD)).toISOString().slice(0, 10);
+    sales.push([i, eid, product, dt, amt, pick(['Closed Won','Closed Won','Closed Won','Closed Lost'])]);
+  }
+  return { departments, employees, sales };
+}
+
+// ---------- Schema metadata ----------
+const SCHEMA_META = {
+  databases: [
+    {
+      name: 'SNOWFLAKE_SAMPLE_DATA',
+      schemas: [{
+        name: 'TPCH_SF1',
+        tables: [
+          { name: 'REGION',   type: 'TABLE', columns: [['R_REGIONKEY','NUMBER'],['R_NAME','VARCHAR'],['R_COMMENT','VARCHAR']]},
+          { name: 'NATION',   type: 'TABLE', columns: [['N_NATIONKEY','NUMBER'],['N_NAME','VARCHAR'],['N_REGIONKEY','NUMBER'],['N_COMMENT','VARCHAR']]},
+          { name: 'CUSTOMER', type: 'TABLE', columns: [['C_CUSTKEY','NUMBER'],['C_NAME','VARCHAR'],['C_ADDRESS','VARCHAR'],['C_NATIONKEY','NUMBER'],['C_PHONE','VARCHAR'],['C_ACCTBAL','NUMBER(12,2)'],['C_MKTSEGMENT','VARCHAR'],['C_COMMENT','VARCHAR']]},
+          { name: 'SUPPLIER', type: 'TABLE', columns: [['S_SUPPKEY','NUMBER'],['S_NAME','VARCHAR'],['S_ADDRESS','VARCHAR'],['S_NATIONKEY','NUMBER'],['S_PHONE','VARCHAR'],['S_ACCTBAL','NUMBER(12,2)'],['S_COMMENT','VARCHAR']]},
+          { name: 'PART',     type: 'TABLE', columns: [['P_PARTKEY','NUMBER'],['P_NAME','VARCHAR'],['P_MFGR','VARCHAR'],['P_BRAND','VARCHAR'],['P_TYPE','VARCHAR'],['P_SIZE','NUMBER'],['P_CONTAINER','VARCHAR'],['P_RETAILPRICE','NUMBER(12,2)'],['P_COMMENT','VARCHAR']]},
+          { name: 'PARTSUPP', type: 'TABLE', columns: [['PS_PARTKEY','NUMBER'],['PS_SUPPKEY','NUMBER'],['PS_AVAILQTY','NUMBER'],['PS_SUPPLYCOST','NUMBER(12,2)'],['PS_COMMENT','VARCHAR']]},
+          { name: 'ORDERS',   type: 'TABLE', columns: [['O_ORDERKEY','NUMBER'],['O_CUSTKEY','NUMBER'],['O_ORDERSTATUS','VARCHAR(1)'],['O_TOTALPRICE','NUMBER(12,2)'],['O_ORDERDATE','DATE'],['O_ORDERPRIORITY','VARCHAR'],['O_CLERK','VARCHAR'],['O_SHIPPRIORITY','NUMBER'],['O_COMMENT','VARCHAR']]},
+          { name: 'LINEITEM', type: 'TABLE', columns: [['L_ORDERKEY','NUMBER'],['L_PARTKEY','NUMBER'],['L_SUPPKEY','NUMBER'],['L_LINENUMBER','NUMBER'],['L_QUANTITY','NUMBER'],['L_EXTENDEDPRICE','NUMBER(12,2)'],['L_DISCOUNT','NUMBER(4,2)'],['L_TAX','NUMBER(4,2)'],['L_RETURNFLAG','VARCHAR(1)'],['L_LINESTATUS','VARCHAR(1)'],['L_SHIPDATE','DATE'],['L_COMMITDATE','DATE'],['L_RECEIPTDATE','DATE'],['L_SHIPINSTRUCT','VARCHAR'],['L_SHIPMODE','VARCHAR'],['L_COMMENT','VARCHAR']]}
+        ]
+      }]
+    },
+    {
+      name: 'DEMO_DB',
+      schemas: [{
+        name: 'PUBLIC',
+        tables: [
+          { name: 'DEPARTMENTS', type: 'TABLE', columns: [['DEPT_ID','NUMBER'],['DEPT_NAME','VARCHAR'],['LOCATION','VARCHAR'],['BUDGET','NUMBER(12,2)']]},
+          { name: 'EMPLOYEES',   type: 'TABLE', columns: [['EMPLOYEE_ID','NUMBER'],['FIRST_NAME','VARCHAR'],['LAST_NAME','VARCHAR'],['EMAIL','VARCHAR'],['DEPT_ID','NUMBER'],['TITLE','VARCHAR'],['HIRE_DATE','DATE'],['SALARY','NUMBER(12,2)'],['MANAGER_ID','NUMBER']]},
+          { name: 'SALES',       type: 'TABLE', columns: [['SALE_ID','NUMBER'],['EMPLOYEE_ID','NUMBER'],['PRODUCT','VARCHAR'],['SALE_DATE','DATE'],['AMOUNT','NUMBER(12,2)'],['STATUS','VARCHAR']]}
+        ]
+      }]
+    }
+  ]
+};
+const ROW_COUNTS = {};
+
+// ---------- Snowflake → SQLite translator ----------
+function translateSnowflake(sql) {
+  let out = sql;
+
+  // Remove fully-qualified prefixes "DB.SCHEMA.TABLE" → just "TABLE"
+  out = out.replace(/\b(SNOWFLAKE_SAMPLE_DATA|DEMO_DB)\s*\.\s*(\w+)\s*\.\s*(\w+)/gi, '$3');
+  out = out.replace(/\b(TPCH_SF1|PUBLIC)\s*\.\s*(\w+)/gi, '$2');
+
+  // ::TYPE casts
+  out = out.replace(/(\b\w+(?:\.\w+)*|\)|\d+(?:\.\d+)?)\s*::\s*(\w+(?:\(\d+(?:,\s*\d+)?\))?)/gi,
+    (_, expr, t) => `CAST(${expr} AS ${t})`);
+
+  // ILIKE → LIKE
+  out = out.replace(/\bILIKE\b/gi, 'LIKE');
+
+  // Run nested-friendly replacements to fixpoint
+  for (let i = 0; i < 6; i++) {
+    const before = out;
+    out = replaceFunc(out, 'IFF', a => a.length === 3 ? `(CASE WHEN ${a[0]} THEN ${a[1]} ELSE ${a[2]} END)` : null);
+    out = replaceFunc(out, 'IIF', a => a.length === 3 ? `(CASE WHEN ${a[0]} THEN ${a[1]} ELSE ${a[2]} END)` : null);
+    if (out === before) break;
+  }
+  out = replaceFunc(out, 'ZEROIFNULL', a => `COALESCE(${a[0]}, 0)`);
+  out = replaceFunc(out, 'NULLIFZERO', a => `(CASE WHEN (${a[0]}) = 0 THEN NULL ELSE (${a[0]}) END)`);
+  out = replaceFunc(out, 'IFNULL', a => `COALESCE(${a.join(', ')})`);
+  out = replaceFunc(out, 'NVL', a => `COALESCE(${a.join(', ')})`);
+  out = replaceFunc(out, 'NVL2', a => a.length === 3 ? `(CASE WHEN ${a[0]} IS NOT NULL THEN ${a[1]} ELSE ${a[2]} END)` : null);
+  out = replaceFunc(out, 'LISTAGG', a => `GROUP_CONCAT(${a.join(', ')})`);
+  out = replaceFunc(out, 'ARRAY_AGG', a => `GROUP_CONCAT(${a[0]})`);
+
+  out = replaceFunc(out, 'DATEADD', a => {
+    if (a.length !== 3) return null;
+    let p = a[0].replace(/['"]/g, '').toLowerCase();
+    if (/^(day|days|d|dd)$/.test(p))    p = 'days';
+    else if (/^(month|months|mm|mon)$/.test(p)) p = 'months';
+    else if (/^(year|years|yyyy|yy|y)$/.test(p)) p = 'years';
+    else if (/^(week|weeks|wk)$/.test(p)) p = 'days';
+    else if (/^(hour|hours|hh|h)$/.test(p)) p = 'hours';
+    else if (/^(minute|minutes|mi|min)$/.test(p)) p = 'minutes';
+    else p = 'days';
+    return `DATE(${a[2]}, (${a[1]}) || ' ${p}')`;
+  });
+
+  out = replaceFunc(out, 'DATEDIFF', a => {
+    if (a.length !== 3) return null;
+    const p = a[0].replace(/['"]/g, '').toLowerCase();
+    if (/^(day|days|d|dd)$/.test(p))    return `CAST((JULIANDAY(${a[2]}) - JULIANDAY(${a[1]})) AS INTEGER)`;
+    if (/^(month|months|mm)$/.test(p))  return `((CAST(STRFTIME('%Y',${a[2]}) AS INTEGER)-CAST(STRFTIME('%Y',${a[1]}) AS INTEGER))*12 + (CAST(STRFTIME('%m',${a[2]}) AS INTEGER)-CAST(STRFTIME('%m',${a[1]}) AS INTEGER)))`;
+    if (/^(year|years|yyyy|yy)$/.test(p)) return `(CAST(STRFTIME('%Y',${a[2]}) AS INTEGER)-CAST(STRFTIME('%Y',${a[1]}) AS INTEGER))`;
+    return `CAST((JULIANDAY(${a[2]}) - JULIANDAY(${a[1]})) AS INTEGER)`;
+  });
+
+  out = replaceFunc(out, 'DATE_TRUNC', a => {
+    if (a.length !== 2) return null;
+    const p = a[0].replace(/['"]/g, '').toLowerCase();
+    if (p === 'month') return `DATE(${a[1]}, 'start of month')`;
+    if (p === 'year')  return `DATE(${a[1]}, 'start of year')`;
+    if (p === 'day')   return `DATE(${a[1]})`;
+    if (p === 'week')  return `DATE(${a[1]}, 'weekday 0', '-7 days')`;
+    return `DATE(${a[1]})`;
+  });
+
+  out = replaceFunc(out, 'YEAR',    a => `CAST(STRFTIME('%Y', ${a[0]}) AS INTEGER)`);
+  out = replaceFunc(out, 'MONTH',   a => `CAST(STRFTIME('%m', ${a[0]}) AS INTEGER)`);
+  out = replaceFunc(out, 'DAY',     a => `CAST(STRFTIME('%d', ${a[0]}) AS INTEGER)`);
+  out = replaceFunc(out, 'QUARTER', a => `((CAST(STRFTIME('%m', ${a[0]}) AS INTEGER) - 1) / 3 + 1)`);
+
+  out = replaceFunc(out, 'TO_DATE', a => `DATE(${a[0]})`);
+  out = replaceFunc(out, 'TO_TIMESTAMP', a => `DATETIME(${a[0]})`);
+  out = replaceFunc(out, 'TO_VARCHAR', a => a.length === 1 ? `CAST(${a[0]} AS TEXT)` : `STRFTIME(${a[1]}, ${a[0]})`);
+  out = replaceFunc(out, 'TO_NUMBER', a => `CAST(${a[0]} AS NUMERIC)`);
+  out = replaceFunc(out, 'TRY_CAST',  a => `CAST(${a[0]} AS ${a[1] || 'TEXT'})`);
+
+  out = out.replace(/\bCURRENT_DATE\s*\(\s*\)/gi, "DATE('now')");
+  out = out.replace(/\bCURRENT_TIMESTAMP\s*\(\s*\)/gi, "DATETIME('now')");
+  out = out.replace(/\bCURRENT_DATE\b(?!\s*\()/gi, "DATE('now')");
+  out = out.replace(/\bCURRENT_TIMESTAMP\b(?!\s*\()/gi, "DATETIME('now')");
+  out = out.replace(/\bLEN\s*\(/gi, 'LENGTH(');
+
+  // QUALIFY
+  out = transformQualify(out);
+  return out;
+}
+
+function replaceFunc(sql, name, fn) {
+  const re = new RegExp(`\\b${name}\\s*\\(`, 'gi');
+  let result = '', lastIdx = 0, m;
+  while ((m = re.exec(sql)) !== null) {
+    const start = m.index;
+    const open = m.index + m[0].length - 1;
+    let depth = 1, i = open + 1, inStr = null;
+    while (i < sql.length && depth > 0) {
+      const ch = sql[i];
+      if (inStr) { if (ch === inStr && sql[i-1] !== '\\') inStr = null; }
+      else if (ch === "'" || ch === '"') inStr = ch;
+      else if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      i++;
+    }
+    if (depth !== 0) break;
+    const close = i - 1;
+    const args = splitArgs(sql.slice(open + 1, close));
+    const repl = fn(args);
+    if (repl === null) { lastIdx = close + 1; re.lastIndex = close + 1; continue; }
+    result += sql.slice(lastIdx, start) + repl;
+    lastIdx = close + 1;
+    re.lastIndex = close + 1;
+  }
+  result += sql.slice(lastIdx);
+  return result;
+}
+
+function splitArgs(s) {
+  const args = [];
+  let depth = 0, cur = '', inStr = null;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (inStr) { cur += ch; if (ch === inStr && s[i-1] !== '\\') inStr = null; }
+    else if (ch === "'" || ch === '"') { inStr = ch; cur += ch; }
+    else if (ch === '(') { depth++; cur += ch; }
+    else if (ch === ')') { depth--; cur += ch; }
+    else if (ch === ',' && depth === 0) { args.push(cur.trim()); cur = ''; }
+    else cur += ch;
+  }
+  if (cur.trim()) args.push(cur.trim());
+  return args;
+}
+
+function transformQualify(sql) {
+  if (!/\bQUALIFY\b/i.test(sql)) return sql;
+  const stmts = splitStatements(sql);
+  return stmts.map(s => transformQualifyOne(s)).join(';\n');
+}
+
+// Find first ORDER BY or LIMIT at depth 0; returns index or -1
+function findTopLevelTail(s) {
+  let depth = 0, inStr = null;
+  const upper = s.toUpperCase();
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (inStr) { if (ch === inStr && s[i-1] !== '\\') inStr = null; continue; }
+    if (ch === "'" || ch === '"') { inStr = ch; continue; }
+    if (ch === '(') { depth++; continue; }
+    if (ch === ')') { depth--; continue; }
+    if (depth === 0) {
+      // Check ORDER\s+BY
+      if (upper.slice(i, i + 5) === 'ORDER' && /\W/.test(s[i-1] || ' ')) {
+        const m = /^ORDER\s+BY\b/i.exec(s.slice(i));
+        if (m) return i;
+      }
+      if (upper.slice(i, i + 5) === 'LIMIT' && /\W/.test(s[i-1] || ' ') && /\W/.test(s[i+5] || ' ')) {
+        return i;
+      }
+    }
+  }
+  return -1;
+}
+function transformQualifyOne(stmt) {
+  const m = /\bQUALIFY\b/i.exec(stmt);
+  if (!m) return stmt;
+  const before = stmt.slice(0, m.index);
+  const after = stmt.slice(m.index + 'QUALIFY'.length);
+  // Find ORDER BY / LIMIT only at depth 0 (not inside an OVER(...) clause)
+  const tailIdx = findTopLevelTail(after);
+  let qBody, tail = '';
+  if (tailIdx >= 0) { qBody = after.slice(0, tailIdx).trim(); tail = after.slice(tailIdx); }
+  else qBody = after.trim();
+
+  let inner = before.trim().replace(/;\s*$/, '');
+
+  // If qBody contains a window function call (not an alias reference),
+  // lift it to the inner SELECT with a generated alias.
+  // Patterns we need to handle: ROW_NUMBER() OVER (...) = 1, RANK() OVER(...) <= 3, etc.
+  const winFnRe = /\b(ROW_NUMBER|RANK|DENSE_RANK|NTILE|FIRST_VALUE|LAST_VALUE|LAG|LEAD|SUM|AVG|MIN|MAX|COUNT)\s*\([^)]*\)\s*OVER\s*\(/gi;
+  let winCounter = 0;
+  let lifted = qBody;
+  let liftMatch;
+  // We can't just regex over the whole qBody because OVER(...) has its own parens.
+  // Walk and find each window function call.
+  const liftedAdditions = [];
+  while (true) {
+    const wm = /\b(ROW_NUMBER|RANK|DENSE_RANK|NTILE|FIRST_VALUE|LAST_VALUE|LAG|LEAD|SUM|AVG|MIN|MAX|COUNT)\s*\(/i.exec(lifted);
+    if (!wm) break;
+    // Expand from wm.index through the full window expression: fnName(args) OVER (...)
+    const fnStart = wm.index;
+    let i = wm.index + wm[0].length;
+    let depth = 1;
+    while (i < lifted.length && depth > 0) {
+      if (lifted[i] === '(') depth++;
+      else if (lifted[i] === ')') depth--;
+      i++;
+    }
+    // Now look for OVER (
+    const rest = lifted.slice(i);
+    const overM = /^\s*OVER\s*\(/i.exec(rest);
+    if (!overM) {
+      // Not a window function call, just a regular aggregate — skip
+      // Avoid infinite loop: replace with placeholder, restore later
+      lifted = lifted.slice(0, fnStart) + '@@SKIP' + winCounter + '@@' + lifted.slice(i);
+      winCounter++;
+      continue;
+    }
+    let j = i + overM[0].length;
+    let d2 = 1;
+    while (j < lifted.length && d2 > 0) {
+      if (lifted[j] === '(') d2++;
+      else if (lifted[j] === ')') d2--;
+      j++;
+    }
+    const winExpr = lifted.slice(fnStart, j);
+    const alias = `_qa_${liftedAdditions.length}`;
+    liftedAdditions.push({ alias, expr: winExpr });
+    lifted = lifted.slice(0, fnStart) + alias + lifted.slice(j);
+  }
+  // Restore SKIP placeholders
+  lifted = lifted.replace(/@@SKIP\d+@@/g, ''); // shouldn't occur for well-formed input
+
+  if (liftedAdditions.length) {
+    // Inject ", expr AS alias" into the inner SELECT list, after the SELECT keyword
+    // Find the top-level SELECT — the first SELECT that is at depth 0
+    const innerWithAdds = injectIntoSelectList(inner, liftedAdditions);
+    inner = innerWithAdds;
+  }
+
+  // Strip table aliases from outer ORDER BY (e.g. "c.c_mktsegment" → "c_mktsegment")
+  // because the outer SELECT * loses the alias scope.
+  let cleanTail = tail.replace(/\b(\w+)\.(\w+)/g, '$2');
+
+  return `SELECT * FROM (\n${inner}\n) WHERE ${lifted} ${cleanTail}`;
+}
+
+// Inject extra "expr AS alias" entries into the SELECT list of the FIRST top-level SELECT.
+function injectIntoSelectList(sql, additions) {
+  // Find first SELECT at depth 0
+  let depth = 0, inStr = null;
+  let selectIdx = -1;
+  const upper = sql.toUpperCase();
+  for (let i = 0; i < sql.length; i++) {
+    const ch = sql[i];
+    if (inStr) { if (ch === inStr) inStr = null; continue; }
+    if (ch === "'" || ch === '"') { inStr = ch; continue; }
+    if (ch === '(') depth++;
+    else if (ch === ')') depth--;
+    if (depth === 0 && upper.slice(i, i + 6) === 'SELECT' && /\W/.test(sql[i-1] || ' ') && /\W/.test(sql[i+6] || ' ')) {
+      selectIdx = i;
+      break;
+    }
+  }
+  if (selectIdx === -1) return sql;
+  // Find the matching FROM at the same depth as this SELECT
+  depth = 0; inStr = null;
+  let fromIdx = -1;
+  for (let i = selectIdx + 6; i < sql.length; i++) {
+    const ch = sql[i];
+    if (inStr) { if (ch === inStr) inStr = null; continue; }
+    if (ch === "'" || ch === '"') { inStr = ch; continue; }
+    if (ch === '(') depth++;
+    else if (ch === ')') { depth--; if (depth < 0) break; }
+    if (depth === 0 && upper.slice(i, i + 4) === 'FROM' && /\W/.test(sql[i-1] || ' ') && /\W/.test(sql[i+4] || ' ')) {
+      fromIdx = i;
+      break;
+    }
+  }
+  if (fromIdx === -1) return sql;
+  // Insert new column expressions just before FROM
+  const additionStr = additions.map(a => `, ${a.expr} AS ${a.alias}`).join(' ') + ' ';
+  return sql.slice(0, fromIdx) + additionStr + sql.slice(fromIdx);
+}
+
+function splitStatements(sql) {
+  const stmts = [];
+  let cur = '', depth = 0, inStr = null, inBlock = false, inLine = false;
+  for (let i = 0; i < sql.length; i++) {
+    const ch = sql[i], nx = sql[i+1];
+    if (inLine) { cur += ch; if (ch === '\n') inLine = false; continue; }
+    if (inBlock) { cur += ch; if (ch === '*' && nx === '/') { cur += nx; i++; inBlock = false; } continue; }
+    if (inStr) { cur += ch; if (ch === inStr && sql[i-1] !== '\\') inStr = null; continue; }
+    if (ch === '-' && nx === '-') { inLine = true; cur += ch; continue; }
+    if (ch === '/' && nx === '*') { inBlock = true; cur += ch; continue; }
+    if (ch === "'" || ch === '"') { inStr = ch; cur += ch; continue; }
+    if (ch === '(') { depth++; cur += ch; continue; }
+    if (ch === ')') { depth--; cur += ch; continue; }
+    if (ch === ';' && depth === 0) { if (cur.trim()) stmts.push(cur.trim()); cur = ''; continue; }
+    cur += ch;
+  }
+  if (cur.trim()) stmts.push(cur.trim());
+  return stmts;
+}
+
+function findStatementAtCursor(sql, cursorIdx) {
+  let depth = 0, inStr = null, inBlock = false, inLine = false, stmtStart = 0;
+  for (let i = 0; i < sql.length; i++) {
+    if (i === cursorIdx) {
+      let j = i, d2 = depth, sB = inBlock, sL = inLine, st = inStr;
+      while (j < sql.length) {
+        const c = sql[j], n = sql[j+1];
+        if (sL) { if (c === '\n') sL = false; }
+        else if (sB) { if (c === '*' && n === '/') { sB = false; j++; } }
+        else if (st) { if (c === st) st = null; }
+        else if (c === '-' && n === '-') sL = true;
+        else if (c === '/' && n === '*') sB = true;
+        else if (c === "'" || c === '"') st = c;
+        else if (c === '(') d2++;
+        else if (c === ')') d2--;
+        else if (c === ';' && d2 === 0) return { sql: sql.slice(stmtStart, j), start: stmtStart, end: j };
+        j++;
+      }
+      return { sql: sql.slice(stmtStart), start: stmtStart, end: sql.length };
+    }
+    const ch = sql[i], nx = sql[i+1];
+    if (inLine) { if (ch === '\n') inLine = false; continue; }
+    if (inBlock) { if (ch === '*' && nx === '/') { inBlock = false; i++; } continue; }
+    if (inStr) { if (ch === inStr) inStr = null; continue; }
+    if (ch === '-' && nx === '-') { inLine = true; continue; }
+    if (ch === '/' && nx === '*') { inBlock = true; continue; }
+    if (ch === "'" || ch === '"') { inStr = ch; continue; }
+    if (ch === '(') { depth++; continue; }
+    if (ch === ')') { depth--; continue; }
+    if (ch === ';' && depth === 0) { stmtStart = i + 1; continue; }
+  }
+  return { sql: sql.slice(stmtStart), start: stmtStart, end: sql.length };
+}
+
+
+/* ============================================================
+   PART 2: state, templates, helpers, tree, tabs, editor
+   ============================================================ */
+
+// ---------- App state ----------
+const state = {
+  db: null,
+  worksheets: {},
+  worksheetOrder: [],
+  activeWsId: null,
+  history: [],
+  context: {
+    role: 'SYSADMIN',
+    warehouse: 'COMPUTE_WH',
+    warehouseSize: 'X-Small',
+    database: 'SNOWFLAKE_SAMPLE_DATA',
+    schema: 'TPCH_SF1'
+  },
+  results: null,
+  chartCfg: null,
+  expandedTreeNodes: new Set(['db:SNOWFLAKE_SAMPLE_DATA','schema:SNOWFLAKE_SAMPLE_DATA.TPCH_SF1']),
+  treeFilter: ''
+};
+
+const STORAGE = {
+  WORKSHEETS: 'snowsight_v1_worksheets',
+  ORDER:      'snowsight_v1_order',
+  ACTIVE:     'snowsight_v1_active',
+  HISTORY:    'snowsight_v1_history'
+};
+
+function uid() { return 'ws_' + Math.random().toString(36).slice(2, 10); }
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE.WORKSHEETS, JSON.stringify(state.worksheets));
+    localStorage.setItem(STORAGE.ORDER, JSON.stringify(state.worksheetOrder));
+    localStorage.setItem(STORAGE.ACTIVE, state.activeWsId || '');
+    localStorage.setItem(STORAGE.HISTORY, JSON.stringify(state.history.slice(0, 100)));
+  } catch (_) {}
+}
+function loadState() {
+  try {
+    state.worksheets = JSON.parse(localStorage.getItem(STORAGE.WORKSHEETS) || '{}');
+    state.worksheetOrder = JSON.parse(localStorage.getItem(STORAGE.ORDER) || '[]');
+    state.activeWsId = localStorage.getItem(STORAGE.ACTIVE) || null;
+    state.history = JSON.parse(localStorage.getItem(STORAGE.HISTORY) || '[]');
+  } catch (_) {
+    state.worksheets = {}; state.worksheetOrder = []; state.activeWsId = null; state.history = [];
+  }
+  // Filter out broken entries
+  state.worksheetOrder = state.worksheetOrder.filter(id => state.worksheets[id]);
+  if (state.activeWsId && !state.worksheets[state.activeWsId]) state.activeWsId = state.worksheetOrder[0] || null;
+}
+
+// ---------- Templates ----------
+const TEMPLATES = [
+  { id: 'starter', tag: 'GETTING STARTED', title: 'Schema Tour', desc: 'Quick tour of all tables and their row counts.',
+    sql: `-- Welcome to your in-browser Snowsight!
+-- Click any table in the left sidebar to expand columns,
+-- or double-click a table to preview the first 100 rows.
+
+SELECT 'REGION'   AS table_name, COUNT(*) AS rows FROM region   UNION ALL
+SELECT 'NATION'   ,                COUNT(*)        FROM nation   UNION ALL
+SELECT 'CUSTOMER' ,                COUNT(*)        FROM customer UNION ALL
+SELECT 'SUPPLIER' ,                COUNT(*)        FROM supplier UNION ALL
+SELECT 'PART'     ,                COUNT(*)        FROM part     UNION ALL
+SELECT 'PARTSUPP' ,                COUNT(*)        FROM partsupp UNION ALL
+SELECT 'ORDERS'   ,                COUNT(*)        FROM orders   UNION ALL
+SELECT 'LINEITEM' ,                COUNT(*)        FROM lineitem
+ORDER BY rows DESC;`
+  },
+  { id: 'q1', tag: 'TPCH', title: 'Q1 — Pricing Summary', desc: 'Classic TPCH Q1: aggregates by return flag and line status.',
+    sql: `-- TPCH Q1: Pricing Summary Report
+SELECT
+  l_returnflag,
+  l_linestatus,
+  SUM(l_quantity)                                       AS sum_qty,
+  SUM(l_extendedprice)                                  AS sum_base_price,
+  SUM(l_extendedprice * (1 - l_discount))               AS sum_disc_price,
+  SUM(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge,
+  AVG(l_quantity)                                       AS avg_qty,
+  AVG(l_extendedprice)                                  AS avg_price,
+  AVG(l_discount)                                       AS avg_disc,
+  COUNT(*)                                              AS count_order
+FROM lineitem
+WHERE l_shipdate <= DATEADD('day', -90, '2023-12-01')
+GROUP BY l_returnflag, l_linestatus
+ORDER BY l_returnflag, l_linestatus;`
+  },
+  { id: 'q3', tag: 'TPCH', title: 'Q3 — Shipping Priority', desc: 'Top 10 unshipped orders by revenue for the BUILDING segment.',
+    sql: `-- TPCH Q3: Shipping Priority
+SELECT
+  l.l_orderkey,
+  SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue,
+  o.o_orderdate,
+  o.o_shippriority
+FROM customer c
+JOIN orders   o ON c.c_custkey = o.o_custkey
+JOIN lineitem l ON l.l_orderkey = o.o_orderkey
+WHERE c.c_mktsegment = 'BUILDING'
+  AND o.o_orderdate < '2022-03-15'
+  AND l.l_shipdate  > '2022-03-15'
+GROUP BY l.l_orderkey, o.o_orderdate, o.o_shippriority
+ORDER BY revenue DESC, o.o_orderdate
+LIMIT 10;`
+  },
+  { id: 'q5', tag: 'TPCH', title: 'Q5 — Local Supplier Volume', desc: 'Revenue by nation for one region in a year.',
+    sql: `-- TPCH Q5: Local Supplier Volume (ASIA region, 2023)
+SELECT
+  n.n_name,
+  SUM(l.l_extendedprice * (1 - l.l_discount)) AS revenue
+FROM customer c
+JOIN orders   o ON c.c_custkey = o.o_custkey
+JOIN lineitem l ON l.l_orderkey = o.o_orderkey
+JOIN supplier s ON l.l_suppkey = s.s_suppkey AND c.c_nationkey = s.s_nationkey
+JOIN nation   n ON s.s_nationkey = n.n_nationkey
+JOIN region   r ON n.n_regionkey = r.r_regionkey
+WHERE r.r_name = 'ASIA'
+  AND o.o_orderdate >= '2023-01-01'
+  AND o.o_orderdate <  '2024-01-01'
+GROUP BY n.n_name
+ORDER BY revenue DESC;`
+  },
+  { id: 'qualify', tag: 'WINDOW', title: 'Top-N per Group with QUALIFY', desc: 'Top 3 customers by spend per market segment.',
+    sql: `-- Top 3 customers by lifetime spend per market segment
+SELECT
+  c.c_mktsegment,
+  c.c_name,
+  SUM(o.o_totalprice) AS lifetime_spend,
+  ROW_NUMBER() OVER (PARTITION BY c.c_mktsegment ORDER BY SUM(o.o_totalprice) DESC) AS rn
+FROM customer c
+JOIN orders o ON c.c_custkey = o.o_custkey
+GROUP BY c.c_mktsegment, c.c_name
+QUALIFY rn <= 3
+ORDER BY c.c_mktsegment, rn;`
+  },
+  { id: 'cohort', tag: 'TIME SERIES', title: 'Monthly Order Cohorts', desc: 'Monthly order count and revenue trend.',
+    sql: `-- Monthly orders + revenue trend
+SELECT
+  DATE_TRUNC('month', o_orderdate) AS month,
+  COUNT(*)                         AS orders,
+  ROUND(SUM(o_totalprice), 2)      AS revenue,
+  ROUND(AVG(o_totalprice), 2)      AS avg_order_value
+FROM orders
+WHERE o_orderdate >= '2022-01-01'
+GROUP BY 1
+ORDER BY 1;`
+  },
+  { id: 'lag', tag: 'WINDOW', title: 'Revenue Growth with LAG', desc: 'Month-over-month change using window functions.',
+    sql: `-- Month-over-month revenue change
+WITH monthly AS (
+  SELECT DATE_TRUNC('month', o_orderdate) AS month,
+         SUM(o_totalprice)                AS revenue
+  FROM orders
+  GROUP BY 1
+)
+SELECT
+  month,
+  ROUND(revenue, 2)                                                   AS revenue,
+  ROUND(LAG(revenue) OVER (ORDER BY month), 2)                        AS prev_revenue,
+  ROUND(revenue - LAG(revenue) OVER (ORDER BY month), 2)              AS delta,
+  ROUND( (revenue - LAG(revenue) OVER (ORDER BY month))
+         / NULLIFZERO(LAG(revenue) OVER (ORDER BY month)) * 100, 2)   AS pct_change
+FROM monthly
+ORDER BY month DESC
+LIMIT 24;`
+  },
+  { id: 'iff', tag: 'BASIC', title: 'IFF Conditional Tiers', desc: 'Snowflake-style conditional logic with nested IFF.',
+    sql: `-- Classify customers by account balance using IFF
+SELECT
+  c_name,
+  c_acctbal,
+  IFF(c_acctbal > 5000, 'HIGH',
+    IFF(c_acctbal > 1000, 'MEDIUM',
+      IFF(c_acctbal > 0, 'LOW', 'NEGATIVE'))) AS balance_tier,
+  c_mktsegment
+FROM customer
+ORDER BY c_acctbal DESC
+LIMIT 25;`
+  },
+  { id: 'demo_emp', tag: 'DEMO_DB', title: 'Sales Leaderboard', desc: 'Top sales reps from the DEMO_DB schema.',
+    sql: `-- Top sales reps with deal count + revenue
+SELECT
+  e.first_name || ' ' || e.last_name AS rep,
+  d.dept_name,
+  COUNT(s.sale_id)                   AS deals,
+  ROUND(SUM(s.amount), 2)            AS revenue,
+  ROUND(AVG(s.amount), 2)            AS avg_deal
+FROM demo_db.public.employees e
+JOIN demo_db.public.departments d ON e.dept_id = d.dept_id
+JOIN demo_db.public.sales s ON s.employee_id = e.employee_id AND s.status = 'Closed Won'
+GROUP BY 1, 2
+ORDER BY revenue DESC
+LIMIT 15;`
+  },
+  { id: 'cte', tag: 'CTE', title: 'Repeat Customers via CTE', desc: 'Multi-step analysis with CTEs and IFF.',
+    sql: `-- Repeat-customer share by market segment
+WITH customer_orders AS (
+  SELECT c_custkey, c_mktsegment, COUNT(o_orderkey) AS order_count
+  FROM customer
+  LEFT JOIN orders ON c_custkey = o_custkey
+  GROUP BY c_custkey, c_mktsegment
+)
+SELECT
+  c_mktsegment,
+  COUNT(*)                                                     AS customers,
+  SUM(IFF(order_count > 1, 1, 0))                              AS repeat_customers,
+  ROUND(SUM(IFF(order_count > 1, 1, 0)) * 100.0 / COUNT(*), 2) AS repeat_pct,
+  ROUND(AVG(order_count), 2)                                   AS avg_orders
+FROM customer_orders
+GROUP BY c_mktsegment
+ORDER BY repeat_pct DESC;`
+  },
+  { id: 'partsupp', tag: 'JOINS', title: 'Cheapest Supplier per Part', desc: 'QUALIFY with ROW_NUMBER for top-1 per group.',
+    sql: `-- For each part, the supplier with lowest supplycost
+SELECT
+  p.p_partkey,
+  p.p_name,
+  s.s_name                  AS cheapest_supplier,
+  ps.ps_supplycost,
+  n.n_name                  AS supplier_nation
+FROM part p
+JOIN partsupp ps ON p.p_partkey = ps.ps_partkey
+JOIN supplier s ON ps.ps_suppkey = s.s_suppkey
+JOIN nation n   ON s.s_nationkey = n.n_nationkey
+QUALIFY ROW_NUMBER() OVER (PARTITION BY p.p_partkey ORDER BY ps.ps_supplycost) = 1
+ORDER BY p.p_partkey
+LIMIT 20;`
+  },
+  { id: 'shipmode', tag: 'GROUPING', title: 'Ship Mode Performance', desc: 'On-time delivery rate by shipping mode.',
+    sql: `-- On-time delivery rate by ship mode
+SELECT
+  l_shipmode,
+  COUNT(*)                                                  AS shipments,
+  SUM(IFF(l_receiptdate <= l_commitdate, 1, 0))             AS on_time,
+  ROUND(SUM(IFF(l_receiptdate <= l_commitdate, 1, 0)) * 100.0
+        / COUNT(*), 2)                                      AS on_time_pct,
+  ROUND(AVG(DATEDIFF('day', l_shipdate, l_receiptdate)), 2) AS avg_transit_days
+FROM lineitem
+GROUP BY l_shipmode
+ORDER BY on_time_pct DESC;`
+  }
+];
+
+// ---------- Formatting helpers ----------
+function formatNum(n) {
+  if (n == null) return '';
+  return n.toLocaleString('en-US');
+}
+function formatNumber(n) {
+  if (n == null) return '';
+  if (typeof n !== 'number') return String(n);
+  if (!isFinite(n)) return String(n);
+  if (Number.isInteger(n)) return n.toLocaleString('en-US');
+  if (Math.abs(n) < 0.01 && n !== 0) return n.toExponential(2);
+  return n.toLocaleString('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+}
+function formatBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+  if (b < 1024 * 1024 * 1024) return (b / 1024 / 1024).toFixed(1) + ' MB';
+  return (b / 1024 / 1024 / 1024).toFixed(2) + ' GB';
+}
+function formatDuration(ms) {
+  if (ms < 1000) return Math.round(ms) + 'ms';
+  if (ms < 60000) return (ms / 1000).toFixed(2) + 's';
+  return Math.floor(ms / 60000) + 'm ' + Math.floor((ms % 60000) / 1000) + 's';
+}
+function formatRelTime(ts) {
+  const d = (Date.now() - ts) / 1000;
+  if (d < 60) return 'just now';
+  if (d < 3600) return Math.floor(d / 60) + 'm ago';
+  if (d < 86400) return Math.floor(d / 3600) + 'h ago';
+  if (d < 86400 * 7) return Math.floor(d / 86400) + 'd ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+function debounce(fn, ms) {
+  let t;
+  return function(...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), ms);
+  };
+}
+
+// ---------- DOM helpers ----------
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+function el(tag, attrs, ...children) {
+  const node = document.createElement(tag);
+  if (attrs) {
+    for (const k in attrs) {
+      const v = attrs[k];
+      if (v == null || v === false) continue;
+      if (k === 'class') node.className = v;
+      else if (k === 'html') node.innerHTML = v;
+      else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2).toLowerCase(), v);
+      else node.setAttribute(k, v);
+    }
+  }
+  for (const c of (children || [])) {
+    if (c == null || c === false) continue;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return node;
+}
+
+const ICON = {
+  database: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><ellipse cx="8" cy="3.5" rx="5.5" ry="1.5"/><path d="M2.5 3.5v9c0 .8 2.5 1.5 5.5 1.5s5.5-.7 5.5-1.5v-9"/><path d="M2.5 8c0 .8 2.5 1.5 5.5 1.5s5.5-.7 5.5-1.5"/></svg>',
+  schema:   '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 4l5-2 5 2v8l-5 2-5-2V4z"/><path d="M3 4l5 2 5-2M8 6v8"/></svg>',
+  table:    '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="3" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M2.5 9.5h11M6 3v10"/></svg>',
+  view:     '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 8s2.5-4 6-4 6 4 6 4-2.5 4-6 4-6-4-6-4z"/><circle cx="8" cy="8" r="2"/></svg>',
+  worksheet:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2h7l3 3v9H3V2z"/><path d="M10 2v3h3M5 8h6M5 11h4"/></svg>',
+  caret:    '<svg viewBox="0 0 10 10" fill="currentColor"><path d="M3 2l4 3-4 3V2z"/></svg>'
+};
+function colTypeAbbr(t) {
+  if (!t) return '';
+  if (/NUMBER|INT|FLOAT|DECIMAL|NUMERIC/i.test(t)) return '#';
+  if (/DATE|TIME/i.test(t)) return 'D';
+  if (/VARCHAR|CHAR|TEXT|STRING/i.test(t)) return 'A';
+  if (/BOOL/i.test(t)) return 'B';
+  return '?';
+}
+
+// ---------- Toast ----------
+function toast(msg, kind = 'info') {
+  const t = el('div', { class: 'toast ' + kind },
+    el('span', { html: kind === 'success'
+      ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3.5 3.5L13 5"/></svg>'
+      : kind === 'error'
+        ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11v.01"/></svg>'
+        : kind === 'warn'
+          ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2L1.5 13h13L8 2zM8 6.5v3M8 11v.01"/></svg>'
+          : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6.5"/><path d="M8 11V7M8 5v.01"/></svg>'
+    }),
+    el('span', {}, msg)
+  );
+  $('#toasts').appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(20px)';
+    t.style.transition = 'all 200ms';
+    setTimeout(() => t.remove(), 220);
+  }, 3000);
+}
+
+function setStatus(kind, text) {
+  const s = $('#statusMain');
+  s.className = 'item ' + (kind === 'ok' ? 'ok' : kind === 'err' ? 'err' : kind === 'warn' ? 'warn' : '');
+  s.querySelector('span').textContent = text;
+  const dot = s.querySelector('svg circle');
+  if (dot) {
+    dot.setAttribute('fill', kind === 'ok' ? '#2DD4A8'
+      : kind === 'err' ? '#F86F7C'
+      : kind === 'warn' ? '#F5B544'
+      : kind === 'compiling' ? '#29B5E8'
+      : kind === 'running' ? '#29B5E8'
+      : '#9AA5B8');
+  }
+}
+
+// ---------- Tree ----------
+function renderTree() {
+  const root = $('#dbTree');
+  root.innerHTML = '';
+  const filter = state.treeFilter.toLowerCase().trim();
+
+  for (const db of SCHEMA_META.databases) {
+    const dbExpanded = state.expandedTreeNodes.has('db:' + db.name);
+    const dbNode = el('div', { class: 'tree-node' + (dbExpanded ? ' expanded' : '') });
+    dbNode.appendChild(el('div', {
+        class: 'tree-row col-database' + (dbExpanded ? ' expanded' : ''),
+        onclick: () => toggleNode('db:' + db.name)
+      },
+      el('span', { class: 'twisty', html: ICON.caret }),
+      el('span', { class: 'icon', html: ICON.database }),
+      el('span', { class: 'label' }, db.name)
+    ));
+    const dbChildren = el('div', { class: 'tree-children' });
+    for (const sch of db.schemas) {
+      const schKey = `schema:${db.name}.${sch.name}`;
+      const schExpanded = state.expandedTreeNodes.has(schKey);
+      const schNode = el('div', { class: 'tree-node' + (schExpanded ? ' expanded' : '') });
+      schNode.appendChild(el('div', {
+          class: 'tree-row col-schema' + (schExpanded ? ' expanded' : ''),
+          onclick: (e) => { e.stopPropagation(); toggleNode(schKey); }
+        },
+        el('span', { class: 'twisty', html: ICON.caret }),
+        el('span', { class: 'icon', html: ICON.schema }),
+        el('span', { class: 'label' }, sch.name)
+      ));
+      const schChildren = el('div', { class: 'tree-children' });
+      for (const tbl of sch.tables) {
+        if (filter && !tbl.name.toLowerCase().includes(filter)
+            && !sch.name.toLowerCase().includes(filter)
+            && !db.name.toLowerCase().includes(filter)) continue;
+        const tblKey = `table:${db.name}.${sch.name}.${tbl.name}`;
+        const tblExpanded = state.expandedTreeNodes.has(tblKey);
+        const tblNode = el('div', { class: 'tree-node' + (tblExpanded ? ' expanded' : '') });
+        const cls = tbl.type === 'VIEW' ? 'col-view' : 'col-table';
+        const rowCount = ROW_COUNTS[`${db.name}.${sch.name}.${tbl.name}`];
+        tblNode.appendChild(el('div', {
+            class: `tree-row ${cls}` + (tblExpanded ? ' expanded' : ''),
+            onclick: (e) => { e.stopPropagation(); toggleNode(tblKey); },
+            ondblclick: (e) => { e.stopPropagation(); previewTable(db.name, sch.name, tbl.name); }
+          },
+          el('span', { class: 'twisty', html: ICON.caret }),
+          el('span', { class: 'icon', html: tbl.type === 'VIEW' ? ICON.view : ICON.table }),
+          el('span', { class: 'label' }, tbl.name),
+          rowCount ? el('span', { class: 'badge' }, formatNum(rowCount)) : null
+        ));
+        const colChildren = el('div', { class: 'tree-children' });
+        for (const [cname, ctype] of tbl.columns) {
+          colChildren.appendChild(el('div', {
+              class: 'tree-row col-column no-twisty',
+              onclick: (e) => { e.stopPropagation(); insertAtCursor(cname); }
+            },
+            el('span', { class: 'twisty' }),
+            el('span', { class: 'icon', html: `<span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;">${colTypeAbbr(ctype)}</span>` }),
+            el('span', { class: 'label' }, cname),
+            el('span', { class: 'badge' }, ctype)
+          ));
+        }
+        tblNode.appendChild(colChildren);
+        schChildren.appendChild(tblNode);
+      }
+      schNode.appendChild(schChildren);
+      dbChildren.appendChild(schNode);
+    }
+    dbNode.appendChild(dbChildren);
+    root.appendChild(dbNode);
+  }
+}
+function toggleNode(key) {
+  if (state.expandedTreeNodes.has(key)) state.expandedTreeNodes.delete(key);
+  else state.expandedTreeNodes.add(key);
+  renderTree();
+}
+function previewTable(dbName, schName, tblName) {
+  const sql = `SELECT * FROM ${dbName}.${schName}.${tblName} LIMIT 100;`;
+  const ws = newWorksheet(`Preview: ${tblName}`, sql);
+  setActiveWorksheet(ws.id);
+  setTimeout(() => runQuery(true), 100);
+}
+function insertAtCursor(text) {
+  if (!editor) return;
+  editor.getDoc().replaceSelection(text);
+  editor.focus();
+}
+
+// ---------- Worksheets ----------
+function newWorksheet(name, sql) {
+  const id = uid();
+  const now = Date.now();
+  const ws = {
+    id,
+    name: name || `New worksheet ${Object.keys(state.worksheets).length + 1}`,
+    sql: sql || '',
+    createdAt: now,
+    updatedAt: now
+  };
+  state.worksheets[id] = ws;
+  if (!state.worksheetOrder.includes(id)) state.worksheetOrder.push(id);
+  state.activeWsId = id;
+  saveState();
+  renderTabs();
+  renderWorksheetList();
+  loadEditorFromActive();
+  return ws;
+}
+function setActiveWorksheet(id) {
+  if (!state.worksheets[id]) return;
+  if (!state.worksheetOrder.includes(id)) state.worksheetOrder.push(id);
+  state.activeWsId = id;
+  saveState();
+  renderTabs();
+  renderWorksheetList();
+  loadEditorFromActive();
+  renderResults();
+}
+function closeWorksheetTab(id) {
+  if (!state.worksheets[id]) return;
+  state.worksheetOrder = state.worksheetOrder.filter(x => x !== id);
+  if (state.activeWsId === id) {
+    state.activeWsId = state.worksheetOrder[state.worksheetOrder.length - 1] || null;
+    if (!state.activeWsId) {
+      const ws = newWorksheet();
+      state.activeWsId = ws.id;
+    }
+  }
+  saveState();
+  renderTabs();
+  renderWorksheetList();
+  loadEditorFromActive();
+}
+function renameWorksheet(id, newName) {
+  if (!state.worksheets[id]) return;
+  state.worksheets[id].name = newName.trim() || state.worksheets[id].name;
+  saveState();
+  renderTabs();
+  renderWorksheetList();
+}
+function renderTabs() {
+  const bar = $('#tabsBar');
+  bar.innerHTML = '';
+  for (const id of state.worksheetOrder) {
+    const ws = state.worksheets[id];
+    if (!ws) continue;
+    bar.appendChild(el('div', {
+        class: 'tab' + (id === state.activeWsId ? ' active' : ''),
+        onclick: () => setActiveWorksheet(id),
+        ondblclick: (e) => {
+          e.stopPropagation();
+          const name = prompt('Rename worksheet', ws.name);
+          if (name !== null) renameWorksheet(id, name);
+        }
+      },
+      el('span', { class: 'icon', html: ICON.worksheet }),
+      el('span', { class: 'name' }, ws.name),
+      el('span', {
+          class: 'close', title: 'Close tab',
+          onclick: (e) => { e.stopPropagation(); closeWorksheetTab(id); },
+          html: '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 2l6 6M8 2l-6 6" stroke-linecap="round"/></svg>'
+        })
+    ));
+  }
+  bar.appendChild(el('button', {
+      class: 'tab-add', title: 'New worksheet',
+      onclick: () => newWorksheet(),
+      html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>'
+    }));
+}
+function renderWorksheetList() {
+  const list = $('#worksheetList');
+  list.innerHTML = '';
+  const all = Object.values(state.worksheets).sort((a, b) => b.updatedAt - a.updatedAt);
+  for (const ws of all) {
+    list.appendChild(el('div', {
+        class: 'ws-item' + (ws.id === state.activeWsId ? ' active' : ''),
+        onclick: () => setActiveWorksheet(ws.id),
+        title: ws.name
+      },
+      el('span', { class: 'icon', html: ICON.worksheet }),
+      el('span', { class: 'label' }, ws.name),
+      el('span', { class: 'meta' }, formatRelTime(ws.updatedAt))
+    ));
+  }
+  if (!all.length) {
+    list.appendChild(el('div', {
+      style: 'padding: 8px 12px; font-size: 11.5px; color: var(--text-3);'
+    }, 'No worksheets yet'));
+  }
+}
+
+// ---------- Editor ----------
+let editor = null;
+function initEditor() {
+  const ta = $('#editor');
+  editor = CodeMirror.fromTextArea(ta, {
+    mode: 'text/x-sql',
+    theme: 'default',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    indentUnit: 2,
+    smartIndent: true,
+    tabSize: 2,
+    extraKeys: {
+      'Cmd-Enter':        () => runQuery(false),
+      'Ctrl-Enter':       () => runQuery(false),
+      'Cmd-Shift-Enter':  () => runQuery(true),
+      'Ctrl-Shift-Enter': () => runQuery(true),
+      'Cmd-/':            'toggleComment',
+      'Ctrl-/':           'toggleComment',
+      'Ctrl-Space':       'autocomplete'
+    }
+  });
+  editor.on('change', debounce(() => {
+    const ws = state.worksheets[state.activeWsId];
+    if (!ws) return;
+    ws.sql = editor.getValue();
+    ws.updatedAt = Date.now();
+    saveState();
+  }, 300));
+}
+function loadEditorFromActive() {
+  if (!editor) return;
+  const ws = state.worksheets[state.activeWsId];
+  if (!ws) { editor.setValue(''); return; }
+  if (editor.getValue() !== ws.sql) {
+    editor.setValue(ws.sql || '');
+    editor.clearHistory();
+  }
+  editor.focus();
+}
+
+
+/* ============================================================
+   PART 3: query execution, results, chart, history, boot
+   ============================================================ */
+
+// ---------- Run query ----------
+async function runQuery(runAll = false) {
+  if (!state.db) { toast('Warehouse warming up...', 'warn'); return; }
+  const ws = state.worksheets[state.activeWsId];
+  if (!ws) return;
+
+  const fullSql = editor.getValue();
+  let sqlToRun;
+  if (runAll) {
+    sqlToRun = fullSql;
+  } else {
+    const cur = editor.getDoc().getCursor();
+    const cursorIdx = editor.getDoc().indexFromPos(cur);
+    const stmt = findStatementAtCursor(fullSql, cursorIdx);
+    sqlToRun = stmt.sql.trim();
+  }
+  if (!sqlToRun || !sqlToRun.replace(/[-/\s*]/g, '').length) {
+    toast('Nothing to run — place cursor inside a statement', 'warn');
+    return;
+  }
+
+  setStatus('compiling', 'Compiling query...');
+  $('#editorLoading').classList.add('active');
+  $('#runBtn').disabled = true;
+
+  await new Promise(r => setTimeout(r, 80));
+
+  let translated;
+  try {
+    translated = translateSnowflake(sqlToRun);
+  } catch (err) {
+    showError('Translation error: ' + err.message);
+    afterRun();
+    return;
+  }
+
+  setStatus('running', 'Executing on COMPUTE_WH (X-Small)...');
+  await new Promise(r => setTimeout(r, 60));
+
+  const start = performance.now();
+  const stmts = splitStatements(translated);
+  const allOriginalStmts = splitStatements(sqlToRun);
+  let lastResult = null;
+  let lastSqlOriginal = null;
+
+  try {
+    for (let i = 0; i < stmts.length; i++) {
+      const r = state.db.exec(stmts[i]);
+      lastResult = r.length ? r[r.length - 1] : { columns: [], values: [] };
+      lastSqlOriginal = allOriginalStmts[i] || stmts[i];
+    }
+  } catch (err) {
+    const dur = performance.now() - start;
+    showError(err.message, sqlToRun, translated);
+    state.history.unshift({
+      sql: sqlToRun, ok: false, error: err.message,
+      duration: dur, ts: Date.now(),
+      database: state.context.database, schema: state.context.schema,
+      role: state.context.role, warehouse: state.context.warehouse,
+      qid: makeQID()
+    });
+    saveState();
+    afterRun();
+    return;
+  }
+
+  const dur = performance.now() - start;
+  const rows = lastResult ? lastResult.values.length : 0;
+  const cols = lastResult ? lastResult.columns.length : 0;
+  const qid = makeQID();
+  const bytesScanned = estimateBytesScanned(lastSqlOriginal || sqlToRun);
+  const partitionsScanned = Math.max(1, Math.ceil(bytesScanned / (64 * 1024 * 1024)));
+  const partitionsTotal = Math.max(partitionsScanned, partitionsScanned + rint(0, 4));
+
+  state.results = {
+    columns: lastResult ? lastResult.columns : [],
+    values: lastResult ? lastResult.values : [],
+    duration: dur, rows, cols,
+    sql: lastSqlOriginal || sqlToRun,
+    translated, qid, bytesScanned,
+    partitionsScanned, partitionsTotal,
+    cacheHit: rng() > 0.7,
+    profile: makeFakeProfile(dur)
+  };
+  state.chartCfg = detectChartConfig(state.results.columns, state.results.values);
+
+  state.history.unshift({
+    sql: sqlToRun, ok: true,
+    rows, cols, duration: dur, ts: Date.now(),
+    database: state.context.database, schema: state.context.schema,
+    role: state.context.role, warehouse: state.context.warehouse,
+    qid, bytesScanned
+  });
+  saveState();
+
+  renderResults();
+  switchResultPane('table');
+  setStatus('ok', `Statement executed successfully · ${formatNum(rows)} row${rows === 1 ? '' : 's'}`);
+  $('#statusDuration').innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1.5" stroke-linecap="round"/></svg> ${formatDuration(dur)}`;
+  $('#statusRows').innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="3" width="11" height="10" rx="1"/><path d="M2.5 6.5h11M2.5 9.5h11"/></svg> ${formatNum(rows)} rows`;
+  $('#statusBytes').innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12v8H2z"/><path d="M2 8h12"/></svg> ${formatBytes(bytesScanned)} scanned`;
+  $('#statusQid').innerHTML = `<span style="font-family:'JetBrains Mono',monospace;">${qid}</span>`;
+  afterRun();
+}
+
+function afterRun() {
+  $('#editorLoading').classList.remove('active');
+  $('#runBtn').disabled = false;
+}
+function makeQID() {
+  const seg = (n) => Math.random().toString(16).slice(2, 2 + n);
+  return `01abc${seg(3)}-${seg(4)}-${seg(4)}-${seg(4)}${seg(8)}`;
+}
+function estimateBytesScanned(sql) {
+  const s = sql.toLowerCase();
+  const sizes = {
+    region: 800, nation: 4500, customer: 180000, supplier: 16000,
+    part: 280000, partsupp: 600000, orders: 2400000, lineitem: 9600000,
+    employees: 24000, departments: 2000, sales: 240000
+  };
+  let total = 0;
+  for (const t in sizes) if (new RegExp(`\\b${t}\\b`).test(s)) total += sizes[t];
+  if (total === 0) total = 4096;
+  return Math.round(total * (0.85 + rng() * 0.3));
+}
+function makeFakeProfile(dur) {
+  const compile = Math.max(1, Math.round(dur * 0.08 + rng() * 5));
+  const exec = Math.max(1, Math.round(dur * 0.78));
+  const fetch = Math.max(0, Math.round(dur * 0.14));
+  const queue = Math.max(0, Math.round(rng() * 8));
+  return [
+    { name: 'Compilation',  ms: compile },
+    { name: 'Queueing',     ms: queue },
+    { name: 'Execution',    ms: exec },
+    { name: 'Result Fetch', ms: fetch }
+  ];
+}
+
+// ---------- Results renderer ----------
+function renderResults() {
+  const r = state.results;
+  const tablePane = $('#pane-table');
+  if (!r) {
+    tablePane.innerHTML = `<div class="result-empty">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="14" width="44" height="36" rx="2"/><path d="M10 24h44M22 14v36"/></svg>
+      <div class="title">No results yet</div>
+      <div class="hint">Press Run or ⌘↵ to execute the worksheet</div>
+    </div>`;
+    $('#rowCount').textContent = '—';
+    return;
+  }
+  $('#rowCount').textContent = formatNum(r.rows);
+
+  if (r.rows === 0) {
+    tablePane.innerHTML = `<div class="result-empty">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="14" width="44" height="36" rx="2"/><path d="M10 24h44M22 14v36"/></svg>
+      <div class="title">Query returned 0 rows</div>
+      <div class="hint">Statement executed but no rows matched</div>
+    </div>`;
+  } else {
+    const tbl = el('table', { class: 'result-table' });
+    const thead = el('thead');
+    const headRow = el('tr');
+    headRow.appendChild(el('th', { style: 'width: 50px;' }, '#'));
+    const colTypes = r.columns.map((_, j) => inferColType(r.values, j));
+    for (let j = 0; j < r.columns.length; j++) {
+      headRow.appendChild(el('th', {},
+        r.columns[j],
+        el('span', { class: 'col-meta' }, colTypes[j])
+      ));
+    }
+    thead.appendChild(headRow);
+    tbl.appendChild(thead);
+    const tbody = el('tbody');
+    const max = Math.min(r.rows, 1000);
+    for (let i = 0; i < max; i++) {
+      const tr = el('tr', { class: 'row-num' });
+      tr.appendChild(el('td', {}, String(i + 1)));
+      const row = r.values[i];
+      for (let j = 0; j < r.columns.length; j++) {
+        tr.appendChild(renderCell(row[j], colTypes[j]));
+      }
+      tbody.appendChild(tr);
+    }
+    tbl.appendChild(tbody);
+    tablePane.innerHTML = '';
+    tablePane.appendChild(tbl);
+    if (r.rows > max) {
+      tablePane.appendChild(el('div', {
+        style: 'padding: 12px 16px; font-size: 12px; color: var(--text-3); border-top: 1px solid var(--border-1); background: var(--bg-2); text-align: center;'
+      }, `Showing first ${formatNum(max)} of ${formatNum(r.rows)} rows · use Export CSV for full result`));
+    }
+  }
+  renderQueryDetails();
+  if (state.chartCfg) renderChart();
+}
+function inferColType(rows, colIdx) {
+  for (const r of rows) {
+    const v = r[colIdx];
+    if (v == null) continue;
+    if (typeof v === 'number') return 'numeric';
+    if (typeof v === 'string') {
+      if (/^\d{4}-\d{2}-\d{2}/.test(v)) return 'date';
+      return 'string';
+    }
+    if (typeof v === 'boolean') return 'bool';
+    return 'string';
+  }
+  return 'string';
+}
+function renderCell(v, colType) {
+  if (v == null) return el('td', { class: 'null' }, 'NULL');
+  let display, cls = colType;
+  if (typeof v === 'number') { display = formatNumber(v); cls = 'numeric'; }
+  else if (typeof v === 'string') {
+    display = v;
+    if (/^\d{4}-\d{2}-\d{2}/.test(v)) cls = 'date';
+  } else if (typeof v === 'boolean') {
+    display = v ? 'true' : 'false';
+    cls = 'bool';
+  } else display = String(v);
+  return el('td', { class: cls, title: String(v) }, display);
+}
+
+function showError(msg, origSql, translated) {
+  switchResultPane('table');
+  const pane = $('#pane-table');
+  let body = (msg || '')
+    .replace(/no such table:\s*(\S+)/i, "Object '$1' does not exist or not authorized.")
+    .replace(/no such column:\s*(\S+)/i, "SQL compilation error: invalid identifier '$1'");
+  pane.innerHTML = '';
+  pane.appendChild(el('div', { class: 'result-error' },
+    el('div', { class: 'err-head' },
+      el('span', { html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v4M8 11v.01" stroke-linecap="round"/></svg>' }),
+      'SQL execution error'
+    ),
+    el('div', { class: 'err-body' }, body),
+    el('div', { class: 'err-hint' }, 'Check object references and the database/schema context shown in the toolbar.')
+  ));
+  setStatus('err', 'Statement failed');
+  $('#statusDuration').innerHTML = '';
+  $('#statusRows').innerHTML = '';
+  $('#statusBytes').innerHTML = '';
+  $('#rowCount').textContent = '—';
+}
+
+// ---------- Switch result tab ----------
+function switchResultPane(name) {
+  $$('#resultContent .result-pane').forEach(p => p.classList.remove('active'));
+  $(`#pane-${name}`).classList.add('active');
+  $$('.result-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.pane === name);
+  });
+  if (name === 'chart' && state.results) renderChart();
+  if (name === 'details' && state.results) renderQueryDetails();
+}
+
+// ---------- Query Details ----------
+function renderQueryDetails() {
+  const pane = $('#pane-details');
+  const r = state.results;
+  if (!r) { pane.innerHTML = ''; return; }
+  pane.innerHTML = '';
+  const grid = el('div', { class: 'query-details' });
+  grid.appendChild(card('Total Duration', formatDuration(r.duration), 'Wall-clock execution time'));
+  grid.appendChild(card('Rows Produced', formatNum(r.rows), `${r.cols} column${r.cols === 1 ? '' : 's'}`));
+  grid.appendChild(card('Bytes Scanned', formatBytes(r.bytesScanned), 'Across micro-partitions'));
+  grid.appendChild(card('Partitions Scanned', `${r.partitionsScanned} / ${r.partitionsTotal}`,
+    `${Math.round(r.partitionsScanned / r.partitionsTotal * 100)}% of total partitions`));
+  grid.appendChild(card('Warehouse', state.context.warehouse,
+    `${state.context.warehouseSize} · ${r.cacheHit ? 'Result cache hit' : 'Cold scan'}`, true));
+  grid.appendChild(card('Query ID', r.qid, `Role: ${state.context.role}`, true));
+
+  const profile = el('div', { class: 'detail-card full' },
+    el('div', { class: 'key' }, 'Execution profile'));
+  const total = r.profile.reduce((a, b) => a + b.ms, 0) || 1;
+  const profileRows = el('div', { class: 'profile' });
+  for (const step of r.profile) {
+    const pct = (step.ms / total) * 100;
+    profileRows.appendChild(el('div', { class: 'profile-row' },
+      el('span', { class: 'pname' }, step.name),
+      el('span', { class: 'pbar' }, el('span', { class: 'pbar-fill', style: `width: ${pct.toFixed(1)}%;` })),
+      el('span', { class: 'pval' }, `${step.ms}ms`)
+    ));
+  }
+  profile.appendChild(profileRows);
+  grid.appendChild(profile);
+
+  const sqlCard = el('div', { class: 'detail-card full' },
+    el('div', { class: 'key' }, 'Translated SQL (Snowflake → SQLite kernel)'),
+    el('pre', {
+      style: 'font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--text-2); margin-top:8px; white-space:pre-wrap; line-height:1.5; max-height:200px; overflow:auto;'
+    }, r.translated)
+  );
+  grid.appendChild(sqlCard);
+  pane.appendChild(grid);
+}
+function card(key, val, sub, small) {
+  return el('div', { class: 'detail-card' },
+    el('div', { class: 'key' }, key),
+    el('div', { class: 'val' + (small ? ' small' : '') }, String(val)),
+    sub ? el('div', { class: 'sub' }, sub) : null
+  );
+}
+
+// ---------- Charts ----------
+function detectChartConfig(cols, rows) {
+  if (!cols || cols.length < 2 || !rows.length) return null;
+  let xIdx = -1;
+  const numericCols = [];
+  for (let j = 0; j < cols.length; j++) {
+    let isNum = true;
+    for (const r of rows.slice(0, 50)) {
+      if (r[j] != null && typeof r[j] !== 'number') { isNum = false; break; }
+    }
+    if (isNum) numericCols.push(j);
+    else if (xIdx === -1) xIdx = j;
+  }
+  if (xIdx === -1) xIdx = 0;
+  let yIdx = numericCols.find(j => j !== xIdx);
+  if (yIdx == null) return null;
+  const sample = rows[0][xIdx];
+  const isDate = typeof sample === 'string' && /^\d{4}-\d{2}/.test(sample);
+  return { xIdx, yIdx, type: isDate ? 'line' : 'bar' };
+}
+
+function renderChart() {
+  const pane = $('#pane-chart');
+  const r = state.results;
+  if (!r || !r.values.length) {
+    pane.innerHTML = '<div class="result-empty"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 50h44M14 46V30M28 46V14M42 46V24M54 46V20"/></svg><div class="title">No data to chart</div></div>';
+    return;
+  }
+  let cfg = state.chartCfg;
+  if (!cfg) {
+    pane.innerHTML = `<div class="result-empty">
+      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 50h44M14 46V30M28 46V14M42 46V24M54 46V20"/></svg>
+      <div class="title">No chartable data</div>
+      <div class="hint">Need at least one categorical and one numeric column</div>
+    </div>`;
+    return;
+  }
+  pane.innerHTML = '';
+  const tb = el('div', { class: 'chart-toolbar' },
+    el('span', {}, 'Type'),
+    selectInput([{value:'bar',label:'Bar'},{value:'line',label:'Line'},{value:'scatter',label:'Scatter'}], cfg.type, v => { cfg.type = v; renderChart(); }),
+    el('span', { style: 'margin-left:12px;' }, 'X axis'),
+    selectInput(r.columns.map((c, i) => ({ value: i, label: c })), cfg.xIdx, v => { cfg.xIdx = +v; renderChart(); }),
+    el('span', { style: 'margin-left:12px;' }, 'Y axis'),
+    selectInput(r.columns.map((c, i) => ({ value: i, label: c })), cfg.yIdx, v => { cfg.yIdx = +v; renderChart(); })
+  );
+  pane.appendChild(tb);
+
+  const area = el('div', { class: 'chart-area' });
+  pane.appendChild(area);
+
+  const data = r.values.slice(0, 200).map(row => ({ x: row[cfg.xIdx], y: row[cfg.yIdx] }))
+    .filter(d => d.y != null && typeof d.y === 'number');
+
+  // Defer to next frame so chart-area has dimensions
+  requestAnimationFrame(() => {
+    const W = area.clientWidth || 600;
+    const H = area.clientHeight || 280;
+    area.innerHTML = '';
+    area.appendChild(buildChartSVG(data, cfg.type, W, H, r.columns[cfg.xIdx], r.columns[cfg.yIdx]));
+  });
+}
+
+function selectInput(opts, current, onChange) {
+  const sel = el('select', { onchange: e => onChange(e.target.value) });
+  for (const o of opts) {
+    const value = typeof o === 'object' ? o.value : o;
+    const label = typeof o === 'object' ? o.label : o;
+    const opt = el('option', { value }, label);
+    if (String(value) === String(current)) opt.selected = true;
+    sel.appendChild(opt);
+  }
+  return sel;
+}
+
+function buildChartSVG(data, type, W, H, xLabel, yLabel) {
+  const padL = 60, padR = 16, padT = 16, padB = 40;
+  const w = Math.max(50, W - padL - padR);
+  const h = Math.max(50, H - padT - padB);
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('class', 'chart-svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+
+  const defs = document.createElementNS(ns, 'defs');
+  defs.innerHTML = `
+    <linearGradient id="bar-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#29B5E8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1A6F94" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#29B5E8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#29B5E8" stop-opacity="0"/>
+    </linearGradient>`;
+  svg.appendChild(defs);
+  if (!data.length) return svg;
+
+  const ys = data.map(d => d.y);
+  const yMax = Math.max(...ys, 0);
+  const yMin = Math.min(...ys, 0);
+  const yRange = (yMax - yMin) || 1;
+
+  // Y grid + labels
+  const yTicks = 5;
+  for (let i = 0; i <= yTicks; i++) {
+    const y = padT + h - (i / yTicks) * h;
+    const v = yMin + (i / yTicks) * yRange;
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('class', 'grid');
+    line.setAttribute('x1', padL); line.setAttribute('x2', W - padR);
+    line.setAttribute('y1', y); line.setAttribute('y2', y);
+    svg.appendChild(line);
+    const lbl = document.createElementNS(ns, 'text');
+    lbl.setAttribute('class', 'axis-label');
+    lbl.setAttribute('x', padL - 6); lbl.setAttribute('y', y + 4);
+    lbl.setAttribute('text-anchor', 'end');
+    lbl.textContent = formatNumber(v);
+    svg.appendChild(lbl);
+  }
+
+  if (type === 'bar') {
+    const bw = w / data.length;
+    const barW = Math.max(2, bw * 0.7);
+    for (let i = 0; i < data.length; i++) {
+      const d = data[i];
+      const x = padL + i * bw + (bw - barW) / 2;
+      const yY = padT + h - ((d.y - yMin) / yRange) * h;
+      const yZ = padT + h - ((0 - yMin) / yRange) * h;
+      const top = Math.min(yY, yZ);
+      const height = Math.max(1, Math.abs(yY - yZ));
+      const rect = document.createElementNS(ns, 'rect');
+      rect.setAttribute('class', 'bar');
+      rect.setAttribute('x', x); rect.setAttribute('y', top);
+      rect.setAttribute('width', barW); rect.setAttribute('height', height);
+      rect.setAttribute('rx', 2);
+      const t = document.createElementNS(ns, 'title');
+      t.textContent = `${d.x}: ${formatNumber(d.y)}`;
+      rect.appendChild(t);
+      svg.appendChild(rect);
+    }
+    addXLabels(svg, data, padL, w, H, padB, ns, i => padL + i * (w / data.length) + (w / data.length) / 2);
+  } else if (type === 'line') {
+    const xPos = i => padL + (i / Math.max(1, data.length - 1)) * w;
+    const yPos = v => padT + h - ((v - yMin) / yRange) * h;
+
+    let dPath = `M ${xPos(0)} ${padT + h}`;
+    for (let i = 0; i < data.length; i++) dPath += ` L ${xPos(i)} ${yPos(data[i].y)}`;
+    dPath += ` L ${xPos(data.length - 1)} ${padT + h} Z`;
+    const areaP = document.createElementNS(ns, 'path');
+    areaP.setAttribute('class', 'area');
+    areaP.setAttribute('d', dPath);
+    svg.appendChild(areaP);
+
+    let lp = '';
+    for (let i = 0; i < data.length; i++) lp += (i === 0 ? 'M ' : ' L ') + xPos(i) + ' ' + yPos(data[i].y);
+    const lineP = document.createElementNS(ns, 'path');
+    lineP.setAttribute('class', 'line');
+    lineP.setAttribute('d', lp);
+    svg.appendChild(lineP);
+
+    for (let i = 0; i < data.length; i++) {
+      const c = document.createElementNS(ns, 'circle');
+      c.setAttribute('class', 'point');
+      c.setAttribute('cx', xPos(i)); c.setAttribute('cy', yPos(data[i].y));
+      c.setAttribute('r', 3);
+      const t = document.createElementNS(ns, 'title');
+      t.textContent = `${data[i].x}: ${formatNumber(data[i].y)}`;
+      c.appendChild(t);
+      svg.appendChild(c);
+    }
+    addXLabels(svg, data, padL, w, H, padB, ns, xPos);
+  } else {
+    // scatter
+    const xPos = i => padL + (i / Math.max(1, data.length - 1)) * w;
+    const yPos = v => padT + h - ((v - yMin) / yRange) * h;
+    for (let i = 0; i < data.length; i++) {
+      const c = document.createElementNS(ns, 'circle');
+      c.setAttribute('class', 'point');
+      c.setAttribute('cx', xPos(i)); c.setAttribute('cy', yPos(data[i].y));
+      c.setAttribute('r', 4);
+      svg.appendChild(c);
+    }
+    addXLabels(svg, data, padL, w, H, padB, ns, xPos);
+  }
+
+  // Axis lines
+  const ax = document.createElementNS(ns, 'line');
+  ax.setAttribute('class', 'axis');
+  ax.setAttribute('x1', padL); ax.setAttribute('x2', W - padR);
+  ax.setAttribute('y1', padT + h); ax.setAttribute('y2', padT + h);
+  svg.appendChild(ax);
+  const ay = document.createElementNS(ns, 'line');
+  ay.setAttribute('class', 'axis');
+  ay.setAttribute('x1', padL); ay.setAttribute('x2', padL);
+  ay.setAttribute('y1', padT); ay.setAttribute('y2', padT + h);
+  svg.appendChild(ay);
+
+  // Axis titles
+  const xt = document.createElementNS(ns, 'text');
+  xt.setAttribute('class', 'axis-title');
+  xt.setAttribute('x', padL + w / 2); xt.setAttribute('y', H - 6);
+  xt.setAttribute('text-anchor', 'middle');
+  xt.textContent = xLabel;
+  svg.appendChild(xt);
+  const yt = document.createElementNS(ns, 'text');
+  yt.setAttribute('class', 'axis-title');
+  yt.setAttribute('transform', `rotate(-90, 14, ${padT + h / 2})`);
+  yt.setAttribute('x', 14); yt.setAttribute('y', padT + h / 2);
+  yt.setAttribute('text-anchor', 'middle');
+  yt.textContent = yLabel;
+  svg.appendChild(yt);
+
+  return svg;
+}
+function addXLabels(svg, data, padL, w, H, padB, ns, xPos) {
+  const labelCount = Math.min(data.length, 10);
+  const step = Math.max(1, Math.ceil(data.length / labelCount));
+  for (let i = 0; i < data.length; i += step) {
+    const lbl = document.createElementNS(ns, 'text');
+    lbl.setAttribute('class', 'axis-label');
+    lbl.setAttribute('x', xPos(i)); lbl.setAttribute('y', H - padB + 16);
+    lbl.setAttribute('text-anchor', 'middle');
+    const t = String(data[i].x);
+    lbl.textContent = t.length > 14 ? t.slice(0, 12) + '…' : t;
+    svg.appendChild(lbl);
+  }
+}
+
+// ---------- History modal ----------
+function renderHistory() {
+  const body = $('#historyBody');
+  body.innerHTML = '';
+  if (!state.history.length) {
+    body.appendChild(el('div', {
+      style: 'text-align:center; color:var(--text-3); padding:32px 0; font-size:12.5px;'
+    }, 'No queries run yet'));
+    return;
+  }
+  for (const h of state.history) {
+    body.appendChild(el('div', {
+        class: 'history-item',
+        onclick: () => {
+          const ws = newWorksheet('From history', h.sql);
+          setActiveWorksheet(ws.id);
+          $('#historyModal').classList.remove('open');
+        }
+      },
+      el('div', { class: 'h-meta' },
+        el('span', { class: 'h-status ' + (h.ok ? 'ok' : 'err') },
+          el('span', { html: h.ok
+            ? '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><path d="M3 8l3.5 3.5L13 5"/></svg>'
+            : '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><circle cx="8" cy="8" r="6"/><path d="M5 5l6 6M11 5l-6 6"/></svg>'
+          }),
+          h.ok ? `${formatNum(h.rows)} rows` : 'Failed'
+        ),
+        el('span', {}, formatDuration(h.duration)),
+        h.bytesScanned ? el('span', {}, formatBytes(h.bytesScanned)) : null,
+        el('span', {}, formatRelTime(h.ts)),
+        el('span', { style: 'margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:10px;' }, h.qid)
+      ),
+      el('div', { class: 'h-sql' }, h.sql)
+    ));
+  }
+}
+
+// ---------- Templates modal ----------
+function renderTemplates() {
+  const grid = $('#templatesGrid');
+  grid.innerHTML = '';
+  for (const t of TEMPLATES) {
+    grid.appendChild(el('div', {
+        class: 'template-card',
+        onclick: () => {
+          const ws = newWorksheet(t.title, t.sql);
+          setActiveWorksheet(ws.id);
+          $('#templatesModal').classList.remove('open');
+        }
+      },
+      el('div', { class: 't-title' }, t.title),
+      el('div', { class: 't-desc' }, t.desc),
+      el('span', { class: 't-tag' }, t.tag)
+    ));
+  }
+}
+
+// ---------- Export CSV ----------
+function buildCsv() {
+  const r = state.results;
+  if (!r) return '';
+  const esc = v => {
+    if (v == null) return '';
+    const s = String(v);
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  let out = r.columns.map(esc).join(',') + '\n';
+  for (const row of r.values) out += row.map(esc).join(',') + '\n';
+  return out;
+}
+function exportCsv() {
+  const csv = buildCsv();
+  if (!csv) { toast('Nothing to export', 'warn'); return; }
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'snowsight-results.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('CSV downloaded', 'success');
+}
+function copyCsv() {
+  const csv = buildCsv();
+  if (!csv) { toast('Nothing to copy', 'warn'); return; }
+  navigator.clipboard.writeText(csv).then(
+    () => toast('Copied as CSV', 'success'),
+    () => toast('Copy failed', 'error')
+  );
+}
+
+// ---------- Format SQL (minimal) ----------
+function formatSql() {
+  if (!editor) return;
+  const sql = editor.getValue();
+  const KW = ['SELECT','FROM','WHERE','GROUP BY','ORDER BY','HAVING','LIMIT','JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','INNER JOIN','OUTER JOIN','ON','AND','OR','UNION','UNION ALL','WITH','QUALIFY','PARTITION BY'];
+  let out = sql;
+  for (const k of KW) {
+    const re = new RegExp('(?<![A-Z_])' + k.replace(/\s/g, '\\s+') + '(?![A-Z_])', 'gi');
+    out = out.replace(re, '\n' + k.toUpperCase());
+  }
+  out = out.replace(/,\s*\n?/g, ',\n  ').replace(/^\s*\n/gm, '').trim();
+  editor.setValue(out);
+  toast('Formatted', 'success');
+}
+
+// ---------- Dropdown menus ----------
+function openMenu(menuEl, btnEl, items) {
+  menuEl.innerHTML = '';
+  for (const it of items) {
+    if (it.section) {
+      menuEl.appendChild(el('div', { class: 'menu-section' }, it.section));
+      continue;
+    }
+    if (it.divider) {
+      menuEl.appendChild(el('div', { class: 'menu-divider' }));
+      continue;
+    }
+    menuEl.appendChild(el('div', {
+      class: 'menu-item' + (it.active ? ' active' : ''),
+      onclick: () => { it.onClick(); closeAllMenus(); }
+    },
+      it.icon ? el('span', { html: it.icon }) : null,
+      el('span', {}, it.label),
+      it.right ? el('span', { class: 'right' }, it.right) : null
+    ));
+  }
+  const rect = btnEl.getBoundingClientRect();
+  menuEl.style.top = (rect.bottom + 4) + 'px';
+  menuEl.style.left = Math.max(8, rect.right - 240) + 'px';
+  menuEl.classList.add('open');
+}
+function closeAllMenus() {
+  $$('.menu').forEach(m => m.classList.remove('open'));
+}
+
+// ---------- Boot ----------
+async function boot() {
+  loadState();
+
+  // Update boot text
+  const setBootText = (msg, pct) => {
+    $('#bootText').textContent = msg;
+    $('#bootProgress').style.width = pct + '%';
+  };
+  setBootText('Resuming COMPUTE_WH (X-Small)...', 8);
+  await new Promise(r => setTimeout(r, 200));
+
+  setBootText('Loading SQL execution engine...', 18);
+  // sql.js
+  const SQL = await initSqlJs({
+    locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}`
+  });
+  state.db = new SQL.Database();
+  await new Promise(r => setTimeout(r, 100));
+
+  setBootText('Generating SNOWFLAKE_SAMPLE_DATA.TPCH_SF1...', 35);
+  const tpch = generateTPCH();
+  await new Promise(r => setTimeout(r, 50));
+
+  setBootText('Materializing micro-partitions...', 55);
+  await loadTpchIntoDB(tpch);
+
+  setBootText('Generating DEMO_DB.PUBLIC...', 75);
+  const demo = generateDemoDB();
+  await loadDemoIntoDB(demo);
+
+  setBootText('Indexing object catalog...', 90);
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION'] = tpch.region.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION'] = tpch.nation.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER'] = tpch.customer.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER'] = tpch.supplier.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PART'] = tpch.part.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.PARTSUPP'] = tpch.partsupp.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS'] = tpch.orders.length;
+  ROW_COUNTS['SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM'] = tpch.lineitem.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.DEPARTMENTS'] = demo.departments.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.EMPLOYEES'] = demo.employees.length;
+  ROW_COUNTS['DEMO_DB.PUBLIC.SALES'] = demo.sales.length;
+
+  setBootText('Ready', 100);
+  await new Promise(r => setTimeout(r, 250));
+
+  initEditor();
+  renderTree();
+  renderTabs();
+  renderWorksheetList();
+
+  // Ensure there's at least one open worksheet
+  if (!state.activeWsId || !state.worksheets[state.activeWsId]) {
+    if (state.worksheetOrder.length === 0) {
+      // First-time visit — create a starter worksheet
+      const starter = TEMPLATES.find(t => t.id === 'starter');
+      newWorksheet(starter.title, starter.sql);
+    } else {
+      state.activeWsId = state.worksheetOrder[0];
+      saveState();
+    }
+  }
+  renderTabs();
+  renderWorksheetList();
+  loadEditorFromActive();
+
+  wireUI();
+
+  // Hide boot
+  $('#bootOverlay').classList.add('hide');
+  setStatus('ok', 'Idle');
+
+  // Welcome toast first time
+  const seen = localStorage.getItem('snowsight_v1_welcomed');
+  if (!seen) {
+    toast('Welcome — try Templates ▸ for sample queries, or click ⓘ for the About', 'success');
+    localStorage.setItem('snowsight_v1_welcomed', '1');
+  }
+}
+
+async function loadTpchIntoDB(d) {
+  const exec = sql => state.db.exec(sql);
+  exec(`CREATE TABLE region (r_regionkey INTEGER PRIMARY KEY, r_name TEXT, r_comment TEXT);`);
+  exec(`CREATE TABLE nation (n_nationkey INTEGER PRIMARY KEY, n_name TEXT, n_regionkey INTEGER, n_comment TEXT);`);
+  exec(`CREATE TABLE customer (c_custkey INTEGER PRIMARY KEY, c_name TEXT, c_address TEXT, c_nationkey INTEGER, c_phone TEXT, c_acctbal REAL, c_mktsegment TEXT, c_comment TEXT);`);
+  exec(`CREATE TABLE supplier (s_suppkey INTEGER PRIMARY KEY, s_name TEXT, s_address TEXT, s_nationkey INTEGER, s_phone TEXT, s_acctbal REAL, s_comment TEXT);`);
+  exec(`CREATE TABLE part (p_partkey INTEGER PRIMARY KEY, p_name TEXT, p_mfgr TEXT, p_brand TEXT, p_type TEXT, p_size INTEGER, p_container TEXT, p_retailprice REAL, p_comment TEXT);`);
+  exec(`CREATE TABLE partsupp (ps_partkey INTEGER, ps_suppkey INTEGER, ps_availqty INTEGER, ps_supplycost REAL, ps_comment TEXT, PRIMARY KEY (ps_partkey, ps_suppkey));`);
+  exec(`CREATE TABLE orders (o_orderkey INTEGER PRIMARY KEY, o_custkey INTEGER, o_orderstatus TEXT, o_totalprice REAL, o_orderdate TEXT, o_orderpriority TEXT, o_clerk TEXT, o_shippriority INTEGER, o_comment TEXT);`);
+  exec(`CREATE TABLE lineitem (l_orderkey INTEGER, l_partkey INTEGER, l_suppkey INTEGER, l_linenumber INTEGER, l_quantity INTEGER, l_extendedprice REAL, l_discount REAL, l_tax REAL, l_returnflag TEXT, l_linestatus TEXT, l_shipdate TEXT, l_commitdate TEXT, l_receiptdate TEXT, l_shipinstruct TEXT, l_shipmode TEXT, l_comment TEXT, PRIMARY KEY (l_orderkey, l_linenumber));`);
+
+  bulkInsert('region',   ['r_regionkey','r_name','r_comment'], d.region);
+  bulkInsert('nation',   ['n_nationkey','n_name','n_regionkey','n_comment'], d.nation);
+  bulkInsert('customer', ['c_custkey','c_name','c_address','c_nationkey','c_phone','c_acctbal','c_mktsegment','c_comment'], d.customer);
+  bulkInsert('supplier', ['s_suppkey','s_name','s_address','s_nationkey','s_phone','s_acctbal','s_comment'], d.supplier);
+  bulkInsert('part',     ['p_partkey','p_name','p_mfgr','p_brand','p_type','p_size','p_container','p_retailprice','p_comment'], d.part);
+  bulkInsert('partsupp', ['ps_partkey','ps_suppkey','ps_availqty','ps_supplycost','ps_comment'], d.partsupp);
+  bulkInsert('orders',   ['o_orderkey','o_custkey','o_orderstatus','o_totalprice','o_orderdate','o_orderpriority','o_clerk','o_shippriority','o_comment'], d.orders);
+  bulkInsert('lineitem', ['l_orderkey','l_partkey','l_suppkey','l_linenumber','l_quantity','l_extendedprice','l_discount','l_tax','l_returnflag','l_linestatus','l_shipdate','l_commitdate','l_receiptdate','l_shipinstruct','l_shipmode','l_comment'], d.lineitem);
+
+  // Indexes
+  exec(`CREATE INDEX idx_orders_custkey ON orders(o_custkey);`);
+  exec(`CREATE INDEX idx_orders_date ON orders(o_orderdate);`);
+  exec(`CREATE INDEX idx_lineitem_orderkey ON lineitem(l_orderkey);`);
+  exec(`CREATE INDEX idx_lineitem_partkey ON lineitem(l_partkey);`);
+  exec(`CREATE INDEX idx_lineitem_suppkey ON lineitem(l_suppkey);`);
+  exec(`CREATE INDEX idx_customer_nation ON customer(c_nationkey);`);
+  exec(`CREATE INDEX idx_supplier_nation ON supplier(s_nationkey);`);
+}
+async function loadDemoIntoDB(d) {
+  const exec = sql => state.db.exec(sql);
+  exec(`CREATE TABLE departments (dept_id INTEGER PRIMARY KEY, dept_name TEXT, location TEXT, budget REAL);`);
+  exec(`CREATE TABLE employees (employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT, dept_id INTEGER, title TEXT, hire_date TEXT, salary REAL, manager_id INTEGER);`);
+  exec(`CREATE TABLE sales (sale_id INTEGER PRIMARY KEY, employee_id INTEGER, product TEXT, sale_date TEXT, amount REAL, status TEXT);`);
+  bulkInsert('departments', ['dept_id','dept_name','location','budget'], d.departments);
+  bulkInsert('employees',   ['employee_id','first_name','last_name','email','dept_id','title','hire_date','salary','manager_id'], d.employees);
+  bulkInsert('sales',       ['sale_id','employee_id','product','sale_date','amount','status'], d.sales);
+  exec(`CREATE INDEX idx_emp_dept ON employees(dept_id);`);
+  exec(`CREATE INDEX idx_sales_emp ON sales(employee_id);`);
+  exec(`CREATE INDEX idx_sales_date ON sales(sale_date);`);
+}
+function bulkInsert(table, cols, rows) {
+  if (!rows.length) return;
+  const placeholders = '(' + cols.map(_ => '?').join(',') + ')';
+  const stmt = state.db.prepare(`INSERT INTO ${table} (${cols.join(',')}) VALUES ${placeholders}`);
+  state.db.exec('BEGIN');
+  try {
+    for (const row of rows) stmt.run(row);
+  } finally {
+    stmt.free();
+    state.db.exec('COMMIT');
+  }
+}
+
+// ---------- Wire UI ----------
+function wireUI() {
+  $('#runBtn').addEventListener('click', () => runQuery(false));
+  $('#runAllBtn').addEventListener('click', () => runQuery(true));
+  $('#formatBtn').addEventListener('click', formatSql);
+  $('#historyBtn').addEventListener('click', () => {
+    renderHistory();
+    $('#historyModal').classList.add('open');
+  });
+  $('#templatesBtn').addEventListener('click', () => {
+    renderTemplates();
+    $('#templatesModal').classList.add('open');
+  });
+  $('#aboutBtn').addEventListener('click', () => {
+    $('#aboutModal').classList.add('open');
+  });
+  $('#newWsBtn2').addEventListener('click', () => newWorksheet());
+
+  $('#refreshDbBtn').addEventListener('click', () => {
+    renderTree();
+    toast('Catalog refreshed', 'success');
+  });
+
+  $('#dbSearch').addEventListener('input', e => {
+    state.treeFilter = e.target.value;
+    renderTree();
+  });
+
+  // Result tabs
+  $$('.result-tab').forEach(t => {
+    t.addEventListener('click', () => switchResultPane(t.dataset.pane));
+  });
+
+  $('#exportCsvBtn').addEventListener('click', exportCsv);
+  $('#copyCsvBtn').addEventListener('click', copyCsv);
+
+  // Modals close
+  $$('[data-close]').forEach(b => b.addEventListener('click', e => {
+    e.target.closest('.modal-backdrop').classList.remove('open');
+  }));
+  $$('.modal-backdrop').forEach(b => {
+    b.addEventListener('click', e => { if (e.target === b) b.classList.remove('open'); });
+  });
+
+  $('#clearHistoryBtn').addEventListener('click', () => {
+    if (!confirm('Clear all query history?')) return;
+    state.history = [];
+    saveState();
+    renderHistory();
+    toast('History cleared', 'success');
+  });
+
+  // Role / warehouse menus
+  $('#rolePill').addEventListener('click', e => {
+    e.stopPropagation();
+    const roles = ['SYSADMIN','ACCOUNTADMIN','SECURITYADMIN','PUBLIC','USERADMIN'];
+    openMenu($('#roleMenu'), $('#rolePill'), [
+      { section: 'Switch role' },
+      ...roles.map(r => ({
+        label: r, active: state.context.role === r,
+        onClick: () => {
+          state.context.role = r;
+          $('#roleName').textContent = r;
+          toast(`Role switched to ${r}`, 'success');
+        }
+      }))
+    ]);
+  });
+  $('#warehousePill').addEventListener('click', e => {
+    e.stopPropagation();
+    const sizes = ['X-Small','Small','Medium','Large','X-Large'];
+    const warehouses = ['COMPUTE_WH','ANALYTICS_WH','LOAD_WH','REPORTING_WH'];
+    openMenu($('#warehouseMenu'), $('#warehousePill'), [
+      { section: 'Warehouse' },
+      ...warehouses.map(w => ({
+        label: w, active: state.context.warehouse === w,
+        right: w === state.context.warehouse ? state.context.warehouseSize : '',
+        onClick: () => {
+          state.context.warehouse = w;
+          $('#warehouseName').textContent = w;
+          toast(`Resuming ${w}...`, 'success');
+        }
+      })),
+      { divider: true },
+      { section: 'Size' },
+      ...sizes.map(s => ({
+        label: s, active: state.context.warehouseSize === s,
+        onClick: () => {
+          state.context.warehouseSize = s;
+          toast(`Warehouse resized to ${s}`, 'success');
+        }
+      }))
+    ]);
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.menu') && !e.target.closest('.pill')) closeAllMenus();
+  });
+
+  // Resizer
+  const resizer = $('#resizer');
+  let resizeStartY = 0, startH = 0;
+  const root = document.documentElement;
+  resizer.addEventListener('mousedown', e => {
+    resizeStartY = e.clientY;
+    startH = parseInt(getComputedStyle(root).getPropertyValue('--results-h')) || 360;
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+    const onMove = ev => {
+      const dy = resizeStartY - ev.clientY;
+      const newH = Math.max(120, Math.min(window.innerHeight - 200, startH + dy));
+      root.style.setProperty('--results-h', newH + 'px');
+    };
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      if (state.results) renderChart();
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  // Window resize → re-render chart
+  window.addEventListener('resize', debounce(() => {
+    if (state.results && $('#pane-chart').classList.contains('active')) renderChart();
+  }, 150));
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      $('#dbSearch').focus();
+    }
+    if (e.key === 'Escape') {
+      closeAllMenus();
+      $$('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+    }
+  });
+}
+
+// ---------- Boot trigger ----------
+document.addEventListener('DOMContentLoaded', () => {
+  boot().catch(err => {
+    console.error(err);
+    $('#bootText').textContent = 'Boot failed: ' + err.message;
+  });
+});
+
+</script>
+
+</body>
+</html>
