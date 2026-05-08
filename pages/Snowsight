@@ -1190,6 +1190,53 @@ background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover { background: var(–bg-4); background-clip: content-box; border: 2px solid transparent; }
 
+/* ===== Ask AI ===== */
+.ai-btn {
+  position: relative;
+  background: linear-gradient(135deg, rgba(41,181,232,0.14), rgba(176,136,249,0.14)) !important;
+  border-color: rgba(41,181,232,0.35) !important;
+  color: var(–text-1) !important;
+}
+.ai-btn:hover {
+  background: linear-gradient(135deg, rgba(41,181,232,0.22), rgba(176,136,249,0.22)) !important;
+  border-color: var(–sf-blue) !important;
+}
+.ai-btn svg { color: var(–sf-blue); }
+
+.ai-panel { display: flex; flex-direction: column; gap: 12px; }
+.ai-lead { color: var(–text-2); font-size: 12.5px; line-height: 1.5; }
+.ai-hint { color: var(–text-3); font-size: 11.5px; line-height: 1.5; }
+.ai-hint a { color: var(–sf-blue); text-decoration: none; }
+.ai-hint a:hover { text-decoration: underline; }
+.ai-hint code { background: var(–bg-1); padding: 1px 5px; border-radius: 3px; font-family: ‘JetBrains Mono’, monospace; font-size: 11px; color: var(–text-2); }
+.ai-lead code { background: var(–bg-1); padding: 1px 5px; border-radius: 3px; font-family: ‘JetBrains Mono’, monospace; font-size: 11px; color: var(–text-2); }
+
+.ai-input {
+  width: 100%;
+  background: var(–bg-1);
+  border: 1px solid var(–border-2);
+  border-radius: var(–radius-md);
+  color: var(–text-1);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 9px 11px;
+  outline: none;
+  transition: border-color 120ms;
+  resize: vertical;
+}
+.ai-input:focus { border-color: var(–sf-blue); }
+.ai-input::placeholder { color: var(–text-3); }
+
+.ai-row { display: flex; align-items: center; gap: 8px; }
+.ai-spacer { flex: 1; }
+.ai-status {
+  font-size: 12px;
+  color: var(–text-3);
+  min-height: 16px;
+  font-family: ‘JetBrains Mono’, monospace;
+}
+.ai-status.error { color: #FF7A8C; white-space: pre-wrap; word-break: break-word; }
+
 /* Utility */
 .hidden { display: none !important; }
 
@@ -1412,6 +1459,10 @@ background-clip: content-box;
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3l5 5-5 5V3zm6 0l5 5-5 5V3z"/></svg>
       Run All
     </button>
+    <button class="btn ai-btn" id="aiBtn" title="Generate SQL from natural language (⌘I)">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l1.4 4 4 1.4-4 1.4L8 12l-1.4-4-4-1.4 4-1.4L8 1zm5.5 8.5l.6 1.7 1.7.6-1.7.6-.6 1.7-.6-1.7-1.7-.6 1.7-.6.6-1.7z"/></svg>
+      Ask AI
+    </button>
     <button class="btn" id="formatBtn" title="Format SQL">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10M3 8h7M3 12h10" stroke-linecap="round"/></svg>
       Format
@@ -1548,6 +1599,38 @@ background-clip: content-box;
     </div>
     <div class="modal-body">
       <div class="templates-grid" id="templatesGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="aiModal">
+  <div class="modal" style="max-width: 560px;">
+    <div class="modal-head">
+      <h3>
+        <svg viewBox="0 0 16 16" fill="currentColor" style="width:14px;height:14px;display:inline-block;vertical-align:-2px;color:var(--sf-blue);margin-right:6px;"><path d="M8 1l1.4 4 4 1.4-4 1.4L8 12l-1.4-4-4-1.4 4-1.4L8 1z"/></svg>
+        Ask AI
+      </h3>
+      <button class="icon-btn" data-close>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="aiKeyMissing" class="ai-panel">
+        <p class="ai-lead">Bring your own Anthropic API key. Stored in this browser only — sent only to <code>api.anthropic.com</code>.</p>
+        <input type="password" id="aiKeyInput" class="ai-input" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false" />
+        <button class="btn primary" id="aiKeySaveBtn" style="width:100%;justify-content:center;">Save key</button>
+        <p class="ai-hint">Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a>. Pay-as-you-go; a typical SQL generation costs less than $0.01.</p>
+      </div>
+      <div id="aiPromptPanel" class="ai-panel" hidden>
+        <p class="ai-lead">Describe what you want — we'll generate Snowflake SQL against the loaded schema.</p>
+        <textarea id="aiPrompt" class="ai-input" rows="4" placeholder="e.g. top 10 customers by lifetime spend, broken out by market segment"></textarea>
+        <div class="ai-row">
+          <button class="btn" id="aiResetKeyBtn">Update API key</button>
+          <div class="ai-spacer"></div>
+          <button class="btn primary" id="aiGenerateBtn">Generate SQL</button>
+        </div>
+        <div id="aiStatus" class="ai-status"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -3857,6 +3940,134 @@ async function loadDemoIntoDB(d) {
   await exec(`CREATE INDEX idx_sales_date ON sales(sale_date);`);
 }
 
+// ---------- Ask AI ----------
+const AI_KEY_STORAGE = 'snowsight_v1_ai_key';
+const AI_MODEL = 'claude-sonnet-4-6';
+const AI_API_URL = 'https://api.anthropic.com/v1/messages';
+
+function showAiPromptPanel() {
+  $('#aiKeyMissing').hidden = true;
+  $('#aiPromptPanel').hidden = false;
+}
+function showAiKeyPanel() {
+  $('#aiKeyMissing').hidden = false;
+  $('#aiPromptPanel').hidden = true;
+}
+
+function openAiModal() {
+  $('#aiModal').classList.add('open');
+  $('#aiStatus').textContent = '';
+  $('#aiStatus').classList.remove('error');
+  if (localStorage.getItem(AI_KEY_STORAGE)) {
+    showAiPromptPanel();
+    setTimeout(() => $('#aiPrompt').focus(), 50);
+  } else {
+    showAiKeyPanel();
+    setTimeout(() => $('#aiKeyInput').focus(), 50);
+  }
+}
+
+function saveAiKey() {
+  const v = $('#aiKeyInput').value.trim();
+  if (!v.startsWith('sk-ant-')) {
+    toast('Invalid Anthropic key — should start with sk-ant-', 'error');
+    return;
+  }
+  localStorage.setItem(AI_KEY_STORAGE, v);
+  $('#aiKeyInput').value = '';
+  showAiPromptPanel();
+  setTimeout(() => $('#aiPrompt').focus(), 50);
+}
+
+// Compact schema description for the system prompt — small enough to send
+// every call without caching, large enough to ground the model in the
+// available tables and column names.
+function buildAiSchemaContext() {
+  const lines = [];
+  for (const db of SCHEMA_META.databases) {
+    for (const sc of db.schemas) {
+      for (const t of sc.tables) {
+        const cols = t.columns.map(c => `${c[0]} ${c[1]}`).join(', ');
+        lines.push(`${db.name}.${sc.name}.${t.name}(${cols})`);
+      }
+    }
+  }
+  return lines.join('\n');
+}
+
+async function generateAiSql() {
+  const prompt = $('#aiPrompt').value.trim();
+  if (!prompt) { $('#aiPrompt').focus(); return; }
+  const key = localStorage.getItem(AI_KEY_STORAGE);
+  if (!key) { showAiKeyPanel(); return; }
+
+  const status = $('#aiStatus');
+  const btn = $('#aiGenerateBtn');
+  status.textContent = 'Generating…';
+  status.classList.remove('error');
+  btn.disabled = true;
+
+  try {
+    const schema = buildAiSchemaContext();
+    const system = `You are a Snowflake SQL expert. Generate one Snowflake-flavored SQL query for the user's request.
+
+Output rules — these are strict:
+- Output ONLY the SQL. No markdown fencing. No prose. No preamble. No trailing notes.
+- Reference tables by their unqualified name (case-insensitive lower-case is fine).
+- Use Snowflake idioms when they fit: QUALIFY for window-filter, IFF for inline conditional, DATEADD/DATEDIFF/DATE_TRUNC for dates, ::TYPE for casts, ILIKE for case-insensitive match.
+- Inline -- comments are welcome but no separate explanation.
+
+Available schema:
+${schema}`;
+
+    const resp = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        max_tokens: 1024,
+        system,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!resp.ok) {
+      const errBody = await resp.text();
+      let msg = `${resp.status} ${resp.statusText}`;
+      try {
+        const j = JSON.parse(errBody);
+        if (j.error && j.error.message) msg = j.error.message;
+      } catch (_) {}
+      throw new Error(msg);
+    }
+
+    const json = await resp.json();
+    let sql = (json.content && json.content[0] && json.content[0].text || '').trim();
+    sql = sql.replace(/^```\w*\s*/m, '').replace(/```\s*$/m, '').trim();
+    if (!sql) throw new Error('No SQL returned by the model.');
+
+    // Insert into the active worksheet at the cursor, with a comment recording the prompt
+    const block = `\n-- Ask AI: ${prompt.replace(/\n/g, ' ')}\n${sql}\n`;
+    const cur = editor.getDoc().getCursor();
+    editor.getDoc().replaceRange(block, cur);
+    editor.focus();
+
+    $('#aiModal').classList.remove('open');
+    $('#aiPrompt').value = '';
+    toast('Generated — review and Run', 'success');
+  } catch (err) {
+    status.textContent = `Error: ${err.message}`;
+    status.classList.add('error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // ---------- Wire UI ----------
 function wireUI() {
   $('#runBtn').addEventListener('click', () => runQuery(false));
@@ -3872,6 +4083,19 @@ function wireUI() {
   });
   $('#aboutBtn').addEventListener('click', () => {
     $('#aboutModal').classList.add('open');
+  });
+  $('#aiBtn').addEventListener('click', openAiModal);
+  $('#aiKeySaveBtn').addEventListener('click', saveAiKey);
+  $('#aiKeyInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); saveAiKey(); }
+  });
+  $('#aiResetKeyBtn').addEventListener('click', () => {
+    showAiKeyPanel();
+    $('#aiKeyInput').focus();
+  });
+  $('#aiGenerateBtn').addEventListener('click', generateAiSql);
+  $('#aiPrompt').addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); generateAiSql(); }
   });
   $('#newWsBtn2').addEventListener('click', () => newWorksheet());
 
@@ -4012,6 +4236,10 @@ function wireUI() {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
       e.preventDefault();
       $('#dbSearch').focus();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+      e.preventDefault();
+      openAiModal();
     }
     if (e.key === 'Escape') {
       closeAllMenus();
