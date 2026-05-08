@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-05-08T14:35:13.503Z",
+  "tables": {
+    "region": {
+      "rows": 5,
+      "bytes": 829
+    },
+    "nation": {
+      "rows": 25,
+      "bytes": 1394
+    },
+    "customer": {
+      "rows": 600,
+      "bytes": 23580
+    },
+    "supplier": {
+      "rows": 50,
+      "bytes": 3403
+    },
+    "part": {
+      "rows": 800,
+      "bytes": 18454
+    },
+    "partsupp": {
+      "rows": 3200,
+      "bytes": 37561
+    },
+    "orders": {
+      "rows": 6000,
+      "bytes": 105202
+    },
+    "lineitem": {
+      "rows": 24220,
+      "bytes": 592380
+    },
+    "departments": {
+      "rows": 8,
+      "bytes": 881
+    },
+    "employees": {
+      "rows": 80,
+      "bytes": 5133
+    },
+    "sales": {
+      "rows": 1500,
+      "bytes": 22679
+    },
+    "variant_data": {
+      "rows": 80,
+      "bytes": 3027
+    }
+  }
+}
