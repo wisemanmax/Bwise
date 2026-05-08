@@ -1,0 +1,303 @@
+# Snowsight Clone — Roadmap & Execution Plan
+
+Working document for evolving `pages/Snowsight` (the single-file Snowsight clone with sql.js + a Snowflake→SQLite translator) into a feature-complete, browser-based Snowflake replica with a real analytical dataset.
+
+> **Heads up to Claude Code:** Read `pages/Snowsight` and `README.md` first. The artifact is intentionally a single HTML file. Don't restructure into a build system unless explicitly told to — the "no build step" property is a feature, not a constraint to remove. When in doubt, prefer extending an existing function over introducing a new file.
+
+---
+
+## Project context
+
+**What exists today (`pages/Snowsight`, ~3,726 lines):**
+
+- Vanilla JS, single HTML file, CDN-loaded deps (sql.js, CodeMirror)
+- `state` object holds worksheets, history, context (role/warehouse/db/schema)
+- `translateSnowflake(sql)` — paren-aware regex translator (Snowflake → SQLite)
+- TPCH-shaped synthetic data (~35K rows): region, nation, customer, supplier, part, partsupp, orders, lineitem
+- `DEMO_DB.PUBLIC` second namespace: departments, employees, sales
+- 12 verified-passing query templates in `TEMPLATES`
+- Snowsight-faithful CSS (dark theme, ice-blue accent, Inter + JetBrains Mono)
+- `boot()` orchestrates DDL + bulk insert + UI init
+
+**Architectural rules to preserve:**
+
+1. Single deployable HTML file (deployable to GitHub Pages with zero build)
+2. localStorage for persistence (worksheets, history, preferences)
+3. CDN-only dependencies — no npm install required for end users
+4. Snowsight-faithful visual language (don't add Material/shadcn/etc.)
+5. Vanilla JS — no React, Vue, Svelte, etc.
+6. Snowsight is one of ~77 portfolio sub-pages, not a standalone product. Site-wide health (load time, mobile, SEO) trumps any single feature.
+
+---
+
+## Decision log
+
+Record big decisions here so the codebase stays coherent.
+
+- **2026-05-08:** Started from sql.js v1 single-file build. 12 templates passing.
+- **2026-05-08:** Dual-engine commitment. `?engine=sqljs` default, `?engine=duckdb` opt-in. Translator forks where needed; templates run against both.
+- **2026-05-08:** Parquet hosted in this repo under `pages/Snowsight-data/`. SF0.01 only (≤5 MB). Slow first load accepted; mitigated by OPFS cache pulled forward in execution plan.
+- **2026-05-08:** Snowsight is a portfolio sub-page at `pages/Snowsight`, not a standalone artifact. Budget is sessions-unlimited, but every change is judged against site-wide impact, not just feature parity.
+- **2026-05-08:** Phase 0 split into 0a–0e to keep one architectural change in flight at a time. Build pipeline (0d) deferred until pain emerges; 3,726 lines in one file is currently fine.
+- **2026-05-08:** AI assistant (was 3.4) and OPFS cache (was 4.1) pulled forward ahead of original Phase 1 — highest wow-per-session, low complexity, work on either engine.
+- **2026-05-08:** Phase 1.3 (time travel), 1.4 (MERGE), 1.5 (COPY INTO) deferred until after Phase 2 ships. Deep semantics, low recruiter visibility.
+- **2026-05-08:** Phase 2.3 (real query plan viz) gets an explicit off-ramp: if the EXPLAIN-parse session goes sideways, fall back to a static text plan and move on.
+- *(add entries as you make them)*
+
+---
+
+## Working with Claude Code on this project
+
+**Before each phase:**
+
+```bash
+git checkout -b phase-N-shortname
+node pages/Snowsight-test.js  # baseline: must be green on whichever engine is in scope
+```
+
+**During work:**
+
+- Read the relevant section of `pages/Snowsight` before editing — the file is sectioned with banner comments
+- After translator changes: re-run `node pages/Snowsight-test.js`, must stay green on whichever engine is in scope (12/12 minimum on the active engine)
+- After UI changes: open the page in a browser, verify visually
+- For new features: add at least one entry to the `TEMPLATES` array that exercises it
+
+**Between phases:**
+
+```bash
+git add . && git commit -m "phase N: <description>"
+git tag phase-N-complete
+```
+
+**File map:**
+
+- `pages/Snowsight` — the entire app (single HTML file, no extension)
+- `pages/Snowsight-test.js` — Node test harness, runs the 12 templates and prints pass/fail (created in Pre-work below)
+- `pages/Snowsight-data/` — committed parquet for the DuckDB engine path (created in Phase 0e)
+- `README.md` — public-facing portfolio description (Snowsight is one of ~77 demos)
+
+If you find yourself wanting to split `pages/Snowsight` into modules during a phase, **stop**. Revisit only if a later phase makes single-file editing painful.
+
+---
+
+## Overload-prevention rules
+
+1. **One concern per session.** If a session would touch the engine *and* the data *and* the UI, split it.
+2. **Every session ends with a green checkpoint.** All 12 templates pass on whichever engine was in scope. If they don't, revert before stopping.
+3. **Hard stop conditions.** If a session goes >2x its estimate or the page is broken at session end → revert, write a decision-log entry, re-scope before retrying.
+4. **No two architectural changes in flight.** Don't migrate engines while also splitting files into `src/appN.js`.
+5. **Commit per session, tag per phase.**
+
+---
+
+## Pre-work (1 session, before any phase)
+
+Reconcile the workflow with reality so the prescriptions above actually function:
+
+- Confirm path: `pages/Snowsight` (no extension), not `index.html`.
+- Drop any references to `app1.js / app2.js / app3.js` — they don't exist on this branch.
+- Create `pages/Snowsight-test.js`: extracts the 12 TEMPLATES, runs them via sql.js in Node, prints pass/fail. This is the baseline harness everything else relies on.
+
+---
+
+## Phase 0 — Foundation: Engine + Real Dataset
+
+**Goal:** Replace synthetic data with a real analytical dataset and dual-engine support, without ever leaving the page broken at session end.
+
+### 0a (1 session) — Engine abstraction
+
+Wrap current sql.js calls behind a thin `engine.exec(sql)` interface. No DuckDB yet. 12/12 still pass on sql.js. Adds `?engine=sqljs` URL param (default).
+
+### 0b (1–2 sessions) — DuckDB-WASM behind the abstraction
+
+Loaded only when `?engine=duckdb`. Synthetic TPCH still, no parquet yet. 12/12 pass on **both** engines. Translator forks where needed (most paths same; DuckDB path drops the QUALIFY/IFF/etc. translations DuckDB handles natively):
+
+- `IFF`/`IIF` → `CASE WHEN ... THEN ... ELSE ... END` (run to fixpoint for nesting)
+- `DATEADD(unit, n, date)` → `date + INTERVAL n unit`
+- `DATEDIFF(unit, a, b)` → `date_diff('unit', a, b)`
+- `ZEROIFNULL` → `COALESCE(x, 0)`
+- `NULLIFZERO` → `NULLIF(x, 0)`
+- `NVL2` → `CASE WHEN x IS NOT NULL THEN y ELSE z END`
+- `DIV0` / `DIV0NULL`
+
+Convert result format: SQL.js `{columns, values}` → Arrow `Table` (use `arrowToTable()` helper).
+
+### 0c (1 session) — Mobile responsive pass on the current page
+
+Cheap, fixes a real portfolio-wide problem, independent of engine work. Done before adding more weight to the page:
+
+- Sidebar collapses to hamburger drawer below 768px
+- Editor + results stack vertically
+- 100dvh instead of 100vh
+- Touch targets ≥44px
+
+### 0d (deferred / optional) — Build pipeline
+
+3,726 lines in one file is fine. Only split into `src/appN.js` if a later phase makes single-file editing painful. Skipping this for now is intentional.
+
+### 0e (1–2 sessions) — Parquet ingestion
+
+Commit TPCH SF0.01 parquet (~60K rows, ~2–3 MB total) under `pages/Snowsight-data/`. DuckDB path loads via:
+
+```js
+await conn.query(`
+  CREATE TABLE lineitem AS
+  SELECT * FROM 'pages/Snowsight-data/lineitem.parquet'
+`);
+```
+
+sql.js path stays synthetic. Add a dataset selector in the topbar near the warehouse pill.
+
+**Verification:** All 12 templates pass on both engines. `node pages/Snowsight-test.js --engine=sqljs` and `--engine=duckdb` both green.
+
+---
+
+## Pull-forward — High-ROI features before original Phase 1
+
+These are cheap and high-payoff. Don't bury them at the end.
+
+### PF1 (1–2 sessions) — AI assistant
+
+"Ask AI" button in the editor toolbar:
+
+1. Takes user's natural-language prompt
+2. Sends to Anthropic API with current schema context
+3. Inserts generated SQL into editor
+4. Stretch: "Explain results in plain English" after execution
+
+Use the in-artifacts API pattern; no backend. Single most resume-worthy feature for 2026 portfolios. Works on either engine.
+
+### PF2 (1 session) — OPFS cache for parquet
+
+DuckDB-WASM persists to OPFS. After loading parquet once, cache locally so subsequent visits skip the GitHub-Pages fetch:
+
+```js
+await db.open({ path: 'opfs://snowsight.db', accessMode: duckdb.DuckDBAccessMode.READ_WRITE });
+```
+
+First visit: download parquet, write to OPFS (~5s). Subsequent visits: open OPFS file (<1s). Critical because GitHub-hosted parquet means slow first load.
+
+---
+
+## Phase 1 — Core Snowflake SQL parity (re-ordered by safety)
+
+Cheap ones first; defer the risky ones until after a Phase 2 win.
+
+### 1.6 (1 session) — Function parity quick wins
+
+~10 one-liners. Translator + templates. Easy green:
+
+- `REGEXP_LIKE` → `regexp_matches`
+- `STARTSWITH` / `ENDSWITH` / `CONTAINS` → `LIKE` patterns
+- `EDITDISTANCE` → `levenshtein`
+- `BITAND_AGG` / `BITOR_AGG` / `BITXOR_AGG` → DuckDB native
+- `APPROX_COUNT_DISTINCT`, `MEDIAN`, `MODE` → DuckDB native or `quantile_cont`
+- `RATIO_TO_REPORT(x) OVER (...)` → `x / SUM(x) OVER (...)`
+
+### 1.1 (2 sessions) — VARIANT / OBJECT / ARRAY
+
+DuckDB-only path. sql.js path returns a friendly "VARIANT requires DuckDB engine" error.
+
+- `PARSE_JSON(x)` → `x::JSON`
+- `OBJECT_CONSTRUCT(k, v, ...)` → struct or `json_object`
+- `ARRAY_CONSTRUCT(...)` → `[...]` or `json_array`
+- `OBJECT_KEYS(x)` → `json_keys`
+- `obj:key.path[::TYPE]` → `json_extract` with cast
+
+Add a `VARIANT_DATA` table to `DEMO_DB` to demo it.
+
+### 1.2 (1–2 sessions) — FLATTEN / LATERAL
+
+DuckDB-only. `LATERAL FLATTEN(input => arr)` → `unnest(arr) AS f(value)` with the standard alias columns. Pattern-match the common forms.
+
+### Deferred until after Phase 2 ships
+
+- **1.3 time travel** — UI win, low correctness value. Park.
+- **1.4 MERGE** — deep semantics, low recruiter visibility. Park.
+- **1.5 COPY INTO** — needs stages UI from 2.4 to be useful. Park.
+
+---
+
+## Phase 2 — UX parity (visible wins, isolate the risky one)
+
+### 2.1 (1–2 sessions) — Worksheet folders
+
+Pure UI. Drag-and-drop tree, right-click context menu, "Recent" + "Shared with me" virtual folders.
+
+### 2.2 (1 session) — Table detail page
+
+DuckDB path uses `SUMMARIZE table_name` for column stats. sql.js path shows basic counts only. Tabs: Columns, Data preview, DDL.
+
+### 2.6 (1–2 sessions) — Full Query History page
+
+Replaces the modal. Filter chips, paginated table, click-row → detail panel. Recruiters dwell on this.
+
+### 2.7 (1–2 sessions) — Result panel filter / search / pivot
+
+Client-side, both engines. Filter row, full-text search, drag-to-pivot, per-column statistics popover.
+
+### 2.8 (1 session) — Editor improvements
+
+- Real autocomplete (CodeMirror `show-hint` + custom hinter reading `SCHEMA_META` and current FROM clause)
+- Inline error markers from engine error positions
+- `Cmd+F` / `Cmd+H` via `searchcursor`
+- Replace naive `formatSql()` with `sql-formatter` via CDN
+
+### 2.5 (2 sessions) — Admin pages
+
+UI mocks, both engines. Compute > Warehouses, Admin > Users, Admin > Roles, Admin > Resource Monitors. State in localStorage where it makes sense.
+
+### 2.4 (1 session) — Stages / file upload
+
+Drop CSV/JSON/parquet onto the page → DuckDB `register_file_buffer` → `COPY INTO` works. sql.js path falls back to "load on DuckDB engine" message.
+
+### 2.3 (isolated, with off-ramp) — Real query plan visualization
+
+The single biggest "wow" feature, but also the deepest individual task. Run with off-ramp:
+
+- **Session 1:** parse DuckDB's `EXPLAIN ANALYZE` output into a JSON tree. Stop here.
+  - If green → continue.
+  - If sideways → fall back to a static text plan rendering and move on.
+- **Session 2:** render as top-down DAG, color-coded by time spent.
+- **Session 3:** click-node detail panel.
+
+---
+
+## After Phase 2 ships, revisit:
+
+- Deferred 1.3 / 1.4 / 1.5 (decide what's still worth it now that the visible UI is in)
+- Original Phase 3: Notebooks (3.1), Dashboards (3.2), Tasks/Streams UI mocks (3.3), Sharing/permalinks (3.5)
+- Original Phase 4: Streaming results (4.2), accessibility (4.4), tests (4.5), docs site (4.6)
+
+(Note: Phase 3.4 AI assistant and Phase 4.1 OPFS already shipped as PF1/PF2.)
+
+---
+
+## Anti-goals (things to NOT build)
+
+Common scope-creep traps. Skip unless a recruiter specifically asks.
+
+- **Real authentication / multi-user** — UI mock fine; OAuth burns a week and adds nothing
+- **Real warehouse compute simulation** — warehouse pill is a status indicator, not a feature
+- **Snowflake Marketplace** — would need to mock dozens of fake datasets
+- **Streamlit-in-Snowflake** — would need Pyodide; massive bundle hit
+- **Snowpark** — Python execution; out of scope
+- **Real cost analytics** — fake numbers are fine
+- **Replication / failover UI** — niche, low visual payoff
+- **CodeMirror 5 → 6 migration** — huge sink, no visible benefit
+- **Visual restyle** — the current ice-blue/dark Snowsight palette is correct; leave it
+- **Backend for the AI assistant** — use the in-artifacts API pattern only
+
+---
+
+## Open questions resolved
+
+1. ~~iOS WebView fallback?~~ → **Yes, `?engine=sqljs` always available.**
+2. ~~Parquet hosting?~~ → **GitHub repo under `pages/Snowsight-data/`.**
+3. ~~Session budget?~~ → **Unlimited; constraint is overload prevention, not cost.**
+4. **Still open:** AI assistant API key handling — user-paste-into-localStorage vs. host-provided. Decide at start of PF1.
+5. **Still open:** Lighthouse performance budget for Phase 4. Defer until then.
+
+---
+
+*Living document. Edit freely, archive completed phases, add new ones as the product evolves.*
