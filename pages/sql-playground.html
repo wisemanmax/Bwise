@@ -722,6 +722,128 @@
   /* run-selected button accent */
   .btn-run-sel { background: rgba(0, 245, 160, 0.06); border-color: rgba(0, 245, 160, 0.2); color: var(--green); }
   .btn-run-sel:hover { background: rgba(0, 245, 160, 0.12); }
+
+  /* ===== RESULT INTELLIGENCE ===== */
+  /* viz picker */
+  .viz-picker { display: flex; gap: 4px; padding: 6px 14px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.18); align-items: center; }
+  .viz-picker .viz-label { font: 9.5px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.18em; text-transform: uppercase; margin-right: 8px; }
+  .viz-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 26px; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--ink-dim); cursor: pointer; font: 12px 'JetBrains Mono', monospace; transition: all .15s; }
+  .viz-btn:hover { color: var(--ink); background: rgba(255,255,255,0.05); }
+  .viz-btn.active { color: var(--green); background: rgba(0, 245, 160, 0.08); border-color: rgba(0, 245, 160, 0.3); }
+  .viz-btn.disabled { opacity: 0.32; cursor: not-allowed; }
+  .viz-btn.disabled:hover { color: var(--ink-dim); background: transparent; }
+
+  /* column type chip */
+  .col-type-chip { display: inline-block; font: 8.5px 'JetBrains Mono', monospace; padding: 1px 5px; border-radius: 3px; margin-left: 6px; letter-spacing: 0.05em; vertical-align: middle; font-weight: 500; }
+  .col-type-chip.t-INT     { background: rgba(0, 217, 245, 0.12); color: var(--cyan); }
+  .col-type-chip.t-DECIMAL { background: rgba(255, 200, 87, 0.12); color: var(--gold); }
+  .col-type-chip.t-VARCHAR { background: rgba(255,255,255,0.05); color: var(--ink-dim); }
+  .col-type-chip.t-DATE    { background: rgba(180, 138, 255, 0.14); color: var(--purple); }
+  .col-type-chip.t-BOOL    { background: rgba(0, 245, 160, 0.12); color: var(--green); }
+  .col-type-chip.t-NULL    { background: rgba(85, 85, 102, 0.2); color: var(--ink-faint); }
+  .results-table th { cursor: pointer; user-select: none; }
+  .results-table th:hover { color: var(--green) !important; }
+
+  /* col stats popover */
+  .col-stats-popover { position: absolute; z-index: 60; width: 280px; background: var(--bg-elev-2); border: 1px solid var(--border-strong); border-radius: 8px; padding: 14px 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.55); display: none; }
+  .col-stats-popover.open { display: block; }
+  .col-stats-popover h5 { margin: 0 0 8px; font: 600 12px 'Outfit', sans-serif; color: var(--ink); }
+  .col-stats-popover .col-stat-type { font: 9px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+  .col-stats-popover .stat-row { display: flex; justify-content: space-between; padding: 4px 0; font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); border-bottom: 1px dashed rgba(255,255,255,0.05); }
+  .col-stats-popover .stat-row:last-child { border-bottom: none; }
+  .col-stats-popover .stat-row .v { color: var(--ink); }
+  .col-stats-popover .stat-row .v.green { color: var(--green); }
+  .col-stats-popover .stat-row .v.red { color: var(--red); }
+  .col-stats-popover .top-vals { margin-top: 10px; }
+  .col-stats-popover .top-val-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font: 11px 'JetBrains Mono', monospace; }
+  .col-stats-popover .top-val-row .name { color: var(--ink); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .col-stats-popover .top-val-row .bar { width: 60px; height: 5px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
+  .col-stats-popover .top-val-row .bar-fill { height: 100%; background: var(--cyan); }
+  .col-stats-popover .top-val-row .pct { color: var(--ink-faint); font-size: 10px; min-width: 38px; text-align: right; }
+
+  /* pivot view */
+  .pivot-view { padding: 14px 16px; display: none; }
+  .pivot-view.active { display: block; }
+  .pivot-controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; padding: 10px 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; align-items: center; }
+  .pivot-control { display: inline-flex; align-items: center; gap: 6px; font: 10.5px 'JetBrains Mono', monospace; color: var(--ink-dim); }
+  .pivot-control label { letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); font-size: 9px; }
+  .pivot-control select { font: 11px 'JetBrains Mono', monospace; padding: 4px 8px; border-radius: 5px; background: rgba(255,255,255,0.04); color: var(--ink); border: 1px solid var(--border-strong); cursor: pointer; }
+  .pivot-table { width: 100%; border-collapse: collapse; font: 11px 'JetBrains Mono', monospace; }
+  .pivot-table th, .pivot-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); text-align: right; }
+  .pivot-table th { background: rgba(0,0,0,0.3); color: var(--cyan); font-weight: 600; font-size: 10.5px; letter-spacing: 0.04em; text-align: center; }
+  .pivot-table th.row-label-header, .pivot-table td.row-label { text-align: left; color: var(--ink); background: rgba(255,255,255,0.02); font-weight: 500; }
+  .pivot-table td.heat { color: var(--ink); position: relative; }
+  .pivot-table td.heat::before { content: ""; position: absolute; inset: 0; background: var(--red); opacity: var(--heat, 0); pointer-events: none; }
+  .pivot-table td.heat span { position: relative; z-index: 1; }
+  .pivot-empty { padding: 30px; text-align: center; color: var(--ink-faint); font: 11px 'JetBrains Mono', monospace; line-height: 1.5; }
+  .pivot-truncated { padding: 8px 12px; font: 10px 'JetBrains Mono', monospace; color: var(--gold); background: rgba(255, 200, 87, 0.05); border: 1px solid rgba(255, 200, 87, 0.15); border-radius: 6px; margin-bottom: 12px; }
+
+  /* plan tree SVG */
+  .plan-tree-svg-wrap { padding: 8px 0; max-height: 50vh; overflow: auto; }
+  .plan-node-rect { fill: rgba(20, 20, 31, 0.9); stroke: var(--border-strong); stroke-width: 1; transition: all .15s; cursor: pointer; }
+  .plan-node-rect.selected, .plan-node-rect:hover { stroke: var(--green); stroke-width: 1.5; fill: rgba(0, 245, 160, 0.06); }
+  .plan-node-text { fill: var(--ink); font: 600 11px 'JetBrains Mono', monospace; pointer-events: none; }
+  .plan-node-tableref { fill: var(--green); }
+  .plan-node-cost-bg { fill: rgba(255,255,255,0.05); }
+  .plan-node-cost-fill { transition: all .2s; }
+  .plan-edge { stroke: var(--border-strong); stroke-width: 1.5; fill: none; }
+  .plan-detail { margin-top: 10px; padding: 10px 12px; background: rgba(0, 217, 245, 0.04); border-left: 2px solid var(--cyan); border-radius: 4px; font: 11px 'JetBrains Mono', monospace; color: var(--ink-dim); display: none; }
+  .plan-detail.open { display: block; }
+  .plan-raw-toggle { font: 10px 'JetBrains Mono', monospace; color: var(--ink-faint); cursor: pointer; padding: 6px 0; user-select: none; }
+  .plan-raw-toggle:hover { color: var(--ink-dim); }
+  .plan-raw { display: none; margin-top: 6px; }
+  .plan-raw.open { display: block; }
+
+  /* ===== LINEAGE / CATALOG CUES ===== */
+  .pii-badge, .verified-badge { display: inline-block; font: 8.5px 'JetBrains Mono', monospace; padding: 1px 5px; border-radius: 3px; margin-left: 6px; letter-spacing: 0.05em; vertical-align: middle; }
+  .pii-badge { color: var(--gold); background: rgba(255, 200, 87, 0.08); border: 1px solid rgba(255, 200, 87, 0.2); }
+  .verified-badge { color: var(--green); background: rgba(0, 245, 160, 0.08); border: 1px solid rgba(0, 245, 160, 0.2); }
+  .lineage-block { margin: 8px 12px 10px; padding: 8px 10px; background: rgba(0,0,0,0.25); border: 1px dashed var(--border); border-radius: 6px; font: 10.5px 'JetBrains Mono', monospace; color: var(--ink-dim); display: none; line-height: 1.55; }
+  .lineage-block.open { display: block; }
+  .lineage-block .label { color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase; font-size: 9px; }
+  .lineage-block .ref { color: var(--cyan); }
+  .lineage-block .down-ref { color: var(--purple); }
+
+  /* ===== AI DRAWER ===== */
+  .ai-fab { position: absolute; bottom: 48px; right: 16px; padding: 10px 16px; border-radius: 999px; background: linear-gradient(135deg, var(--purple), var(--cyan)); color: var(--bg); font: 700 12px 'Outfit', sans-serif; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(180, 138, 255, 0.35); z-index: 5; transition: all .2s; display: inline-flex; align-items: center; gap: 6px; }
+  .ai-fab:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(180, 138, 255, 0.5); }
+  .ai-fab .sparkle { font-size: 14px; }
+  .ai-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 129; opacity: 0; visibility: hidden; transition: all .2s; }
+  .ai-overlay.open { opacity: 1; visibility: visible; }
+  .ai-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 92vw); background: var(--bg-elev); border-left: 1px solid var(--border-strong); z-index: 130; transform: translateX(100%); transition: transform 0.25s ease-out; display: flex; flex-direction: column; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+  .ai-drawer.open { transform: translateX(0); }
+  .ai-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .ai-header h3 { margin: 0; font: 600 14px 'Outfit', sans-serif; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .ai-header h3 .sparkle { background: linear-gradient(135deg, var(--purple), var(--cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .ai-header .ai-model-pill { font: 9px 'JetBrains Mono', monospace; color: var(--ink-faint); padding: 3px 7px; border: 1px solid var(--border); border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ai-close { background: none; border: none; color: var(--ink-dim); font-size: 22px; cursor: pointer; padding: 0 6px; line-height: 1; }
+  .ai-close:hover { color: var(--ink); }
+  .ai-presets { padding: 12px 18px; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+  .ai-preset-chip { font: 11px 'JetBrains Mono', monospace; padding: 6px 12px; border-radius: 999px; background: rgba(180, 138, 255, 0.06); border: 1px solid rgba(180, 138, 255, 0.2); color: var(--purple); cursor: pointer; transition: all .15s; }
+  .ai-preset-chip:hover { background: rgba(180, 138, 255, 0.14); border-color: var(--purple); }
+  .ai-msgs { flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+  .ai-msg { display: flex; flex-direction: column; gap: 6px; }
+  .ai-msg .ai-msg-role { font: 9.5px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.16em; text-transform: uppercase; }
+  .ai-msg .ai-msg-body { padding: 10px 12px; border-radius: 8px; font: 12.5px/1.55 'Outfit', sans-serif; color: var(--ink); }
+  .ai-msg.user .ai-msg-body { background: rgba(0, 217, 245, 0.06); border: 1px solid rgba(0, 217, 245, 0.15); align-self: flex-end; max-width: 88%; }
+  .ai-msg.assistant .ai-msg-body { background: rgba(180, 138, 255, 0.04); border: 1px solid rgba(180, 138, 255, 0.15); }
+  .ai-msg pre { font: 11.5px/1.55 'JetBrains Mono', monospace; color: var(--cyan); background: rgba(0,0,0,0.35); padding: 10px 12px; border-radius: 6px; overflow-x: auto; margin: 8px 0 0; white-space: pre-wrap; }
+  .ai-msg .apply-btn { margin-top: 8px; font: 11px 'JetBrains Mono', monospace; padding: 6px 12px; border-radius: 5px; border: 1px solid var(--green); background: rgba(0, 245, 160, 0.08); color: var(--green); cursor: pointer; align-self: flex-start; }
+  .ai-msg .apply-btn:hover { background: rgba(0, 245, 160, 0.18); }
+  .streaming-cursor { display: inline-block; width: 2px; height: 1em; background: var(--purple); animation: blink 0.7s steps(1) infinite; vertical-align: text-bottom; margin-left: 1px; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ai-input-wrap { padding: 12px 18px 16px; border-top: 1px solid var(--border); }
+  .ai-input { width: 100%; min-height: 60px; resize: vertical; background: rgba(0,0,0,0.25); border: 1px solid var(--border-strong); border-radius: 8px; padding: 10px 12px; color: var(--ink); font: 13px/1.4 'Outfit', sans-serif; outline: none; transition: border-color .15s; }
+  .ai-input:focus { border-color: var(--purple); }
+  .ai-actions { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
+  .ai-actions .ai-hint { flex: 1; font: 9.5px 'JetBrains Mono', monospace; color: var(--ink-faint); letter-spacing: 0.06em; }
+  .ai-send { font: 11px 'JetBrains Mono', monospace; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--purple), var(--cyan)); color: var(--bg); font-weight: 700; }
+  .ai-send:hover { transform: translateY(-1px); }
+  .ai-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* explain-view replacement defaults so SVG fits */
+  .explain-view .explain-tree { display: none; }
+  .explain-view .explain-tree.legacy-on { display: block; }
 </style>
 </head>
 <body>
@@ -848,6 +970,7 @@
         <p id="solution-text"></p>
         <div class="insight" id="solution-insight"></div>
       </div>
+      <button class="ai-fab" id="ai-fab" type="button" title="Ask AI"><span class="sparkle">✨</span> Ask AI</button>
       <div class="ide-status-bar" id="ide-status">
         <span class="seg"><span class="s-dot green" id="status-conn-dot"></span><span id="status-conn">Connected</span></span>
         <span class="seg seg-strong" id="status-warehouse">Lending Warehouse · PROD</span>
@@ -861,6 +984,16 @@
 
     <div class="results-panel">
       <div class="results-stats-strip" id="results-stats" hidden></div>
+      <div class="viz-picker" id="viz-picker">
+        <span class="viz-label">VISUALIZE</span>
+        <button class="viz-btn active" data-view="table" type="button" title="Table view">▦</button>
+        <button class="viz-btn" data-view="chart" id="viz-chart" type="button" title="Chart view">📊</button>
+        <button class="viz-btn" data-view="pivot" id="viz-pivot" type="button" title="Pivot view">⊞</button>
+        <button class="viz-btn" data-view="plan" id="viz-plan" type="button" title="Plan view">⊟</button>
+        <button class="viz-btn disabled" type="button" title="Map — available with full dataset">🗺</button>
+        <button class="viz-btn disabled" type="button" title="Geo — available with full dataset">◎</button>
+        <button class="viz-btn disabled" type="button" title="KPI — available with full dataset">①</button>
+      </div>
       <div class="results-header">
         <div class="results-tabs">
           <div class="results-tab active" data-view="table">Table</div>
@@ -880,6 +1013,9 @@
       </div>
       <div class="explain-view" id="explain-view">
         <div id="explain-empty" class="chart-empty">Run a query, then click <strong style="color:var(--green)">Plan</strong> to see SQLite's execution plan.</div>
+      </div>
+      <div class="pivot-view" id="pivot-view">
+        <div class="pivot-empty">Run a query with at least 2 columns to enable pivot mode.</div>
       </div>
     </div>
   </div>
@@ -931,6 +1067,29 @@
   <div class="share-members-label">Workspace members</div>
   <div id="share-members"></div>
 </div>
+
+<div class="ai-overlay" id="ai-overlay"></div>
+<div class="ai-drawer" id="ai-drawer" role="dialog" aria-modal="true" aria-labelledby="ai-title">
+  <div class="ai-header">
+    <h3 id="ai-title"><span class="sparkle">✨</span> Ask AI <span class="ai-model-pill">claude · sql copilot · v0.4</span></h3>
+    <button class="ai-close" id="ai-close" type="button" aria-label="Close">×</button>
+  </div>
+  <div class="ai-presets" id="ai-presets">
+    <button class="ai-preset-chip" data-preset="explain" type="button">Explain this query</button>
+    <button class="ai-preset-chip" data-preset="optimize" type="button">Optimize</button>
+    <button class="ai-preset-chip" data-preset="generate" type="button">Generate from English</button>
+  </div>
+  <div class="ai-msgs" id="ai-msgs"></div>
+  <div class="ai-input-wrap">
+    <textarea class="ai-input" id="ai-input" placeholder="Ask anything about your query, schema, or portfolio metrics…" spellcheck="false"></textarea>
+    <div class="ai-actions">
+      <span class="ai-hint">↵ to send · drafts stay in this session</span>
+      <button class="ai-send" id="ai-send" type="button">Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-stats-popover" id="col-stats"></div>
 
 <div class="toast" id="toast">Copied</div>
 
@@ -2111,6 +2270,10 @@ async function boot() {
   wireCommandPalette();
   wireShareModal();
   wireEditorHooks();
+  // ===== Batch 2 boot =====
+  wireColumnHeaderStats();
+  wireVizPicker();
+  wireAIDrawer();
 
   el('loader').classList.add('gone');
 }
@@ -2118,10 +2281,20 @@ async function boot() {
 function buildSchemaSidebar() {
   const list = el('schema-list');
   const mockMin = (s) => { let n = 0; for (const ch of s) n += ch.charCodeAt(0); return 5 + (n % 55); };
+  const LINEAGE = {
+    'DIM_BORROWERS':     { up: ['raw.kyc', 'raw.identity'],                   down: '4 dashboards · 12 models' },
+    'DIM_PRODUCTS':      { up: ['raw.product_catalog'],                       down: '6 dashboards · 3 models' },
+    'FACT_APPLICATIONS': { up: ['raw.web_apps', 'raw.broker_apps'],           down: '8 dashboards · 9 models' },
+    'FACT_LOANS':        { up: ['FACT_APPLICATIONS', 'raw.disbursements'],    down: '9 dashboards · 18 models' },
+    'FACT_PAYMENTS':     { up: ['FACT_LOANS', 'raw.payment_processor'],       down: '7 dashboards · 11 models' }
+  };
+  const isPII      = (n) => /EMAIL|SSN|PHONE|DOB|DATE_OF_BIRTH|FIRST_NAME|LAST_NAME/i.test(n);
+  const isVerified = (n) => /FICO_SCORE|STATUS|APR/i.test(n);
   let html = '';
   for (const t of SCHEMA) {
     const rowCount = countOf(t.table);
     const refreshed = mockMin(t.table);
+    const lin = LINEAGE[t.table] || { up: ['—'], down: '—' };
     html += `<div class="schema-table">
       <div class="schema-table-header" data-table="${t.table}">
         <span class="schema-table-name ${t.kind}">${t.table}</span>
@@ -2130,10 +2303,14 @@ function buildSchemaSidebar() {
           <span class="schema-refresh">refreshed ${refreshed}m ago</span>
         </span>
       </div>
+      <div class="lineage-block" data-lineage-for="${t.table}">
+        <div><span class="label">Upstream</span> ${lin.up.map(u => `<span class="ref">${u}</span>`).join(', ')}</div>
+        <div><span class="label">Downstream</span> <span class="down-ref">${lin.down}</span></div>
+      </div>
       <div class="schema-cols" data-cols-for="${t.table}">
         ${t.cols.map(([n, ty, pk]) => `
           <div class="schema-col ${pk ? 'pk' : ''}" data-insert="${n}">
-            <span class="schema-col-name">${n}</span>
+            <span class="schema-col-name">${n}${isPII(n) ? '<span class="pii-badge" title="Contains personally identifiable information">PII</span>' : ''}${isVerified(n) ? '<span class="verified-badge" title="Verified by data-platform team">✓</span>' : ''}</span>
             <span class="schema-col-type">${ty}</span>
           </div>`).join('')}
       </div>
@@ -2145,6 +2322,10 @@ function buildSchemaSidebar() {
     const headerEl = e.target.closest('.schema-table-header');
     if (headerEl) {
       const tableName = headerEl.dataset.table;
+      // Toggle lineage block for this table
+      document.querySelectorAll('.lineage-block').forEach(b => {
+        b.classList.toggle('open', b.dataset.lineageFor === tableName ? !b.classList.contains('open') : false);
+      });
       const previewSQL = `SELECT * FROM ${tableName} LIMIT 25;`;
       if (typeof setActiveSQL === 'function') {
         setActiveSQL(previewSQL, { title: `Preview: ${tableName}`, tags: ['preview'], markSaved: true });
@@ -2456,12 +2637,17 @@ function switchView(view) {
   document.querySelectorAll('.results-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.view === view);
   });
+  document.querySelectorAll('.viz-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
   el('results-body').style.display = view === 'table' ? '' : 'none';
   el('chart-view').classList.toggle('active', view === 'chart');
   el('explain-view').classList.toggle('active', view === 'plan');
+  const pv = el('pivot-view'); if (pv) pv.classList.toggle('active', view === 'pivot');
 
   if (view === 'chart') renderChart();
   if (view === 'plan')  renderExplain();
+  if (view === 'pivot' && typeof renderPivot === 'function') renderPivot();
 }
 
 // ===== CHART AUTO-DETECTION + RENDER =====
@@ -2629,13 +2815,95 @@ function renderExplain() {
       note = '<div class="explain-note"><strong style="color:var(--gold)">Mixed access.</strong> Some steps use indexes (<code>SEARCH</code>) and some scan (<code>SCAN</code>). Check whether the scanned tables are small dims (fine) or fact tables (not fine).</div>';
     }
 
+    // Build SVG tree
+    const flat = [];
+    function flatten(node, depth) {
+      flat.push({ node, depth });
+      node.children.forEach(c => flatten(c, depth + 1));
+    }
+    roots.forEach(rt => flatten(rt, 0));
+    const NODE_W = 320, NODE_H = 46, ROW_H = 64, COL_X = 32;
+    const svgW = Math.max(420, NODE_W + flat.reduce((m, x) => Math.max(m, x.depth), 0) * COL_X + 40);
+    const svgH = flat.length * ROW_H + 16;
+    const COSTS = { 'SCAN': 0.92, 'SEARCH': 0.30, 'USE TEMP B-TREE': 0.72, 'USING TEMP': 0.72, 'CO-ROUTINE': 0.5, 'COMPOUND QUERY': 0.5, 'MERGE': 0.55, 'CORRELATED SCALAR SUBQUERY': 0.65 };
+    function costFor(detail) {
+      const upper = detail.toUpperCase();
+      for (const k in COSTS) if (upper.includes(k)) return COSTS[k];
+      return 0.4;
+    }
+    function escapeAttr(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    let svg = `<svg class="plan-tree-svg" width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+    // edges first
+    flat.forEach((entry, i) => {
+      const parent = entry.node.row[parentIdx];
+      if (parent && rowsById[parent]) {
+        const pIdx = flat.findIndex(x => x.node === rowsById[parent]);
+        if (pIdx >= 0) {
+          const x1 = flat[pIdx].depth * COL_X + 16;
+          const y1 = pIdx * ROW_H + NODE_H + 8;
+          const x2 = entry.depth * COL_X + 16;
+          const y2 = i * ROW_H + 8;
+          svg += `<path class="plan-edge" d="M ${x1} ${y1} L ${x1} ${(y1 + y2) / 2} L ${x2} ${(y1 + y2) / 2} L ${x2} ${y2}" />`;
+        }
+      }
+    });
+    // nodes
+    flat.forEach((entry, i) => {
+      const detail = String(entry.node.row[detailIdx] || '');
+      const cost = costFor(detail);
+      const x = entry.depth * COL_X;
+      const y = i * ROW_H + 8;
+      const opMatch = detail.match(/^(SCAN|SEARCH|USE TEMP B-TREE|USING TEMP|CO-ROUTINE|COMPOUND QUERY|MERGE|CORRELATED SCALAR SUBQUERY)/i);
+      const opcode = opMatch ? opMatch[0].toUpperCase() : detail.split(/\s+/)[0].toUpperCase();
+      const tableMatch = detail.match(/\b(DIM_BORROWERS|DIM_PRODUCTS|FACT_APPLICATIONS|FACT_LOANS|FACT_PAYMENTS)\b/);
+      const table = tableMatch ? tableMatch[1] : '';
+      const usingIdx = detail.match(/USING\s+(?:INDEX|COVERING\s+INDEX|INTEGER\s+PRIMARY\s+KEY|AUTOMATIC\s+(?:COVERING\s+)?INDEX)([^\(]*)/i);
+      const indexStr = usingIdx ? usingIdx[0].slice(0, 38) : '';
+      svg += `<g data-plan-idx="${i}" style="cursor:pointer">`;
+      svg += `<rect class="plan-node-rect" x="${x}" y="${y}" width="${NODE_W}" height="${NODE_H}" rx="6" />`;
+      svg += `<text class="plan-node-text" x="${x + 12}" y="${y + 18}">${escapeAttr(opcode)}${table ? ` <tspan class="plan-node-tableref">${escapeAttr(table)}</tspan>` : ''}</text>`;
+      if (indexStr) svg += `<text x="${x + 12}" y="${y + 33}" style="fill: var(--gold); font: 9.5px 'JetBrains Mono', monospace; pointer-events:none">${escapeAttr(indexStr)}</text>`;
+      // cost bar
+      svg += `<rect class="plan-node-cost-bg" x="${x + 12}" y="${y + NODE_H - 7}" width="${NODE_W - 24}" height="3" rx="1.5" />`;
+      const fillVar = cost > 0.7 ? '--red' : cost > 0.5 ? '--gold' : cost > 0.35 ? '--cyan' : '--green';
+      svg += `<rect class="plan-node-cost-fill" x="${x + 12}" y="${y + NODE_H - 7}" width="${(NODE_W - 24) * cost}" height="3" rx="1.5" style="fill: var(${fillVar})" />`;
+      svg += `</g>`;
+    });
+    svg += '</svg>';
+
+    const detailHtml = flat.map((entry, i) => {
+      const detail = String(entry.node.row[detailIdx] || '');
+      return `<div class="plan-detail-row" data-detail-idx="${i}" style="display:none">${fmt(detail)}</div>`;
+    }).join('');
+
     view.innerHTML =
-      '<div class="explain-tree">' + lines.join('') + '</div>' +
+      `<div class="plan-tree-svg-wrap">${svg}</div>` +
+      `<div class="plan-detail" id="plan-detail"></div>` +
+      `<div style="display:none" id="plan-details-store">${detailHtml}</div>` +
       note +
-      '<div class="explain-note" style="border-color: var(--ink-faint); background: rgba(255,255,255,0.02); margin-top: 8px;">' +
-      '<strong style="color:var(--ink-dim)">How to read:</strong> Each line shows a step in SQLite\'s plan. <code>SCAN</code> = full table read. ' +
-      '<code>SEARCH</code> = indexed lookup. <code>USING INDEX</code> tells you which index. Indented lines are subqueries / joined steps.' +
-      '</div>';
+      '<div class="plan-raw-toggle" id="plan-raw-toggle">▸ show raw plan</div>' +
+      '<div class="plan-raw" id="plan-raw"><div class="explain-tree legacy-on">' + lines.join('') + '</div></div>';
+
+    // wire interactions
+    view.querySelectorAll('[data-plan-idx]').forEach(g => {
+      g.addEventListener('click', () => {
+        view.querySelectorAll('.plan-node-rect').forEach(r => r.classList.remove('selected'));
+        g.querySelector('.plan-node-rect').classList.add('selected');
+        const idx = g.dataset.planIdx;
+        const stored = view.querySelector(`[data-detail-idx="${idx}"]`);
+        const target = el('plan-detail');
+        if (stored) {
+          target.innerHTML = stored.innerHTML;
+          target.classList.add('open');
+        }
+      });
+    });
+    const tgl = el('plan-raw-toggle');
+    if (tgl) tgl.addEventListener('click', () => {
+      const raw = el('plan-raw');
+      raw.classList.toggle('open');
+      tgl.textContent = raw.classList.contains('open') ? '▾ hide raw plan' : '▸ show raw plan';
+    });
   } catch (err) {
     view.innerHTML = '<div class="err-msg" style="margin: 0">EXPLAIN failed: ' + escapeHTML(err.message) + '</div>';
   }
@@ -2665,6 +2933,7 @@ function runQuery(overrideSQL) {
         lastResult = null;
         pushHistory({ ts: Date.now(), sql, ms, rowCount: 0 });
         updateChartTabAvailability();
+      if (typeof updateVizAvailability === 'function') updateVizAvailability();
         if (typeof renderStatsStrip === 'function') renderStatsStrip({ rows: 0, ms, sql });
         if (typeof setPing === 'function') setPing(Math.max(8, Math.round(ms / 4) + 12));
         return;
@@ -2676,6 +2945,7 @@ function runQuery(overrideSQL) {
       el('btn-export').disabled = false;
       pushHistory({ ts: Date.now(), sql, ms, rowCount: result.values.length });
       updateChartTabAvailability();
+      if (typeof updateVizAvailability === 'function') updateVizAvailability();
       if (typeof renderStatsStrip === 'function') renderStatsStrip({ rows: result.values.length, ms, sql });
       if (typeof setPing === 'function') setPing(Math.max(8, Math.round(ms / 4) + 12));
     } catch (err) {
@@ -2685,8 +2955,19 @@ function runQuery(overrideSQL) {
       lastResult = null;
       pushHistory({ ts: Date.now(), sql, error: err.message });
       updateChartTabAvailability();
+      if (typeof updateVizAvailability === 'function') updateVizAvailability();
     }
   }, 10);
+}
+
+function detectColType(rows, colIdx) {
+  const sample = rows.slice(0, 80).map(r => r[colIdx]).filter(v => v !== null && v !== undefined);
+  if (sample.length === 0) return 'NULL';
+  if (sample.every(v => typeof v === 'number' && Number.isInteger(v))) return 'INT';
+  if (sample.every(v => typeof v === 'number')) return 'DECIMAL';
+  if (sample.every(v => typeof v === 'string' && /^\d{4}-\d{2}(-\d{2})?$/.test(v))) return 'DATE';
+  if (sample.every(v => v === 0 || v === 1 || v === true || v === false)) return 'BOOL';
+  return 'VARCHAR';
 }
 
 function renderTable(result, container) {
@@ -2696,9 +2977,12 @@ function renderTable(result, container) {
   const numericCol = cols.map((_, i) => {
     return rows.length > 0 && rows.slice(0, 50).every(r => r[i] === null || typeof r[i] === 'number');
   });
+  const colTypes = cols.map((_, i) => detectColType(rows, i));
 
   let html = '<table class="results-table"><thead><tr>';
-  cols.forEach((c, i) => { html += `<th class="${numericCol[i] ? 'num' : ''}">${escapeHTML(c)}</th>`; });
+  cols.forEach((c, i) => {
+    html += `<th class="${numericCol[i] ? 'num' : ''}" data-col-idx="${i}" title="Click for column stats">${escapeHTML(c)}<span class="col-type-chip t-${colTypes[i]}">${colTypes[i]}</span></th>`;
+  });
   html += '</tr></thead><tbody>';
   rows.forEach(row => {
     html += '<tr>';
@@ -3488,6 +3772,424 @@ function wireShareModal() {
   el('share-copy-link').addEventListener('click', () => {
     const link = el('share-link').textContent;
     navigator.clipboard.writeText(link).then(() => showToast('Link copied'));
+  });
+}
+
+// =====================================================================
+// ===== RESULT INTELLIGENCE (Batch 2) — col stats / pivot / viz =======
+// =====================================================================
+
+// ===== COLUMN STATS POPOVER =====
+function computeColumnStats(result, colIdx) {
+  const cols = result.columns;
+  const rows = result.values;
+  const name = cols[colIdx];
+  const vals = rows.map(r => r[colIdx]);
+  const nulls = vals.filter(v => v === null || v === undefined).length;
+  const non = vals.filter(v => v !== null && v !== undefined);
+  const distinct = new Set(non.map(v => String(v))).size;
+  const type = detectColType(rows, colIdx);
+  const stats = { name, type, count: rows.length, nulls, nullsPct: rows.length ? (nulls / rows.length * 100) : 0, distinct };
+  if (type === 'INT' || type === 'DECIMAL') {
+    const nums = non.filter(v => typeof v === 'number');
+    if (nums.length) {
+      stats.min = Math.min(...nums);
+      stats.max = Math.max(...nums);
+      stats.avg = nums.reduce((s, v) => s + v, 0) / nums.length;
+    }
+  } else {
+    const counts = new Map();
+    for (const v of non) {
+      const k = String(v);
+      counts.set(k, (counts.get(k) || 0) + 1);
+    }
+    stats.topVals = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  }
+  return stats;
+}
+function showColStatsPopover(thEl, colIdx) {
+  if (!lastResult) return;
+  const stats = computeColumnStats(lastResult, colIdx);
+  const pop = el('col-stats');
+  let html = `<h5>${escapeHTML(stats.name)}</h5>
+    <div class="col-stat-type">type: ${stats.type}</div>
+    <div class="stat-row"><span>Rows</span><span class="v">${stats.count.toLocaleString()}</span></div>
+    <div class="stat-row"><span>Distinct</span><span class="v">${stats.distinct.toLocaleString()}</span></div>
+    <div class="stat-row"><span>Nulls</span><span class="v ${stats.nulls > 0 ? 'red' : 'green'}">${stats.nulls.toLocaleString()} (${stats.nullsPct.toFixed(1)}%)</span></div>`;
+  if (stats.min !== undefined) {
+    html += `<div class="stat-row"><span>Min</span><span class="v">${formatNumber(stats.min, stats.name)}</span></div>
+      <div class="stat-row"><span>Max</span><span class="v">${formatNumber(stats.max, stats.name)}</span></div>
+      <div class="stat-row"><span>Avg</span><span class="v">${formatNumber(stats.avg, stats.name)}</span></div>`;
+  } else if (stats.topVals && stats.topVals.length) {
+    const max = stats.topVals[0][1];
+    html += `<div class="top-vals"><div class="col-stat-type" style="margin: 8px 0 4px">Top values</div>`;
+    for (const [k, c] of stats.topVals) {
+      const pct = stats.count ? (c / stats.count * 100).toFixed(1) : '0';
+      const w = max ? (c / max * 100) : 0;
+      html += `<div class="top-val-row">
+        <span class="name" title="${escapeHTML(k)}">${escapeHTML(k)}</span>
+        <span class="bar"><span class="bar-fill" style="width:${w}%"></span></span>
+        <span class="pct">${pct}%</span>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+  pop.innerHTML = html;
+  pop.classList.add('open');
+  // position
+  const rect = thEl.getBoundingClientRect();
+  const popRect = pop.getBoundingClientRect();
+  let left = rect.left + window.scrollX;
+  let top = rect.bottom + window.scrollY + 6;
+  if (left + popRect.width > window.innerWidth - 12) left = window.innerWidth - popRect.width - 12;
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+}
+function hideColStatsPopover() { el('col-stats').classList.remove('open'); }
+function wireColumnHeaderStats() {
+  // Delegate clicks on results-body table headers
+  document.addEventListener('click', (e) => {
+    const th = e.target.closest('.results-table th[data-col-idx]');
+    if (th && lastResult) {
+      e.stopPropagation();
+      showColStatsPopover(th, parseInt(th.dataset.colIdx, 10));
+      return;
+    }
+    if (!e.target.closest('#col-stats')) {
+      hideColStatsPopover();
+    }
+  });
+}
+
+// ===== PIVOT VIEW =====
+function renderPivot() {
+  const view = el('pivot-view');
+  if (!lastResult || lastResult.columns.length < 2) {
+    view.innerHTML = '<div class="pivot-empty">Run a query with at least 2 columns to enable pivot mode.</div>';
+    return;
+  }
+  const cols = lastResult.columns;
+  const rows = lastResult.values;
+  const types = cols.map((_, i) => detectColType(rows, i));
+  const cfg = IDE.pivotConfig || (IDE.pivotConfig = {});
+  // pick sensible defaults
+  if (!cfg.row || cols.indexOf(cfg.row) < 0) cfg.row = cols[0];
+  if (!cfg.col || cols.indexOf(cfg.col) < 0) {
+    const stringCols = cols.filter((c, i) => types[i] === 'VARCHAR' && c !== cfg.row);
+    cfg.col = stringCols[0] || '';
+  }
+  if (!cfg.val || cols.indexOf(cfg.val) < 0) {
+    const numCol = cols.find((c, i) => (types[i] === 'INT' || types[i] === 'DECIMAL') && c !== cfg.row && c !== cfg.col);
+    cfg.val = numCol || cols[cols.length - 1];
+  }
+  if (!cfg.agg) cfg.agg = 'SUM';
+
+  const opt = (sel, current) => cols.map(c => `<option ${c === current ? 'selected' : ''}>${escapeHTML(c)}</option>`).join('');
+  const aggOpts = ['SUM','AVG','COUNT','MIN','MAX'].map(a => `<option ${a === cfg.agg ? 'selected' : ''}>${a}</option>`).join('');
+  const controls = `
+    <div class="pivot-controls">
+      <span class="pivot-control"><label>Rows</label><select id="pivot-row">${opt(0, cfg.row)}</select></span>
+      <span class="pivot-control"><label>Cols</label><select id="pivot-col"><option ${!cfg.col ? 'selected' : ''}>(none)</option>${opt(1, cfg.col)}</select></span>
+      <span class="pivot-control"><label>Values</label><select id="pivot-val">${opt(2, cfg.val)}</select></span>
+      <span class="pivot-control"><label>Agg</label><select id="pivot-agg">${aggOpts}</select></span>
+    </div>`;
+
+  // Build pivot
+  const rowIdx = cols.indexOf(cfg.row);
+  const colIdx = cfg.col && cfg.col !== '(none)' ? cols.indexOf(cfg.col) : -1;
+  const valIdx = cols.indexOf(cfg.val);
+  const rowKeys = []; const rowSet = new Set();
+  const colKeys = []; const colSet = new Set();
+  const map = {}; // map[rowKey][colKey] = [aggregator state]
+  for (const r of rows) {
+    const rk = String(r[rowIdx] === null ? '∅' : r[rowIdx]);
+    const ck = colIdx >= 0 ? String(r[colIdx] === null ? '∅' : r[colIdx]) : 'Total';
+    if (!rowSet.has(rk)) { rowSet.add(rk); rowKeys.push(rk); }
+    if (!colSet.has(ck)) { colSet.add(ck); colKeys.push(ck); }
+    const v = r[valIdx];
+    map[rk] = map[rk] || {};
+    const cur = map[rk][ck] || { sum: 0, count: 0, min: Infinity, max: -Infinity };
+    if (typeof v === 'number') {
+      cur.sum += v; cur.count += 1;
+      if (v < cur.min) cur.min = v;
+      if (v > cur.max) cur.max = v;
+    } else {
+      cur.count += 1;
+    }
+    map[rk][ck] = cur;
+  }
+  // Sort keys
+  rowKeys.sort();
+  colKeys.sort();
+  const cells = rowKeys.length * colKeys.length;
+  let truncatedNote = '';
+  let useRows = rowKeys; let useCols = colKeys;
+  if (cells > 1000 || rowKeys.length > 80 || colKeys.length > 30) {
+    useRows = rowKeys.slice(0, Math.min(80, rowKeys.length));
+    useCols = colKeys.slice(0, Math.min(30, colKeys.length));
+    truncatedNote = `<div class="pivot-truncated">Pivot truncated for performance — showing ${useRows.length} × ${useCols.length} of ${rowKeys.length} × ${colKeys.length} cells.</div>`;
+  }
+  function aggregate(cell) {
+    if (!cell) return null;
+    if (cfg.agg === 'COUNT') return cell.count;
+    if (cell.count === 0) return null;
+    if (cfg.agg === 'SUM') return cell.sum;
+    if (cfg.agg === 'AVG') return cell.sum / cell.count;
+    if (cfg.agg === 'MIN') return cell.min === Infinity ? null : cell.min;
+    if (cfg.agg === 'MAX') return cell.max === -Infinity ? null : cell.max;
+    return null;
+  }
+  const numericCells = [];
+  useRows.forEach(rk => useCols.forEach(ck => {
+    const v = aggregate((map[rk] || {})[ck]);
+    if (typeof v === 'number') numericCells.push(v);
+  }));
+  const minV = numericCells.length ? Math.min(...numericCells) : 0;
+  const maxV = numericCells.length ? Math.max(...numericCells) : 0;
+  function heat(v) {
+    if (typeof v !== 'number' || maxV === minV) return 0;
+    return (v - minV) / (maxV - minV);
+  }
+  let table = `<table class="pivot-table"><thead><tr><th class="row-label-header">${escapeHTML(cfg.row)}</th>`;
+  useCols.forEach(ck => { table += `<th>${escapeHTML(ck)}</th>`; });
+  table += `</tr></thead><tbody>`;
+  useRows.forEach(rk => {
+    table += `<tr><td class="row-label">${escapeHTML(rk)}</td>`;
+    useCols.forEach(ck => {
+      const v = aggregate((map[rk] || {})[ck]);
+      if (v === null || v === undefined) {
+        table += `<td>—</td>`;
+      } else if (typeof v === 'number') {
+        const h = heat(v) * 0.55;
+        table += `<td class="heat" style="--heat:${h.toFixed(3)}"><span>${formatNumber(v, cfg.val)}</span></td>`;
+      } else {
+        table += `<td><span>${escapeHTML(String(v))}</span></td>`;
+      }
+    });
+    table += `</tr>`;
+  });
+  table += `</tbody></table>`;
+  view.innerHTML = controls + truncatedNote + table;
+
+  // wire control changes
+  ['pivot-row','pivot-col','pivot-val','pivot-agg'].forEach(id => {
+    const sel = el(id);
+    if (!sel) return;
+    sel.addEventListener('change', () => {
+      cfg.row = el('pivot-row').value;
+      cfg.col = el('pivot-col').value === '(none)' ? '' : el('pivot-col').value;
+      cfg.val = el('pivot-val').value;
+      cfg.agg = el('pivot-agg').value;
+      renderPivot();
+    });
+  });
+}
+
+// ===== VIZ PICKER =====
+function wireVizPicker() {
+  el('viz-picker').addEventListener('click', (e) => {
+    const btn = e.target.closest('.viz-btn');
+    if (!btn || btn.classList.contains('disabled')) return;
+    const view = btn.dataset.view;
+    if (!view) return;
+    if (view === 'chart' && el('tab-chart').classList.contains('disabled')) {
+      showToast('Chart needs a category + numeric column'); return;
+    }
+    if (view === 'pivot' && (!lastResult || lastResult.columns.length < 2)) {
+      showToast('Pivot needs at least 2 columns'); return;
+    }
+    switchView(view);
+  });
+}
+function updateVizAvailability() {
+  const chartBtn = el('viz-chart');
+  const pivotBtn = el('viz-pivot');
+  const planBtn  = el('viz-plan');
+  if (chartBtn) chartBtn.classList.toggle('disabled', el('tab-chart').classList.contains('disabled'));
+  if (pivotBtn) pivotBtn.classList.toggle('disabled', !lastResult || lastResult.columns.length < 2);
+  if (planBtn)  planBtn.classList.toggle('disabled', !lastSQL);
+}
+
+// ===== AI DRAWER (mocked) =====
+const AI_RESPONSES = [
+  {
+    match: /^(explain|what does|describe)/i, label: 'Explain',
+    pickSql: () => null,
+    text: `This query rolls loans up by **product category** and computes three per-group metrics:
+
+1. \`COUNT(*)\` — how many loans live in each category.
+2. \`AVG(PRINCIPAL)\` rounded to whole dollars — gives you the typical loan size.
+3. \`AVG(APR) * 100\` formatted as a percentage — the weighted-average rate (weighted by loan count, not by dollars).
+
+Joining \`DIM_PRODUCTS\` is only needed to expose \`PRODUCT_CATEGORY\` for the GROUP BY. If you want **dollar-weighted APR** instead of loan-count-weighted, swap \`AVG(APR)\` for \`SUM(APR * PRINCIPAL) / SUM(PRINCIPAL)\`.`
+  },
+  {
+    match: /(optimi[sz]e|faster|slow|perf)/i, label: 'Optimize',
+    pickSql: () => `-- Optimized: skip the join (PRODUCT_CATEGORY already lives on FACT_LOANS via index)
+SELECT
+  p.PRODUCT_CATEGORY,
+  COUNT(*) AS LOAN_COUNT,
+  ROUND(AVG(l.PRINCIPAL), 0) AS AVG_PRINCIPAL,
+  ROUND(SUM(l.APR * l.PRINCIPAL) / NULLIF(SUM(l.PRINCIPAL), 0) * 100, 2) AS DOLLAR_WTD_APR_PCT
+FROM FACT_LOANS l
+JOIN DIM_PRODUCTS p USING (PRODUCT_ID)
+GROUP BY p.PRODUCT_CATEGORY
+ORDER BY LOAN_COUNT DESC;`,
+    text: `A few easy wins:
+
+- Use \`USING (PRODUCT_ID)\` to flatten the join condition — same plan, cleaner SQL.
+- For APR, switch to a **dollar-weighted** average; it's the metric finance actually wants and uses one extra multiplication.
+- \`NULLIF(SUM(PRINCIPAL), 0)\` keeps the division safe if a category is empty.
+
+The plan stays index-driven: \`SEARCH FACT_LOANS USING IDX_LOANS_*\` then a \`SEARCH DIM_PRODUCTS USING INTEGER PRIMARY KEY\` per group. No full-table scans.`
+  },
+  {
+    match: /(top|borrowers?|state|dpd|delinq)/i, label: 'Generate',
+    pickSql: () => `-- Top 10 states by 30+ DPD borrowers (with exposure)
+SELECT
+  b.STATE,
+  COUNT(DISTINCT l.BORROWER_ID) AS DELINQ_BORROWERS,
+  SUM(l.PRINCIPAL)              AS EXPOSURE_USD,
+  ROUND(100.0 * COUNT(DISTINCT l.BORROWER_ID) / SUM(COUNT(DISTINCT l.BORROWER_ID)) OVER (), 2) AS PCT_OF_DELINQ
+FROM FACT_LOANS l
+JOIN DIM_BORROWERS b ON b.BORROWER_ID = l.BORROWER_ID
+WHERE l.STATUS LIKE '%DPD%' OR l.STATUS LIKE '%Delinq%'
+GROUP BY b.STATE
+ORDER BY DELINQ_BORROWERS DESC
+LIMIT 10;`,
+    text: `Generated a state-level delinquency rollup. It counts **distinct borrowers** with any delinquent loan (so a borrower with 2 bad loans only counts once), exposes principal exposure per state, and shows each state's share of the delinquent population using a window function. Pair this with a heatmap pivot for the deck.`
+  },
+  {
+    match: /(funnel|channel|conversion|approval)/i, label: 'Generate',
+    pickSql: () => `-- Channel funnel — apps → approved → funded
+SELECT
+  a.CHANNEL,
+  COUNT(*)                                                  AS APPS,
+  SUM(CASE WHEN a.STATUS = 'Approved' THEN 1 ELSE 0 END)    AS APPROVED,
+  COUNT(l.LOAN_ID)                                          AS FUNDED,
+  ROUND(100.0 * COUNT(l.LOAN_ID) / COUNT(*), 2)             AS APP_TO_FUND_PCT
+FROM FACT_APPLICATIONS a
+LEFT JOIN FACT_LOANS l ON l.APPLICATION_ID = a.APPLICATION_ID
+GROUP BY a.CHANNEL
+ORDER BY APPS DESC;`,
+    text: `Channel-level funnel: applications → approvals → fundings, plus an end-to-end conversion rate. The \`LEFT JOIN\` to \`FACT_LOANS\` is what lets you count fundings without dropping channels that have zero fundings — important for spotting weak channels rather than just hiding them.`
+  },
+  {
+    match: /.*/i, label: 'Generate',
+    pickSql: (currentSQL) => currentSQL && currentSQL.trim() ? null : `SELECT * FROM FACT_LOANS LIMIT 25;`,
+    text: `I can answer questions about the schema (\`DIM_BORROWERS\`, \`DIM_PRODUCTS\`, \`FACT_APPLICATIONS\`, \`FACT_LOANS\`, \`FACT_PAYMENTS\`), explain or optimize the active query, or draft a new query from a plain-English description. Try: *"top 5 products by charge-off rate"*, *"vintage curve for Q3 2024"*, or *"cohort triangle of 90+ DPD"*.`
+  }
+];
+
+const AIState = { open: false, history: [], stream: null };
+function openAI() {
+  AIState.open = true;
+  el('ai-overlay').classList.add('open');
+  el('ai-drawer').classList.add('open');
+  setTimeout(() => el('ai-input').focus(), 250);
+  if (AIState.history.length === 0) {
+    appendAI({ role: 'assistant', text: 'Hi — ask me about the active query, the schema, or draft a new query from a description. The presets above are the fastest way in.' });
+  }
+}
+function closeAI() {
+  AIState.open = false;
+  el('ai-overlay').classList.remove('open');
+  el('ai-drawer').classList.remove('open');
+  if (AIState.stream) { clearInterval(AIState.stream); AIState.stream = null; }
+}
+function appendAI(msg) {
+  AIState.history.push(msg);
+  const wrap = el('ai-msgs');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + msg.role;
+  div.innerHTML = `<div class="ai-msg-role">${msg.role === 'user' ? 'YOU' : 'COPILOT'}</div><div class="ai-msg-body" data-body></div>`;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  if (msg.role === 'assistant' && msg.streaming) {
+    return div.querySelector('[data-body]');
+  } else {
+    div.querySelector('[data-body]').innerHTML = renderAIBody(msg.text, msg.sqlInsert);
+    return div;
+  }
+}
+function renderAIBody(text, sqlInsert) {
+  const md = String(text || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,0.3); padding:1px 4px; border-radius:3px; color:var(--cyan); font-family:JetBrains Mono,monospace; font-size:11.5px">$1</code>')
+    .replace(/\n\n/g, '<br/><br/>');
+  return md + (sqlInsert ? `<pre>${escapeHTML(sqlInsert)}</pre><button class="apply-btn" data-apply="${escapeHTML(btoa(unescape(encodeURIComponent(sqlInsert))))}">Apply to editor</button>` : '');
+}
+function pickAIResponse(prompt, currentSQL) {
+  for (const r of AI_RESPONSES) {
+    if (r.match.test(prompt)) {
+      const sql = r.pickSql ? r.pickSql(currentSQL) : null;
+      return { text: r.text, sql };
+    }
+  }
+  return { text: 'I don\'t have a canned response for that yet — but the schema is loaded; try a more specific question about a table or metric.', sql: null };
+}
+function streamAIResponse(prompt) {
+  if (AIState.stream) { clearInterval(AIState.stream); AIState.stream = null; }
+  const currentSQL = editor ? editor.getValue() : '';
+  const { text, sql } = pickAIResponse(prompt, currentSQL);
+  const target = appendAI({ role: 'assistant', streaming: true });
+  // streaming caret
+  let caret = document.createElement('span');
+  caret.className = 'streaming-cursor';
+  target.appendChild(caret);
+  let i = 0;
+  AIState.stream = setInterval(() => {
+    const chunk = 2 + Math.floor(Math.random() * 3);
+    for (let k = 0; k < chunk && i < text.length; k++) {
+      caret.before(document.createTextNode(text[i]));
+      i++;
+    }
+    el('ai-msgs').scrollTop = el('ai-msgs').scrollHeight;
+    if (i >= text.length) {
+      clearInterval(AIState.stream); AIState.stream = null;
+      caret.remove();
+      target.innerHTML = renderAIBody(text, sql);
+      el('ai-msgs').scrollTop = el('ai-msgs').scrollHeight;
+    }
+  }, 14);
+}
+function sendAI() {
+  const input = el('ai-input');
+  const text = input.value.trim();
+  if (!text) return;
+  appendAI({ role: 'user', text });
+  input.value = '';
+  setTimeout(() => streamAIResponse(text), 180);
+}
+function wireAIDrawer() {
+  el('ai-fab').addEventListener('click', openAI);
+  el('ai-close').addEventListener('click', closeAI);
+  el('ai-overlay').addEventListener('click', closeAI);
+  el('ai-presets').addEventListener('click', (e) => {
+    const chip = e.target.closest('.ai-preset-chip');
+    if (!chip) return;
+    const preset = chip.dataset.preset;
+    const promptText = preset === 'explain' ? 'Explain this query'
+                     : preset === 'optimize' ? 'Optimize this query for performance'
+                     : 'Generate from English: top 10 states by 30+ DPD borrowers with exposure';
+    el('ai-input').value = promptText;
+    sendAI();
+  });
+  el('ai-send').addEventListener('click', sendAI);
+  el('ai-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAI(); }
+  });
+  el('ai-msgs').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-apply]');
+    if (!btn) return;
+    try {
+      const sql = decodeURIComponent(escape(atob(btn.dataset.apply)));
+      setActiveSQL(sql, { markSaved: false });
+      showToast('Inserted');
+      closeAI();
+    } catch (err) { console.warn(err); }
   });
 }
 
