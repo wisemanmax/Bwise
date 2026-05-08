@@ -375,10 +375,76 @@ gap: 6px;
 }
 .ws-item:hover { background: var(–surface-hover); }
 .ws-item.active { background: var(–surface-active); }
+.ws-item.dragging { opacity: 0.4; }
 .ws-item .icon { color: var(–text-2); flex-shrink: 0; }
 .ws-item .icon svg { width: 13px; height: 13px; }
 .ws-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ws-item .meta { font-size: 10.5px; color: var(–text-3); }
+
+/* Worksheet folders */
+.ws-folder { display: flex; flex-direction: column; }
+.ws-folder-header {
+  display: flex; align-items: center;
+  padding: 5px 6px;
+  border-radius: var(–radius-sm);
+  cursor: pointer;
+  gap: 6px;
+  font-size: 12px;
+  color: var(–text-2);
+  user-select: none;
+}
+.ws-folder-header:hover { background: var(–surface-hover); color: var(–text-1); }
+.ws-folder-header.drop-target {
+  background: rgba(41, 181, 232, 0.18);
+  outline: 1px solid var(–sf-blue);
+  color: var(–text-1);
+}
+.ws-folder-header .twisty {
+  width: 10px; flex-shrink: 0;
+  transition: transform 120ms;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(–text-3);
+}
+.ws-folder.expanded .ws-folder-header .twisty { transform: rotate(90deg); }
+.ws-folder-header .icon { color: var(–text-3); flex-shrink: 0; display: inline-flex; }
+.ws-folder-header .icon svg { width: 13px; height: 13px; }
+.ws-folder-header .label {
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-weight: 500;
+}
+.ws-folder-header .count {
+  font-size: 10.5px; color: var(–text-4);
+  font-variant-numeric: tabular-nums;
+}
+.ws-folder-header .actions {
+  display: none; gap: 2px; margin-left: 4px;
+}
+.ws-folder-header:hover .actions { display: inline-flex; }
+.ws-folder-header .actions .icon-btn {
+  width: 22px; height: 22px;
+}
+.ws-folder-header .actions .icon-btn svg { width: 11px; height: 11px; }
+.ws-folder-children {
+  display: none;
+  padding-left: 14px;
+}
+.ws-folder.expanded .ws-folder-children { display: block; }
+.ws-folder-children .ws-empty {
+  padding: 4px 6px; font-size: 11px; color: var(–text-4); font-style: italic;
+}
+.ws-root-drop {
+  margin: 4px 0;
+  padding: 4px 8px;
+  border: 1px dashed transparent;
+  border-radius: var(–radius-sm);
+  font-size: 11px; color: var(–text-4);
+  text-align: center;
+}
+.ws-root-drop.drop-target {
+  border-color: var(–sf-blue);
+  color: var(–sf-blue);
+  background: rgba(41, 181, 232, 0.06);
+}
 
 /* ===== Workspace ===== */
 .workspace {
@@ -1788,6 +1854,9 @@ background-clip: content-box;
     <div class="sidebar-header">
       <span>Worksheets</span>
       <div class="actions">
+        <button class="icon-btn" title="New folder" id="newFolderBtn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5A1.5 1.5 0 013.5 3h3l1.5 1.5h4.5A1.5 1.5 0 0114 6v5.5A1.5 1.5 0 0112.5 13h-9A1.5 1.5 0 012 11.5v-7z"/><path d="M8 7v4M6 9h4" stroke-linecap="round"/></svg>
+        </button>
         <button class="icon-btn" title="New worksheet" id="newWsBtn2">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>
         </button>
@@ -2909,6 +2978,8 @@ const state = {
   worksheetOrder: [],
   activeWsId: null,
   history: [],
+  folders: {},
+  folderOrder: [],
   context: {
     role: 'SYSADMIN',
     warehouse: 'COMPUTE_WH',
@@ -2923,13 +2994,16 @@ const state = {
 };
 
 const STORAGE = {
-  WORKSHEETS: 'snowsight_v1_worksheets',
-  ORDER:      'snowsight_v1_order',
-  ACTIVE:     'snowsight_v1_active',
-  HISTORY:    'snowsight_v1_history'
+  WORKSHEETS:   'snowsight_v1_worksheets',
+  ORDER:        'snowsight_v1_order',
+  ACTIVE:       'snowsight_v1_active',
+  HISTORY:      'snowsight_v1_history',
+  FOLDERS:      'snowsight_v1_folders',
+  FOLDER_ORDER: 'snowsight_v1_folder_order'
 };
 
 function uid() { return 'ws_' + Math.random().toString(36).slice(2, 10); }
+function folderUid() { return 'fld_' + Math.random().toString(36).slice(2, 10); }
 
 function saveState() {
   try {
@@ -2937,6 +3011,8 @@ function saveState() {
     localStorage.setItem(STORAGE.ORDER, JSON.stringify(state.worksheetOrder));
     localStorage.setItem(STORAGE.ACTIVE, state.activeWsId || '');
     localStorage.setItem(STORAGE.HISTORY, JSON.stringify(state.history.slice(0, 100)));
+    localStorage.setItem(STORAGE.FOLDERS, JSON.stringify(state.folders));
+    localStorage.setItem(STORAGE.FOLDER_ORDER, JSON.stringify(state.folderOrder));
   } catch (_) {}
 }
 function loadState() {
@@ -2945,12 +3021,20 @@ function loadState() {
     state.worksheetOrder = JSON.parse(localStorage.getItem(STORAGE.ORDER) || '[]');
     state.activeWsId = localStorage.getItem(STORAGE.ACTIVE) || null;
     state.history = JSON.parse(localStorage.getItem(STORAGE.HISTORY) || '[]');
+    state.folders = JSON.parse(localStorage.getItem(STORAGE.FOLDERS) || '{}');
+    state.folderOrder = JSON.parse(localStorage.getItem(STORAGE.FOLDER_ORDER) || '[]');
   } catch (_) {
-    state.worksheets = {}; state.worksheetOrder = []; state.activeWsId = null; state.history = [];
+    state.worksheets = {}; state.worksheetOrder = []; state.activeWsId = null;
+    state.history = []; state.folders = {}; state.folderOrder = [];
   }
   // Filter out broken entries
   state.worksheetOrder = state.worksheetOrder.filter(id => state.worksheets[id]);
+  state.folderOrder = state.folderOrder.filter(id => state.folders[id]);
   if (state.activeWsId && !state.worksheets[state.activeWsId]) state.activeWsId = state.worksheetOrder[0] || null;
+  // Drop dangling folderId references on worksheets (deleted folders, etc.)
+  for (const ws of Object.values(state.worksheets)) {
+    if (ws.folderId && !state.folders[ws.folderId]) ws.folderId = null;
+  }
 }
 
 // ---------- Templates ----------
@@ -3622,22 +3706,164 @@ function renderTabs() {
       html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>'
     }));
 }
+// ---------- Worksheet folders (Phase 2.1) ----------
+function newFolder() {
+  const name = prompt('Folder name', 'New folder');
+  if (name === null) return;
+  const trimmed = name.trim();
+  if (!trimmed) return;
+  const id = folderUid();
+  state.folders[id] = { id, name: trimmed, expanded: true };
+  state.folderOrder.push(id);
+  saveState();
+  renderWorksheetList();
+}
+function renameFolder(id) {
+  const f = state.folders[id];
+  if (!f) return;
+  const name = prompt('Rename folder', f.name);
+  if (name === null) return;
+  const trimmed = name.trim();
+  if (!trimmed) return;
+  f.name = trimmed;
+  saveState();
+  renderWorksheetList();
+}
+function deleteFolder(id) {
+  const f = state.folders[id];
+  if (!f) return;
+  const inFolder = Object.values(state.worksheets).filter(ws => ws.folderId === id);
+  const msg = inFolder.length
+    ? `Delete folder "${f.name}"? Its ${inFolder.length} worksheet(s) will move to the top level.`
+    : `Delete folder "${f.name}"?`;
+  if (!confirm(msg)) return;
+  for (const ws of inFolder) ws.folderId = null;
+  delete state.folders[id];
+  state.folderOrder = state.folderOrder.filter(x => x !== id);
+  saveState();
+  renderWorksheetList();
+}
+function toggleFolder(id) {
+  const f = state.folders[id];
+  if (!f) return;
+  f.expanded = !f.expanded;
+  saveState();
+  renderWorksheetList();
+}
+function moveWorksheetToFolder(wsId, folderId) {
+  const ws = state.worksheets[wsId];
+  if (!ws) return;
+  if (folderId && !state.folders[folderId]) return;
+  if (ws.folderId === (folderId || null)) return;
+  ws.folderId = folderId || null;
+  ws.updatedAt = Date.now();
+  saveState();
+  renderWorksheetList();
+}
+
+function buildWorksheetItem(ws) {
+  const node = el('div', {
+      class: 'ws-item' + (ws.id === state.activeWsId ? ' active' : ''),
+      title: ws.name,
+      draggable: 'true',
+      onclick: () => setActiveWorksheet(ws.id)
+    },
+    el('span', { class: 'icon', html: ICON.worksheet }),
+    el('span', { class: 'label' }, ws.name),
+    el('span', { class: 'meta' }, formatRelTime(ws.updatedAt))
+  );
+  node.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', ws.id);
+    e.dataTransfer.effectAllowed = 'move';
+    node.classList.add('dragging');
+  });
+  node.addEventListener('dragend', () => node.classList.remove('dragging'));
+  return node;
+}
+
+function makeFolderDropTarget(headerNode, folderId) {
+  headerNode.addEventListener('dragover', e => {
+    if (e.dataTransfer.types.includes('text/plain')) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      headerNode.classList.add('drop-target');
+    }
+  });
+  headerNode.addEventListener('dragleave', () => headerNode.classList.remove('drop-target'));
+  headerNode.addEventListener('drop', e => {
+    e.preventDefault();
+    headerNode.classList.remove('drop-target');
+    const wsId = e.dataTransfer.getData('text/plain');
+    if (wsId) moveWorksheetToFolder(wsId, folderId);
+  });
+}
+
 function renderWorksheetList() {
   const list = $('#worksheetList');
   list.innerHTML = '';
-  const all = Object.values(state.worksheets).sort((a, b) => b.updatedAt - a.updatedAt);
-  for (const ws of all) {
-    list.appendChild(el('div', {
-        class: 'ws-item' + (ws.id === state.activeWsId ? ' active' : ''),
-        onclick: () => setActiveWorksheet(ws.id),
-        title: ws.name
-      },
-      el('span', { class: 'icon', html: ICON.worksheet }),
-      el('span', { class: 'label' }, ws.name),
-      el('span', { class: 'meta' }, formatRelTime(ws.updatedAt))
-    ));
+
+  const all = Object.values(state.worksheets);
+  const root = all.filter(ws => !ws.folderId).sort((a, b) => b.updatedAt - a.updatedAt);
+
+  // Root-level worksheets first
+  for (const ws of root) list.appendChild(buildWorksheetItem(ws));
+
+  // A drop zone to move a worksheet OUT of its folder
+  if (state.folderOrder.length) {
+    const rootDrop = el('div', { class: 'ws-root-drop' }, 'Drop here for top level');
+    makeFolderDropTarget(rootDrop, null);
+    list.appendChild(rootDrop);
   }
-  if (!all.length) {
+
+  // Folders
+  for (const fid of state.folderOrder) {
+    const f = state.folders[fid];
+    if (!f) continue;
+    const inFolder = all.filter(ws => ws.folderId === fid).sort((a, b) => b.updatedAt - a.updatedAt);
+    const folderEl = el('div', { class: 'ws-folder' + (f.expanded ? ' expanded' : '') });
+
+    const header = el('div', {
+      class: 'ws-folder-header',
+      title: f.name,
+      ondblclick: e => { e.stopPropagation(); renameFolder(fid); },
+      onclick: () => toggleFolder(fid)
+    });
+    header.appendChild(el('span', {
+      class: 'twisty',
+      html: '<svg viewBox="0 0 10 10" fill="currentColor" style="width:8px;height:8px;"><path d="M3 1l4 4-4 4z"/></svg>'
+    }));
+    header.appendChild(el('span', {
+      class: 'icon',
+      html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4.5A1.5 1.5 0 013.5 3h3l1.5 1.5h4.5A1.5 1.5 0 0114 6v5.5A1.5 1.5 0 0112.5 13h-9A1.5 1.5 0 012 11.5v-7z"/></svg>'
+    }));
+    header.appendChild(el('span', { class: 'label' }, f.name));
+    header.appendChild(el('span', { class: 'count' }, String(inFolder.length)));
+    const actions = el('span', { class: 'actions' });
+    actions.appendChild(el('button', {
+      class: 'icon-btn', title: 'Rename folder',
+      onclick: e => { e.stopPropagation(); renameFolder(fid); },
+      html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 2l3 3-7 7H4v-3l7-7z"/></svg>'
+    }));
+    actions.appendChild(el('button', {
+      class: 'icon-btn', title: 'Delete folder',
+      onclick: e => { e.stopPropagation(); deleteFolder(fid); },
+      html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h10M6 5V3h4v2M5 5l1 9h4l1-9" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    }));
+    header.appendChild(actions);
+    makeFolderDropTarget(header, fid);
+    folderEl.appendChild(header);
+
+    const children = el('div', { class: 'ws-folder-children' });
+    if (inFolder.length === 0) {
+      children.appendChild(el('div', { class: 'ws-empty' }, 'Empty — drop a worksheet here'));
+    } else {
+      for (const ws of inFolder) children.appendChild(buildWorksheetItem(ws));
+    }
+    folderEl.appendChild(children);
+    list.appendChild(folderEl);
+  }
+
+  if (!all.length && !state.folderOrder.length) {
     list.appendChild(el('div', {
       style: 'padding: 8px 12px; font-size: 11.5px; color: var(--text-3);'
     }, 'No worksheets yet'));
@@ -5102,6 +5328,7 @@ function wireUI() {
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); generateAiSql(); }
   });
   $('#newWsBtn2').addEventListener('click', () => newWorksheet());
+  $('#newFolderBtn').addEventListener('click', () => newFolder());
 
   $('#refreshDbBtn').addEventListener('click', () => {
     renderTree();
