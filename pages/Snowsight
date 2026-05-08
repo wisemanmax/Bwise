@@ -646,6 +646,133 @@ border-right: 1px solid var(–border-1) !important;
 .cm-s-default .cm-builtin { color: var(–sf-blue) !important; }
 .cm-s-default .cm-def { color: var(–sf-blue-pale) !important; }
 .cm-s-default .cm-bracket { color: var(–text-2) !important; }
+/* ===== Admin full-page view (Phase 2.5) ===== */
+.admin-view {
+  background: var(–bg-0);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.admin-header { padding: 22px 28px 8px; }
+.admin-breadcrumb {
+  font-size: 11.5px; color: var(–text-3);
+  letter-spacing: 0.02em; margin-bottom: 4px;
+}
+.admin-header h2 {
+  font-size: 22px; font-weight: 600; color: var(–text-1);
+  letter-spacing: -0.01em;
+}
+.admin-tabs {
+  display: flex;
+  padding: 0 28px;
+  border-bottom: 1px solid var(–border-1);
+  gap: 0;
+  overflow-x: auto;
+}
+.admin-tabs::-webkit-scrollbar { display: none; }
+.admin-tab {
+  background: none; border: none; cursor: pointer;
+  color: var(–text-2);
+  padding: 10px 14px;
+  font-size: 12.5px; font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+  transition: color 120ms;
+}
+.admin-tab svg { width: 13px; height: 13px; }
+.admin-tab:hover { color: var(–text-1); }
+.admin-tab.active {
+  color: var(–text-1);
+  border-bottom-color: var(–sf-blue);
+}
+.admin-body { flex: 1; overflow: hidden; min-height: 0; }
+.admin-pane { display: none; height: 100%; overflow: auto; padding: 18px 28px 28px; }
+.admin-pane:not([hidden]) { display: block; }
+
+.admin-section + .admin-section { margin-top: 22px; }
+.admin-section h3 {
+  font-size: 13px; font-weight: 600; color: var(–text-1);
+  margin-bottom: 8px;
+}
+.admin-section .admin-sub {
+  font-size: 12px; color: var(–text-3);
+  margin-bottom: 12px;
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.admin-table thead th {
+  text-align: left; font-weight: 500;
+  color: var(–text-3);
+  font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(–border-2);
+  white-space: nowrap;
+}
+.admin-table tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(–border-1);
+  color: var(–text-1);
+  white-space: nowrap;
+}
+.admin-table tbody tr:hover { background: var(–surface-hover); }
+.admin-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.admin-table .muted { color: var(–text-3); }
+.admin-table .pill-state {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px; border-radius: 999px;
+  font-size: 11px; font-weight: 500;
+  background: var(–bg-2); border: 1px solid var(–border-2);
+}
+.admin-table .pill-state.running { color: var(–green); border-color: rgba(45, 212, 168, 0.4); }
+.admin-table .pill-state.suspended { color: var(–text-3); }
+.admin-table .pill-state.locked { color: #FF7A8C; border-color: rgba(255, 122, 140, 0.4); }
+.admin-table .pill-state .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 5px currentColor;
+}
+.admin-table .pill-state.suspended .dot { box-shadow: none; opacity: 0.5; }
+
+.admin-empty {
+  text-align: center; color: var(–text-3);
+  padding: 60px 28px;
+  font-size: 13px;
+}
+.admin-empty svg { width: 36px; height: 36px; opacity: 0.5; margin-bottom: 12px; }
+.admin-empty .title { font-size: 14px; color: var(–text-2); margin-bottom: 4px; }
+.admin-empty .sub { font-size: 12.5px; }
+.admin-empty .btn { margin-top: 16px; }
+
+/* Role hierarchy tree */
+.role-tree { font-family: ‘JetBrains Mono’, ui-monospace, monospace; font-size: 12.5px; }
+.role-node {
+  padding: 6px 8px;
+  border-left: 1px solid var(–border-2);
+  margin-left: 14px;
+}
+.role-node:first-child { margin-left: 0; border-left: none; }
+.role-name {
+  display: inline-block;
+  font-weight: 600; color: var(–sf-blue);
+  margin-right: 10px;
+}
+.role-grants {
+  font-size: 11.5px; color: var(–text-3);
+  margin-left: 8px; font-family: ‘Inter’, sans-serif;
+}
+
+@media (max-width: 768px) {
+  .admin-header { padding: 14px 16px 8px; }
+  .admin-tabs { padding: 0 16px; }
+  .admin-pane { padding: 14px 16px 24px; }
+}
+
 /* ===== Table Detail full-page view ===== */
 .detail-view {
   background: var(–bg-0);
@@ -1792,9 +1919,9 @@ background-clip: content-box;
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 3h10v2H3V3zm0 4h10v2H3V7zm0 4h7v2H3v-2z"/></svg>
         Dashboards
       </a>
-      <a class="nav-tab">
-        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h9A1.5 1.5 0 0114 3.5v9a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 12.5v-9zm2 .5v8h8V4H4z"/></svg>
-        Data
+      <a class="nav-tab" data-view="admin">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v3M8 11v3M2 8h3M11 8h3M4.5 4.5l2 2M9.5 9.5l2 2M4.5 11.5l2-2M9.5 6.5l2-2"/><circle cx="8" cy="8" r="2"/></svg>
+        Admin
       </a>
       <a class="nav-tab" data-view="history">
         <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4v4l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -1958,6 +2085,39 @@ background-clip: content-box;
   </div>
 
 </main>
+
+<section class="admin-view" id="adminView" hidden>
+  <div class="admin-header">
+    <div>
+      <div class="admin-breadcrumb" id="adminBreadcrumb">Account · BYHEIR_DEMO</div>
+      <h2 id="adminTitle">Admin</h2>
+    </div>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-admin-tab="warehouses">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="12" height="8" rx="1"/><path d="M2 8h12M5 5V3h6v2"/></svg>
+      Warehouses
+    </button>
+    <button class="admin-tab" data-admin-tab="users">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="6" r="3"/><path d="M3 14a5 5 0 0110 0"/></svg>
+      Users
+    </button>
+    <button class="admin-tab" data-admin-tab="roles">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l5 3v4c0 3-2 5-5 6-3-1-5-3-5-6V5l5-3z"/></svg>
+      Roles
+    </button>
+    <button class="admin-tab" data-admin-tab="monitors">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8a6 6 0 1112 0M5 11l3-3 3 3" stroke-linecap="round"/></svg>
+      Resource Monitors
+    </button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-pane" id="adminPane-warehouses"></div>
+    <div class="admin-pane" id="adminPane-users" hidden></div>
+    <div class="admin-pane" id="adminPane-roles" hidden></div>
+    <div class="admin-pane" id="adminPane-monitors" hidden></div>
+  </div>
+</section>
 
 <section class="detail-view" id="tableDetailView" hidden>
   <div class="detail-header">
@@ -3451,6 +3611,182 @@ function previewTable(dbName, schName, tblName) {
   setTimeout(() => runQuery(true), 100);
 }
 
+// ---------- Admin pages (Phase 2.5) ----------
+// All mock data — read-only "looks real, does nothing" surface for parity.
+const ADMIN_WAREHOUSES = [
+  { name: 'COMPUTE_WH',   size: 'X-Small', status: 'running',   autoSuspend: '5 min', autoResume: 'Yes', running: 1, queued: 0, creditsToday: 0.42 },
+  { name: 'ANALYTICS_WH', size: 'Medium',  status: 'suspended', autoSuspend: '5 min', autoResume: 'Yes', running: 0, queued: 0, creditsToday: 1.83 },
+  { name: 'LOAD_WH',      size: 'Small',   status: 'running',   autoSuspend: '1 min', autoResume: 'Yes', running: 2, queued: 1, creditsToday: 0.15 },
+  { name: 'REPORTING_WH', size: 'Large',   status: 'suspended', autoSuspend: '10 min',autoResume: 'No',  running: 0, queued: 0, creditsToday: 0.0  }
+];
+const ADMIN_USERS = [
+  { name: 'BWISE',     defaultRole: 'SYSADMIN',     email: 'byheir@byheir.com',          mfa: 'TOTP',  status: 'active', lastLogin: '2026-05-08 09:14' },
+  { name: 'ADMIN',     defaultRole: 'ACCOUNTADMIN', email: 'admin@byheir.com',           mfa: 'TOTP',  status: 'active', lastLogin: '2026-05-07 22:01' },
+  { name: 'ANALYST_1', defaultRole: 'ANALYST',      email: 'analyst1@byheir.com',        mfa: '—',     status: 'active', lastLogin: '2026-05-08 08:42' },
+  { name: 'ANALYST_2', defaultRole: 'ANALYST',      email: 'analyst2@byheir.com',        mfa: 'TOTP',  status: 'active', lastLogin: '2026-05-06 16:30' },
+  { name: 'LOAD_BOT',  defaultRole: 'LOAD_ROLE',    email: 'svc-load@byheir.com',        mfa: 'KEY',   status: 'active', lastLogin: '2026-05-08 09:14' },
+  { name: 'GUEST',     defaultRole: 'PUBLIC',       email: 'recruiter@example.com',      mfa: '—',     status: 'locked', lastLogin: '2025-12-12 10:00' }
+];
+const ADMIN_ROLES = [
+  { name: 'ACCOUNTADMIN', children: ['SYSADMIN', 'SECURITYADMIN', 'USERADMIN'], grants: 'OWNERSHIP on every account-level object', members: 1 },
+  { name: 'SYSADMIN',     children: ['ANALYST', 'LOAD_ROLE', 'REPORTING_ROLE'], grants: 'USAGE on warehouses; OWNERSHIP on databases', members: 1 },
+  { name: 'SECURITYADMIN',children: ['USERADMIN'],                              grants: 'MANAGE GRANTS', members: 0 },
+  { name: 'USERADMIN',    children: [],                                         grants: 'CREATE USER, CREATE ROLE', members: 0 },
+  { name: 'ANALYST',      children: [],                                         grants: 'SELECT on SNOWFLAKE_SAMPLE_DATA, DEMO_DB', members: 2 },
+  { name: 'LOAD_ROLE',    children: [],                                         grants: 'INSERT, COPY INTO on staging schemas', members: 1 },
+  { name: 'REPORTING_ROLE', children: [],                                       grants: 'SELECT on reporting schemas', members: 0 },
+  { name: 'PUBLIC',       children: [],                                         grants: 'inherited by every role', members: 0 }
+];
+
+function renderAdminPage() {
+  switchAdminTab('warehouses');
+}
+
+function switchAdminTab(tab) {
+  $$('.admin-tab').forEach(t => t.classList.toggle('active', t.dataset.adminTab === tab));
+  $$('.admin-pane').forEach(p => {
+    const match = p.id === `adminPane-${tab}`;
+    p.hidden = !match;
+  });
+  if (tab === 'warehouses') renderWarehousesPane();
+  if (tab === 'users') renderUsersPane();
+  if (tab === 'roles') renderRolesPane();
+  if (tab === 'monitors') renderMonitorsPane();
+}
+
+function renderWarehousesPane() {
+  const pane = $('#adminPane-warehouses');
+  pane.innerHTML = '';
+  pane.appendChild(el('div', { class: 'admin-section' },
+    el('h3', {}, 'Compute warehouses'),
+    el('div', { class: 'admin-sub' }, 'Mock — would show real credit usage and running queries against this account in production.')
+  ));
+  const table = el('table', { class: 'admin-table' });
+  const thead = el('thead', {}, el('tr', {},
+    el('th', {}, 'Name'),
+    el('th', {}, 'Size'),
+    el('th', {}, 'Status'),
+    el('th', {}, 'Auto-suspend'),
+    el('th', {}, 'Auto-resume'),
+    el('th', { class: 'num' }, 'Running'),
+    el('th', { class: 'num' }, 'Queued'),
+    el('th', { class: 'num' }, 'Credits today')
+  ));
+  table.appendChild(thead);
+  const tbody = el('tbody');
+  for (const w of ADMIN_WAREHOUSES) {
+    tbody.appendChild(el('tr', {},
+      el('td', { style: 'font-family:"JetBrains Mono",monospace;color:var(--sf-blue);' }, w.name),
+      el('td', {}, w.size),
+      el('td', {}, el('span', { class: `pill-state ${w.status}` }, el('span', { class: 'dot' }), w.status)),
+      el('td', { class: 'muted' }, w.autoSuspend),
+      el('td', { class: 'muted' }, w.autoResume),
+      el('td', { class: 'num' }, String(w.running)),
+      el('td', { class: 'num' }, String(w.queued)),
+      el('td', { class: 'num' }, w.creditsToday.toFixed(2))
+    ));
+  }
+  table.appendChild(tbody);
+  pane.appendChild(table);
+}
+
+function renderUsersPane() {
+  const pane = $('#adminPane-users');
+  pane.innerHTML = '';
+  pane.appendChild(el('div', { class: 'admin-section' },
+    el('h3', {}, 'Users'),
+    el('div', { class: 'admin-sub' }, 'Mock — every user shown here is illustrative. No real authentication is wired up.')
+  ));
+  const table = el('table', { class: 'admin-table' });
+  const thead = el('thead', {}, el('tr', {},
+    el('th', {}, 'Username'),
+    el('th', {}, 'Default role'),
+    el('th', {}, 'Email'),
+    el('th', {}, 'MFA'),
+    el('th', {}, 'Status'),
+    el('th', {}, 'Last login')
+  ));
+  table.appendChild(thead);
+  const tbody = el('tbody');
+  for (const u of ADMIN_USERS) {
+    tbody.appendChild(el('tr', {},
+      el('td', { style: 'font-family:"JetBrains Mono",monospace;' }, u.name),
+      el('td', {}, u.defaultRole),
+      el('td', { class: 'muted' }, u.email),
+      el('td', { class: 'muted' }, u.mfa),
+      el('td', {}, el('span', { class: `pill-state ${u.status}` }, el('span', { class: 'dot' }), u.status)),
+      el('td', { class: 'muted' }, u.lastLogin)
+    ));
+  }
+  table.appendChild(tbody);
+  pane.appendChild(table);
+}
+
+function renderRolesPane() {
+  const pane = $('#adminPane-roles');
+  pane.innerHTML = '';
+  pane.appendChild(el('div', { class: 'admin-section' },
+    el('h3', {}, 'Role hierarchy'),
+    el('div', { class: 'admin-sub' }, 'ACCOUNTADMIN inherits all child roles. PUBLIC is implicitly granted to every role.')
+  ));
+  const tree = el('div', { class: 'role-tree' });
+  // Render top-level roles (those not contained in any other role's children)
+  const childSet = new Set();
+  for (const r of ADMIN_ROLES) for (const c of r.children) childSet.add(c);
+  const roots = ADMIN_ROLES.filter(r => !childSet.has(r.name));
+  for (const r of roots) tree.appendChild(buildRoleNode(r));
+  pane.appendChild(tree);
+
+  // Below the tree: a flat grants table
+  pane.appendChild(el('div', { class: 'admin-section' },
+    el('h3', {}, 'Grants summary'),
+    el('div', { class: 'admin-sub' }, 'High-level grants for each role. Real Snowsight shows individual privilege rows.')
+  ));
+  const table = el('table', { class: 'admin-table' });
+  table.appendChild(el('thead', {}, el('tr', {},
+    el('th', {}, 'Role'),
+    el('th', {}, 'Grants'),
+    el('th', { class: 'num' }, 'Members')
+  )));
+  const tbody = el('tbody');
+  for (const r of ADMIN_ROLES) {
+    tbody.appendChild(el('tr', {},
+      el('td', { style: 'font-family:"JetBrains Mono",monospace;color:var(--sf-blue);' }, r.name),
+      el('td', { class: 'muted' }, r.grants),
+      el('td', { class: 'num' }, String(r.members))
+    ));
+  }
+  table.appendChild(tbody);
+  pane.appendChild(table);
+}
+
+function buildRoleNode(role) {
+  const node = el('div', { class: 'role-node' },
+    el('span', { class: 'role-name' }, role.name),
+    el('span', { class: 'role-grants' }, role.grants)
+  );
+  for (const childName of role.children) {
+    const child = ADMIN_ROLES.find(r => r.name === childName);
+    if (child) node.appendChild(buildRoleNode(child));
+  }
+  return node;
+}
+
+function renderMonitorsPane() {
+  const pane = $('#adminPane-monitors');
+  pane.innerHTML = '';
+  const empty = el('div', { class: 'admin-empty' },
+    el('div', { html: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8a6 6 0 1112 0M5 11l3-3 3 3" stroke-linecap="round"/></svg>' }),
+    el('div', { class: 'title' }, 'No resource monitors configured'),
+    el('div', { class: 'sub' }, 'Resource monitors track credit usage and trigger notifications or auto-suspend at thresholds.'),
+    el('button', {
+      class: 'btn primary',
+      onclick: () => toast('Demo: resource monitor creation is not wired up. The structure here mirrors Snowsight\'s real flow.', 'info')
+    }, 'Create monitor')
+  );
+  pane.appendChild(empty);
+}
+
 // ---------- Table detail page (Phase 2.2) ----------
 function findTableMeta(dbName, schName, tblName) {
   const db = SCHEMA_META.databases.find(d => d.name === dbName);
@@ -4649,18 +4985,20 @@ function addXLabels(svg, data, padL, w, H, padB, ns, xPos) {
 }
 
 // ---------- History modal ----------
-// ---------- View routing (worksheet ↔ history ↔ table-detail) ----------
+// ---------- View routing (worksheet ↔ history ↔ table-detail ↔ admin) ----------
 function switchView(view) {
   state.activeView = view;
   $('#worksheetView').hidden    = view !== 'worksheet';
   $('#historyView').hidden      = view !== 'history';
   $('#tableDetailView').hidden  = view !== 'table-detail';
+  $('#adminView').hidden        = view !== 'admin';
   $$('.nav-tab').forEach(t => {
-    // Top nav highlights worksheet/history; table-detail keeps Worksheets active visually.
+    // Top nav highlights worksheet/history/admin; table-detail keeps Worksheets active visually.
     const target = (view === 'table-detail') ? 'worksheet' : view;
     t.classList.toggle('active', t.dataset.view === target);
   });
   if (view === 'history') renderHistoryPage();
+  if (view === 'admin') renderAdminPage();
 }
 
 // ---------- Query History page ----------
@@ -5298,6 +5636,9 @@ function wireUI() {
       switchTdTab(tab);
       if (tab === 'data') loadTdDataPreview();
     });
+  });
+  $$('.admin-tab').forEach(t => {
+    t.addEventListener('click', () => switchAdminTab(t.dataset.adminTab));
   });
   $('#histClearAllBtn').addEventListener('click', () => {
     if (!state.history.length) return;
