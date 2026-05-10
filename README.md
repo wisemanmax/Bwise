@@ -48,6 +48,7 @@ Where to look when you want proof of a specific claim.
 ### Case studies (decisions + tradeoffs, not just screenshots)
 | Project | What it shows | File |
 |---|---|---|
+| Cowork (autonomous software pipeline) | 16 specialized agents · 5 parallel lanes · auto-gate · self-healing · live dashboard | `pages/cowork.html` |
 | Operations Command Center | Cross-functional ops platform — KPI design, alert/workflow architecture | `pages/case-study.html` |
 | The Builder | AI-augmented reporting & validation — multi-stage pipelines, audit trails | `pages/the-builder.html` |
 | SQL Playground · Lending KPIs | In-browser SQLite (WASM), Snowflake-shaped lending schema, 21 challenges | `pages/sql-playground-case-study.html` |
@@ -73,6 +74,7 @@ Where to look when you want proof of a specific claim.
 ### External projects (live in production, separate repos)
 | Project | Stack | Live | Evidence in this repo |
 |---|---|---|---|
+| Cowork Dashboard | Node.js, Express, vanilla JS, Tailwind, Cloudflare Tunnel, launchd | [automation.byheir.com](https://automation.byheir.com) | `pages/cowork.html` |
 | IronLog Analytics Ecosystem | React 18, Vite, Supabase, Vercel, Cloudflare R2, PWA | [ironlog.space](https://ironlog.space) | `pages/ironlog.html` |
 | PartnerPulse | React 18, Vite, Recharts, Cloudflare Workers, Claude Sonnet | [partnerpulse.byheir.com](https://partnerpulse.byheir.com) | — |
 
