@@ -206,6 +206,25 @@
             </div>
 
             <div class="experience-grid">
+                <article class="experience-card" data-tour-id="projects-cowork">
+                    <div class="card-header">
+                        <div class="card-title">Cowork — Autonomous Software Pipeline</div>
+                        <div class="card-company">Sole architect · automation.byheir.com</div>
+                    </div>
+                    <div class="card-content">
+                        <ul class="achievement-list">
+                            <li><strong>Problem:</strong> &ldquo;AI-assisted coding&rdquo; workflows still require a human in the loop for spec authoring, review, merge decisions, and recovery from agent failures — the orchestration is the work.</li>
+                            <li><strong>Approach:</strong> shipped a fully autonomous pipeline of 16 role-specialized agents (spec authors, multiple reviewers, persona playtesters, vision keeper) coordinating across 5 parallel lanes, each scheduled by launchd and picking work from a domain-allocated sprint plan.</li>
+                            <li><strong>Decision:</strong> autonomy lives behind the constraints — auto-gate with 3-agent voting, daily merge caps, blocked-path allowlists, emergency-stop on consecutive reverts, and a public demo with a redaction layer over the same instance the system runs on.</li>
+                            <li><strong>Stack:</strong> Node.js, Express, vanilla JS, Tailwind, Chart.js, Bash, Python, launchd, Cloudflare Tunnel, Tailscale, Claude Code + OpenAI API.</li>
+                        </ul>
+                        <p class="card-cta-row">
+                            <a class="card-cta" href="pages/cowork.html">Read the case study <span aria-hidden="true">→</span></a>
+                            <a class="card-cta" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">Live dashboard <span aria-hidden="true">↗</span></a>
+                        </p>
+                    </div>
+                </article>
+
                 <article class="experience-card" data-tour-id="projects-partnerpulse">
                     <div class="card-header">
                         <div class="card-title">PartnerPulse — Partner Relationship Analytics Platform</div>
@@ -273,6 +292,24 @@
 
             <h3 class="work-row-title">Case studies</h3>
             <div class="work-grid">
+                <a class="work-card work-card--wide" href="pages/cowork.html" aria-label="Cowork — autonomous software pipeline case study">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/cowork.svg" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole architect</span>
+                            <span class="work-card__status work-card__status--live">Case study · Live</span>
+                        </div>
+                        <h4 class="work-card__title">Cowork — Autonomous Software Pipeline</h4>
+                        <p class="work-card__tagline">16 role-specialized AI agents coordinating across 5 parallel lanes, shipping code 24/7. Real-time control dashboard at <strong>automation.byheir.com</strong>.</p>
+                        <ul class="work-card__chips">
+                            <li>Node.js</li><li>Vanilla JS</li><li>Bash</li><li>launchd</li><li>Cloudflare Tunnel</li><li>Claude Code</li><li>Multi-agent</li>
+                        </ul>
+                        <span class="work-card__cta">Read case study →</span>
+                    </div>
+                </a>
+
                 <a class="work-card work-card--wide" href="pages/case-study.html" aria-label="Operations Command Center case study">
                     <div class="work-card__media">
                         <img src="assets/work-thumbs/operations-command-center.png" alt="" loading="lazy" width="1200" height="675">
@@ -495,6 +532,24 @@
 
             <h3 class="work-row-title">External apps <span class="work-row-title__hint">(live in production · open in a new tab)</span></h3>
             <div class="work-grid work-grid--external" data-tour-id="work-external">
+                <a class="work-card work-card--external" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="Cowork dashboard — opens in a new tab">
+                    <div class="work-card__media">
+                        <img src="assets/work-thumbs/cowork.svg" alt="" loading="lazy" width="1200" height="675">
+                    </div>
+                    <div class="work-card__body">
+                        <div class="work-card__meta">
+                            <span class="work-card__role">Sole architect</span>
+                            <span class="work-card__status work-card__status--live">Live · 24/7</span>
+                        </div>
+                        <h4 class="work-card__title">Cowork Dashboard <span class="work-card__ext" aria-hidden="true">↗</span></h4>
+                        <p class="work-card__tagline">Read-only public view of the autonomous pipeline running on my Mac — sprint board, autonomous-decision audit log, live phase progress.</p>
+                        <ul class="work-card__chips">
+                            <li>Node.js</li><li>Express</li><li>Vanilla JS</li><li>Tailwind</li><li>Cloudflare Tunnel</li><li>launchd</li>
+                        </ul>
+                        <span class="work-card__cta">automation.byheir.com →</span>
+                    </div>
+                </a>
+
                 <a class="work-card work-card--external" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="Ironlog — opens in a new tab">
                     <div class="work-card__media">
                         <img src="assets/work-thumbs/ironlog.png" alt="" loading="lazy" width="1200" height="675">

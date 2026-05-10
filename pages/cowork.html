@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cowork · Autonomous Software Pipeline · Byheir Wise</title>
+  <meta name="description" content="Case study: Cowork — a fully autonomous software-development pipeline. 16 role-specialized AI agents coordinating across 5 parallel lanes, shipping code 24/7, with a real-time control dashboard at automation.byheir.com.">
+  <link rel="stylesheet" href="../assets/style.css">
+
+<style id="demo-back-styles">
+.demo-back{position:sticky;top:0;z-index:999999;display:flex;align-items:center;gap:.6rem;padding:.55rem max(env(safe-area-inset-left),1rem);padding-top:max(env(safe-area-inset-top),.55rem);background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(15,23,42,.08);font:600 .85rem/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#0f172a}
+.demo-back a{display:inline-flex;align-items:center;gap:.4rem;color:#0f172a;text-decoration:none;padding:.3rem .7rem;border-radius:999px;transition:background .15s ease}
+.demo-back a:hover,.demo-back a:focus-visible{background:rgba(15,23,42,.08)}
+.demo-back__chev{font-size:1rem;line-height:1}
+.demo-back__sub{color:#64748b;font-weight:500;margin-inline-start:.4rem;border-inline-start:1px solid rgba(15,23,42,.15);padding-inline-start:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}
+@media (max-width:480px){.demo-back__sub{display:none}}
+@media (prefers-color-scheme:dark){.demo-back{background:rgba(15,23,42,.94);border-bottom-color:rgba(148,163,184,.18);color:#e2e8f0}.demo-back a{color:#e2e8f0}.demo-back a:hover,.demo-back a:focus-visible{background:rgba(148,163,184,.18)}.demo-back__sub{color:#94a3b8;border-inline-start-color:rgba(148,163,184,.3)}}
+@media print{.demo-back{display:none}}
+</style>
+</head>
+<body>
+<div class="demo-back" role="navigation" aria-label="Site navigation">
+  <a href="../index.html#projects">
+    <span class="demo-back__chev" aria-hidden="true">←</span>
+    <span class="demo-back__label">Portfolio</span>
+  </a>
+  <span class="demo-back__sub">byheir.com · Cowork</span>
+</div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <nav class="top-nav" aria-label="Main navigation">
+      <div class="logo">Byheir Wise</div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
+        ☰
+      </button>
+      <ul class="nav-menu" id="primary-navigation">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="cowork.html" aria-current="page">Cowork</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero-section" aria-labelledby="cowork-hero">
+      <div class="hero-inner">
+        <div class="hero-label">Case study · Live system</div>
+        <h1 id="cowork-hero" class="hero-title">Cowork</h1>
+        <p class="hero-subtitle">Autonomous software-development pipeline — 16 role-specialized AI agents coordinating across 5 parallel lanes, shipping code to GitHub 24/7, with a real-time control dashboard.</p>
+
+        <div class="hero-cta-row">
+          <a class="hero-cta hero-cta--primary" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">
+            Live dashboard <span aria-hidden="true">↗</span>
+          </a>
+          <a class="hero-cta hero-cta--ghost" href="https://github.com/wisemanmax/echobound" target="_blank" rel="noopener noreferrer">
+            Orchestration source <span aria-hidden="true">↗</span>
+          </a>
+          <a class="hero-cta hero-cta--ghost" href="https://github.com/wisemanmax/cowork-dashboard" target="_blank" rel="noopener noreferrer">
+            Dashboard source <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="stats-bar" aria-label="Cowork at a glance">
+          <div class="stat-box">
+            <div class="stat-number">16</div>
+            <div class="stat-label">Role-specialized agents</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number">5</div>
+            <div class="stat-label">Parallel orchestration lanes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number stat-number--text">24/7</div>
+            <div class="stat-label">No human-in-the-loop</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number stat-number--text">Single-file</div>
+            <div class="stat-label">~3,500 LOC server · ~3,800 LOC frontend</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="goal-title">
+      <div class="section-header">
+        <h2 id="goal-title" class="section-title">The goal</h2>
+        <p class="section-subtitle">
+          Build a software-development pipeline that operates without human-in-the-loop intervention — agents take a feature ticket, write the spec, build the code, review their own work, run tests, evaluate user-visible quality, and ship a PR. The human role becomes architect and product owner, not implementer.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Why this is harder than &ldquo;AI-assisted coding&rdquo;</div>
+            <div class="card-date">Engineering scope</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Decide what to work on — sprint planning with dependency awareness, not just &ldquo;next ticket.&rdquo;</li>
+              <li>Coordinate multiple agents without lane collisions or duplicate work.</li>
+              <li>Detect its own failures and recover — loop guard, auto-recover dirty trees, mid-rebase detection.</li>
+              <li>Make merge / no-merge decisions on its own work without rubber-stamping.</li>
+              <li>Surface the right things to human attention — escalation triage, audit log, attention chips.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Where humans still belong</div>
+            <div class="card-date">Honest scope</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Architectural decisions — the shape of the system, not its tickets.</li>
+              <li>Production design — what the game should be, what good feels like.</li>
+              <li>Kill-switch decisions — emergency-stop, daily caps, blocked-path allowlists.</li>
+              <li>Writing the agent prompts and the constraints that make autonomy safe.</li>
+              <li>Reviewing the audit trail — the system shows its work; the human still reads it.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="architecture-title">
+      <div class="section-header">
+        <h2 id="architecture-title" class="section-title">Architecture</h2>
+        <p class="section-subtitle">
+          Six subsystems — specialist roster, parallel orchestration, autonomous merge gate, self-healing knowledge loop, control dashboard, and defense-in-depth security — designed so each can fail without taking the others down.
+        </p>
+      </div>
+
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">1. Multi-agent specialist roster (16 agents)</div>
+            <div class="card-date">Role-specialized prompts, strict output formats</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Producer</strong> — owns the routing chain, dispatches juniors and reviewers, defends scope.</li>
+              <li><strong>Story-designer / Game-balance / Art-director</strong> — write specs (Mechanics / Numbers / Visuals / Acceptance).</li>
+              <li><strong>Junior-systems / Junior-content</strong> — implement code and data per spec.</li>
+              <li><strong>Senior-reviewer / Security-reviewer / Refactor-cop</strong> — code review at architecture, security, and drift levels.</li>
+              <li><strong>Bug-tester / Adversarial-tester</strong> — happy path plus break attempts.</li>
+              <li><strong>Playtest-UX + 3 persona testers</strong> — speedrunner, completionist, casual.</li>
+              <li><strong>Vision-keeper</strong> — final ship/hold gate.</li>
+              <li><strong>Sprint-planner</strong> and <strong>Escalation-triager</strong> — daily lane allocation by domain; classifies stuck tickets into 5 actionable buckets.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">2. Five-lane parallel orchestration</div>
+            <div class="card-date">launchd · 30-minute tick · domain-allocated</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Each lane is a launchd-scheduled bash script with its own log directory, lock file, and domain assignment (Combat, Content, Run/World, Visuals/UX, catch-all).</li>
+              <li>Lanes coordinate through a sprint plan in <code>docs/sprint-plan.md</code> that allocates tickets to lanes by domain.</li>
+              <li>Claim files prevent duplicate work; strict-mode picker idles a lane if its sprint section is empty (no cross-lane theft).</li>
+              <li>Cross-lane backfill is opt-in fallback when a lane is starved.</li>
+              <li>Health-based throttling auto-pauses lanes when pipeline completion drops below 60%.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">3. Auto-gate (autonomous PR merge)</div>
+            <div class="card-date">3-agent parallel voting · risk-bounded</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>When a junior opens a PR, three reviewer agents (senior + bug-tester + vision-keeper) evaluate in parallel and vote.</li>
+              <li>Auto-merges only when all three approve and risk gates pass.</li>
+              <li>Blocks on PR size &gt; 1500 lines, blocked paths (orchestrator / agent / dashboard files), failing CI.</li>
+              <li>Caps daily auto-merges (configurable, defaults conservative).</li>
+              <li>Emergency-stops if 2+ decisions are reverted by a human within 24h.</li>
+              <li>Logs every decision to <code>~/.cowork-dashboard/auto-decisions/</code> with full reviewer rationale.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">4. Self-healing knowledge system</div>
+            <div class="card-date">JSONL events · pattern detection · 2-of-3 review gate</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Every tick emits structured events to <code>~/.cowork-dashboard/events/&lt;date&gt;.jsonl</code>.</li>
+              <li>A pattern detector identifies recurring failure modes via heuristic analysis.</li>
+              <li>A synthesis agent updates <code>docs/learnings.md</code> with patterns, workarounds, and anti-patterns.</li>
+              <li>A prompt-evolution loop proposes agent-prompt updates based on the learnings.</li>
+              <li>A 2-of-3 review gate (pattern-reviewer + vision-keeper) auto-applies safe updates, capped at 3 per day.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">5. The Cowork Dashboard</div>
+            <div class="card-date">Single-file Node + vanilla JS · mobile-first</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Overview:</strong> hero card with phase progress, ETA + confidence interval, 14-day burn-down, attention chips for waiting work.</li>
+              <li><strong>Sprint board:</strong> Azure-DevOps-style swimlanes per lane, status columns, drag-drop with kanban auto-commit, side drawer with full ticket details, WIP limits, configurable filters.</li>
+              <li><strong>Analytics:</strong> KPIs, agent invocation breakdown, autonomous-decision audit log.</li>
+              <li><strong>Audit:</strong> pattern detector, pipeline health, self-healing panel, prompt evolution, learnings render, security audit.</li>
+              <li><strong>Chat:</strong> 4 context modes (Project chat, Project edit, Dashboard self-edit, Custom path), background-job streaming, retry-in-place, Free-CLI button to pause lanes during chat contention.</li>
+              <li><strong>Help:</strong> <code>?</code> button on every page with contextual walkthroughs.</li>
+              <li><strong>Mobile-first:</strong> works at 390px without horizontal scroll, Tailscale-accessible from iPhone.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">6. Defense-in-depth security</div>
+            <div class="card-date">Auth · allowlists · rate limits · redaction</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Bearer auth token on every elevated endpoint.</li>
+              <li>Path allowlist for chat custom-path mode (only <code>~/Projects</code>, <code>~/dev</code>, etc.).</li>
+              <li>12 forbidden path patterns (<code>.ssh</code>, <code>.aws</code>, shell init files, SSH keys).</li>
+              <li>Safety preamble injected into every chat prompt.</li>
+              <li>Hard rejection of dangerous shell patterns (<code>curl|bash</code>, <code>rm -rf</code>, <code>sudo</code>, <code>eval</code>).</li>
+              <li>Magic-comment script signing — only <code># COWORK-SAFE</code> scripts run via the dashboard.</li>
+              <li>Sliding-window rate limiting per token (30 elevated chats/hr, 20 script runs/hr).</li>
+              <li>Persistent audit log of every elevated operation.</li>
+              <li>Public demo mode with redaction layer (paths → <code>~/</code>, emails → <code>&lt;email&gt;</code>, tokens → <code>&lt;redacted&gt;</code>) and 19 path-prefix blocks for sensitive endpoints.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="outcomes-title">
+      <div class="section-header">
+        <h2 id="outcomes-title" class="section-title">Outcomes</h2>
+        <p class="section-subtitle">
+          Numbers reported the way the rest of the portfolio reports them — what was measured, how, and what is intentionally not claimed.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Capacity utilization recovered</div>
+            <div class="card-date">Methodology</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>What:</strong> share of the 24-hour window in which the pipeline was advancing tickets vs. idling on stuck state.</li>
+              <li><strong>How measured:</strong> empirical audit of structured events in <code>~/.cowork-dashboard/events/*.jsonl</code> over a fixed window.</li>
+              <li><strong>Result:</strong> 9.2% baseline &rarr; 30%+ after 8 ranked findings shipped (sprint-plan parser, push-retry consistency, loop-guard persistence, transient-state hygiene, Unity <code>.meta</code> workflow, etc.).</li>
+              <li><strong>Not claimed:</strong> code quality improvement, ticket throughput per dollar, parity with a human team — those are separate effects.</li>
+              <li><strong>Caveats:</strong> single-machine pipeline; numbers are internal; recovery ceiling is bounded by API rate limits and lane count, not architecture.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Auto-gate revert rate</div>
+            <div class="card-date">Methodology</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>What:</strong> share of auto-merged PRs reverted by a human within 24h.</li>
+              <li><strong>How measured:</strong> persistent JSONL log under <code>~/.cowork-dashboard/auto-decisions/</code>; reverts cross-referenced from <code>git log</code>.</li>
+              <li><strong>Result:</strong> 0% across the conservative ramp window (initial daily cap of 2; designed to scale with proven trust).</li>
+              <li><strong>Not claimed:</strong> bug-free output — only that no merge crossed the &ldquo;had to be reverted&rdquo; bar inside the cap.</li>
+              <li><strong>Safety net:</strong> emergency-stop fires after 2 reverts in 24h, freezing further auto-merges until a human re-arms the gate.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Manual deploys eliminated</div>
+            <div class="card-date">Operational discipline</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Every change to orchestrator, agents, and dashboard ships through the same commit / review / merge flow the system uses for itself.</li>
+              <li>Dashboard self-edit mode treats the control surface as a first-class deliverable — same gates, same audit log.</li>
+              <li>Public demo runs at <a href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">automation.byheir.com</a> via Cloudflare Tunnel + redaction middleware so live state is exposed without compromising the local control instance.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Foundational bugs fixed via measurement</div>
+            <div class="card-date">Audit-driven engineering</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Loop guard — caught lanes spinning on the same ticket; bounded retries before escalation.</li>
+              <li>Sprint-plan parser — silent strict-mode degradation that idled lanes despite available work.</li>
+              <li>Push retry consistency — every git push uses <code>-u origin &lt;branch&gt;</code> with exponential backoff (2s/4s/8s/16s).</li>
+              <li>Transient-state hygiene — ticket-attempts file wipes that broke escalation triage.</li>
+              <li>Unity <code>.meta</code> workflow — agents kept stripping <code>.meta</code> sidecars on edits, breaking the editor.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="lessons-title">
+      <div class="section-header">
+        <h2 id="lessons-title" class="section-title">What I learned</h2>
+        <p class="section-subtitle">
+          The interesting work was not getting agents to write code. It was the engineering around them that turned them into a system.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Multi-agent coordination is mostly a logging and recovery problem</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>The agents writing code is the easy part. Catching the cases where they don't, classifying why, and routing the right next action is the work.</li>
+              <li>Structured event streams + a pattern detector beat &ldquo;ask the LLM what went wrong&rdquo; for every recurring failure mode.</li>
+              <li>Recovery is a first-class feature: dirty-tree auto-recover, mid-rebase detection, lock-file forensics, transient-state hygiene.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Defense in depth is a UX feature, not just a security one</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Path allowlists and rate limits also serve as guardrails against confused agents.</li>
+              <li>They limit blast radius of mistakes, which means I can experiment more aggressively.</li>
+              <li>The redaction layer made it safe to put a public demo on the open web — same instance the system actually runs on.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">The dashboard is the system's specification</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>What the dashboard surfaces becomes what the system optimizes for.</li>
+              <li>Wiring the right metrics into Analytics turned debugging structural bugs (silent strict-mode degradation, ticket-attempts file wipes) from days into minutes.</li>
+              <li>If a behavior is invisible on the dashboard, expect it to drift.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Autonomy is about the constraints, not the model</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>The system is autonomous <em>within constraints</em> — daily caps, size limits, blocked-path allowlists, emergency-stop on consecutive reverts.</li>
+              <li>The constraints are the design surface. The agents are the easy part to swap.</li>
+              <li>Trust is earned by tightening the gate, watching the audit log, and only loosening when reverts stay flat.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="stack-title">
+      <div class="section-header">
+        <h2 id="stack-title" class="section-title">Stack</h2>
+        <p class="section-subtitle">
+          Boring building blocks deliberately. The novelty is the system, not the dependencies.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Runtime &amp; orchestration</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Node.js + Express</strong> — single-file server (~3,500 LOC) for the dashboard and the elevated-action API.</li>
+              <li><strong>Vanilla JS + Tailwind + Chart.js</strong> — frontend (~3,800 LOC), no framework, no build step.</li>
+              <li><strong>Bash + Python</strong> — orchestration scripts, tick runners, audit tooling.</li>
+              <li><strong>launchd</strong> — schedules each lane independently with its own logs and lock files.</li>
+              <li><strong>Git + GitHub CLI</strong> — every change ships as a PR; auto-gate decisions logged alongside.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Networking, AI, and exposure</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><strong>Cloudflare Tunnel</strong> — exposes the local instance at <a href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">automation.byheir.com</a> without opening ports.</li>
+              <li><strong>Tailscale</strong> — private mobile access (the same dashboard at 390px from an iPhone).</li>
+              <li><strong>Claude Code + OpenAI API</strong> — the agent runtime; prompts versioned in the orchestrator repo.</li>
+              <li><strong>Redaction middleware</strong> — public demo mode rewrites paths, emails, and tokens before they leave the instance.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="source-title">
+      <div class="section-header">
+        <h2 id="source-title" class="section-title">Source &amp; live demo</h2>
+        <p class="section-subtitle">
+          The dashboard is read-only on the open web. The orchestrator and agents are public repos.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Live</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><a href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">automation.byheir.com</a> — public read-only view of the live pipeline state, served from the local control instance through Cloudflare Tunnel with the redaction layer enabled.</li>
+            </ul>
+            <p class="card-cta-row">
+              <a class="card-cta" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">Open the dashboard <span aria-hidden="true">↗</span></a>
+            </p>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Repos</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li><a href="https://github.com/wisemanmax/echobound" target="_blank" rel="noopener noreferrer">github.com/wisemanmax/echobound</a> — orchestration + agents.</li>
+              <li><a href="https://github.com/wisemanmax/cowork-dashboard" target="_blank" rel="noopener noreferrer">github.com/wisemanmax/cowork-dashboard</a> — control surface (server + frontend).</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Cowork · Autonomous software pipeline · part of the Byheir Wise portfolio.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/script.js"></script>
+</body>
+</html>
