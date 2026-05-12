@@ -97,6 +97,133 @@
     .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 0}
     .meta-row span{font-size:.75rem;font-weight:600;letter-spacing:.04em;padding:.25rem .65rem;border-radius:999px;background:rgba(102,126,234,.12);color:#4338ca}
     @media (prefers-color-scheme:dark){.meta-row span{background:rgba(102,126,234,.22);color:#c7d2fe}}
+
+    /* ====== Hero stats bar — top-of-page headline numbers ====== */
+    .hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:.85rem;margin-top:1.5rem;max-width:960px}
+    .hero-stat{background:rgba(102,126,234,.08);border:1px solid rgba(102,126,234,.22);border-radius:12px;padding:.95rem 1.05rem;text-align:left}
+    .hero-stat__num{font-size:1.6rem;font-weight:700;color:#4338ca;line-height:1.05;display:flex;align-items:baseline;gap:.4rem;letter-spacing:-.01em}
+    .hero-stat__delta{font-size:.72rem;font-weight:700;color:#047857;background:rgba(16,185,129,.14);padding:.1rem .45rem;border-radius:5px;letter-spacing:.02em}
+    .hero-stat__lbl{font-size:.8rem;font-weight:600;color:#0f172a;margin-top:.35rem;line-height:1.3}
+    .hero-stat__sub{font-size:.72rem;color:#64748b;margin-top:.1rem;line-height:1.4}
+    @media (prefers-color-scheme:dark){.hero-stat{background:rgba(102,126,234,.16);border-color:rgba(102,126,234,.4)}.hero-stat__num{color:#c7d2fe}.hero-stat__lbl{color:#e2e8f0}.hero-stat__sub{color:#94a3b8}.hero-stat__delta{background:rgba(16,185,129,.22);color:#6ee7b7}}
+
+    /* ====== Visualization grid — mock efficiency charts ====== */
+    .viz-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+    @media (min-width:680px){.viz-grid{grid-template-columns:1fr 1fr}}
+    @media (min-width:1100px){.viz-grid{grid-template-columns:repeat(4,1fr)}}
+    .viz-card{background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:14px;padding:1.1rem 1.1rem 1rem;display:flex;flex-direction:column;gap:.55rem;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .viz-card__hdr{display:flex;align-items:start;justify-content:space-between;gap:.5rem}
+    .viz-card__title{font-size:.85rem;font-weight:700;color:#0f172a;margin:0;line-height:1.3;text-transform:uppercase;letter-spacing:.04em}
+    .viz-card__metric-row{display:flex;align-items:baseline;gap:.5rem}
+    .viz-card__metric{font-size:1.65rem;font-weight:700;color:#0f172a;line-height:1;letter-spacing:-.02em}
+    .viz-card__delta{font-size:.74rem;font-weight:700;padding:.15rem .5rem;border-radius:5px;letter-spacing:.02em}
+    .viz-card__delta--up{background:rgba(16,185,129,.15);color:#047857}
+    .viz-card__delta--down{background:rgba(14,165,233,.15);color:#0369a1}
+    .viz-card__sub{font-size:.74rem;color:#64748b;line-height:1.4;margin:0}
+    .viz-card__chart{width:100%;height:120px;display:block}
+    .viz-legend{display:flex;flex-wrap:wrap;gap:.7rem;font-size:.7rem;color:#475569;margin-top:.1rem}
+    .viz-legend span{display:inline-flex;align-items:center;gap:.35rem}
+    .viz-legend span::before{content:"";width:9px;height:9px;border-radius:2px;background:currentColor;display:inline-block}
+    .viz-legend .lg-planned{color:#94a3b8}
+    .viz-legend .lg-actual{color:#10b981}
+    @media (prefers-color-scheme:dark){.viz-card{background:#0f172a;border-color:rgba(148,163,184,.18);box-shadow:none}.viz-card__title,.viz-card__metric{color:#e2e8f0}.viz-card__sub{color:#94a3b8}.viz-legend{color:#cbd5e1}.viz-legend .lg-planned{color:#94a3b8}}
+
+    /* ====== Gantt — visual 90-day workstream view ====== */
+    .gantt{background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:14px;padding:1.25rem 1.1rem 1rem;overflow-x:auto;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .gantt__scale{display:grid;grid-template-columns:170px 1fr;gap:0;align-items:end;font-size:.68rem;color:#64748b;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding-bottom:.55rem;border-bottom:1px solid rgba(15,23,42,.08);min-width:680px}
+    .gantt__scale-axis{display:grid;grid-template-columns:repeat(3,1fr);position:relative}
+    .gantt__scale-axis span{padding:0 .55rem}
+    .gantt__scale-axis span:nth-child(1){color:#2563eb}
+    .gantt__scale-axis span:nth-child(2){color:#059669}
+    .gantt__scale-axis span:nth-child(3){color:#d97706}
+    .gantt__row{display:grid;grid-template-columns:170px 1fr;gap:0;align-items:center;padding:.55rem 0;border-bottom:1px dashed rgba(15,23,42,.06);min-width:680px}
+    .gantt__row:last-child{border-bottom:0}
+    .gantt__label{font-size:.83rem;font-weight:700;color:#0f172a;padding-right:.85rem;line-height:1.3}
+    .gantt__label-sub{font-size:.7rem;font-weight:500;color:#64748b;display:block;margin-top:.1rem}
+    .gantt__track{position:relative;height:34px;background:linear-gradient(90deg,rgba(15,23,42,.035) 0,rgba(15,23,42,.035) calc(33.3% - 1px),rgba(15,23,42,.12) calc(33.3% - 1px),rgba(15,23,42,.12) 33.3%,rgba(15,23,42,.035) 33.3%,rgba(15,23,42,.035) calc(66.6% - 1px),rgba(15,23,42,.12) calc(66.6% - 1px),rgba(15,23,42,.12) 66.6%,rgba(15,23,42,.035) 66.6%);border-radius:6px}
+    .gantt__bar{position:absolute;top:5px;bottom:5px;border-radius:5px;display:flex;align-items:center;padding:0 .6rem;font-size:.7rem;font-weight:700;color:#fff;letter-spacing:.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:0 1px 2px rgba(15,23,42,.18)}
+    .gantt__bar--listen{background:linear-gradient(90deg,#0ea5e9,#2563eb)}
+    .gantt__bar--build{background:linear-gradient(90deg,#10b981,#059669)}
+    .gantt__bar--scale{background:linear-gradient(90deg,#f59e0b,#d97706)}
+    .gantt__bar--continuous{background:linear-gradient(90deg,#667eea,#764ba2)}
+    .gantt__bar--ghost{background:repeating-linear-gradient(45deg,rgba(102,126,234,.4),rgba(102,126,234,.4) 6px,rgba(102,126,234,.25) 6px,rgba(102,126,234,.25) 12px);color:#312e81}
+    .gantt__legend{display:flex;flex-wrap:wrap;gap:.85rem;font-size:.7rem;color:#475569;font-weight:600;margin-top:.85rem;padding-top:.7rem;border-top:1px dashed rgba(15,23,42,.08)}
+    .gantt__legend span{display:inline-flex;align-items:center;gap:.4rem}
+    .gantt__legend span::before{content:"";width:14px;height:10px;border-radius:3px;display:inline-block}
+    .gantt__legend .lg-l::before{background:linear-gradient(90deg,#0ea5e9,#2563eb)}
+    .gantt__legend .lg-b::before{background:linear-gradient(90deg,#10b981,#059669)}
+    .gantt__legend .lg-s::before{background:linear-gradient(90deg,#f59e0b,#d97706)}
+    .gantt__legend .lg-c::before{background:linear-gradient(90deg,#667eea,#764ba2)}
+    @media (prefers-color-scheme:dark){.gantt{background:#0f172a;border-color:rgba(148,163,184,.18);box-shadow:none}.gantt__scale{color:#94a3b8;border-bottom-color:rgba(148,163,184,.18)}.gantt__row{border-bottom-color:rgba(148,163,184,.1)}.gantt__label{color:#e2e8f0}.gantt__label-sub,.gantt__legend{color:#94a3b8}.gantt__track{background:linear-gradient(90deg,rgba(148,163,184,.08) 0,rgba(148,163,184,.08) calc(33.3% - 1px),rgba(148,163,184,.3) calc(33.3% - 1px),rgba(148,163,184,.3) 33.3%,rgba(148,163,184,.08) 33.3%,rgba(148,163,184,.08) calc(66.6% - 1px),rgba(148,163,184,.3) calc(66.6% - 1px),rgba(148,163,184,.3) 66.6%,rgba(148,163,184,.08) 66.6%)}.gantt__legend{border-top-color:rgba(148,163,184,.18)}}
+
+    /* ====== Agentic automation cards ====== */
+    .agent-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+    @media (min-width:680px){.agent-grid{grid-template-columns:1fr 1fr}}
+    @media (min-width:1100px){.agent-grid{grid-template-columns:repeat(3,1fr)}}
+    .agent-card{position:relative;background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:14px;padding:1.15rem 1.15rem;display:flex;flex-direction:column;gap:.7rem;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:transform .15s ease,box-shadow .15s ease}
+    .agent-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,42,.08)}
+    .agent-card__top{display:flex;align-items:center;gap:.75rem}
+    .agent-card__avatar{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:700;color:#fff;flex-shrink:0;background:linear-gradient(135deg,#667eea,#764ba2)}
+    .agent-card__avatar--pipeline{background:linear-gradient(135deg,#0ea5e9,#2563eb)}
+    .agent-card__avatar--kpi{background:linear-gradient(135deg,#10b981,#059669)}
+    .agent-card__avatar--migrate{background:linear-gradient(135deg,#f59e0b,#d97706)}
+    .agent-card__avatar--triage{background:linear-gradient(135deg,#ec4899,#a855f7)}
+    .agent-card__avatar--adopt{background:linear-gradient(135deg,#06b6d4,#0e7490)}
+    .agent-card__avatar--lender{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+    .agent-card__name{font-size:1.02rem;font-weight:700;color:#0f172a;margin:0;line-height:1.2}
+    .agent-card__role{font-size:.7rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:.18rem}
+    .agent-card__desc{font-size:.86rem;color:#475569;line-height:1.5;margin:0}
+    .agent-card__metrics{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+    .agent-card__metric{background:rgba(15,23,42,.03);border-radius:8px;padding:.55rem .7rem}
+    .agent-card__metric-val{font-size:1.05rem;font-weight:700;color:#0f172a;line-height:1.1}
+    .agent-card__metric-lbl{font-size:.66rem;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:.18rem}
+    .agent-card__route{font-size:.78rem;color:#475569;background:rgba(102,126,234,.07);border:1px dashed rgba(102,126,234,.32);border-radius:8px;padding:.5rem .7rem;line-height:1.4}
+    .agent-card__route strong{color:#4338ca;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:.15rem;font-weight:700}
+    .agent-card__status{position:absolute;top:1rem;right:1rem;display:inline-flex;align-items:center;gap:.35rem;font-size:.62rem;font-weight:700;color:#047857;background:rgba(16,185,129,.14);padding:.22rem .55rem;border-radius:999px;letter-spacing:.05em;text-transform:uppercase}
+    .agent-card__status::before{content:"";width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 0 0 rgba(16,185,129,.7);animation:agentPulse 2s infinite}
+    @keyframes agentPulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.55)}70%{box-shadow:0 0 0 6px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+    @media (prefers-color-scheme:dark){.agent-card{background:#0f172a;border-color:rgba(148,163,184,.18);box-shadow:none}.agent-card__name{color:#e2e8f0}.agent-card__role{color:#94a3b8}.agent-card__desc{color:#cbd5e1}.agent-card__metric{background:rgba(148,163,184,.1)}.agent-card__metric-val{color:#e2e8f0}.agent-card__metric-lbl{color:#94a3b8}.agent-card__route{color:#cbd5e1;background:rgba(102,126,234,.14);border-color:rgba(102,126,234,.4)}.agent-card__route strong{color:#a5b4fc}}
+
+    /* ====== Cowork bridge callout ====== */
+    .cowork-bridge{background:linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08));border:1px solid rgba(102,126,234,.25);border-radius:14px;padding:1.25rem 1.4rem;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.4rem}
+    .cowork-bridge__label{font-size:.7rem;font-weight:700;color:#4338ca;letter-spacing:.06em;text-transform:uppercase}
+    .cowork-bridge h3{margin:0;font-size:1.1rem;font-weight:700;color:#0f172a;line-height:1.3}
+    .cowork-bridge p{margin:0;font-size:.92rem;color:#475569;line-height:1.55}
+    .cowork-bridge a{color:#4338ca;font-weight:600}
+    @media (prefers-color-scheme:dark){.cowork-bridge{background:linear-gradient(135deg,rgba(102,126,234,.14),rgba(118,75,162,.14));border-color:rgba(102,126,234,.4)}.cowork-bridge__label{color:#a5b4fc}.cowork-bridge h3{color:#e2e8f0}.cowork-bridge p{color:#cbd5e1}.cowork-bridge a{color:#c7d2fe}}
+
+    /* ====== Live dashboard mockup ====== */
+    .dash-mock{background:#fff;border:1px solid rgba(15,23,42,.12);border-radius:14px;overflow:hidden;box-shadow:0 14px 36px rgba(15,23,42,.1)}
+    .dash-mock__chrome{background:linear-gradient(180deg,#f1f5f9,#e2e8f0);padding:.6rem .9rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid rgba(15,23,42,.1)}
+    .dash-mock__dots{display:flex;gap:.35rem}
+    .dash-mock__dots span{width:11px;height:11px;border-radius:50%}
+    .dash-mock__dots span:nth-child(1){background:#ef4444}
+    .dash-mock__dots span:nth-child(2){background:#f59e0b}
+    .dash-mock__dots span:nth-child(3){background:#10b981}
+    .dash-mock__url{flex:1;font-size:.72rem;font-weight:500;color:#64748b;background:#fff;padding:.3rem .75rem;border-radius:6px;border:1px solid rgba(15,23,42,.08);font-family:ui-monospace,"SF Mono",Menlo,monospace;text-align:center}
+    .dash-mock__live{font-size:.66rem;font-weight:700;color:#047857;background:rgba(16,185,129,.14);padding:.2rem .55rem;border-radius:999px;letter-spacing:.05em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.3rem}
+    .dash-mock__live::before{content:"";width:6px;height:6px;border-radius:50%;background:#10b981;animation:agentPulse 2s infinite}
+    .dash-mock__body{padding:1.1rem;background:#fafbfc;display:grid;grid-template-columns:1fr;gap:1rem}
+    @media (min-width:780px){.dash-mock__body{grid-template-columns:1.35fr 1fr}}
+    .dash-mock__col{display:flex;flex-direction:column;gap:.85rem}
+    .dash-mock__panel{background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:10px;padding:.9rem 1rem}
+    .dash-mock__panel h5{margin:0 0 .1rem;font-size:.82rem;font-weight:700;color:#0f172a;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+    .dash-mock__panel-sub{font-size:.7rem;color:#64748b;margin:0 0 .65rem}
+    .dash-mock__panel-chart{width:100%;height:108px;display:block}
+    .dash-mock__row{display:flex;align-items:center;justify-content:space-between;padding:.45rem 0;border-bottom:1px dashed rgba(15,23,42,.07);font-size:.78rem;color:#0f172a;gap:.6rem}
+    .dash-mock__row:last-child{border-bottom:0}
+    .dash-mock__row strong.dm-agent{color:#4338ca;font-weight:700}
+    .dash-mock__row-status{font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.18rem .5rem;border-radius:5px;background:rgba(16,185,129,.14);color:#047857;white-space:nowrap;flex-shrink:0}
+    .dash-mock__row-status--pending{background:rgba(245,158,11,.14);color:#b45309}
+    .dash-mock__row-status--blocked{background:rgba(239,68,68,.14);color:#b91c1c}
+    .dash-mock__row-status--info{background:rgba(14,165,233,.14);color:#0369a1}
+    .dash-mock__pill{display:inline-block;font-size:.6rem;font-weight:700;color:#fff;background:#10b981;padding:.16rem .48rem;border-radius:999px;letter-spacing:.05em;text-transform:uppercase}
+    .dash-mock__pill--info{background:#0ea5e9}
+    .dash-mock__kpi-row{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+    .dash-mock__kpi-row strong{font-size:1rem;color:#0f172a;font-weight:700}
+    .dm-delta-up{color:#047857;font-size:.7rem;font-weight:700;margin-left:.35rem}
+    .dm-delta-down{color:#b91c1c;font-size:.7rem;font-weight:700;margin-left:.35rem}
+    @media (prefers-color-scheme:dark){.dash-mock{background:#0f172a;border-color:rgba(148,163,184,.18);box-shadow:0 14px 36px rgba(0,0,0,.45)}.dash-mock__chrome{background:linear-gradient(180deg,rgba(148,163,184,.12),rgba(148,163,184,.06));border-bottom-color:rgba(148,163,184,.18)}.dash-mock__url{background:rgba(15,23,42,.7);color:#94a3b8;border-color:rgba(148,163,184,.18)}.dash-mock__body{background:rgba(148,163,184,.04)}.dash-mock__panel{background:#0f172a;border-color:rgba(148,163,184,.18)}.dash-mock__panel h5{color:#e2e8f0}.dash-mock__panel-sub{color:#94a3b8}.dash-mock__row{color:#e2e8f0;border-bottom-color:rgba(148,163,184,.12)}.dash-mock__row strong.dm-agent{color:#a5b4fc}.dash-mock__kpi-row strong{color:#e2e8f0}}
   </style>
 </head>
 <body>
@@ -145,6 +272,36 @@
         <span>Lender PDF reporting</span>
         <span>ALIRO context</span>
       </div>
+
+      <!-- Hero stats — the 90 days in five numbers -->
+      <div class="hero-stats" aria-label="Plan at a glance">
+        <div class="hero-stat">
+          <div class="hero-stat__num">3–5 <span class="hero-stat__delta">+ retire 1</span></div>
+          <div class="hero-stat__lbl">Reports migrated to Sigma</div>
+          <div class="hero-stat__sub">parallel-run signed off · named business owners</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat__num">0 <span class="hero-stat__delta">SLA held</span></div>
+          <div class="hero-stat__lbl">Lender PDF regressions</div>
+          <div class="hero-stat__sub">reconciliation · performance · compliance call</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat__num">6 <span class="hero-stat__delta">24/7</span></div>
+          <div class="hero-stat__lbl">Agentic automations live</div>
+          <div class="hero-stat__sub">on-call routing · ticket triage · auto-recon</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat__num">↑ 4× <span class="hero-stat__delta">adoption</span></div>
+          <div class="hero-stat__lbl">Active Sigma users by day 90</div>
+          <div class="hero-stat__sub">tracked weekly · auto-digested to leadership</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat__num">4Q <span class="hero-stat__delta">approved</span></div>
+          <div class="hero-stat__lbl">Q-by-Q reporting roadmap</div>
+          <div class="hero-stat__sub">signed off by the Director of Analytics</div>
+        </div>
+      </div>
+
       <div class="hero-cta-row" style="margin-top:1.5rem">
         <a class="hero-cta hero-cta--primary" href="../assets/byheir-wise-resume.pdf" download><span aria-hidden="true">↓</span> Download resume</a>
         <a class="hero-cta hero-cta--ghost" href="for-hiring-managers.html">Resume → repo evidence</a>
@@ -176,6 +333,149 @@
         <strong>Days 61–90 · Scale &amp; own</strong>
         Drive adoption — training, office hours, comms. POC for embedded lender reporting in Sigma. Present a Q-by-Q roadmap to the Director of Analytics.
       </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VISUAL DASHBOARD — efficiency gains in mock charts
+       ============================================================ -->
+  <section class="container" aria-labelledby="viz-title">
+    <div class="section-header">
+      <h2 id="viz-title" class="section-title">Efficiency gains — what success looks like in numbers</h2>
+      <p class="section-subtitle">
+        Modeled targets for the 90 days, expressed the way the dashboards I'd build for LendKey would express them. Each card is a projection, not a claim — the methodology behind each is in the deliverables checklist.
+      </p>
+    </div>
+
+    <div class="viz-grid">
+
+      <!-- ===== Card 1: Migration burn-up ===== -->
+      <article class="viz-card">
+        <div class="viz-card__hdr">
+          <h3 class="viz-card__title">Migration burn-up</h3>
+        </div>
+        <div class="viz-card__metric-row">
+          <span class="viz-card__metric">5</span>
+          <span class="viz-card__delta viz-card__delta--up">+ 1 retired</span>
+        </div>
+        <p class="viz-card__sub">Reports in Sigma by day 90 · parallel-run signed off</p>
+        <svg class="viz-card__chart" viewBox="0 0 320 120" preserveAspectRatio="none" role="img" aria-label="Migration burn-up: actual ahead of planned by day 90">
+          <defs>
+            <linearGradient id="burnFill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#10b981" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="30" x2="320" y2="30" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+          <line x1="0" y1="60" x2="320" y2="60" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+          <line x1="0" y1="90" x2="320" y2="90" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+          <line x1="107" y1="0" x2="107" y2="120" stroke="#cbd5e1" stroke-dasharray="2 2"/>
+          <line x1="213" y1="0" x2="213" y2="120" stroke="#cbd5e1" stroke-dasharray="2 2"/>
+          <polyline points="0,110 53,98 107,84 160,68 213,52 267,34 320,18" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <path d="M0,112 L40,108 L80,100 L107,90 L140,76 L180,60 L220,44 L260,30 L300,20 L320,14 L320,120 L0,120 Z" fill="url(#burnFill)"/>
+          <polyline points="0,112 40,108 80,100 107,90 140,76 180,60 220,44 260,30 300,20 320,14" fill="none" stroke="#10b981" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="320" cy="14" r="3.5" fill="#10b981"/>
+        </svg>
+        <div class="viz-legend">
+          <span class="lg-actual">Actual</span>
+          <span class="lg-planned">Planned</span>
+        </div>
+      </article>
+
+      <!-- ===== Card 2: Time-to-insight ===== -->
+      <article class="viz-card">
+        <div class="viz-card__hdr">
+          <h3 class="viz-card__title">Time-to-insight</h3>
+        </div>
+        <div class="viz-card__metric-row">
+          <span class="viz-card__metric">−94%</span>
+          <span class="viz-card__delta viz-card__delta--down">5h → 15m</span>
+        </div>
+        <p class="viz-card__sub">Median time from question to answer for a self-serve user</p>
+        <svg class="viz-card__chart" viewBox="0 0 320 120" role="img" aria-label="Time-to-insight collapses across each 30-day phase">
+          <text x="0" y="13" font-size="9" fill="#64748b" font-weight="600">Baseline</text>
+          <rect x="62" y="4" width="238" height="14" rx="3" fill="#ef4444" opacity=".75"/>
+          <text x="305" y="14" font-size="9" fill="#0f172a" text-anchor="end" font-weight="600">~5 hrs</text>
+          <text x="0" y="43" font-size="9" fill="#64748b" font-weight="600">After Phase 1</text>
+          <rect x="62" y="34" width="118" height="14" rx="3" fill="#f59e0b" opacity=".85"/>
+          <text x="186" y="44" font-size="9" fill="#0f172a" font-weight="600">~2 hrs</text>
+          <text x="0" y="73" font-size="9" fill="#64748b" font-weight="600">After Phase 2</text>
+          <rect x="62" y="64" width="52" height="14" rx="3" fill="#0ea5e9" opacity=".9"/>
+          <text x="121" y="74" font-size="9" fill="#0f172a" font-weight="600">~45 min</text>
+          <text x="0" y="103" font-size="9" fill="#64748b" font-weight="600">After Phase 3</text>
+          <rect x="62" y="94" width="22" height="14" rx="3" fill="#10b981"/>
+          <text x="91" y="104" font-size="9" fill="#0f172a" font-weight="600">&lt;15 min</text>
+        </svg>
+      </article>
+
+      <!-- ===== Card 3: Pipeline reliability ===== -->
+      <article class="viz-card">
+        <div class="viz-card__hdr">
+          <h3 class="viz-card__title">Pipeline reliability</h3>
+        </div>
+        <div class="viz-card__metric-row">
+          <span class="viz-card__metric">99.6%</span>
+          <span class="viz-card__delta viz-card__delta--up">+ MTTD 4m</span>
+        </div>
+        <p class="viz-card__sub">Sigma + Databricks job uptime · agent-routed pages</p>
+        <svg class="viz-card__chart" viewBox="0 0 320 120" role="img" aria-label="Pipeline reliability donut at 99.6 percent">
+          <circle cx="80" cy="60" r="44" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+          <circle cx="80" cy="60" r="44" fill="none" stroke="#10b981" stroke-width="14" stroke-dasharray="275.4 276" stroke-linecap="round" transform="rotate(-90 80 60)"/>
+          <text x="80" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">99.6%</text>
+          <text x="80" y="74" text-anchor="middle" font-size="8" fill="#64748b" font-weight="600">uptime</text>
+          <g font-size="9" fill="#475569" font-weight="600">
+            <rect x="156" y="22" width="9" height="9" rx="2" fill="#10b981"/>
+            <text x="172" y="30">Healthy · 7 jobs</text>
+            <rect x="156" y="42" width="9" height="9" rx="2" fill="#f59e0b"/>
+            <text x="172" y="50">Lagging · 1 job</text>
+            <rect x="156" y="62" width="9" height="9" rx="2" fill="#ef4444" opacity=".4"/>
+            <text x="172" y="70">Failed · 0 jobs</text>
+            <rect x="156" y="82" width="9" height="9" rx="2" fill="#4338ca"/>
+            <text x="172" y="90">Auto-paged · 14</text>
+          </g>
+        </svg>
+      </article>
+
+      <!-- ===== Card 4: Adoption growth ===== -->
+      <article class="viz-card">
+        <div class="viz-card__hdr">
+          <h3 class="viz-card__title">Sigma adoption</h3>
+        </div>
+        <div class="viz-card__metric-row">
+          <span class="viz-card__metric">312</span>
+          <span class="viz-card__delta viz-card__delta--up">+ 4× WoW</span>
+        </div>
+        <p class="viz-card__sub">Active weekly users · 12-week ramp · day 90 target</p>
+        <svg class="viz-card__chart" viewBox="0 0 320 120" role="img" aria-label="Adoption column chart growing weekly over 12 weeks">
+          <defs>
+            <linearGradient id="adoptBar" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#764ba2"/>
+              <stop offset="100%" stop-color="#667eea"/>
+            </linearGradient>
+          </defs>
+          <line x1="0" y1="30" x2="320" y2="30" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+          <line x1="0" y1="60" x2="320" y2="60" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+          <line x1="0" y1="90" x2="320" y2="90" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+          <g fill="url(#adoptBar)">
+            <rect x="6"   y="100" width="18" height="14" rx="2" opacity=".4"/>
+            <rect x="32"  y="96"  width="18" height="18" rx="2" opacity=".45"/>
+            <rect x="58"  y="90"  width="18" height="24" rx="2" opacity=".5"/>
+            <rect x="84"  y="82"  width="18" height="32" rx="2" opacity=".55"/>
+            <rect x="110" y="74"  width="18" height="40" rx="2" opacity=".62"/>
+            <rect x="136" y="64"  width="18" height="50" rx="2" opacity=".7"/>
+            <rect x="162" y="56"  width="18" height="58" rx="2" opacity=".77"/>
+            <rect x="188" y="46"  width="18" height="68" rx="2" opacity=".84"/>
+            <rect x="214" y="38"  width="18" height="76" rx="2" opacity=".9"/>
+            <rect x="240" y="28"  width="18" height="86" rx="2" opacity=".95"/>
+            <rect x="266" y="20"  width="18" height="94" rx="2"/>
+            <rect x="292" y="12"  width="18" height="102" rx="2"/>
+          </g>
+          <text x="15" y="119" font-size="8" fill="#94a3b8" text-anchor="middle">W1</text>
+          <text x="171" y="119" font-size="8" fill="#94a3b8" text-anchor="middle">W6</text>
+          <text x="301" y="119" font-size="8" fill="#94a3b8" text-anchor="middle">W12</text>
+        </svg>
+      </article>
+
     </div>
   </section>
 
@@ -421,6 +721,103 @@
       </article>
 
     </div>
+
+    <!-- ============================================================
+         VISUAL WORKSTREAM GANTT — same plan, screen-share view
+         ============================================================ -->
+    <div style="margin-top:1.75rem">
+      <div class="section-header" style="margin-bottom:.85rem">
+        <h3 class="section-title" style="font-size:1.15rem">Workstream view · how the eight tracks overlap across 90 days</h3>
+        <p class="section-subtitle">
+          The cards above are the narrative. This is the same plan in one screen — useful when sharing the doc with a stakeholder who needs to see when each track lives.
+        </p>
+      </div>
+      <div class="gantt" role="img" aria-label="Gantt-style chart of eight workstreams across 90 days">
+        <div class="gantt__scale" aria-hidden="true">
+          <div></div>
+          <div class="gantt__scale-axis">
+            <span>Days 1–30 · Listen</span>
+            <span>Days 31–60 · Build</span>
+            <span>Days 61–90 · Scale</span>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Sigma platform<span class="gantt__label-sub">audit · admin · datasets</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--listen" style="left:0%;width:33.3%">Inventory · taxonomy · admin</div>
+            <div class="gantt__bar gantt__bar--build" style="left:33.3%;width:33.3%">Style guide · dataset layer</div>
+            <div class="gantt__bar gantt__bar--scale" style="left:66.6%;width:33.4%">Steady admin discipline</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">PowerBI/SSRS migration<span class="gantt__label-sub">backlog → wave → cadence</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--listen" style="left:0%;width:33.3%">Rank backlog · sign-off</div>
+            <div class="gantt__bar gantt__bar--build" style="left:33.3%;width:33.3%">First wave · 3–5 reports</div>
+            <div class="gantt__bar gantt__bar--scale" style="left:66.6%;width:33.4%">Cadence · decommissions</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Lender PDF reports<span class="gantt__label-sub">stability → ownership → POC</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--listen" style="left:0%;width:33.3%">Stability contract</div>
+            <div class="gantt__bar gantt__bar--build" style="left:33.3%;width:33.3%">Direct ownership</div>
+            <div class="gantt__bar gantt__bar--scale" style="left:66.6%;width:33.4%">Embedded reporting POC</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Taktile<span class="gantt__label-sub">shadow → co-own → own</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--listen" style="left:10%;width:23.3%">Shadow flows</div>
+            <div class="gantt__bar gantt__bar--build" style="left:33.3%;width:33.3%">Co-own one flow</div>
+            <div class="gantt__bar gantt__bar--scale" style="left:66.6%;width:33.4%">Independent ownership</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Databricks SQL<span class="gantt__label-sub">fluency → daily tool</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--listen" style="left:0%;width:20%">Ramp</div>
+            <div class="gantt__bar gantt__bar--continuous" style="left:20%;width:80%;opacity:.65">Daily working tool</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Documentation<span class="gantt__label-sub">KPI dict · landing · log</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--ghost" style="left:6.6%;width:26.6%">Draft</div>
+            <div class="gantt__bar gantt__bar--continuous" style="left:33.3%;width:66.7%">Published · public · versioned</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Adoption program<span class="gantt__label-sub">office hours · training · metrics</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--build" style="left:46.6%;width:20%">Pilot</div>
+            <div class="gantt__bar gantt__bar--scale" style="left:66.6%;width:33.4%">Full program · tracked</div>
+          </div>
+        </div>
+
+        <div class="gantt__row">
+          <div class="gantt__label">Q-by-Q roadmap<span class="gantt__label-sub">presented to Director of Analytics</span></div>
+          <div class="gantt__track">
+            <div class="gantt__bar gantt__bar--ghost" style="left:60%;width:28%">Drafting</div>
+            <div class="gantt__bar gantt__bar--scale" style="left:88%;width:12%">Present</div>
+          </div>
+        </div>
+
+        <div class="gantt__legend" aria-hidden="true">
+          <span class="lg-l">Listen &amp; audit</span>
+          <span class="lg-b">Build &amp; migrate</span>
+          <span class="lg-s">Scale &amp; own</span>
+          <span class="lg-c">Continuous</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ============================================================
@@ -516,6 +913,204 @@
         </tbody>
       </table>
     </article>
+  </section>
+
+  <!-- ============================================================
+       AGENTIC AUTOMATION LAYER — Cowork pattern applied to LendKey
+       ============================================================ -->
+  <section class="container" aria-labelledby="agents-title">
+    <div class="section-header">
+      <h2 id="agents-title" class="section-title">Agentic automation layer · the analyst force-multiplier I'd build</h2>
+      <p class="section-subtitle">
+        The migration is the visible work. The bigger leverage is in what gets automated around it. Six role-specialized agents — modeled after the <a href="cowork.html" style="color:#4338ca;font-weight:600">Cowork autonomous pipeline</a> I run for myself today — that take the routine load off the analyst seat and surface only the decisions that need a human.
+      </p>
+    </div>
+
+    <div class="cowork-bridge">
+      <div class="cowork-bridge__label">Pattern reference · proven build</div>
+      <h3>This isn't theoretical — I run a 16-agent autonomous pipeline in production today.</h3>
+      <p>
+        <a href="cowork.html">Cowork</a> ships code 24/7 with 5 parallel lanes, an auto-merge gate with 3-agent voting, a self-healing knowledge loop, and a live dashboard at <a href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">automation.byheir.com ↗</a>. The same pattern — role-specialized agents, structured event logs, a 2-of-3 review gate, an audit-driven dashboard — adapts directly to a BI/data-platform team. Below is what I'd build in the first 90 days at LendKey.
+      </p>
+    </div>
+
+    <div class="agent-grid">
+
+      <!-- Agent 1: Pipeline Sentinel -->
+      <article class="agent-card">
+        <span class="agent-card__status">Live target</span>
+        <div class="agent-card__top">
+          <div class="agent-card__avatar agent-card__avatar--pipeline" aria-hidden="true">PS</div>
+          <div>
+            <h3 class="agent-card__name">Pipeline Sentinel</h3>
+            <div class="agent-card__role">On-call · pipeline reliability</div>
+          </div>
+        </div>
+        <p class="agent-card__desc">
+          Monitors structured events from Databricks jobs and Sigma refreshes. Classifies failures into 5 buckets — schema drift, latency, refresh, source-data, downstream — and pages the right owner via the on-call rotation. Inspired by Cowork's escalation-triager.
+        </p>
+        <div class="agent-card__metrics">
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">4 min</div>
+            <div class="agent-card__metric-lbl">Mean time to detect</div>
+          </div>
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">92%</div>
+            <div class="agent-card__metric-lbl">Auto-routed correctly</div>
+          </div>
+        </div>
+        <div class="agent-card__route">
+          <strong>Routes to</strong>
+          PagerDuty rotation · <code style="font-size:.78em">#data-on-call</code> · job-owner inbox · failure pattern log
+        </div>
+      </article>
+
+      <!-- Agent 2: KPI Validator -->
+      <article class="agent-card">
+        <span class="agent-card__status">Live target</span>
+        <div class="agent-card__top">
+          <div class="agent-card__avatar agent-card__avatar--kpi" aria-hidden="true">KV</div>
+          <div>
+            <h3 class="agent-card__name">KPI Validator</h3>
+            <div class="agent-card__role">Pre-publish · definition drift</div>
+          </div>
+        </div>
+        <p class="agent-card__desc">
+          Runs at Sigma workbook publish time. If a metric matches the dictionary by name but uses a different SQL definition, the agent blocks publish with a side-by-side query diff and the dictionary owner notified.
+        </p>
+        <div class="agent-card__metrics">
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">~17/wk</div>
+            <div class="agent-card__metric-lbl">Drift events caught</div>
+          </div>
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">&lt;3%</div>
+            <div class="agent-card__metric-lbl">False positives</div>
+          </div>
+        </div>
+        <div class="agent-card__route">
+          <strong>Routes to</strong>
+          Workbook author · KPI dictionary owner · Director of Analytics audit log
+        </div>
+      </article>
+
+      <!-- Agent 3: Migration Buddy -->
+      <article class="agent-card">
+        <span class="agent-card__status">Live target</span>
+        <div class="agent-card__top">
+          <div class="agent-card__avatar agent-card__avatar--migrate" aria-hidden="true">MB</div>
+          <div>
+            <h3 class="agent-card__name">Migration Buddy</h3>
+            <div class="agent-card__role">Auto-reconciliation · parallel-run</div>
+          </div>
+        </div>
+        <p class="agent-card__desc">
+          For every PowerBI/SSRS → Sigma migration, the agent runs both reports for the full parallel window, computes the row-by-row diff, surfaces deltas &gt; 2σ, and posts a sign-off-ready summary for the named business owner.
+        </p>
+        <div class="agent-card__metrics">
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">24+</div>
+            <div class="agent-card__metric-lbl">Reconciliations run</div>
+          </div>
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">100%</div>
+            <div class="agent-card__metric-lbl">Sign-off ready</div>
+          </div>
+        </div>
+        <div class="agent-card__route">
+          <strong>Routes to</strong>
+          Business owner · migration inventory · decision log · KPI dictionary
+        </div>
+      </article>
+
+      <!-- Agent 4: Ticket Triager -->
+      <article class="agent-card">
+        <span class="agent-card__status">Live target</span>
+        <div class="agent-card__top">
+          <div class="agent-card__avatar agent-card__avatar--triage" aria-hidden="true">TT</div>
+          <div>
+            <h3 class="agent-card__name">Ticket Triager</h3>
+            <div class="agent-card__role">Inbound · classification</div>
+          </div>
+        </div>
+        <p class="agent-card__desc">
+          Direct port of Cowork's escalation-triager. Classifies inbound Sigma/BI tickets into 5 actionable buckets (bug · access · new-build · training · feature-req), tags owners, and stale-flags at 72h. Auto-suggests an existing self-serve template when one exists.
+        </p>
+        <div class="agent-card__metrics">
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">6 min</div>
+            <div class="agent-card__metric-lbl">Avg triage time</div>
+          </div>
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">96%</div>
+            <div class="agent-card__metric-lbl">Owner found first try</div>
+          </div>
+        </div>
+        <div class="agent-card__route">
+          <strong>Routes to</strong>
+          Sigma admin queue · self-serve template · Director's roadmap inbox
+        </div>
+      </article>
+
+      <!-- Agent 5: Adoption Tracker -->
+      <article class="agent-card">
+        <span class="agent-card__status">Live target</span>
+        <div class="agent-card__top">
+          <div class="agent-card__avatar agent-card__avatar--adopt" aria-hidden="true">AT</div>
+          <div>
+            <h3 class="agent-card__name">Adoption Tracker</h3>
+            <div class="agent-card__role">Analytics · weekly digest</div>
+          </div>
+        </div>
+        <p class="agent-card__desc">
+          Pulls active-users, time-to-first-report, top dashboards, and zero-view dashboards every week. Auto-generates a Slack + email digest for ops/servicing/compliance leads and refreshes the adoption-metrics dashboard in Sigma. Flags zero-view artifacts for retirement.
+        </p>
+        <div class="agent-card__metrics">
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">Weekly</div>
+            <div class="agent-card__metric-lbl">Auto cadence</div>
+          </div>
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">7+</div>
+            <div class="agent-card__metric-lbl">Zero-view flagged</div>
+          </div>
+        </div>
+        <div class="agent-card__route">
+          <strong>Routes to</strong>
+          <code style="font-size:.78em">#analytics</code> · Director · domain leads · retirement queue
+        </div>
+      </article>
+
+      <!-- Agent 6: Lender Report Verifier -->
+      <article class="agent-card">
+        <span class="agent-card__status">Live target</span>
+        <div class="agent-card__top">
+          <div class="agent-card__avatar agent-card__avatar--lender" aria-hidden="true">LV</div>
+          <div>
+            <h3 class="agent-card__name">Lender Report Verifier</h3>
+            <div class="agent-card__role">Pre-flight · external PDFs</div>
+          </div>
+        </div>
+        <p class="agent-card__desc">
+          Reconciles every lender PDF against the prior cycle, surfaces material deltas (&gt; 2σ), and blocks delivery on regression — dual-control gate, same posture as Cowork's auto-merge gate with 3-agent voting and emergency-stop on consecutive reverts.
+        </p>
+        <div class="agent-card__metrics">
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">100%</div>
+            <div class="agent-card__metric-lbl">PDFs pre-flighted</div>
+          </div>
+          <div class="agent-card__metric">
+            <div class="agent-card__metric-val">0</div>
+            <div class="agent-card__metric-lbl">Regressions shipped</div>
+          </div>
+        </div>
+        <div class="agent-card__route">
+          <strong>Routes to</strong>
+          Lender-report owner · compliance · external lender contact · audit log
+        </div>
+      </article>
+
+    </div>
   </section>
 
   <!-- ============================================================
@@ -654,6 +1249,142 @@
         </div>
       </article>
     </div>
+  </section>
+
+  <!-- ============================================================
+       LIVE DASHBOARD MOCKUP — what the day-90 control surface looks like
+       ============================================================ -->
+  <section class="container" aria-labelledby="dashmock-title">
+    <div class="section-header">
+      <h2 id="dashmock-title" class="section-title">Day 90 · the analyst control surface</h2>
+      <p class="section-subtitle">
+        Mock of the dashboard I'd run in Sigma — migration burn-up, live agent activity, pipeline health, and adoption — the same shape as Cowork's control surface, sized for a single screen-share.
+      </p>
+    </div>
+
+    <div class="dash-mock" role="img" aria-label="Mock of the day-90 analyst control surface in Sigma">
+      <div class="dash-mock__chrome">
+        <div class="dash-mock__dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="dash-mock__url">analytics.lendkey.internal/sigma-control · day 90</div>
+        <span class="dash-mock__live">Live</span>
+      </div>
+      <div class="dash-mock__body">
+
+        <!-- LEFT COLUMN -->
+        <div class="dash-mock__col">
+          <div class="dash-mock__panel">
+            <h5>Migration burn-up <span class="dash-mock__pill">on track</span></h5>
+            <p class="dash-mock__panel-sub">Reports migrated to Sigma · actual vs planned · last 90 days</p>
+            <svg class="dash-mock__panel-chart" viewBox="0 0 320 108" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="dmFill" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#10b981" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="0" y1="27" x2="320" y2="27" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+              <line x1="0" y1="54" x2="320" y2="54" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+              <line x1="0" y1="81" x2="320" y2="81" stroke="#e2e8f0" stroke-dasharray="2 4"/>
+              <line x1="107" y1="0" x2="107" y2="108" stroke="#cbd5e1" stroke-dasharray="2 2"/>
+              <line x1="213" y1="0" x2="213" y2="108" stroke="#cbd5e1" stroke-dasharray="2 2"/>
+              <polyline points="0,98 53,86 107,72 160,58 213,42 267,26 320,12" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3"/>
+              <path d="M0,100 L40,96 L80,88 L107,78 L140,64 L180,50 L220,34 L260,22 L300,14 L320,8 L320,108 L0,108 Z" fill="url(#dmFill)"/>
+              <polyline points="0,100 40,96 80,88 107,78 140,64 180,50 220,34 260,22 300,14 320,8" fill="none" stroke="#10b981" stroke-width="2.4" stroke-linejoin="round"/>
+              <circle cx="320" cy="8" r="3.5" fill="#10b981"/>
+              <text x="6" y="103" font-size="7" fill="#94a3b8">Day 1</text>
+              <text x="100" y="103" font-size="7" fill="#94a3b8">Day 30</text>
+              <text x="206" y="103" font-size="7" fill="#94a3b8">Day 60</text>
+              <text x="295" y="103" font-size="7" fill="#94a3b8">Day 90</text>
+            </svg>
+          </div>
+
+          <div class="dash-mock__panel">
+            <h5>Live agent activity <span class="dash-mock__pill dash-mock__pill--info">last 10m</span></h5>
+            <p class="dash-mock__panel-sub">Autonomous decisions · routed, held, or passed · linked to audit log</p>
+            <div class="dash-mock__row">
+              <span><strong class="dm-agent">Migration Buddy</strong> · parallel-run on Loan Performance Q1 · Δ &lt; 0.01%</span>
+              <span class="dash-mock__row-status">passed</span>
+            </div>
+            <div class="dash-mock__row">
+              <span><strong class="dm-agent">Pipeline Sentinel</strong> · refresh lag on <code style="font-size:.78em">credit_facts</code> &gt; SLA</span>
+              <span class="dash-mock__row-status dash-mock__row-status--pending">on-call</span>
+            </div>
+            <div class="dash-mock__row">
+              <span><strong class="dm-agent">KPI Validator</strong> · <code style="font-size:.78em">weighted_apr</code> redefined in 3 workbooks</span>
+              <span class="dash-mock__row-status dash-mock__row-status--blocked">held</span>
+            </div>
+            <div class="dash-mock__row">
+              <span><strong class="dm-agent">Lender Verifier</strong> · 14 PDFs pre-flighted · 0 regressions</span>
+              <span class="dash-mock__row-status">passed</span>
+            </div>
+            <div class="dash-mock__row">
+              <span><strong class="dm-agent">Ticket Triager</strong> · 7 inbound · 6 auto-routed · 1 to roadmap</span>
+              <span class="dash-mock__row-status dash-mock__row-status--info">routed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="dash-mock__col">
+          <div class="dash-mock__panel">
+            <h5>Pipeline health <span class="dash-mock__pill dash-mock__pill--info">live</span></h5>
+            <p class="dash-mock__panel-sub">7 critical jobs · last 24h · agent-routed pages</p>
+            <svg class="dash-mock__panel-chart" viewBox="0 0 220 108" aria-hidden="true">
+              <g font-family="sans-serif">
+                <text x="0" y="14" font-size="8" fill="#64748b" font-weight="600">credit_facts</text>
+                <rect x="80" y="6" width="130" height="10" rx="2" fill="#e2e8f0"/>
+                <rect x="80" y="6" width="124" height="10" rx="2" fill="#10b981"/>
+                <text x="0" y="30" font-size="8" fill="#64748b" font-weight="600">loan_perf</text>
+                <rect x="80" y="22" width="130" height="10" rx="2" fill="#e2e8f0"/>
+                <rect x="80" y="22" width="130" height="10" rx="2" fill="#10b981"/>
+                <text x="0" y="46" font-size="8" fill="#64748b" font-weight="600">lender_recon</text>
+                <rect x="80" y="38" width="130" height="10" rx="2" fill="#e2e8f0"/>
+                <rect x="80" y="38" width="128" height="10" rx="2" fill="#10b981"/>
+                <text x="0" y="62" font-size="8" fill="#64748b" font-weight="600">taktile_log</text>
+                <rect x="80" y="54" width="130" height="10" rx="2" fill="#e2e8f0"/>
+                <rect x="80" y="54" width="118" height="10" rx="2" fill="#f59e0b"/>
+                <text x="0" y="78" font-size="8" fill="#64748b" font-weight="600">app_events</text>
+                <rect x="80" y="70" width="130" height="10" rx="2" fill="#e2e8f0"/>
+                <rect x="80" y="70" width="130" height="10" rx="2" fill="#10b981"/>
+                <text x="0" y="94" font-size="8" fill="#64748b" font-weight="600">compliance</text>
+                <rect x="80" y="86" width="130" height="10" rx="2" fill="#e2e8f0"/>
+                <rect x="80" y="86" width="126" height="10" rx="2" fill="#10b981"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="dash-mock__panel">
+            <h5>Adoption · week 12 <span class="dash-mock__pill">+ 18% WoW</span></h5>
+            <p class="dash-mock__panel-sub">Auto-digested every Monday by Adoption Tracker</p>
+            <div class="dash-mock__row">
+              <span>Active weekly users</span>
+              <span><strong>312</strong><span class="dm-delta-up">↑ 12%</span></span>
+            </div>
+            <div class="dash-mock__row">
+              <span>Time-to-first-report</span>
+              <span><strong>14m</strong><span class="dm-delta-up">↓ 31%</span></span>
+            </div>
+            <div class="dash-mock__row">
+              <span>Top dashboard views</span>
+              <span><strong>4,108</strong><span class="dm-delta-up">↑ 8%</span></span>
+            </div>
+            <div class="dash-mock__row">
+              <span>Zero-view dashboards</span>
+              <span><strong>7</strong><span class="dm-delta-down">flagged</span></span>
+            </div>
+            <div class="dash-mock__row">
+              <span>KPI drift events</span>
+              <span><strong>3</strong><span class="dm-delta-up">↓ 80%</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p style="font-size:.82rem;color:#64748b;margin:.85rem 0 0;text-align:center">
+      Numbers are modeled targets. The dashboard pattern, the agent layer, and the audit-driven posture are real — see <a href="cowork.html" style="color:#4338ca;font-weight:600">Cowork</a> for the working version.
+    </p>
   </section>
 
   <!-- ============================================================
