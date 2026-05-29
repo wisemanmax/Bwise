@@ -66,6 +66,7 @@ Where to look when you want proof of a specific claim.
 ### Live demos (functional, not mockups)
 | Demo | What runs | File |
 |---|---|---|
+| LoanOps Agent Control Plane | Regulated-servicing AI copilot — explainable analyst w/ policy citations, guardrails engine, MCP-style tool connectors, tamper-evident (hash-chained) audit timeline, human approval flow, Snowflake-style validation layer | `pages/loanops-control-plane.html` |
 | Operations Dashboard | SLA risk, alerts, workload — links the suites above | `pages/dashboard.html` |
 | Refi Intelligence | Cohort heatmaps, funnel drop-off, savings dist. across 5,000 synthetic apps | `pages/refi-intelligence.html` |
 | SQL Playground | Real SQL against a synthetic lending portfolio in-browser | `pages/sql-playground.html` |
