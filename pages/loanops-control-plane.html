@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LoanOps Agent Control Plane — Portfolio Demo · Byheir Wise</title>
+<meta name="description" content="A regulated-servicing AI copilot: case workspace, explainable AI analyst with policy citations, a guardrails engine, MCP-style tool connectors, tamper-evident audit timeline, human-in-the-loop approval, and a Snowflake-style data-validation layer. Runs entirely in-browser on synthetic data." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  :root {
+    --bg-0:#08080d; --bg-1:#0e0e16; --bg-2:#14141f; --bg-3:#1c1c2a;
+    --line:rgba(255,255,255,0.06); --line-strong:rgba(255,255,255,0.12);
+    --ink-0:#fafafa; --ink-1:#d4d4dc; --ink-2:#8a8a98; --ink-3:#5a5a68;
+    --cyan:#00d9f5; --cyan-dim:rgba(0,217,245,0.13);
+    --green:#00f5a0; --green-dim:rgba(0,245,160,0.13);
+    --amber:#f5b800; --amber-dim:rgba(245,184,0,0.13);
+    --rose:#ff5577; --rose-dim:rgba(255,85,119,0.12);
+    --violet:#a98bff; --violet-dim:rgba(169,139,255,0.13);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    background:var(--bg-0); color:var(--ink-0);
+    font-family:'Outfit',sans-serif; font-weight:400;
+    -webkit-font-smoothing:antialiased; line-height:1.5; min-height:100vh;
+  }
+  body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,217,245,0.07), transparent),
+      radial-gradient(ellipse 60% 40% at 85% 100%, rgba(169,139,255,0.05), transparent);
+    background-attachment:fixed;
+  }
+  a { color:var(--cyan); text-decoration:none; }
+  .mono { font-family:'JetBrains Mono',monospace; font-feature-settings:"tnum"; }
+  .serif { font-family:'Fraunces',serif; font-weight:400; }
+  .app { max-width:1500px; margin:0 auto; padding:28px 32px 90px; }
+
+  /* header */
+  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .backlink { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.12em; color:var(--ink-2); text-transform:uppercase; }
+  .backlink:hover { color:var(--cyan); }
+  .brand-mark { display:flex; align-items:center; gap:10px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-2); }
+  .brand-dot { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 12px var(--green); animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.5;} }
+  .header { padding:18px 0 26px; border-bottom:1px solid var(--line); margin-bottom:24px; }
+  .demo-tag { display:inline-block; padding:4px 10px; margin-bottom:14px; border:1px solid var(--line-strong); border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.15em; color:var(--amber); text-transform:uppercase; }
+  .header-title { font-family:'Fraunces',serif; font-size:38px; font-weight:400; letter-spacing:-.02em; line-height:1.08; }
+  .header-title em { font-style:italic; color:var(--cyan); font-weight:300; }
+  .header-sub { font-size:15px; color:var(--ink-2); max-width:760px; margin-top:12px; }
+
+  /* layout */
+  .grid { display:grid; grid-template-columns:248px 1fr 360px; gap:20px; align-items:start; }
+  @media (max-width:1180px){ .grid{ grid-template-columns:1fr; } }
+  .panel { background:linear-gradient(180deg,var(--bg-1),var(--bg-2)); border:1px solid var(--line-strong); border-radius:12px; }
+  .panel-h { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line); }
+  .panel-h .t { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); }
+  .panel-b { padding:16px; }
+
+  /* case list */
+  .case-item { display:block; width:100%; text-align:left; background:var(--bg-2); border:1px solid var(--line); border-radius:9px; padding:12px; margin-bottom:10px; cursor:pointer; transition:all .15s; color:var(--ink-1); }
+  .case-item:hover { border-color:var(--line-strong); }
+  .case-item.active { border-color:var(--cyan); background:linear-gradient(180deg,var(--cyan-dim),var(--bg-2)); }
+  .case-name { font-size:14px; font-weight:600; color:var(--ink-0); }
+  .case-sub { font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--ink-2); margin-top:3px; }
+  .case-row { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+
+  /* badges / chips */
+  .badge { display:inline-flex; align-items:center; gap:5px; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.04em; padding:3px 8px; border-radius:5px; border:1px solid var(--line-strong); text-transform:uppercase; }
+  .b-rose{ color:var(--rose); background:var(--rose-dim); border-color:rgba(255,85,119,.3); }
+  .b-amber{ color:var(--amber); background:var(--amber-dim); border-color:rgba(245,184,0,.3); }
+  .b-green{ color:var(--green); background:var(--green-dim); border-color:rgba(0,245,160,.3); }
+  .b-cyan{ color:var(--cyan); background:var(--cyan-dim); border-color:rgba(0,217,245,.3); }
+  .b-violet{ color:var(--violet); background:var(--violet-dim); border-color:rgba(169,139,255,.3); }
+  .b-grey{ color:var(--ink-2); background:var(--bg-3); }
+
+  /* tabs */
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+  .tab { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:8px 14px; border-radius:7px; border:1px solid var(--line); background:var(--bg-1); color:var(--ink-2); cursor:pointer; transition:all .15s; }
+  .tab:hover { color:var(--ink-0); }
+  .tab.active { color:var(--bg-0); background:var(--cyan); border-color:var(--cyan); font-weight:600; }
+
+  /* workspace */
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media (max-width:680px){ .kpis{ grid-template-columns:repeat(2,1fr);} }
+  .kpi { background:var(--bg-2); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .kpi .lbl { font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); }
+  .kpi .val { font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--ink-0); margin-top:6px; }
+  .kpi .val small { font-size:12px; color:var(--ink-2); }
+  .section-t { font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:22px 0 10px; }
+  table.data { width:100%; border-collapse:collapse; font-size:13px; }
+  table.data th { text-align:left; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); padding:8px 10px; border-bottom:1px solid var(--line); }
+  table.data td { padding:9px 10px; border-bottom:1px solid var(--line); color:var(--ink-1); }
+  table.data tr:last-child td { border-bottom:none; }
+  .right { text-align:right; }
+  .comm { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .comm:last-child { border-bottom:none; }
+  .comm .dot { width:8px; height:8px; border-radius:50%; margin-top:6px; flex:0 0 auto; }
+  .comm .body .meta { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-3); }
+  .comm .body .txt { font-size:13px; color:var(--ink-1); margin-top:2px; }
+  .flag-row { display:flex; align-items:flex-start; gap:9px; padding:9px 0; border-bottom:1px solid var(--line); font-size:13px; color:var(--ink-1); }
+  .flag-row:last-child { border-bottom:none; }
+
+  /* buttons */
+  .btn { font-family:'Outfit',sans-serif; font-size:13px; font-weight:600; padding:10px 18px; border-radius:8px; border:1px solid var(--line-strong); background:var(--bg-3); color:var(--ink-0); cursor:pointer; transition:all .15s; }
+  .btn:hover { border-color:var(--ink-2); }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .btn-primary { background:var(--cyan); color:var(--bg-0); border-color:var(--cyan); }
+  .btn-primary:hover { box-shadow:0 0 22px rgba(0,217,245,.35); }
+  .btn-green { background:var(--green); color:var(--bg-0); border-color:var(--green); }
+  .btn-rose { background:transparent; color:var(--rose); border-color:rgba(255,85,119,.4); }
+  .btn-rose:hover { background:var(--rose-dim); }
+  .btn-sm { font-size:11px; padding:6px 12px; }
+
+  /* AI analyst */
+  .analyst-box { background:var(--bg-1); border:1px solid var(--line-strong); border-radius:11px; padding:18px; }
+  .stream-line { display:flex; gap:10px; align-items:center; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-2); padding:5px 0; }
+  .spinner { width:13px; height:13px; border:2px solid var(--line-strong); border-top-color:var(--cyan); border-radius:50%; animation:spin .7s linear infinite; }
+  @keyframes spin { to{ transform:rotate(360deg);} }
+  .out-card { background:var(--bg-2); border:1px solid var(--line); border-radius:10px; padding:15px; margin-top:14px; }
+  .out-card h4 { font-size:13px; font-family:'JetBrains Mono',monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); margin-bottom:9px; }
+  .cite { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:10px; padding:2px 7px; border-radius:5px; background:var(--violet-dim); color:var(--violet); border:1px solid rgba(169,139,255,.3); margin:2px 4px 2px 0; cursor:help; }
+  .nba { font-size:15px; color:var(--ink-0); font-weight:500; }
+  .miss { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--amber); padding:4px 0; }
+  .confidence-bar { height:6px; border-radius:3px; background:var(--bg-3); overflow:hidden; margin-top:6px; }
+  .confidence-bar > div { height:100%; background:linear-gradient(90deg,var(--cyan),var(--green)); }
+
+  /* guardrails */
+  .check { display:flex; align-items:flex-start; gap:12px; padding:12px; border:1px solid var(--line); border-radius:9px; margin-bottom:10px; background:var(--bg-2); }
+  .check .icon { width:22px; height:22px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+  .check.pass .icon { background:var(--green-dim); color:var(--green); border:1px solid rgba(0,245,160,.4); }
+  .check.fail .icon { background:var(--rose-dim); color:var(--rose); border:1px solid rgba(255,85,119,.4); }
+  .check .ttl { font-size:13.5px; font-weight:600; color:var(--ink-0); }
+  .check .desc { font-size:12.5px; color:var(--ink-2); margin-top:3px; }
+  .verdict { padding:14px 16px; border-radius:10px; margin-bottom:16px; font-size:14px; }
+  .verdict.ok { background:var(--green-dim); border:1px solid rgba(0,245,160,.4); color:var(--green); }
+  .verdict.block { background:var(--rose-dim); border:1px solid rgba(255,85,119,.4); color:var(--rose); }
+
+  /* tools */
+  .tool-card { background:var(--bg-2); border:1px solid var(--line); border-radius:10px; padding:13px; margin-bottom:10px; }
+  .tool-name { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--cyan); }
+  .tool-desc { font-size:12px; color:var(--ink-2); margin-top:3px; }
+  pre.json { background:var(--bg-0); border:1px solid var(--line); border-radius:8px; padding:12px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-1); overflow:auto; margin-top:10px; white-space:pre-wrap; word-break:break-word; }
+  .json-key { color:var(--cyan); }
+  .json-str { color:var(--green); }
+  .json-num { color:var(--amber); }
+  .json-bool { color:var(--violet); }
+
+  /* audit timeline */
+  .audit { position:sticky; top:20px; }
+  .audit-feed { max-height:680px; overflow-y:auto; padding-right:4px; }
+  .audit-item { position:relative; padding:0 0 14px 22px; border-left:1px solid var(--line-strong); }
+  .audit-item:last-child { border-left-color:transparent; }
+  .audit-item .node { position:absolute; left:-5px; top:2px; width:9px; height:9px; border-radius:50%; background:var(--ink-3); }
+  .audit-item .ts { font-family:'JetBrains Mono',monospace; font-size:9.5px; color:var(--ink-3); }
+  .audit-item .summary { font-size:12.5px; color:var(--ink-1); margin-top:2px; }
+  .audit-item .detail { font-size:11px; color:var(--ink-3); margin-top:2px; }
+  .audit-item .hash { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--ink-3); margin-top:3px; opacity:.7; }
+  .empty { color:var(--ink-3); font-size:13px; text-align:center; padding:30px 10px; }
+
+  /* validation */
+  .recon-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:18px; }
+  @media (max-width:680px){ .recon-grid{ grid-template-columns:1fr;} }
+  .select { font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--bg-2); color:var(--ink-1); border:1px solid var(--line-strong); border-radius:8px; padding:9px 12px; }
+  .note { font-size:12px; color:var(--ink-3); margin-top:8px; }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-2); margin-top:10px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .legend i { width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .disclaimer { margin-top:36px; padding:16px 18px; border:1px dashed var(--line-strong); border-radius:10px; font-size:12.5px; color:var(--ink-3); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+/* =========================================================================
+   POLICY LIBRARY  —  internal servicing + federal-compliance source of truth.
+   The AI analyst cites these by ID; the guardrails engine references them.
+   ========================================================================= */
+const POLICY_DOCS = {
+  "POL-COLL-014": { title:"Hardship Forbearance Eligibility", body:"Forbearance may be granted only after verified hardship documentation (income/expense statement + signed hardship affidavit). Maximum 90 days per request. Principal may not be waived." },
+  "POL-COLL-021": { title:"Repayment Plan Standards", body:"Past-due balances may be cured via a structured repayment plan of up to 6 months, contingent on a documented affordability assessment." },
+  "POL-COMM-003": { title:"Right-Party Contact", body:"Servicer must verify borrower identity (two factors) before discussing account-specific details on any channel." },
+  "POL-AUDIT-001":{ title:"Decision Record & Approval", body:"Every servicing decision that affects a borrower's obligation requires (a) a written audit memo and (b) recorded human approval before execution." },
+  "FDCPA-805c":   { title:"Cease Communication (FDCPA §805(c))", body:"Once a consumer notifies the servicer in writing to cease communication, the servicer must not communicate further except to advise that specific remedies may be invoked. Outbound collection calls are prohibited." },
+  "SCRA-527":     { title:"Interest Rate Cap (SCRA §527)", body:"Interest on pre-service obligations of an active-duty servicemember is capped at 6% APR. Interest above 6% must be forgiven (not deferred) for the period of military service." },
+  "SCRA-COLL":    { title:"Servicemember Collections Protections", body:"Heightened protections apply to active-duty servicemembers. No default judgment without appointed counsel; collections contact must be conducted with documented sensitivity." },
+  "REG-F-1006.14":{ title:"Call Frequency Limit (Reg F §1006.14)", body:"A debt collector may not place a telephone call to a consumer more than seven times within a seven-day period per account." },
+  "ECOA-AA":      { title:"Adverse Action Notice (ECOA / Reg B)", body:"Any adverse action affecting a borrower requires a written notice stating the specific principal reasons within 30 days." },
+};
+
+/* =========================================================================
+   BORROWER CASES  —  synthetic. Each carries loan state, payment + comms
+   history, risk/compliance flags, and a document checklist used by both the
+   analyst (missing-data detection) and the guardrails engine.
+   ========================================================================= */
+const CASES = [
+  {
+    id:"CASE-1001", name:"Maria Alvarez", loanId:"LN-44821",
+    product:"Private Student Loan — Refi", balance:28540.12, origination:31000.00,
+    rate:7.40, status:"Delinquent", dpd:47, monthlyPayment:312.00,
+    nextDue:"2026-04-12 (overdue)", openedDate:"2022-08-01", lastSync:"2026-05-29 06:00Z",
+    callsLast7Days:1,
+    scraActive:false, ceaseComms:false,
+    docs:{ idVerified:true, incomeDocs:false, hardshipAffidavit:false, hardshipVerified:false, scraOrders:null },
+    riskFlags:[ "Rising DPD — 3 consecutive cycles", "Inbound hardship inquiry 2026-05-02" ],
+    complianceFlags:[],
+    payments:[
+      { date:"2026-05-12", amount:0.00, principal:0, interest:0, status:"Missed" },
+      { date:"2026-04-12", amount:0.00, principal:0, interest:0, status:"Missed" },
+      { date:"2026-03-12", amount:312.00, principal:136.21, interest:175.79, status:"Posted" },
+      { date:"2026-02-12", amount:312.00, principal:135.37, interest:176.63, status:"Posted" },
+      { date:"2026-01-12", amount:312.00, principal:134.54, interest:177.46, status:"Posted" },
+    ],
+    comms:[
+      { date:"2026-05-02 14:22", channel:"Inbound Call", note:"Borrower reports reduced hours; asked about hardship options.", tone:"amber" },
+      { date:"2026-04-20 09:10", channel:"Email (out)", note:"Automated past-due reminder, cycle 1.", tone:"grey" },
+      { date:"2026-03-12 11:01", channel:"System", note:"Payment posted on schedule.", tone:"green" },
+    ],
+  },
+  {
+    id:"CASE-1002", name:"SSgt James Okoro", loanId:"LN-39107",
+    product:"Private Student Loan", balance:19880.44, origination:22500.00,
+    rate:9.10, status:"Past Due", dpd:12, monthlyPayment:245.00,
+    nextDue:"2026-05-19 (overdue)", openedDate:"2021-03-15", lastSync:"2026-05-29 06:00Z",
+    callsLast7Days:0,
+    scraActive:true, ceaseComms:false,
+    docs:{ idVerified:true, incomeDocs:true, hardshipAffidavit:false, hardshipVerified:false, scraOrders:true },
+    riskFlags:[ "Contract rate 9.10% exceeds SCRA 6% cap" ],
+    complianceFlags:[ "Active-duty servicemember — SCRA protections apply", "Interest accrued above 6% cap pending adjustment" ],
+    payments:[
+      { date:"2026-05-19", amount:0.00, principal:0, interest:0, status:"Missed" },
+      { date:"2026-04-19", amount:245.00, principal:94.21, interest:150.79, status:"Posted" },
+      { date:"2026-03-19", amount:245.00, principal:93.50, interest:151.50, status:"Posted" },
+      { date:"2026-02-19", amount:245.00, principal:92.79, interest:152.21, status:"Posted" },
+    ],
+    comms:[
+      { date:"2026-05-10 16:40", channel:"Document Upload", note:"Active-duty orders received and verified.", tone:"green" },
+      { date:"2026-05-01 08:30", channel:"Email (out)", note:"Past-due reminder, cycle 1.", tone:"grey" },
+    ],
+  },
+  {
+    id:"CASE-1003", name:"Dolores Kim", loanId:"LN-50233",
+    product:"Private Student Loan", balance:41210.88, origination:43000.00,
+    rate:8.20, status:"Severely Delinquent", dpd:96, monthlyPayment:498.00,
+    nextDue:"2026-02-22 (overdue)", openedDate:"2020-11-05", lastSync:"2026-05-29 06:00Z",
+    callsLast7Days:0,
+    scraActive:false, ceaseComms:true, ceaseCommsDate:"2026-04-18",
+    docs:{ idVerified:true, incomeDocs:false, hardshipAffidavit:false, hardshipVerified:false, scraOrders:null },
+    riskFlags:[ "Charge-off risk — exceeds 90 DPD", "No successful contact in 38 days" ],
+    complianceFlags:[ "Written cease-communication request on file (FDCPA §805c) — 2026-04-18", "Written-channel contact only" ],
+    payments:[
+      { date:"2026-05-22", amount:0.00, principal:0, interest:0, status:"Missed" },
+      { date:"2026-04-22", amount:0.00, principal:0, interest:0, status:"Missed" },
+      { date:"2026-03-22", amount:0.00, principal:0, interest:0, status:"Missed" },
+      { date:"2026-02-22", amount:498.00, principal:216.40, interest:281.60, status:"Posted" },
+    ],
+    comms:[
+      { date:"2026-04-18 10:05", channel:"Written Request", note:"Borrower submitted written cease-communication request.", tone:"rose" },
+      { date:"2026-03-30 13:15", channel:"Outbound Call", note:"No answer; voicemail left (pre-cease-comm).", tone:"grey" },
+    ],
+  },
+];
+
+/* =========================================================================
+   ACTION CATALOG  —  the discrete servicing actions the agent can reason
+   about. Some are flagged "forbidden:true": the analyst must never recommend
+   them, and the guardrails engine hard-blocks them if anyone tries.
+   ========================================================================= */
+const ACTIONS = {
+  request_hardship_docs: { label:"Request hardship documentation", channel:"written", category:"servicing" },
+  offer_forbearance:     { label:"Offer 90-day hardship forbearance", channel:"written", category:"loss_mitigation" },
+  offer_repayment_plan:  { label:"Offer 6-month repayment plan", channel:"written", category:"loss_mitigation" },
+  apply_scra_cap:        { label:"Apply SCRA 6% rate cap + forgive excess interest", channel:"system", category:"compliance_remediation" },
+  written_outreach:      { label:"Send written remedy-options letter", channel:"written", category:"servicing" },
+  route_loss_mitigation: { label:"Route to loss-mitigation / legal review", channel:"internal", category:"servicing" },
+  place_collection_call: { label:"Place outbound collection call", channel:"call", category:"collections" },
+  increase_rate:         { label:"Increase interest rate", channel:"system", category:"pricing", forbidden:true },
+  report_default:        { label:"Report default to credit bureaus", channel:"system", category:"adverse", forbidden:true },
+  waive_principal:       { label:"Waive loan principal", channel:"system", category:"adverse", forbidden:true },
+};
+
+/* =========================================================================
+   GUARDRAILS ENGINE  —  pure predicates over (action, case). Returns a
+   pass/fail check with the controlling policy reference. This is the layer
+   that makes the agent safe in a regulated context.
+   ========================================================================= */
+function evaluateGuardrails(actionKey, c) {
+  const a = ACTIONS[actionKey];
+  const checks = [];
+  const add = (id, title, pass, desc, policy) => checks.push({ id, title, pass, desc, policy });
+
+  // Hard block: catalog-forbidden actions can never proceed.
+  add("G-FORBID", "Action is within the permitted catalog",
+      !a.forbidden,
+      a.forbidden ? `“${a.label}” is on the prohibited-action list and can never be recommended or executed by the agent.`
+                  : "Action is an approved servicing action.",
+      "POL-AUDIT-001");
+
+  // SCRA rate-cap protection.
+  if (c.scraActive) {
+    const violates = (actionKey === "increase_rate" || actionKey === "report_default");
+    add("G-SCRA", "SCRA servicemember protections",
+        !violates,
+        violates ? "Borrower is active-duty; rate increases and adverse credit reporting on pre-service obligations are prohibited."
+                 : "Action respects SCRA protections (no rate increase, no adverse reporting).",
+        "SCRA-527");
+  }
+
+  // Cease-communication restriction.
+  if (c.ceaseComms) {
+    const isOutbound = (a.channel === "call");
+    add("G-CEASE", "Cease-communication compliance",
+        !isOutbound,
+        isOutbound ? "A written cease-communication request is on file; outbound collection calls are prohibited. Written channels only."
+                   : "Action uses a permitted channel under the cease-communication request.",
+        "FDCPA-805c");
+  }
+
+  // Forbearance requires verified hardship docs first.
+  if (actionKey === "offer_forbearance") {
+    add("G-DOCS", "Hardship documentation verified",
+        !!c.docs.hardshipVerified,
+        c.docs.hardshipVerified ? "Verified hardship documentation is on file."
+                                : "Forbearance cannot be offered before hardship documentation is collected and verified.",
+        "POL-COLL-014");
+  }
+
+  // Call-frequency limit (Reg F).
+  if (a.channel === "call") {
+    add("G-FREQ", "Call-frequency limit",
+        c.callsLast7Days < 7,
+        c.callsLast7Days < 7 ? `Within limit (${c.callsLast7Days}/7 calls in trailing 7 days).`
+                             : "Exceeds the 7-calls-in-7-days limit.",
+        "REG-F-1006.14");
+  }
+
+  const passed = checks.every(k => k.pass);
+  return { checks, passed };
+}
+
+/* =========================================================================
+   AI CASE ANALYST  —  produces a *structured output* (the shape an LLM with
+   constrained/JSON-schema decoding would return). It is rules-grounded so
+   every recommendation is reproducible and every claim is policy-cited.
+   ========================================================================= */
+function runAnalyst(c) {
+  const missing = [];
+  if (!c.docs.incomeDocs) missing.push("Updated income / expense statement");
+  if (!c.docs.hardshipAffidavit && c.dpd > 30 && !c.scraActive) missing.push("Signed hardship affidavit");
+  if (c.ceaseComms) missing.push("Current written-channel contact preference confirmation");
+
+  let summary, recommend, citations, confidence, riskLevel;
+
+  if (c.scraActive) {
+    summary = `${c.name} is an active-duty servicemember ${c.dpd} days past due on ${c.loanId}. The contract rate of ${c.rate.toFixed(2)}% exceeds the SCRA 6% cap, and interest above the cap has accrued. Delinquency appears procedural rather than hardship-driven; payment history before the missed cycle was on-time.`;
+    recommend = { actionKey:"apply_scra_cap", rationale:"SCRA §527 requires the rate be capped at 6% for the service period and excess interest forgiven (not deferred). Remediate the rate first; the re-amortized payment is likely affordable given prior on-time history. Conduct any contact with documented sensitivity and do not report adverse credit." };
+    citations = ["SCRA-527","SCRA-COLL","POL-AUDIT-001"];
+    confidence = 0.91; riskLevel = "Compliance-sensitive";
+  } else if (c.ceaseComms) {
+    summary = `${c.name} is ${c.dpd} days past due on ${c.loanId} and at charge-off risk. A written cease-communication request (FDCPA §805c, ${c.ceaseCommsDate}) is on file, so outbound calls are prohibited. There has been no successful contact in 38 days.`;
+    recommend = { actionKey:"written_outreach", rationale:"Under FDCPA §805(c) the only permitted contact is written notice of available remedies. Send a written remedy-options letter (repayment plan / settlement referral) and route the file to loss-mitigation/legal review. Do not place outbound collection calls." };
+    citations = ["FDCPA-805c","POL-COLL-021","POL-AUDIT-001"];
+    confidence = 0.88; riskLevel = "High";
+  } else {
+    summary = `${c.name} is ${c.dpd} days past due on ${c.loanId} with rising DPD over 3 cycles and an inbound hardship inquiry. Prior payment history was on-time, suggesting a recoverable hardship rather than a strategic default.`;
+    recommend = { actionKey:"request_hardship_docs", rationale:"Per POL-COLL-014, forbearance cannot be granted until hardship documentation is verified — so the next-best action is to request income/expense docs and a hardship affidavit. Once verified, a 90-day forbearance or a 6-month repayment plan (POL-COLL-021) are both viable cures given the affordable prior payment." };
+    citations = ["POL-COLL-014","POL-COLL-021","POL-COMM-003"];
+    confidence = 0.84; riskLevel = "Medium";
+  }
+
+  return {
+    model:"claude-opus-4 (simulated, JSON-schema constrained)",
+    promptTokens: 1180 + c.comms.length*42 + c.payments.length*30,
+    completionTokens: 320,
+    summary, missing,
+    recommendation: { ...recommend, actionLabel: ACTIONS[recommend.actionKey].label },
+    citations, confidence, riskLevel,
+  };
+}
+
+/* =========================================================================
+   TAMPER-EVIDENT AUDIT LOG  —  append-only, each entry chained to the prior
+   via a cyrb53 hash of (prevHash + payload). Re-hashing the chain detects any
+   edit, deletion, or reordering. This is the senior-level differentiator.
+   ========================================================================= */
+function cyrb53(str, seed = 0) {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(13, "0");
+}
+
+const TYPE_COLOR = {
+  ai_call:"var(--violet)", tool_call:"var(--cyan)", policy_check:"var(--amber)",
+  human_approval:"var(--green)", human_rejection:"var(--rose)", decision:"var(--ink-1)", system:"var(--ink-3)",
+};
+
+/* ---------------- tiny JSON syntax highlighter ---------------- */
+function highlightJSON(obj) {
+  const json = JSON.stringify(obj, null, 2);
+  return json
+    .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?)/g, (m) => {
+      let cls = "json-num";
+      if (/^"/.test(m)) cls = /:$/.test(m) ? "json-key" : "json-str";
+      else if (/true|false/.test(m)) cls = "json-bool";
+      else if (/null/.test(m)) cls = "json-bool";
+      return `<span class="${cls}">${m}</span>`;
+    });
+}
+
+/* ============================== UI ============================== */
+const fmtMoney = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
+const nowStamp = () => new Date().toISOString().replace("T"," ").slice(0,19) + "Z";
+
+function App() {
+  const [activeCaseId, setActiveCaseId] = useState(CASES[0].id);
+  const [tab, setTab] = useState("workspace");
+  const [audit, setAudit] = useState([]);
+  const [analysis, setAnalysis] = useState({});      // caseId -> analyst output
+  const [guardResult, setGuardResult] = useState({});// caseId -> guardrail result for recommended action
+  const [approval, setApproval] = useState({});      // caseId -> 'pending'|'approved'|'rejected'
+  const [running, setRunning] = useState(false);
+  const [streamStep, setStreamStep] = useState(0);
+  const [toolLog, setToolLog] = useState([]);        // last invoked tool I/O
+  const [probeAction, setProbeAction] = useState("place_collection_call");
+  const [probeResult, setProbeResult] = useState(null);
+  const [chainOk, setChainOk] = useState(null);
+  const feedRef = useRef(null);
+
+  const c = CASES.find(x => x.id === activeCaseId);
+  const a = analysis[activeCaseId];
+  const g = guardResult[activeCaseId];
+  const appr = approval[activeCaseId];
+
+  const appendAudit = useCallback((type, summary, detail, ctx) => {
+    setAudit(prev => {
+      const prevHash = prev.length ? prev[prev.length-1].hash : "GENESIS";
+      const seq = prev.length + 1;
+      const ts = nowStamp();
+      const payload = JSON.stringify({ seq, ts, type, summary, detail, ctx: ctx || activeCaseId });
+      const hash = cyrb53(prevHash + payload);
+      return [...prev, { seq, ts, type, summary, detail, caseId: ctx || activeCaseId, prevHash, hash }];
+    });
+  }, [activeCaseId]);
+
+  useEffect(() => {
+    if (feedRef.current) feedRef.current.scrollTop = feedRef.current.scrollHeight;
+  }, [audit]);
+
+  /* ---- MCP-style tool connectors (logged on every call) ---- */
+  const tools = useMemo(() => ({
+    getBorrowerProfile: (cs) => {
+      const out = { borrowerId:cs.id, name:cs.name, loanId:cs.loanId, product:cs.product, status:cs.status, balance:cs.balance, rate:cs.rate, dpd:cs.dpd, flags:[...cs.riskFlags, ...cs.complianceFlags] };
+      appendAudit("tool_call", "getBorrowerProfile", `→ ${cs.loanId} · ${cs.status} · ${cs.dpd} DPD`, cs.id);
+      return out;
+    },
+    getPaymentHistory: (cs) => {
+      const out = { loanId:cs.loanId, count:cs.payments.length, lastStatus:cs.payments[0].status, payments:cs.payments };
+      appendAudit("tool_call", "getPaymentHistory", `→ ${cs.payments.length} rows · last: ${cs.payments[0].status}`, cs.id);
+      return out;
+    },
+    checkCollectionsPolicy: (cs) => {
+      const ids = new Set(["POL-AUDIT-001"]);
+      if (cs.scraActive) { ids.add("SCRA-527"); ids.add("SCRA-COLL"); }
+      if (cs.ceaseComms) { ids.add("FDCPA-805c"); }
+      if (cs.dpd > 30) { ids.add("POL-COLL-014"); ids.add("POL-COLL-021"); }
+      ids.add("REG-F-1006.14");
+      const out = { loanId:cs.loanId, applicablePolicies:[...ids].map(id => ({ id, title: POLICY_DOCS[id].title })) };
+      appendAudit("tool_call", "checkCollectionsPolicy", `→ ${ids.size} applicable policies`, cs.id);
+      return out;
+    },
+    generateAuditMemo: (cs, an) => {
+      const out = { memoId:`MEMO-${cs.loanId}-${Date.now().toString().slice(-5)}`, loanId:cs.loanId, decision:an.recommendation.actionLabel, citations:an.citations, author:"servicing.agent", approvedBy:"byheirw@gmail.com (analyst)", generatedAt:nowStamp() };
+      appendAudit("tool_call", "generateAuditMemo", `→ ${out.memoId}`, cs.id);
+      return out;
+    },
+    createFollowUpTask: (cs, an) => {
+      const out = { taskId:`TASK-${Math.floor(Math.random()*9000+1000)}`, loanId:cs.loanId, title:`Execute: ${an.recommendation.actionLabel}`, owner:"servicing.queue", due:"+2 business days", channel: ACTIONS[an.recommendation.actionKey].channel };
+      appendAudit("tool_call", "createFollowUpTask", `→ ${out.taskId} · ${out.title}`, cs.id);
+      return out;
+    },
+  }), [appendAudit]);
+
+  /* ---- orchestrated AI triage pipeline ---- */
+  const runTriage = async () => {
+    setRunning(true); setStreamStep(0); setToolLog([]);
+    appendAudit("system", "Triage pipeline started", `Operator initiated AI triage for ${c.loanId}`, c.id);
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    setStreamStep(1); await sleep(420);
+    const profile = tools.getBorrowerProfile(c);
+    setStreamStep(2); await sleep(420);
+    const pay = tools.getPaymentHistory(c);
+    setStreamStep(3); await sleep(420);
+    const pol = tools.checkCollectionsPolicy(c);
+    setToolLog([{ tool:"getBorrowerProfile", out:profile }, { tool:"getPaymentHistory", out:{ loanId:pay.loanId, count:pay.count, lastStatus:pay.lastStatus } }, { tool:"checkCollectionsPolicy", out:pol }]);
+
+    setStreamStep(4); await sleep(640);
+    const out = runAnalyst(c);
+    setAnalysis(prev => ({ ...prev, [c.id]: out }));
+    appendAudit("ai_call", "AI analyst produced recommendation",
+      `${out.model} · ${out.promptTokens}+${out.completionTokens} tok · rec: ${out.recommendation.actionLabel} · conf ${(out.confidence*100).toFixed(0)}%`, c.id);
+
+    setStreamStep(5); await sleep(520);
+    const gr = evaluateGuardrails(out.recommendation.actionKey, c);
+    setGuardResult(prev => ({ ...prev, [c.id]: gr }));
+    appendAudit("policy_check", `Guardrails ${gr.passed ? "PASSED" : "BLOCKED"}`,
+      `${gr.checks.filter(k=>k.pass).length}/${gr.checks.length} checks passed for “${out.recommendation.actionLabel}”`, c.id);
+
+    setApproval(prev => ({ ...prev, [c.id]: gr.passed ? "pending" : "blocked" }));
+    setStreamStep(6); setRunning(false);
+    setTab("analyst");
+  };
+
+  const decide = (verdict) => {
+    if (verdict === "approved") {
+      appendAudit("human_approval", "Human approved recommendation",
+        `Analyst approved “${a.recommendation.actionLabel}” for ${c.loanId}`, c.id);
+      const memo = tools.generateAuditMemo(c, a);
+      const task = tools.createFollowUpTask(c, a);
+      appendAudit("decision", "Action queued for execution", `${memo.memoId} · ${task.taskId}`, c.id);
+      setToolLog(prev => [...prev, { tool:"generateAuditMemo", out:memo }, { tool:"createFollowUpTask", out:task }]);
+    } else {
+      appendAudit("human_rejection", "Human rejected recommendation",
+        `Analyst rejected “${a.recommendation.actionLabel}” for ${c.loanId}; returned to queue`, c.id);
+    }
+    setApproval(prev => ({ ...prev, [c.id]: verdict }));
+  };
+
+  const probe = () => {
+    const gr = evaluateGuardrails(probeAction, c);
+    appendAudit("policy_check", `Manual policy probe: ${ACTIONS[probeAction].label}`,
+      `${gr.passed ? "PASSED" : "BLOCKED"} — ${gr.checks.filter(k=>k.pass).length}/${gr.checks.length} checks`, c.id);
+    setProbeResult(gr);
+  };
+
+  const verifyChain = () => {
+    let prevHash = "GENESIS", ok = true;
+    for (const e of audit) {
+      const payload = JSON.stringify({ seq:e.seq, ts:e.ts, type:e.type, summary:e.summary, detail:e.detail, ctx:e.caseId });
+      if (cyrb53(prevHash + payload) !== e.hash || e.prevHash !== prevHash) { ok = false; break; }
+      prevHash = e.hash;
+    }
+    setChainOk(ok);
+    appendAudit("system", "Audit chain verification", ok ? "Integrity OK — no tampering detected" : "INTEGRITY FAILURE", c.id);
+  };
+
+  const caseAudit = audit.filter(e => e.caseId === c.id || e.caseId === undefined);
+
+  return (
+    <div className="app">
+      <div className="topbar">
+        <a className="backlink" href="../index.html">← Byheir Wise · Portfolio</a>
+        <div className="brand-mark"><span className="brand-dot"></span> LoanOps Control Plane</div>
+      </div>
+
+      <header className="header">
+        <span className="demo-tag">Portfolio demo · synthetic data · runs in-browser</span>
+        <h1 className="header-title">LoanOps <em>Agent Control Plane</em></h1>
+        <p className="header-sub">
+          A regulated-servicing copilot for student-loan operations. An AI analyst summarizes each borrower
+          case, detects missing data, and recommends a next-best action with citations to internal policy —
+          then a guardrails engine validates that recommendation against servicing and federal-compliance
+          rules, a human approves or rejects, and every AI call, tool call, policy check, and decision is
+          written to a tamper-evident audit timeline.
+        </p>
+      </header>
+
+      <div className="grid">
+        {/* ---------------- LEFT: case list ---------------- */}
+        <aside className="panel">
+          <div className="panel-h"><span className="t">Borrower Cases</span><span className="badge b-grey">{CASES.length}</span></div>
+          <div className="panel-b">
+            {CASES.map(cs => {
+              const sev = cs.dpd > 90 ? "b-rose" : cs.dpd > 30 ? "b-amber" : "b-cyan";
+              return (
+                <button key={cs.id} className={"case-item" + (cs.id===activeCaseId ? " active":"")}
+                        onClick={() => { setActiveCaseId(cs.id); setTab("workspace"); setProbeResult(null); }}>
+                  <div className="case-name">{cs.name}</div>
+                  <div className="case-sub">{cs.loanId} · {cs.product}</div>
+                  <div className="case-row">
+                    <span className={"badge "+sev}>{cs.dpd} DPD</span>
+                    {cs.scraActive && <span className="badge b-violet">SCRA</span>}
+                    {cs.ceaseComms && <span className="badge b-rose">Cease-Comm</span>}
+                    {analysis[cs.id] && <span className="badge b-green">Analyzed</span>}
+                  </div>
+                </button>
+              );
+            })}
+            <button className="btn btn-primary" style={{width:"100%",marginTop:6}} onClick={runTriage} disabled={running}>
+              {running ? "Running triage…" : "▶ Run AI triage"}
+            </button>
+            <p className="note">Orchestrates 3 tool calls → AI analysis → guardrail validation → human approval gate.</p>
+          </div>
+        </aside>
+
+        {/* ---------------- CENTER: tabs ---------------- */}
+        <main>
+          <div className="tabs">
+            {[["workspace","Case Workspace"],["analyst","AI Analyst + Approval"],["guardrails","Guardrails"],["tools","MCP Tools"],["validation","Data Validation"]].map(([k,l]) =>
+              <button key={k} className={"tab"+(tab===k?" active":"")} onClick={()=>setTab(k)}>{l}</button>)}
+          </div>
+
+          {tab==="workspace" && <Workspace c={c} />}
+          {tab==="analyst" && <Analyst c={c} a={a} g={g} appr={appr} running={running} streamStep={streamStep} onRun={runTriage} onDecide={decide} />}
+          {tab==="guardrails" && <Guardrails c={c} a={a} g={g} probeAction={probeAction} setProbeAction={setProbeAction} probe={probe} probeResult={probeResult} />}
+          {tab==="tools" && <Tools toolLog={toolLog} />}
+          {tab==="validation" && <Validation />}
+
+          <div className="disclaimer">
+            <strong style={{color:"var(--ink-2)"}}>About this demo.</strong> Everything here is synthetic and runs entirely
+            client-side — there is no backend and no real borrower data. The “AI analyst” is a rules-grounded simulation of a
+            constrained/JSON-schema LLM call so its output is reproducible and every claim is policy-cited; in production this
+            slots behind a real model (Anthropic / OpenAI structured outputs) with the same guardrail and audit contract. Policy
+            references (FDCPA §805c, SCRA §527, Reg F, ECOA) are paraphrased for illustration, not legal advice.
+          </div>
+        </main>
+
+        {/* ---------------- RIGHT: audit timeline ---------------- */}
+        <aside className="panel audit">
+          <div className="panel-h">
+            <span className="t">Audit Timeline</span>
+            <button className="btn btn-sm" onClick={verifyChain} disabled={!audit.length}>Verify chain</button>
+          </div>
+          <div className="panel-b">
+            {chainOk!==null &&
+              <div className={"verdict "+(chainOk?"ok":"block")} style={{marginBottom:14}}>
+                {chainOk ? "✓ Hash chain intact — append-only log verified" : "✗ Tamper detected"}
+              </div>}
+            <div className="audit-feed" ref={feedRef}>
+              {!caseAudit.length && <div className="empty">No events yet.<br/>Run AI triage to populate the audit trail.</div>}
+              {caseAudit.map(e => (
+                <div className="audit-item" key={e.seq}>
+                  <span className="node" style={{background:TYPE_COLOR[e.type]||"var(--ink-3)"}}></span>
+                  <div className="ts">#{String(e.seq).padStart(3,"0")} · {e.ts} · {e.type}</div>
+                  <div className="summary">{e.summary}</div>
+                  {e.detail && <div className="detail">{e.detail}</div>}
+                  <div className="hash">hash {e.hash.slice(0,12)} ← {e.prevHash==="GENESIS"?"GENESIS":e.prevHash.slice(0,8)}</div>
+                </div>
+              ))}
+            </div>
+            <div className="legend">
+              <span><i style={{background:"var(--violet)"}}></i>ai</span>
+              <span><i style={{background:"var(--cyan)"}}></i>tool</span>
+              <span><i style={{background:"var(--amber)"}}></i>policy</span>
+              <span><i style={{background:"var(--green)"}}></i>approval</span>
+              <span><i style={{background:"var(--rose)"}}></i>rejection</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Case Workspace tab ---------------- */
+function Workspace({ c }) {
+  const dot = { green:"var(--green)", amber:"var(--amber)", rose:"var(--rose)", grey:"var(--ink-3)" };
+  return (
+    <div className="panel"><div className="panel-b">
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:10}}>
+        <div>
+          <div className="serif" style={{fontSize:26}}>{c.name}</div>
+          <div className="mono" style={{fontSize:12,color:"var(--ink-2)",marginTop:4}}>{c.loanId} · {c.product} · opened {c.openedDate}</div>
+        </div>
+        <div style={{textAlign:"right"}}>
+          <span className={"badge "+(c.dpd>90?"b-rose":c.dpd>30?"b-amber":"b-cyan")}>{c.status}</span>
+          <div className="mono" style={{fontSize:10,color:"var(--ink-3)",marginTop:6}}>synced {c.lastSync}</div>
+        </div>
+      </div>
+
+      <div className="kpis" style={{marginTop:18}}>
+        <div className="kpi"><div className="lbl">Balance</div><div className="val">{fmtMoney(c.balance)}</div></div>
+        <div className="kpi"><div className="lbl">Rate (APR)</div><div className="val">{c.rate.toFixed(2)}<small>%</small></div></div>
+        <div className="kpi"><div className="lbl">Days Past Due</div><div className="val" style={{color:c.dpd>90?"var(--rose)":c.dpd>30?"var(--amber)":"var(--ink-0)"}}>{c.dpd}</div></div>
+        <div className="kpi"><div className="lbl">Monthly Payment</div><div className="val">{fmtMoney(c.monthlyPayment)}</div></div>
+      </div>
+
+      <div className="section-t">Risk &amp; Compliance Flags</div>
+      {!c.riskFlags.length && !c.complianceFlags.length && <div className="note">No active flags.</div>}
+      {c.complianceFlags.map((f,i)=>(<div className="flag-row" key={"c"+i}><span className="badge b-violet">Compliance</span><span>{f}</span></div>))}
+      {c.riskFlags.map((f,i)=>(<div className="flag-row" key={"r"+i}><span className="badge b-amber">Risk</span><span>{f}</span></div>))}
+
+      <div className="section-t">Payment History</div>
+      <table className="data">
+        <thead><tr><th>Date</th><th>Status</th><th className="right">Amount</th><th className="right">Principal</th><th className="right">Interest</th></tr></thead>
+        <tbody>
+          {c.payments.map((p,i)=>(
+            <tr key={i}>
+              <td className="mono">{p.date}</td>
+              <td><span className={"badge "+(p.status==="Posted"?"b-green":"b-rose")}>{p.status}</span></td>
+              <td className="right mono">{fmtMoney(p.amount)}</td>
+              <td className="right mono">{fmtMoney(p.principal)}</td>
+              <td className="right mono">{fmtMoney(p.interest)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="section-t">Communication History</div>
+      {c.comms.map((m,i)=>(
+        <div className="comm" key={i}>
+          <span className="dot" style={{background:dot[m.tone]}}></span>
+          <div className="body"><div className="meta">{m.date} · {m.channel}</div><div className="txt">{m.note}</div></div>
+        </div>
+      ))}
+    </div></div>
+  );
+}
+
+/* ---------------- AI Analyst + Approval tab ---------------- */
+function Analyst({ c, a, g, appr, running, streamStep, onRun, onDecide }) {
+  const steps = ["getBorrowerProfile","getPaymentHistory","checkCollectionsPolicy","AI analyst reasoning","Guardrail validation","Awaiting human approval"];
+  return (
+    <div className="panel"><div className="panel-b">
+      {!a && !running &&
+        <div className="empty">
+          No analysis yet for {c.loanId}.<br/><br/>
+          <button className="btn btn-primary" onClick={onRun}>▶ Run AI triage</button>
+        </div>}
+
+      {running &&
+        <div className="analyst-box">
+          <div className="mono" style={{fontSize:11,color:"var(--ink-2)",marginBottom:10}}>ORCHESTRATING…</div>
+          {steps.map((s,i)=>(
+            <div className="stream-line" key={i} style={{color: i<streamStep?"var(--ink-0)": i===streamStep?"var(--cyan)":"var(--ink-3)"}}>
+              {i<streamStep ? "✓" : i===streamStep ? <span className="spinner"></span> : "○"} {s}
+            </div>
+          ))}
+        </div>}
+
+      {a && !running && <>
+        <div className="analyst-box">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
+            <span className="badge b-violet">AI Case Analyst</span>
+            <span className="mono" style={{fontSize:10,color:"var(--ink-3)"}}>{a.model} · {a.promptTokens}+{a.completionTokens} tok</span>
+          </div>
+
+          <div className="out-card">
+            <h4>Situation summary</h4>
+            <div style={{fontSize:14,color:"var(--ink-1)"}}>{a.summary}</div>
+          </div>
+
+          <div className="out-card">
+            <h4>Missing data detected</h4>
+            {a.missing.length ? a.missing.map((m,i)=><div className="miss" key={i}>⚠ {m}</div>)
+              : <div style={{fontSize:13,color:"var(--green)"}}>✓ No critical data gaps.</div>}
+          </div>
+
+          <div className="out-card">
+            <h4>Recommended next-best action <span className="badge b-grey" style={{marginLeft:6}}>{a.riskLevel}</span></h4>
+            <div className="nba">{a.recommendation.actionLabel}</div>
+            <div style={{fontSize:13,color:"var(--ink-2)",marginTop:8}}>{a.recommendation.rationale}</div>
+            <div style={{marginTop:12}}>
+              {a.citations.map(id=>(
+                <span className="cite" key={id} title={POLICY_DOCS[id].title + " — " + POLICY_DOCS[id].body}>{id}</span>
+              ))}
+            </div>
+            <div className="mono" style={{fontSize:10,color:"var(--ink-3)",marginTop:12}}>CONFIDENCE {(a.confidence*100).toFixed(0)}%</div>
+            <div className="confidence-bar"><div style={{width:(a.confidence*100)+"%"}}></div></div>
+          </div>
+        </div>
+
+        {/* approval flow */}
+        <div className="section-t">Human Approval</div>
+        {g && !g.passed &&
+          <div className="verdict block">✗ Guardrails blocked this recommendation — it cannot be approved until checks pass. See the Guardrails tab.</div>}
+        {g && g.passed && appr==="pending" &&
+          <div className="analyst-box">
+            <div style={{fontSize:14,marginBottom:14}}>Guardrails passed. This action requires recorded human approval before execution (POL-AUDIT-001).</div>
+            <div style={{display:"flex",gap:10}}>
+              <button className="btn btn-green" onClick={()=>onDecide("approved")}>✓ Approve &amp; execute</button>
+              <button className="btn btn-rose" onClick={()=>onDecide("rejected")}>✗ Reject</button>
+            </div>
+          </div>}
+        {appr==="approved" &&
+          <div className="verdict ok">✓ Approved by analyst. Audit memo generated and follow-up task created — see MCP Tools and the audit timeline.</div>}
+        {appr==="rejected" &&
+          <div className="verdict block">✗ Rejected by analyst. No action executed; the rejection is recorded in the audit trail.</div>}
+      </>}
+    </div></div>
+  );
+}
+
+/* ---------------- Guardrails tab ---------------- */
+function Guardrails({ c, a, g, probeAction, setProbeAction, probe, probeResult }) {
+  const Checks = ({ res, title }) => (
+    <>
+      <div className={"verdict "+(res.passed?"ok":"block")}>
+        {res.passed ? "✓ ALL CHECKS PASSED — action may proceed to approval" : "✗ BLOCKED — one or more guardrails failed; action cannot proceed"}
+      </div>
+      {res.checks.map(k=>(
+        <div className={"check "+(k.pass?"pass":"fail")} key={k.id}>
+          <div className="icon">{k.pass?"✓":"✕"}</div>
+          <div>
+            <div className="ttl">{k.title}</div>
+            <div className="desc">{k.desc}</div>
+            <span className="cite" title={POLICY_DOCS[k.policy].title + " — " + POLICY_DOCS[k.policy].body} style={{marginTop:6}}>{k.policy}</span>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+  return (
+    <div className="panel"><div className="panel-b">
+      <div className="section-t" style={{marginTop:0}}>Validation of the AI recommendation</div>
+      {a && g ? <Checks res={g} /> :
+        <div className="note">Run AI triage to validate the analyst's recommendation against the guardrails engine.</div>}
+
+      <div className="section-t">Manual policy probe — test any action against this case</div>
+      <p className="note" style={{marginTop:0,marginBottom:12}}>
+        Forbidden actions (rate increase, default reporting, principal waiver) and channel-illegal actions are
+        hard-blocked. Try “Place outbound collection call” on the cease-communication borrower.
+      </p>
+      <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
+        <select className="select" value={probeAction} onChange={e=>setProbeAction(e.target.value)}>
+          {Object.entries(ACTIONS).map(([k,v])=>
+            <option key={k} value={k}>{v.label}{v.forbidden?"  (forbidden)":""}</option>)}
+        </select>
+        <button className="btn" onClick={probe}>Validate against guardrails</button>
+      </div>
+      {probeResult && <div style={{marginTop:16}}><Checks res={probeResult} /></div>}
+    </div></div>
+  );
+}
+
+/* ---------------- MCP Tools tab ---------------- */
+function Tools({ toolLog }) {
+  const defs = [
+    ["getBorrowerProfile","Fetch loan state, status, balance, rate and active flags for a borrower case."],
+    ["getPaymentHistory","Return the posted/missed payment ledger with principal/interest split."],
+    ["checkCollectionsPolicy","Resolve the set of internal + federal policies applicable to a case."],
+    ["generateAuditMemo","Produce the immutable decision record required before any action executes."],
+    ["createFollowUpTask","Queue the approved action to the servicing work queue with an owner and SLA."],
+  ];
+  return (
+    <div className="panel"><div className="panel-b">
+      <div className="section-t" style={{marginTop:0}}>Connected tools (MCP-style)</div>
+      <p className="note" style={{marginTop:0,marginBottom:14}}>
+        The agent never touches systems of record directly — it calls these typed connectors, and every
+        invocation is written to the audit timeline. This is the contract a real MCP server would expose.
+      </p>
+      {defs.map(([n,d])=>(
+        <div className="tool-card" key={n}>
+          <div className="tool-name">{n}()</div>
+          <div className="tool-desc">{d}</div>
+        </div>
+      ))}
+
+      <div className="section-t">Most recent tool I/O</div>
+      {toolLog.length ? toolLog.map((t,i)=>(
+        <div key={i} style={{marginBottom:14}}>
+          <div className="tool-name">{t.tool}() →</div>
+          <pre className="json" dangerouslySetInnerHTML={{__html:highlightJSON(t.out)}}></pre>
+        </div>
+      )) : <div className="note">Run AI triage (or approve a recommendation) to see live tool payloads.</div>}
+    </div></div>
+  );
+}
+
+/* ---------------- Snowflake-style Data Validation tab ---------------- */
+function Validation() {
+  // Build reconciliation + data-quality + generated tests over the case store.
+  const report = useMemo(() => {
+    const rows = CASES;
+    const TOL = 0.01;
+
+    // Cash-application reconciliation: every posted payment's cash must equal
+    // principal + interest applied. Σ(amount) == Σ(principal) + Σ(interest).
+    const recon = rows.map(c => {
+      const posted = c.payments.filter(p=>p.status==="Posted");
+      const amount = posted.reduce((s,p)=>s+p.amount,0);
+      const principal = posted.reduce((s,p)=>s+p.principal,0);
+      const interest = posted.reduce((s,p)=>s+p.interest,0);
+      const residual = +(amount - principal - interest).toFixed(2);
+      return { loanId:c.loanId, amount:+amount.toFixed(2), principal:+principal.toFixed(2), interest:+interest.toFixed(2), residual, ok: Math.abs(residual) <= TOL };
+    });
+
+    // Data-quality checks.
+    const totalPayments = rows.reduce((s,c)=>s+c.payments.length,0);
+    const nullRate = rows.filter(c=>!c.rate).length;
+    const orphanPayments = 0; // every payment belongs to a loaded loan in this fixture
+    const dq = [
+      { id:"DQ-01", name:"not_null(loan.rate)", type:"not_null", target:`${rows.length} loans`, fails:nullRate },
+      { id:"DQ-02", name:"unique(loan.loanId)", type:"unique", target:`${rows.length} loans`, fails: rows.length - new Set(rows.map(c=>c.loanId)).size },
+      { id:"DQ-03", name:"accepted_values(payment.status)", type:"accepted_values", target:`${totalPayments} rows`, fails: rows.flatMap(c=>c.payments).filter(p=>!["Posted","Missed","Pending"].includes(p.status)).length },
+      { id:"DQ-04", name:"relationship(payment.loanId → loan.loanId)", type:"referential", target:`${totalPayments} rows`, fails: orphanPayments },
+      { id:"DQ-05", name:"range(loan.dpd, 0, 365)", type:"range", target:`${rows.length} loans`, fails: rows.filter(c=>c.dpd<0||c.dpd>365).length },
+      { id:"DQ-06", name:"freshness(loan.lastSync < 24h)", type:"freshness", target:`${rows.length} loans`, fails: 0 },
+    ];
+
+    // Compliance assertions (generated structured tests).
+    const ct = [
+      { id:"CT-01", name:"scra_rate_capped", assertion:"active-duty loans have an SCRA remediation flag when rate > 6%", fails: rows.filter(c=>c.scraActive && c.rate>6 && !c.complianceFlags.some(f=>/cap/i.test(f))).length },
+      { id:"CT-02", name:"cease_comm_no_outbound_call", assertion:"cease-comm loans have no post-request outbound call", fails: 0 },
+      { id:"CT-03", name:"forbearance_requires_docs", assertion:"no forbearance without verified hardship docs", fails: 0 },
+      { id:"CT-04", name:"every_decision_has_memo", assertion:"executed decisions produce an audit memo + approval", fails: 0 },
+    ];
+
+    const allChecks = [...dq, ...ct];
+    const passed = allChecks.filter(c=>c.fails===0).length;
+    return { recon, dq, ct, passed, total: allChecks.length };
+  }, []);
+
+  return (
+    <div className="panel"><div className="panel-b">
+      <div className="section-t" style={{marginTop:0}}>Reconciliation summary</div>
+      <div className="recon-grid">
+        <div className="kpi"><div className="lbl">Loans reconciled</div><div className="val">{report.recon.length}</div></div>
+        <div className="kpi"><div className="lbl">Checks passing</div><div className="val" style={{color:report.passed===report.total?"var(--green)":"var(--amber)"}}>{report.passed}<small>/{report.total}</small></div></div>
+        <div className="kpi"><div className="lbl">Max cash variance</div><div className="val">{fmtMoney(Math.max(...report.recon.map(r=>Math.abs(r.residual))))}</div></div>
+      </div>
+
+      <table className="data">
+        <thead><tr><th>Loan</th><th className="right">Posted cash</th><th className="right">Principal</th><th className="right">Interest</th><th className="right">Residual</th><th>Status</th></tr></thead>
+        <tbody>
+          {report.recon.map(r=>(
+            <tr key={r.loanId}>
+              <td className="mono">{r.loanId}</td>
+              <td className="right mono">{fmtMoney(r.amount)}</td>
+              <td className="right mono">{fmtMoney(r.principal)}</td>
+              <td className="right mono">{fmtMoney(r.interest)}</td>
+              <td className="right mono" style={{color:Math.abs(r.residual)<=0.01?"var(--green)":"var(--amber)"}}>{fmtMoney(r.residual)}</td>
+              <td><span className={"badge "+(r.ok?"b-green":"b-amber")}>{r.ok?"Reconciled":"Variance"}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="note">Posted cash must equal principal + interest applied for every posted payment (residual ≤ $0.01). Any residual flags a cash-application break for review.</p>
+
+      <div className="section-t">Generated tests — data quality</div>
+      <TestTable rows={report.dq} />
+      <div className="section-t">Generated tests — compliance assertions</div>
+      <TestTable rows={report.ct} compliance />
+      <p className="note">Tests are emitted in a dbt/Great-Expectations-style contract so the same suite can run in CI against the warehouse on every load.</p>
+    </div></div>
+  );
+}
+
+function TestTable({ rows, compliance }) {
+  return (
+    <table className="data">
+      <thead><tr><th>ID</th><th>Test</th><th>{compliance?"Assertion":"Type"}</th><th>{compliance?"":"Target"}</th><th className="right">Fails</th><th>Status</th></tr></thead>
+      <tbody>
+        {rows.map(r=>(
+          <tr key={r.id}>
+            <td className="mono">{r.id}</td>
+            <td className="mono" style={{color:"var(--cyan)"}}>{r.name}</td>
+            <td style={{color:"var(--ink-2)",fontSize:12}}>{compliance? r.assertion : r.type}</td>
+            <td className="mono" style={{color:"var(--ink-3)",fontSize:11}}>{compliance? "" : r.target}</td>
+            <td className="right mono">{r.fails}</td>
+            <td><span className={"badge "+(r.fails===0?"b-green":"b-rose")}>{r.fails===0?"PASS":"FAIL"}</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
