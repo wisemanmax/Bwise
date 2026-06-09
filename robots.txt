@@ -1,0 +1,6 @@
+# www.byheir.com — portfolio of Byheir Wise
+# Public site: all crawlers welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.byheir.com/sitemap.xml

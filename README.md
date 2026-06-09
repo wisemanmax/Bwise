@@ -82,7 +82,7 @@ Where to look when you want proof of a specific claim.
 ### Engineering practice pages
 | Topic | File |
 |---|---|
-| HTML / CSS / JS examples | `pages/html.html`, `pages/css.html`, `javascript.html` |
+| HTML / CSS / JS examples | `pages/html.html`, `pages/css.html`, `pages/javascript.html` |
 | CI/CD discipline | `pages/cicd.html` |
 | Backend / mock APIs | `pages/backend.html`, `pages/mock-api.html` |
 | Compliance matrix | `pages/compliance-matrix.html` |
