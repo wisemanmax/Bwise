@@ -2310,6 +2310,88 @@ class SiteTour {
 }
 
 // ============================================================================
+// HERO SPOTLIGHT (landing page) — cursor-follow "flashlight" reveal
+// ============================================================================
+
+class HeroSpotlight {
+  constructor() {
+    this.el = safeQuery('[data-hero-spotlight]');
+    if (!this.el) return;
+
+    this.x = 0;
+    this.y = 0;
+    this._rafPending = false;
+
+    this.handleImageFallback();
+
+    // Interactive effect only on a fine, hovering pointer (i.e. mouse), and only
+    // when the user hasn't requested reduced motion. Touch / reduced-motion keep
+    // the calm static composition defined in CSS.
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canHover || reduceMotion) return;
+
+    this.onPointerMove = this.onPointerMove.bind(this);
+    this.onPointerEnter = this.onPointerEnter.bind(this);
+    this.onPointerLeave = this.onPointerLeave.bind(this);
+    this.el.addEventListener('pointerenter', this.onPointerEnter, { passive: true });
+    this.el.addEventListener('pointermove', this.onPointerMove, { passive: true });
+    this.el.addEventListener('pointerleave', this.onPointerLeave, { passive: true });
+  }
+
+  // If me.png is missing/broken, drop to the decorative drifting-light fallback.
+  handleImageFallback() {
+    const imgs = this.el.querySelectorAll('img');
+    if (!imgs.length) {
+      this.el.classList.add('hero-spotlight--unavailable');
+      return;
+    }
+    let failed = 0;
+    const markFailed = () => {
+      failed += 1;
+      if (failed >= imgs.length) {
+        this.el.classList.add('hero-spotlight--unavailable');
+      }
+    };
+    imgs.forEach(img => {
+      if (img.complete && img.naturalWidth === 0) {
+        markFailed();
+      } else if (!img.complete) {
+        img.addEventListener('error', markFailed, { once: true });
+      }
+    });
+  }
+
+  onPointerEnter() {
+    // Tracking should be 1:1 with the cursor — drop the easing used at rest.
+    this.el.classList.remove('is-resting');
+  }
+
+  onPointerMove(event) {
+    const rect = this.el.getBoundingClientRect();
+    this.x = event.clientX - rect.left;
+    this.y = event.clientY - rect.top;
+    if (this._rafPending) return;
+    this._rafPending = true;
+    // One batched style write per frame — no layout thrash, only the mask moves.
+    requestAnimationFrame(() => {
+      this.el.style.setProperty('--spot-x', `${this.x}px`);
+      this.el.style.setProperty('--spot-y', `${this.y}px`);
+      this._rafPending = false;
+    });
+  }
+
+  onPointerLeave() {
+    // Ease the spotlight back to its resting spot over the portrait (px so the
+    // registered custom properties interpolate smoothly).
+    const rect = this.el.getBoundingClientRect();
+    this.el.classList.add('is-resting');
+    this.el.style.setProperty('--spot-x', `${rect.width * 0.72}px`);
+    this.el.style.setProperty('--spot-y', `${rect.height * 0.42}px`);
+  }
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -2332,6 +2414,9 @@ function init() {
 
     // Initialize platform lab interactions
     new PlatformLab();
+
+    // Initialize hero spotlight effect (landing page only)
+    new HeroSpotlight();
 
     // Initialize learning library sections
     safeQueryAll('[data-library-track]').forEach(section => {

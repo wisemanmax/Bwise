@@ -58,9 +58,11 @@
     }
     </script>
 
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/fraunces-latin.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/plus-jakarta-sans-latin.woff2" crossorigin>
     <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="home">
     <a class="skip-link" href="#main">Skip to content</a>
     <header>
         <nav class="top-nav" aria-label="Main navigation">
@@ -85,7 +87,11 @@
         </nav>
     </header>
 
-    <section class="hero-section" aria-labelledby="hero-title" data-tour-id="hero">
+    <section class="hero-section hero-section--home" aria-labelledby="hero-title" data-tour-id="hero">
+        <div class="hero-spotlight" aria-hidden="true" data-hero-spotlight>
+            <img class="hero-spotlight__base" src="assets/me.png" alt="" loading="eager" decoding="async">
+            <img class="hero-spotlight__reveal" src="assets/me.png" alt="" loading="eager" decoding="async">
+        </div>
         <div class="hero-inner">
             <div class="hero-label">
                 <span class="status-dot" aria-hidden="true"></span>
