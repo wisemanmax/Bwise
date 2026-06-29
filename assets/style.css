@@ -3,6 +3,27 @@
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
+   SELF-HOSTED FONTS (variable woff2, latin subset)
+   Plus Jakarta Sans = body/UI · Fraunces = display/headings
+   ---------------------------------------------------------------------------- */
+
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url("fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Fraunces";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("fonts/fraunces-latin.woff2") format("woff2");
+}
+
+/* ----------------------------------------------------------------------------
    CSS CUSTOM PROPERTIES (Design Tokens)
    ---------------------------------------------------------------------------- */
 
@@ -49,6 +70,10 @@
     --pad-x: 40px;
     --pad-x-mobile: 20px;
     
+    /* Font Families */
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
     /* Typography Scale */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -104,8 +129,7 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, 
-                 Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: var(--font-body);
     line-height: 1.6;
     color: var(--text-main);
     background: var(--bg);
@@ -172,6 +196,8 @@ textarea:focus-visible {
    ---------------------------------------------------------------------------- */
 
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
     line-height: 1.2;
     font-weight: 700;
     margin-block-end: var(--space-md);
@@ -4250,5 +4276,305 @@ table {
     .nav-tour-item {
         margin-top: var(--space-sm);
     }
+}
+
+/* ============================================================================
+   LANDING PAGE ELEVATION
+   Scoped to .hero-section--home / body.home so the ~70 sub-pages stay untouched.
+   Premium take on the existing purple-blue identity.
+   ============================================================================ */
+
+/* Registered so the spotlight position can animate smoothly in the photo-missing
+   fallback, and so it inherits from .hero-spotlight down to the masked layer. */
+@property --spot-x { syntax: "<length-percentage>"; inherits: true; initial-value: 50%; }
+@property --spot-y { syntax: "<length-percentage>"; inherits: true; initial-value: 50%; }
+
+/* Display type on key landing headings (additive; body keeps its grotesk) */
+body.home .section-title,
+body.home .story-title,
+body.home .card-title,
+body.home .work-card__title,
+body.home .skill-header,
+body.home .contact-title,
+.hero-section--home .hero-title,
+.hero-section--home .stat-number {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+}
+
+/* ---------------------------------------------------------------------------
+   HERO — dark cinematic gradient + spotlight portrait
+   --------------------------------------------------------------------------- */
+.hero-section--home {
+    background:
+        radial-gradient(130% 130% at 78% 26%, rgba(118, 75, 162, 0.55) 0%, transparent 56%),
+        radial-gradient(90% 90% at 10% 92%, rgba(102, 126, 234, 0.32) 0%, transparent 55%),
+        linear-gradient(135deg, #15102e 0%, #1d1440 48%, #0b0a1b 100%);
+    color: #f5f6ff;
+    padding-block: clamp(var(--space-3xl), 12vh, 7rem);
+    isolation: isolate;
+}
+
+/* Calmer brand bloom instead of the light-mode shimmer */
+.hero-section--home::before {
+    background:
+        radial-gradient(circle at 22% 28%, rgba(255, 255, 255, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 82% 72%, rgba(102, 126, 234, 0.12) 0%, transparent 50%);
+}
+
+/* Spotlight stage — behind .hero-inner (which is z-index:1) */
+.hero-spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    --spot-x: 72%;
+    --spot-y: 42%;
+    --spot-r: 130px;
+}
+
+.hero-spotlight img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center right;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Dim, desaturated base — "barely visible" by default */
+.hero-spotlight__base {
+    filter: grayscale(0.7) brightness(0.4) contrast(1.05);
+    opacity: 0.22;
+}
+
+/* Bright warm-lit reveal, masked to a feathered circle that follows the cursor */
+.hero-spotlight__reveal {
+    opacity: 0.96;
+    filter: brightness(1.12) saturate(1.18) contrast(1.03) sepia(0.16) hue-rotate(-12deg);
+    -webkit-mask-image: radial-gradient(circle var(--spot-r) at var(--spot-x) var(--spot-y), #000 0%, #000 52%, transparent 100%);
+            mask-image: radial-gradient(circle var(--spot-r) at var(--spot-x) var(--spot-y), #000 0%, #000 52%, transparent 100%);
+}
+
+/* No transition while tracking (1:1 with the cursor, no lag); ease only on leave */
+.hero-spotlight.is-resting {
+    transition: --spot-x 0.4s ease, --spot-y 0.4s ease;
+}
+
+/* Soft brand light-bloom tracking the spotlight */
+.hero-spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle calc(var(--spot-r) * 1.7) at var(--spot-x) var(--spot-y), rgba(124, 109, 245, 0.22) 0%, transparent 70%);
+    mix-blend-mode: screen;
+}
+
+/* Fallback: photo missing/404 → hide images, keep a gentle drifting light (no broken icon) */
+.hero-spotlight--unavailable img { display: none; }
+.hero-spotlight--unavailable::after {
+    background: radial-gradient(circle 190px at var(--spot-x) var(--spot-y), rgba(124, 109, 245, 0.30) 0%, transparent 72%);
+    animation: heroSpotDrift 9s ease-in-out infinite alternate;
+}
+@keyframes heroSpotDrift {
+    0%   { --spot-x: 32%; --spot-y: 36%; }
+    100% { --spot-x: 74%; --spot-y: 60%; }
+}
+
+/* Hero text refinements */
+.hero-section--home .hero-label {
+    background: rgba(124, 109, 245, 0.14);
+    border: 1px solid rgba(167, 156, 255, 0.35);
+    backdrop-filter: blur(12px);
+}
+.hero-section--home .hero-title {
+    font-size: clamp(44px, 8.5vw, 70px);
+    font-weight: 600;
+    line-height: 1.04;
+}
+.hero-section--home .hero-subtitle {
+    color: rgba(245, 246, 255, 0.82);
+}
+
+/* Glassier stat cards on the dark hero */
+.hero-section--home .stat-box {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(14px);
+}
+.hero-section--home .stat-box:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------------------------------------------------------------------------
+   SECTION RHYTHM + HEADERS
+   --------------------------------------------------------------------------- */
+body.home .section-title {
+    font-size: clamp(30px, 4.6vw, 42px);
+    letter-spacing: -0.02em;
+}
+
+/* ---------------------------------------------------------------------------
+   ABOUT — the .featured-story block ships unstyled; give it an editorial card
+   --------------------------------------------------------------------------- */
+body.home .featured-story {
+    position: relative;
+    background: var(--white);
+    border: 1px solid rgba(102, 126, 234, 0.14);
+    border-radius: var(--radius-lg);
+    padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+}
+body.home .featured-story::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-alt));
+}
+body.home .story-tag {
+    display: inline-block;
+    margin-block-end: var(--space-md);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    background: rgba(102, 126, 234, 0.12);
+    color: var(--primary-alt);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+body.home .story-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-lg);
+    margin-block: var(--space-md) var(--space-lg);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+body.home .story-content {
+    max-width: 72ch;
+}
+body.home .story-content p {
+    line-height: 1.75;
+}
+
+/* ---------------------------------------------------------------------------
+   EXPERIENCE / PROJECTS
+   --------------------------------------------------------------------------- */
+body.home .experience-card {
+    border: 1px solid rgba(102, 126, 234, 0.12);
+}
+body.home .experience-card:hover {
+    box-shadow: 0 22px 48px rgba(70, 55, 150, 0.20);
+}
+
+/* ---------------------------------------------------------------------------
+   WORK GRID
+   --------------------------------------------------------------------------- */
+body.home .work-card {
+    border: 1px solid rgba(102, 126, 234, 0.12);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+body.home .work-card:hover,
+body.home .work-card:focus-visible {
+    border-color: rgba(102, 126, 234, 0.40);
+    box-shadow: 0 20px 44px rgba(70, 55, 150, 0.18);
+}
+body.home .work-row-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+body.home .work-row-title::before {
+    content: "";
+    width: 28px;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--primary), var(--primary-alt));
+}
+
+/* ---------------------------------------------------------------------------
+   SKILLS — soften the loud solid-gradient pills into tinted chips
+   --------------------------------------------------------------------------- */
+body.home .skill-header {
+    border-block-end: none;
+    padding-block-end: var(--space-sm);
+    background: linear-gradient(90deg, var(--primary), var(--primary-alt)) left bottom / 56px 3px no-repeat;
+}
+body.home .skill-pill {
+    background: rgba(102, 126, 234, 0.10);
+    color: var(--primary-alt);
+    border: 1px solid rgba(102, 126, 234, 0.22);
+}
+body.home .skill-pill:hover {
+    background: rgba(102, 126, 234, 0.18);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.18);
+}
+
+/* ---------------------------------------------------------------------------
+   CONTACT — soft brand band + lift on the cards
+   --------------------------------------------------------------------------- */
+body.home #contact {
+    background:
+        radial-gradient(80% 120% at 50% 0%, rgba(102, 126, 234, 0.08) 0%, transparent 60%);
+    border-radius: var(--radius-lg);
+}
+body.home .contact-item {
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+body.home .contact-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(102, 126, 234, 0.40);
+    box-shadow: 0 14px 32px rgba(70, 55, 150, 0.16);
+}
+
+/* ---------------------------------------------------------------------------
+   FOOTER — bookend the page on the same premium dark note
+   --------------------------------------------------------------------------- */
+body.home footer {
+    background: linear-gradient(135deg, #15102e 0%, #0b0a1b 100%);
+    border-top: 1px solid rgba(124, 109, 245, 0.25);
+}
+
+/* ---------------------------------------------------------------------------
+   DARK MODE — keep tinted chips/cards legible
+   --------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+    body.home .story-tag,
+    body.home .skill-pill {
+        background: rgba(124, 109, 245, 0.18);
+        color: #c7bcff;
+        border-color: rgba(124, 109, 245, 0.32);
+    }
+    body.home .featured-story,
+    body.home .experience-card,
+    body.home .work-card,
+    body.home .contact-item {
+        border-color: rgba(124, 109, 245, 0.20);
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   MOBILE — keep hero text legible over the portrait
+   --------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .hero-spotlight img { object-position: center top; }
+    .hero-spotlight__base { opacity: 0.16; }
+    .hero-spotlight { --spot-x: 50%; --spot-y: 32%; }
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION — freeze the spotlight into a calm static composition
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .hero-spotlight.is-resting { transition: none; }
+    .hero-spotlight--unavailable::after { animation: none; }
 }
 
