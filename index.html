@@ -8,8 +8,8 @@
 
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#667eea">
-    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#070b1a">
+    <meta name="color-scheme" content="dark">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Byheir Wise">
@@ -58,6 +58,10 @@
     }
     </script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -105,7 +109,7 @@
 
             <div class="stats-bar" aria-label="What sets this work apart">
                 <div class="stat-box">
-                    <div class="stat-number">7+ yrs</div>
+                    <div class="stat-number"><span class="stat-count" data-count-to="7">7</span>+ yrs</div>
                     <div class="stat-label">Regulated fintech</div>
                 </div>
                 <div class="stat-box">
@@ -292,7 +296,7 @@
 
             <h3 class="work-row-title">Case studies</h3>
             <div class="work-grid">
-                <a class="work-card work-card--wide" href="pages/cowork.html" aria-label="Cowork — autonomous software pipeline case study">
+                <a class="work-card work-card--wide work-card--featured" href="pages/cowork.html" aria-label="Cowork — autonomous software pipeline case study">
                     <div class="work-card__media">
                         <img src="assets/work-thumbs/cowork.svg" alt="" loading="lazy" width="1200" height="675">
                     </div>
@@ -783,6 +787,9 @@
         <p>Portfolio built using semantic HTML, responsive CSS, and light JavaScript.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="assets/motion.js" defer></script>
     <script src="assets/script.js"></script>
 </body>
 </html>

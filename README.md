@@ -110,7 +110,7 @@ Where to look when you want proof of a specific claim.
 
 ## Tech
 
-Static HTML/CSS/vanilla JS. PWA manifest. No framework, no build step, no dependencies. Hosted on GitHub Pages.
+Static HTML/CSS/vanilla JS. PWA manifest. No framework, no build step, no npm runtime dependencies. Animation is progressively enhanced with GSAP + ScrollTrigger via CDN (the site fully works without it), and typography loads Inter + Space Grotesk from Google Fonts with a system-stack fallback. Hosted on GitHub Pages.
 
 External projects linked from the work section use React 18 + Vite + Supabase / Cloudflare Workers (separate repos).
 
