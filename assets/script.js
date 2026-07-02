@@ -424,26 +424,41 @@ class ScrollAnimations {
       return;
     }
 
-    const observer = new IntersectionObserver(
+    // Skip entirely when the user prefers reduced motion (the CSS reset also
+    // neutralizes transitions, but skipping avoids a needless opacity flash),
+    // or when GSAP's ScrollTrigger choreography owns the reveals.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        document.documentElement.classList.contains('gsap-motion')) {
+      return;
+    }
+
+    this.observer = new IntersectionObserver(
       (entries) => this.handleIntersection(entries),
       this.options
     );
 
-    // Observe all animatable elements
+    // Observe all animatable elements. The hero .stat-box entrance is handled
+    // by the CSS rise-in cascade, so it is not observed here.
     const selectors = [
       '.experience-card',
       '.skill-card',
       '.metric-card',
       '.featured-story',
-      '.stat-box'
+      '.work-card',
+      '.contact-item',
+      '.section-header'
     ];
 
     selectors.forEach(selector => {
       safeQueryAll(selector).forEach(el => {
+        // Stagger siblings so grids cascade in rather than pop as one block
+        const parent = el.parentElement;
+        const index = parent ? Array.prototype.indexOf.call(parent.children, el) : 0;
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
+        el.style.transform = 'translateY(28px)';
+        el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+        el.style.transitionDelay = `${Math.min(Math.max(index, 0), 6) * 70}ms`;
+        this.observer.observe(el);
       });
     });
   }
@@ -451,10 +466,108 @@ class ScrollAnimations {
   handleIntersection(entries) {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+        const el = entry.target;
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        this.observer.unobserve(el);
+        // Clear inline styles once revealed so stylesheet hover transforms
+        // (card lifts, tilt) are not overridden by the inline transform.
+        el.addEventListener('transitionend', function clear() {
+          el.removeEventListener('transitionend', clear);
+          el.style.opacity = '';
+          el.style.transform = '';
+          el.style.transition = '';
+          el.style.transitionDelay = '';
+        });
       }
     });
+  }
+}
+
+// ============================================================================
+// STAT COUNTER — counts the hero "7+ yrs" numeral up when it scrolls into view
+// (vanilla fallback; motion.js runs a GSAP version when available)
+// ============================================================================
+
+class StatCounter {
+  constructor() {
+    if (document.documentElement.classList.contains('gsap-motion')) return;
+
+    const counters = safeQueryAll('.stat-count');
+    if (!counters.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        !('IntersectionObserver' in window)) {
+      return; // markup already shows the final value
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        this.count(entry.target);
+      });
+    }, { threshold: 0.4 });
+
+    counters.forEach(el => observer.observe(el));
+  }
+
+  count(el) {
+    const target = parseInt(el.dataset.countTo, 10);
+    if (!Number.isFinite(target)) return;
+    const duration = 900;
+    let start = null;
+
+    const tick = (ts) => {
+      if (start === null) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = String(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+
+    el.textContent = '0';
+    requestAnimationFrame(tick);
+  }
+}
+
+// ============================================================================
+// 3D CARD TILT — subtle pointer-follow tilt on work cards (desktop only)
+// ============================================================================
+
+class CardTilt {
+  constructor() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    this.maxTilt = 4;
+    this.frame = null;
+
+    safeQueryAll('.work-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => this.onMove(card, e));
+      card.addEventListener('mouseleave', () => this.onLeave(card));
+    });
+  }
+
+  onMove(card, e) {
+    if (this.frame) cancelAnimationFrame(this.frame);
+    this.frame = requestAnimationFrame(() => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transition = 'transform 0.15s ease-out';
+      card.style.transform =
+        `perspective(900px) rotateX(${(-y * this.maxTilt).toFixed(2)}deg) ` +
+        `rotateY(${(x * this.maxTilt).toFixed(2)}deg) translateY(-6px)`;
+    });
+  }
+
+  onLeave(card) {
+    if (this.frame) cancelAnimationFrame(this.frame);
+    card.style.transition = '';
+    card.style.transform = '';
   }
 }
 
@@ -2323,6 +2436,12 @@ function init() {
 
     // Initialize scroll animations
     new ScrollAnimations();
+
+    // Initialize hero stat counter (vanilla fallback when GSAP is absent)
+    new StatCounter();
+
+    // Initialize 3D tilt on work cards (desktop pointers only)
+    new CardTilt();
 
     // Initialize smooth scrolling
     initSmoothScroll();
