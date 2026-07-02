@@ -1,6 +1,6 @@
 # Byheir Wise — Portfolio
 
-Source for **[www.byheir.com](https://www.byheir.com)** — the portfolio of Byheir Wise, engineer and BI platform owner in regulated student lending.
+Source for **[www.byheir.com](https://www.byheir.com)** — the portfolio of Byheir Wise, engineering leader in servicing & collections systems and regulated fintech.
 
 Static site (HTML / CSS / vanilla JS) hosted on GitHub Pages with a custom domain via `CNAME`. No build step.
 
