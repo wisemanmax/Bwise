@@ -10,7 +10,8 @@
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!window.gsap || reduceMotion) return;
+  // The HUD homepage (html.hud) has no scroll to choreograph — see assets/hud.js
+  if (!window.gsap || reduceMotion || document.documentElement.classList.contains('hud')) return;
 
   var gsap = window.gsap;
   if (window.ScrollTrigger) {

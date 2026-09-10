@@ -428,7 +428,9 @@ class ScrollAnimations {
     // neutralizes transitions, but skipping avoids a needless opacity flash),
     // or when GSAP's ScrollTrigger choreography owns the reveals.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-        document.documentElement.classList.contains('gsap-motion')) {
+        document.documentElement.classList.contains('gsap-motion') ||
+        document.documentElement.classList.contains('hud')) {
+      // html.hud: the homepage HUD animates panels itself (assets/hud.css)
       return;
     }
 
@@ -1301,7 +1303,7 @@ class SiteTour {
       full: [
         { page: '/', id: 'hero',
           title: "Welcome — here's the full tour",
-          body: "Seven-plus years in regulated fintech, end-to-end ownership of BI platforms and full-stack apps. The status badge is live: I'm available for opportunities.",
+          body: "Eight-plus years in regulated fintech — engineering leader over servicing and collections systems, with full-stack production builds. The status badge is live: I'm available for opportunities.",
           details: [
             "Use Next / Back, or arrow keys, to navigate",
             "Skip anytime — resume from the tour chip",
@@ -1309,20 +1311,29 @@ class SiteTour {
           ] },
         { page: '/', id: 'about',
           title: "What I actually do",
-          body: "Power BI / Snowflake reporting at Sallie Mae, plus full-stack tools when product gaps need filling.",
+          body: "Engineering leader building the systems behind lending, servicing, and collections — .NET, AWS, Snowflake, React — plus the tools that fill product gaps.",
           details: [
             "Bridge between BI, ops, compliance, and engineering",
             "Production-grade data models and dashboards",
             "Ship the supporting apps when no team exists"
           ] },
         { page: '/', id: 'experience',
-          title: "Seven years at Sallie Mae — with the receipts",
+          title: "Eight-plus years in regulated fintech — with the receipts",
           body: "Measurable impact, shipped systems. The bullets behind the headline are highlighted here.",
           details: [
             "1,000+ users on my reporting pipeline",
             "60% manual reporting eliminated via Python automation",
             "AI-augmented Snowflake testing platform — solo build"
           ] },
+        { page: '/', id: 'projects-simplicity',
+          title: "Simplicity by WiseForge — production AI product",
+          body: "Designed, built, and deployed a Claude-powered product end-to-end solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, and Stripe subscriptions.",
+          details: [
+            "Owned every architectural decision from provider abstraction to entitlement checks",
+            "Survives provider changes and scales pricing without rewrites",
+            "Live at wiseforge.dev"
+          ],
+          detailHref: 'https://www.wiseforge.dev', detailLabel: "Visit wiseforge.dev", detailExternal: true },
         { page: '/', id: 'projects-partnerpulse',
           title: "PartnerPulse — solo, in production",
           body: "A relationship-analytics PWA on a zero-infrastructure serverless stack: GitHub Pages + Cloudflare Workers.",
@@ -1359,6 +1370,15 @@ class SiteTour {
             "Working demo of how I think about ops tooling"
           ],
           deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
+        { page: '/', id: 'work-loanops',
+          title: "LoanOps Agent Control Plane — regulated-servicing AI copilot",
+          body: "Explainable case analyst with policy citations, a guardrails engine that blocks forbidden actions, MCP-style tool connectors, a tamper-evident audit timeline, and human-in-the-loop approval. Runs in-browser on synthetic data.",
+          details: [
+            "Guardrails engine blocks forbidden actions",
+            "Tamper-evident (hash-chained) audit timeline",
+            "Snowflake-style data-validation layer"
+          ],
+          detailHref: '/pages/loanops-control-plane.html', detailLabel: "Open LoanOps demo" },
         { page: '/', id: 'work-refi',
           title: "Refi Intelligence — portfolio analytics demo",
           body: "A React + Recharts analytics build over 5,000 synthetic refi applications — cohort heatmaps, funnel drop-off, savings distribution, and AI-augmented narrative.",
@@ -1414,12 +1434,13 @@ class SiteTour {
           ],
           detailHref: '/pages/collections-toolkit.html', detailLabel: "Open Collections Toolkit" },
         { page: '/', id: 'work-external',
-          title: "Three live apps in production",
+          title: "Four live apps in production",
           body: "Each opens in a new tab so you don't lose your place in the tour.",
           details: [
+            "Cowork Dashboard — autonomous pipeline, live 24/7",
             "IronLog — analytics PWA suite",
             "PartnerPulse — partner relationship analytics",
-            "Wiseforge — chat-to-deploy site builder"
+            "Simplicity by WiseForge — production Claude-powered AI product"
           ] },
         { page: '/', id: 'skills',
           title: "BI · SQL · Full-stack",
@@ -1452,14 +1473,14 @@ class SiteTour {
       recruiter: [
         { page: '/', id: 'hero',
           title: "The 60-second pitch",
-          body: "Seven-plus years in regulated fintech. BI platform owner. Full-stack engineer. Currently available.",
+          body: "Eight-plus years in regulated fintech. Engineering leader. Full-stack builder. Currently available.",
           details: [
             "7 stops · ~60 seconds",
             "Skip or finish anytime"
           ] },
         { page: '/', id: 'experience',
           title: "The receipts",
-          body: "Seven years of compliance-grade delivery, with measurable outcomes.",
+          body: "Eight-plus years of compliance-grade delivery, with measurable outcomes.",
           details: [
             "1,000+ users on my reporting",
             "60% manual reporting eliminated via Python",
@@ -2286,6 +2307,9 @@ class SiteTour {
       return;
     }
 
+    // HUD homepage: open the holographic panel that contains the target first
+    // (assets/hud.js). No-op everywhere else.
+    if (typeof window.hudRevealTarget === 'function') window.hudRevealTarget(target);
     this.scrollTargetIntoView(target);
     this.waitForScrollIdle(target, () => this.placeAroundTarget(target));
   }
@@ -2294,6 +2318,8 @@ class SiteTour {
   // On phones the tooltip is pinned to the bottom 12px, so centering the
   // target hides it behind the tooltip — push it to the upper third instead.
   scrollTargetIntoView(target) {
+    // html.hud: hudRevealTarget already scrolled the panel's own container
+    if (document.documentElement.classList.contains('hud')) return;
     const behavior = this.reduceMotion ? 'auto' : 'smooth';
     const isMobile = window.innerWidth <= 640;
     const rect = target.getBoundingClientRect();
