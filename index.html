@@ -8,8 +8,31 @@
 
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#070b1a">
+    <meta name="theme-color" content="#020712">
     <meta name="color-scheme" content="dark">
+    <script>
+    /* HUD / classic switch. Runs before first paint so there is no layout flash.
+       No JS => neither class => plain scrolling document (SEO / no-JS safe). */
+    (function () {
+        var html = document.documentElement, mode = 'hud';
+        try {
+            var v = new URLSearchParams(location.search).get('view');
+            if (v === 'classic') sessionStorage.setItem('byheir-view', 'classic');
+            else if (v === 'hud') sessionStorage.removeItem('byheir-view');
+            if (v === 'classic' || (!v && sessionStorage.getItem('byheir-view') === 'classic')) mode = 'classic';
+        } catch (e) {}
+        html.classList.add(mode);
+        if (mode === 'hud') {
+            html.classList.add('hud-booting', 'hud-scene-fallback');
+            // Stash the fragment so the browser doesn't fragment-scroll inside a
+            // panel; hud.js routes it to the right panel and restores the URL.
+            if (location.hash.length > 1) {
+                window.__hudHash = location.hash;
+                try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+            }
+        }
+    })();
+    </script>
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Byheir Wise">
@@ -61,12 +84,43 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
 
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/hud.css?v=1">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ================= HUD: boot sequence ================= -->
+    <div class="hud-boot hud-only" data-hud-boot role="status" aria-live="polite">
+        <div class="hud-boot__inner">
+            <div class="hud-boot__logo">BYHEIR<span>.OS</span></div>
+            <pre class="hud-boot__log" data-hud-boot-log></pre>
+            <div class="hud-boot__bar" aria-hidden="true"><span data-hud-boot-progress></span></div>
+            <p class="hud-boot__skip">press any key or click to skip</p>
+        </div>
+    </div>
+
+    <!-- ================= HUD: top bar ================= -->
+    <div class="hud-topbar hud-only" data-hud-topbar>
+        <a class="hud-topbar__brand" href="#" data-hud-home aria-label="Byheir Wise — return to hub">
+            <span class="hud-monogram" aria-hidden="true">BW</span>
+            <span class="hud-topbar__name">Byheir Wise</span>
+        </a>
+        <ul class="hud-readouts" aria-label="System status">
+            <li class="hud-readout"><span class="hud-readout__k">SYS</span><span class="hud-readout__v hud-readout__v--ok">ONLINE</span></li>
+            <li class="hud-readout hud-readout--wide"><span class="hud-readout__k">LOC</span><span class="hud-readout__v">BEAR, DE · 39.63°N 75.66°W</span></li>
+            <li class="hud-readout"><span class="hud-readout__k">STATUS</span><span class="hud-readout__v hud-readout__v--amber">AVAILABLE</span></li>
+            <li class="hud-readout"><span class="hud-readout__k">LOCAL</span><time class="hud-readout__v" data-hud-clock>--:--:--</time></li>
+        </ul>
+        <div class="hud-topbar__actions">
+            <button type="button" class="hud-topbar__icon" data-hud-palette-open aria-label="Open command console">&gt;_</button>
+            <button type="button" class="hud-chip" data-hud-tour>Guided tour</button>
+            <a class="hud-topbar__link" href="?view=classic">Classic view</a>
+        </div>
+    </div>
+
     <header>
         <nav class="top-nav" aria-label="Main navigation">
             <div class="logo">Byheir Wise</div>
@@ -80,6 +134,7 @@
                 <li><a href="#work">Work</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li class="nav-classic-item"><a href="?view=hud">HUD view</a></li>
                 <li class="nav-tour-item">
                     <button type="button" class="nav-tour-chip" data-tour-trigger hidden>
                         <span class="nav-tour-chip__dot" aria-hidden="true"></span>
@@ -89,6 +144,44 @@
             </ul>
         </nav>
     </header>
+
+    <div class="hud-layout" data-hud-layout>
+    <aside class="hud-rail hud-rail--left hud-only" aria-label="Quick navigation">
+        <ol class="hud-rail__nav" data-hud-mini-nav>
+            <li><a href="#about"><span class="hud-rail__idx">01</span>Profile</a></li>
+            <li><a href="#experience"><span class="hud-rail__idx">02</span>Experience</a></li>
+            <li><a href="#projects"><span class="hud-rail__idx">03</span>Projects</a></li>
+            <li><a href="#work"><span class="hud-rail__idx">04</span>Builds</a></li>
+            <li><a href="#skills"><span class="hud-rail__idx">05</span>Skills</a></li>
+            <li><a href="#contact"><span class="hud-rail__idx">06</span>Contact</a></li>
+        </ol>
+        <div class="hud-rail__deco" aria-hidden="true">
+            <div class="hud-gauge" style="--fill: 82%"><span>PWR</span></div>
+            <div class="hud-gauge hud-gauge--amber" style="--fill: 64%"><span>NET</span></div>
+            <div class="hud-rail__lines"></div>
+        </div>
+    </aside>
+
+    <div class="hud-stage" data-hud-stage>
+        <canvas class="hud-scene hud-only" data-hud-canvas aria-hidden="true"></canvas>
+        <div class="hud-orb hud-only" data-hud-orb aria-hidden="true">
+            <div class="hud-orb__sphere"></div>
+            <div class="hud-orb__ring hud-orb__ring--1"></div>
+            <div class="hud-orb__ring hud-orb__ring--2"></div>
+            <div class="hud-orb__ring hud-orb__ring--3"></div>
+        </div>
+        <div class="hud-reticle hud-only" aria-hidden="true"></div>
+
+        <nav class="hud-nodes hud-only" id="hud-nodes" aria-label="Sections" data-hud-nodes>
+            <button type="button" class="hud-node" style="--i:0" data-hud-node="about" aria-controls="about" aria-expanded="false"><span class="hud-node__idx">01</span><span class="hud-node__label">Profile</span></button>
+            <button type="button" class="hud-node" style="--i:1" data-hud-node="experience" aria-controls="experience" aria-expanded="false"><span class="hud-node__idx">02</span><span class="hud-node__label">Experience</span></button>
+            <button type="button" class="hud-node" style="--i:2" data-hud-node="projects" aria-controls="projects" aria-expanded="false"><span class="hud-node__idx">03</span><span class="hud-node__label">Projects</span></button>
+            <button type="button" class="hud-node" style="--i:3" data-hud-node="work" aria-controls="work" aria-expanded="false"><span class="hud-node__idx">04</span><span class="hud-node__label">Builds</span></button>
+            <button type="button" class="hud-node" style="--i:4" data-hud-node="skills" aria-controls="skills" aria-expanded="false"><span class="hud-node__idx">05</span><span class="hud-node__label">Skills</span></button>
+            <button type="button" class="hud-node" style="--i:5" data-hud-node="contact" aria-controls="contact" aria-expanded="false"><span class="hud-node__idx">06</span><span class="hud-node__label">Contact</span></button>
+            <a class="hud-node hud-node--link" style="--i:6" href="pages/for-hiring-managers.html"><span class="hud-node__idx">▸</span><span class="hud-node__label">Hiring managers</span></a>
+            <a class="hud-node hud-node--link" style="--i:7" href="assets/byheir-wise-resume.pdf" download><span class="hud-node__idx">↓</span><span class="hud-node__label">Resume</span></a>
+        </nav>
 
     <section class="hero-section" aria-labelledby="hero-title" data-tour-id="hero">
         <div class="hero-inner">
@@ -128,9 +221,29 @@
             </div>
         </div>
     </section>
+    </div><!-- /.hud-stage -->
 
-    <main id="main">
-        <section id="about" class="container" aria-labelledby="about-title">
+    <aside class="hud-rail hud-rail--right hud-only" aria-hidden="true">
+        <div class="hud-rail__label">TELEMETRY</div>
+        <pre class="hud-rail__stream" data-hud-stream></pre>
+        <div class="hud-rail__deco">
+            <div class="hud-gauge" style="--fill: 91%"><span>UPT</span></div>
+            <div class="hud-gauge hud-gauge--amber" style="--fill: 47%"><span>LOAD</span></div>
+            <div class="hud-rail__lines"></div>
+        </div>
+    </aside>
+
+    <main id="main" class="hud-panels" data-hud-panels>
+        <section id="about" class="container hud-panel" data-panel="about" role="region" aria-labelledby="about-title" tabindex="-1">
+            <div class="hud-panel__bar hud-only">
+                <span class="hud-panel__index" aria-hidden="true">01 / 06</span>
+                <span class="hud-panel__tag" aria-hidden="true">SECTION · PROFILE</span>
+                <div class="hud-panel__nav">
+                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
+                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
+                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+                </div>
+            </div>
             <div class="section-header">
                 <h2 id="about-title" class="section-title">About me</h2>
                 <p class="section-subtitle">
@@ -168,7 +281,16 @@
             </aside>
         </section>
 
-        <section id="experience" class="container" aria-labelledby="experience-title">
+        <section id="experience" class="container hud-panel" data-panel="experience" role="region" aria-labelledby="experience-title" tabindex="-1">
+            <div class="hud-panel__bar hud-only">
+                <span class="hud-panel__index" aria-hidden="true">02 / 06</span>
+                <span class="hud-panel__tag" aria-hidden="true">SECTION · EXPERIENCE</span>
+                <div class="hud-panel__nav">
+                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
+                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
+                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+                </div>
+            </div>
             <div class="section-header">
                 <h2 id="experience-title" class="section-title">Professional experience</h2>
                 <p class="section-subtitle">
@@ -225,7 +347,16 @@
             </div>
         </section>
 
-        <section id="projects" class="container" aria-labelledby="projects-title">
+        <section id="projects" class="container hud-panel" data-panel="projects" role="region" aria-labelledby="projects-title" tabindex="-1">
+            <div class="hud-panel__bar hud-only">
+                <span class="hud-panel__index" aria-hidden="true">03 / 06</span>
+                <span class="hud-panel__tag" aria-hidden="true">SECTION · PROJECTS</span>
+                <div class="hud-panel__nav">
+                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
+                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
+                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+                </div>
+            </div>
             <div class="section-header">
                 <h2 id="projects-title" class="section-title">Selected project experience</h2>
                 <p class="section-subtitle">
@@ -328,7 +459,16 @@
             </div>
         </section>
 
-        <section id="work" class="container" aria-labelledby="work-title">
+        <section id="work" class="container hud-panel" data-panel="work" role="region" aria-labelledby="work-title" tabindex="-1">
+            <div class="hud-panel__bar hud-only">
+                <span class="hud-panel__index" aria-hidden="true">04 / 06</span>
+                <span class="hud-panel__tag" aria-hidden="true">SECTION · BUILDS</span>
+                <div class="hud-panel__nav">
+                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
+                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
+                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+                </div>
+            </div>
             <div class="section-header">
                 <h2 id="work-title" class="section-title">Selected work</h2>
                 <p class="section-subtitle">
@@ -429,9 +569,9 @@
                 </a>
             </div>
 
-            <h3 class="work-row-title">Demos &amp; UI explorations <span class="work-row-title__hint">(built for this portfolio to show range)</span></h3>
+            <h3 class="work-row-title" id="demo">Demos &amp; UI explorations <span class="work-row-title__hint">(built for this portfolio to show range)</span></h3>
             <div class="work-grid">
-                <a class="work-card work-card--wide" href="pages/loanops-control-plane.html" aria-label="LoanOps Agent Control Plane demo">
+                <a class="work-card work-card--wide" href="pages/loanops-control-plane.html" aria-label="LoanOps Agent Control Plane demo" data-tour-id="work-loanops">
                     <div class="work-card__media">
                         <img src="assets/work-thumbs/loanops-control-plane.svg" alt="" loading="lazy" width="1200" height="675">
                     </div>
@@ -670,7 +810,16 @@
             </div>
         </section>
 
-        <section id="skills" class="container" aria-labelledby="skills-title">
+        <section id="skills" class="container hud-panel" data-panel="skills" role="region" aria-labelledby="skills-title" tabindex="-1">
+            <div class="hud-panel__bar hud-only">
+                <span class="hud-panel__index" aria-hidden="true">05 / 06</span>
+                <span class="hud-panel__tag" aria-hidden="true">SECTION · SKILLS</span>
+                <div class="hud-panel__nav">
+                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
+                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
+                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+                </div>
+            </div>
             <div class="section-header">
                 <h2 id="skills-title" class="section-title">Skills and expertise</h2>
                 <p class="section-subtitle">
@@ -791,7 +940,16 @@
             </div>
         </section>
 
-        <section id="contact" class="container" aria-labelledby="contact-title">
+        <section id="contact" class="container hud-panel" data-panel="contact" role="region" aria-labelledby="contact-title" tabindex="-1">
+            <div class="hud-panel__bar hud-only">
+                <span class="hud-panel__index" aria-hidden="true">06 / 06</span>
+                <span class="hud-panel__tag" aria-hidden="true">SECTION · CONTACT</span>
+                <div class="hud-panel__nav">
+                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
+                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
+                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+                </div>
+            </div>
             <div class="contact-section" data-tour-id="contact">
                 <h2 id="contact-title" class="contact-title">Let's connect and build something impactful</h2>
                 <p class="contact-subtitle">
@@ -829,15 +987,45 @@
             </div>
         </section>
     </main>
+    </div><!-- /.hud-layout -->
+
+    <!-- ================= HUD: command console ================= -->
+    <div class="hud-console hud-only" data-hud-console>
+        <ul id="hud-command-results" class="hud-console__results" role="listbox" aria-label="Command results" hidden></ul>
+        <form class="hud-console__form" role="search" data-hud-command-form autocomplete="off">
+            <span class="hud-console__prompt" aria-hidden="true">&gt;_</span>
+            <label class="hud-sr-only" for="hud-command">Command</label>
+            <input id="hud-command" class="hud-console__input" type="text" role="combobox" autocomplete="off" spellcheck="false"
+                   placeholder="type a command — skills, sql, cowork, resume…"
+                   aria-autocomplete="list" aria-controls="hud-command-results" aria-expanded="false">
+            <kbd class="hud-console__hint" aria-hidden="true">/</kbd>
+        </form>
+    </div>
 
     <footer>
         <p>Byheir Wise · Engineering Leader · Servicing &amp; Collections Systems · Regulated Fintech</p>
         <p>Portfolio built using semantic HTML, responsive CSS, and light JavaScript.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-    <script src="assets/motion.js" defer></script>
-    <script src="assets/script.js"></script>
+    <script>
+    /* Conditional vendor loader: the HUD gets three.js + the scene; classic view
+       gets GSAP + ScrollTrigger + motion.js. Neither view pays for the other. */
+    (function () {
+        var hud = document.documentElement.classList.contains('hud');
+        var srcs = hud
+            ? ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 'assets/hud-scene.js?v=1']
+            : ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
+               'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
+               'assets/motion.js'];
+        srcs.forEach(function (src) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = false;
+            document.body.appendChild(s);
+        });
+    })();
+    </script>
+    <script src="assets/hud.js?v=1"></script>
+    <script src="assets/script.js?v=hud1"></script>
 </body>
 </html>

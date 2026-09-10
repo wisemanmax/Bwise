@@ -1,12 +1,12 @@
 {
-  "name": "Byheir Wise — Engineer · BI Platform Owner",
+  "name": "Byheir Wise — Engineering Leader · Servicing & Collections Systems",
   "short_name": "Byheir Wise",
-  "description": "Portfolio of Byheir Wise — engineer and BI platform owner in regulated student lending.",
+  "description": "Portfolio of Byheir Wise — engineering leader building servicing and collections systems in regulated fintech.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0b0f1a",
-  "theme_color": "#667eea",
+  "background_color": "#020712",
+  "theme_color": "#020712",
   "icons": [
     {
       "src": "/assets/favicon.svg",

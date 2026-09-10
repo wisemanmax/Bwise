@@ -1,0 +1,1779 @@
+/* ============================================================================
+   HUD — Iron Man 2 / JARVIS holographic workstation skin for the homepage.
+
+   Everything in this file is scoped under `html.hud`, which the inline switch
+   in index.html adds before first paint (unless ?view=classic). Sub-pages never
+   receive the class, so this sheet is inert everywhere else, and the classic
+   scrolling document (no JS, or ?view=classic) is untouched.
+
+   Sections
+     0. Scoping + tokens
+     1. Background layers (grid, hex, scanlines, vignette)
+     2. Boot sequence
+     3. Top bar + readouts
+     4. Layout frame + rails
+     5. Stage: scene canvas, CSS orb fallback, reticle, radial nodes
+     6. Hero-as-hub
+     7. Panels
+     8. Content re-skins inside panels (cards, pills, thumbnails)
+     9. Command console
+    10. Tour reskin
+    11. Utilities
+    12. Mobile
+    13. Reduced motion
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   0. SCOPING + TOKENS
+   ---------------------------------------------------------------------------- */
+
+html:not(.hud) .hud-only { display: none !important; }
+
+html.hud {
+    --hud-bg: #020712;
+    --hud-bg-2: #041019;
+    --hud-panel-bg: rgba(4, 22, 34, 0.88);
+    --hud-cyan: #37d5ff;
+    --hud-cyan-bright: #7ff3ff;
+    --hud-cyan-dim: rgba(55, 213, 255, 0.28);
+    --hud-blue: #2f7cff;
+    --hud-amber: #ffb347;
+    --hud-orange: #ff8a00;
+    --hud-red: #ff4d5e;
+    --hud-text: #d6f2ff;
+    --hud-text-muted: #8fb8c9;
+    --hud-line: rgba(55, 213, 255, 0.35);
+    --hud-line-soft: rgba(55, 213, 255, 0.16);
+    --hud-line-strong: rgba(55, 213, 255, 0.7);
+    --hud-glow: 0 0 12px rgba(55, 213, 255, 0.45), 0 0 32px rgba(55, 213, 255, 0.18);
+    --hud-glow-amber: 0 0 12px rgba(255, 179, 71, 0.45), 0 0 28px rgba(255, 179, 71, 0.16);
+    --hud-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --hud-grid: 48px;
+    --hud-topbar-h: 56px;
+    --hud-console-h: 64px;
+    --hud-rail-w: 168px;
+    --hud-orbit: clamp(140px, 17vw, 260px);
+
+    /* Remap the shared design tokens so existing components (cards, pills,
+       contact grid) recolor to the hologram palette without touching style.css */
+    --bg: var(--hud-bg);
+    --bg-elevated: #06192a;
+    --white: #061a2b;
+    --primary: var(--hud-cyan);
+    --primary-alt: var(--hud-blue);
+    --accent: var(--hud-cyan-bright);
+    --text-main: var(--hud-text);
+    --text-muted: var(--hud-text-muted);
+    --success: #4ff0b7;
+    --gradient-brand: linear-gradient(135deg, #37d5ff 0%, #2f7cff 100%);
+    --glass-bg: rgba(55, 213, 255, 0.05);
+    --glass-bg-hover: rgba(55, 213, 255, 0.09);
+    --glass-bg-strong: rgba(4, 22, 34, 0.72);
+    --glass-border: rgba(55, 213, 255, 0.22);
+    --glass-border-bright: linear-gradient(160deg, rgba(127, 243, 255, 0.5), rgba(55, 213, 255, 0.25) 40%, rgba(55, 213, 255, 0.05));
+    --glass-highlight: inset 0 1px 0 rgba(127, 243, 255, 0.08);
+    --glow-primary: 0 0 44px rgba(55, 213, 255, 0.25);
+    --glow-primary-soft: 0 8px 32px rgba(55, 213, 255, 0.14);
+    --shadow-soft: 0 8px 30px rgba(0, 4, 12, 0.5);
+    --shadow-strong: 0 24px 60px rgba(0, 4, 12, 0.7);
+    --shadow-focus: 0 0 0 3px rgba(127, 243, 255, 0.55);
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+}
+
+html.hud,
+html.hud body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--hud-bg);
+}
+
+html.hud header,
+html.hud footer,
+html.hud body::before,
+html.hud body::after {
+    display: none;
+}
+
+html.hud :focus-visible {
+    outline: 2px solid var(--hud-cyan-bright);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+html.hud ::selection {
+    background: rgba(55, 213, 255, 0.35);
+    color: #fff;
+}
+
+/* ----------------------------------------------------------------------------
+   1. BACKGROUND LAYERS
+   ---------------------------------------------------------------------------- */
+
+html.hud body {
+    background-color: var(--hud-bg);
+    background-image:
+        radial-gradient(ellipse 80% 60% at 50% 45%, rgba(20, 90, 140, 0.22), transparent 70%),
+        repeating-linear-gradient(0deg, transparent 0 calc(var(--hud-grid) - 1px), rgba(55, 213, 255, 0.055) calc(var(--hud-grid) - 1px) var(--hud-grid)),
+        repeating-linear-gradient(90deg, transparent 0 calc(var(--hud-grid) - 1px), rgba(55, 213, 255, 0.055) calc(var(--hud-grid) - 1px) var(--hud-grid)),
+        repeating-linear-gradient(0deg, transparent 0 calc(var(--hud-grid) / 4 - 1px), rgba(55, 213, 255, 0.022) calc(var(--hud-grid) / 4 - 1px) calc(var(--hud-grid) / 4)),
+        repeating-linear-gradient(90deg, transparent 0 calc(var(--hud-grid) / 4 - 1px), rgba(55, 213, 255, 0.022) calc(var(--hud-grid) / 4 - 1px) calc(var(--hud-grid) / 4));
+    background-attachment: fixed;
+}
+
+/* CRT vignette (below) + scanlines (above) on the frame. Both ignore pointer events. */
+html.hud .hud-layout::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 0l28 16v34L28 66 0 50V16zM28 34l28 16v34L28 100 0 84V50z' fill='none' stroke='%2337d5ff' stroke-opacity='.18' stroke-width='1'/%3E%3C/svg%3E") 0 0 / 56px 100px,
+        radial-gradient(ellipse 70% 70% at 50% 50%, transparent 55%, rgba(0, 2, 8, 0.55) 100%);
+    opacity: 0.9;
+}
+
+html.hud .hud-layout::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    background:
+        repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, 0.16) 2px 3px),
+        linear-gradient(180deg, rgba(127, 243, 255, 0.05), transparent 12%, transparent 88%, rgba(127, 243, 255, 0.04));
+    mix-blend-mode: multiply;
+    animation: hud-scan 9s linear infinite;
+}
+
+@keyframes hud-scan {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 0 96px, 0 0; }
+}
+
+/* ----------------------------------------------------------------------------
+   2. BOOT SEQUENCE
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-boot {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(20, 90, 140, 0.25), transparent 70%),
+        var(--hud-bg);
+    color: var(--hud-cyan);
+    font-family: var(--hud-mono);
+    cursor: pointer;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    /* Safety net: if hud.js never runs, the overlay still gets out of the way */
+    animation: hud-boot-autohide 0.4s ease 3.4s forwards;
+}
+
+html.hud:not(.hud-booting) .hud-boot,
+html.hud .hud-boot.is-done {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+@keyframes hud-boot-autohide {
+    to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+html.hud .hud-boot__inner {
+    width: min(560px, calc(100vw - 48px));
+}
+
+html.hud .hud-boot__logo {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: #fff;
+    text-shadow: var(--hud-glow);
+    margin-block-end: 20px;
+}
+
+html.hud .hud-boot__logo span {
+    color: var(--hud-cyan);
+    font-weight: 500;
+}
+
+html.hud .hud-boot__log {
+    font: 500 12px/1.9 var(--hud-mono);
+    letter-spacing: 0.04em;
+    color: var(--hud-cyan);
+    text-shadow: 0 0 8px rgba(55, 213, 255, 0.4);
+    white-space: pre-wrap;
+    min-height: calc(1.9em * 8);
+    margin: 0;
+}
+
+html.hud .hud-boot__log .ok { color: #4ff0b7; }
+html.hud .hud-boot__log .amber { color: var(--hud-amber); }
+
+html.hud .hud-boot__log::after {
+    content: "▌";
+    animation: hud-caret 0.8s steps(1) infinite;
+}
+
+@keyframes hud-caret {
+    50% { opacity: 0; }
+}
+
+html.hud .hud-boot__bar {
+    height: 3px;
+    margin-block: 18px 12px;
+    background: rgba(55, 213, 255, 0.15);
+    overflow: hidden;
+}
+
+html.hud .hud-boot__bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--hud-cyan), var(--hud-cyan-bright));
+    box-shadow: var(--hud-glow);
+    transition: width 0.25s linear;
+}
+
+html.hud .hud-boot__skip {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--hud-text-muted);
+    margin: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   3. TOP BAR + READOUTS
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--hud-topbar-h);
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-inline: clamp(14px, 2vw, 28px);
+    background: linear-gradient(180deg, rgba(4, 16, 25, 0.92), rgba(4, 16, 25, 0.75));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hud-line);
+    box-shadow: 0 1px 0 rgba(127, 243, 255, 0.08), 0 10px 30px rgba(0, 2, 8, 0.45);
+    font-family: var(--hud-mono);
+}
+
+html.hud .hud-topbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--hud-cyan-bright) 20%, var(--hud-cyan-bright) 80%, transparent);
+    opacity: 0.6;
+}
+
+html.hud .hud-topbar__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+html.hud .hud-monogram {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    font: 700 12px/1 var(--hud-mono);
+    color: var(--hud-cyan-bright);
+    border: 1px solid var(--hud-line-strong);
+    clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+    background: rgba(55, 213, 255, 0.1);
+    box-shadow: inset 0 0 12px rgba(55, 213, 255, 0.25);
+}
+
+html.hud .hud-readouts {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+html.hud .hud-readout {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+html.hud .hud-readout__k {
+    color: var(--hud-text-muted);
+}
+
+html.hud .hud-readout__k::after {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-inline-start: 6px;
+    background: var(--hud-cyan);
+    transform: rotate(45deg) translateY(-1px);
+    opacity: 0.7;
+}
+
+html.hud .hud-readout__v {
+    color: var(--hud-cyan-bright);
+    text-shadow: 0 0 8px rgba(55, 213, 255, 0.35);
+}
+
+html.hud .hud-readout__v--ok { color: #4ff0b7; text-shadow: 0 0 8px rgba(79, 240, 183, 0.4); }
+html.hud .hud-readout__v--amber { color: var(--hud-amber); text-shadow: 0 0 8px rgba(255, 179, 71, 0.4); }
+
+html.hud .hud-readout__v--ok::before {
+    content: "";
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-inline-end: 6px;
+    background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+    animation: hud-blink 2.4s ease-in-out infinite;
+}
+
+@keyframes hud-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+html.hud .hud-topbar__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-inline-start: auto;
+}
+
+html.hud .hud-chip,
+html.hud .hud-topbar__link,
+html.hud .hud-topbar__icon {
+    font: 500 11px/1 var(--hud-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+html.hud .hud-chip {
+    padding: 9px 14px;
+    color: var(--hud-amber);
+    background: rgba(255, 179, 71, 0.08);
+    border: 1px solid rgba(255, 179, 71, 0.55);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+html.hud .hud-chip:hover,
+html.hud .hud-chip:focus-visible {
+    background: rgba(255, 179, 71, 0.18);
+    box-shadow: var(--hud-glow-amber);
+}
+
+html.hud .hud-topbar__link {
+    padding: 9px 4px;
+    color: var(--hud-text-muted);
+    border-bottom: 1px solid transparent;
+}
+
+html.hud .hud-topbar__link:hover,
+html.hud .hud-topbar__link:focus-visible {
+    color: var(--hud-cyan-bright);
+    border-bottom-color: var(--hud-cyan);
+}
+
+html.hud .hud-topbar__icon {
+    display: none;
+    width: 36px;
+    height: 36px;
+    color: var(--hud-cyan-bright);
+    background: rgba(55, 213, 255, 0.08);
+    border: 1px solid var(--hud-line);
+}
+
+/* ----------------------------------------------------------------------------
+   4. LAYOUT FRAME + RAILS
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-layout {
+    position: fixed;
+    inset: var(--hud-topbar-h) 0 var(--hud-console-h);
+    display: grid;
+    grid-template-columns: var(--hud-rail-w) minmax(0, 1fr) var(--hud-rail-w);
+    grid-template-rows: minmax(0, 1fr);
+    z-index: 1;
+}
+
+html.hud .hud-rail {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px 18px;
+    font-family: var(--hud-mono);
+    min-height: 0;
+    overflow: hidden;
+}
+
+html.hud .hud-rail--left { border-right: 1px solid var(--hud-line-soft); }
+html.hud .hud-rail--right { border-left: 1px solid var(--hud-line-soft); }
+
+html.hud .hud-rail__nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+html.hud .hud-rail__nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 8px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--hud-text-muted);
+    border-left: 2px solid rgba(55, 213, 255, 0.25);
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+html.hud .hud-rail__nav a:hover,
+html.hud .hud-rail__nav a:focus-visible,
+html.hud .hud-rail__nav a.is-active {
+    color: var(--hud-cyan-bright);
+    border-left-color: var(--hud-cyan-bright);
+    background: linear-gradient(90deg, rgba(55, 213, 255, 0.12), transparent);
+}
+
+html.hud .hud-rail__idx {
+    color: var(--hud-cyan);
+    opacity: 0.7;
+    font-variant-numeric: tabular-nums;
+}
+
+html.hud .hud-rail__label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--hud-text-muted);
+}
+
+html.hud .hud-rail__stream {
+    margin: 0;
+    font: 400 10px/1.7 var(--hud-mono);
+    letter-spacing: 0.06em;
+    color: rgba(55, 213, 255, 0.55);
+    white-space: pre;
+    overflow: hidden;
+    flex: 0 0 auto;
+    min-height: 12em;
+    mask-image: linear-gradient(180deg, #000 70%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent);
+}
+
+html.hud .hud-rail__deco {
+    margin-block-start: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+html.hud .hud-gauge {
+    --fill: 70%;
+    --gauge-color: var(--hud-cyan);
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--hud-text-muted);
+    background: conic-gradient(var(--gauge-color) var(--fill), rgba(55, 213, 255, 0.12) 0);
+    box-shadow: 0 0 12px rgba(55, 213, 255, 0.2);
+    animation: hud-gauge-breathe 6s ease-in-out infinite;
+}
+
+/* Punch the ring out of the pie: an inner disc in the page background */
+html.hud .hud-gauge::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--hud-bg);
+    box-shadow: inset 0 0 0 1px rgba(55, 213, 255, 0.18);
+}
+
+html.hud .hud-gauge--amber { --gauge-color: var(--hud-amber); }
+
+html.hud .hud-gauge span {
+    position: relative;
+}
+
+@keyframes hud-gauge-breathe {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.35); }
+}
+
+html.hud .hud-rail__lines {
+    height: 72px;
+    background:
+        linear-gradient(90deg, var(--hud-line) 1px, transparent 1px) 0 0 / 12px 100%,
+        linear-gradient(180deg, transparent 30%, var(--hud-line-soft) 30%, var(--hud-line-soft) calc(30% + 1px), transparent 0),
+        linear-gradient(180deg, transparent 70%, var(--hud-line) 70%, var(--hud-line) calc(70% + 1px), transparent 0);
+    opacity: 0.7;
+    mask-image: linear-gradient(90deg, #000, transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+}
+
+/* ----------------------------------------------------------------------------
+   5. STAGE: SCENE CANVAS, CSS ORB FALLBACK, RETICLE, RADIAL NODES
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-stage {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(300px, 40%) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+html.hud .hud-stage.is-dimmed {
+    opacity: 0.22;
+    filter: blur(2px) saturate(0.6);
+}
+
+/* The 3D scene, orb, reticle and nodes all share column 2 so their centers coincide */
+html.hud .hud-scene,
+html.hud .hud-orb,
+html.hud .hud-reticle,
+html.hud .hud-nodes {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+html.hud .hud-scene {
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+}
+
+html.hud:not(.hud-scene-fallback) .hud-scene { opacity: 1; }
+
+/* ---- CSS orb fallback (also visible while three.js is loading) ---- */
+html.hud .hud-orb {
+    place-self: center;
+    width: 0;
+    height: 0;
+    perspective: 900px;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+html.hud.hud-scene-fallback .hud-orb { opacity: 1; }
+
+html.hud .hud-orb__sphere,
+html.hud .hud-orb__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform-style: preserve-3d;
+}
+
+html.hud .hud-orb__sphere {
+    --r: calc(var(--hud-orbit) * 0.62);
+    width: calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    margin: calc(var(--r) * -1) 0 0 calc(var(--r) * -1);
+    background:
+        repeating-conic-gradient(from 0deg, rgba(55, 213, 255, 0.35) 0 1px, transparent 1px 30deg),
+        repeating-radial-gradient(circle at 50% 50%, transparent 0 calc(var(--r) / 6 - 1px), rgba(55, 213, 255, 0.35) calc(var(--r) / 6 - 1px) calc(var(--r) / 6)),
+        radial-gradient(circle at 35% 30%, rgba(127, 243, 255, 0.22), rgba(4, 22, 34, 0.9) 60%, rgba(2, 7, 18, 0.95));
+    box-shadow: 0 0 40px rgba(55, 213, 255, 0.25), inset 0 0 40px rgba(55, 213, 255, 0.2);
+    animation: hud-orb-pulse 5s ease-in-out infinite;
+}
+
+@keyframes hud-orb-pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(55, 213, 255, 0.25), inset 0 0 40px rgba(55, 213, 255, 0.2); }
+    50% { box-shadow: 0 0 64px rgba(55, 213, 255, 0.4), inset 0 0 52px rgba(55, 213, 255, 0.28); }
+}
+
+html.hud .hud-orb__ring {
+    --r: calc(var(--hud-orbit) * 0.8);
+    width: calc(var(--r) * 2);
+    height: calc(var(--r) * 2);
+    margin: calc(var(--r) * -1) 0 0 calc(var(--r) * -1);
+    border: 1px solid var(--hud-cyan);
+    box-shadow: 0 0 10px rgba(55, 213, 255, 0.4), inset 0 0 10px rgba(55, 213, 255, 0.2);
+    animation: hud-orb-spin 18s linear infinite;
+}
+
+html.hud .hud-orb__ring--1 { transform: rotateX(72deg); }
+html.hud .hud-orb__ring--2 { --r: calc(var(--hud-orbit) * 0.9); border-color: var(--hud-blue); animation-duration: 24s; animation-direction: reverse; transform: rotateX(80deg) rotateZ(30deg); }
+html.hud .hud-orb__ring--3 { --r: calc(var(--hud-orbit) * 1.0); border-color: var(--hud-amber); border-style: dashed; animation-duration: 30s; transform: rotateY(60deg); }
+
+@keyframes hud-orb-spin {
+    from { rotate: 0deg; }
+    to   { rotate: 360deg; }
+}
+
+/* ---- Reticle: crosshair + tick ring around the hologram ---- */
+html.hud .hud-reticle {
+    place-self: center;
+    --d: calc(var(--hud-orbit) * 2.6);
+    width: var(--d);
+    height: var(--d);
+    pointer-events: none;
+    border-radius: 50%;
+    background:
+        repeating-conic-gradient(from 0deg, var(--hud-line) 0 0.4deg, transparent 0.4deg 7.5deg),
+        conic-gradient(from -20deg, transparent 0 320deg, rgba(55, 213, 255, 0.18) 320deg 360deg);
+    -webkit-mask: radial-gradient(circle, transparent calc(50% - 6px), #000 calc(50% - 5px), #000 calc(50% - 1px), transparent 50%);
+    mask: radial-gradient(circle, transparent calc(50% - 6px), #000 calc(50% - 5px), #000 calc(50% - 1px), transparent 50%);
+    animation: hud-reticle-spin 60s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes hud-reticle-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---- Radial nav nodes ---- */
+html.hud .hud-nodes {
+    place-self: center;
+    position: relative;
+    width: 0;
+    height: 0;
+    z-index: 3;
+}
+
+html.hud .hud-node {
+    --angle: calc(var(--i) * 45deg - 90deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 118px;
+    padding: 8px 16px 9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--hud-orbit)) rotate(calc(-1 * var(--angle)));
+    font-family: var(--hud-mono);
+    color: var(--hud-cyan-bright);
+    text-decoration: none;
+    background: rgba(4, 22, 34, 0.7);
+    border: 1px solid var(--hud-line-strong);
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+    cursor: pointer;
+    box-shadow: inset 0 0 18px rgba(55, 213, 255, 0.12);
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, filter 0.18s ease;
+    opacity: 0;
+}
+
+html.hud.hud-ready .hud-node,
+html.hud:not(.hud-booting) .hud-node {
+    animation: hud-node-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+    animation-delay: calc(var(--i) * 70ms + 120ms);
+}
+
+@keyframes hud-node-in {
+    from { opacity: 0; transform: translate(-50%, -50%) rotate(var(--angle)) translate(calc(var(--hud-orbit) * 0.6)) rotate(calc(-1 * var(--angle))) scale(0.8); }
+    to   { opacity: 1; transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--hud-orbit)) rotate(calc(-1 * var(--angle))) scale(1); }
+}
+
+/* Connector tick from each node toward the hologram center */
+html.hud .hud-node::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--hud-orbit) * 0.42);
+    height: 1px;
+    background: linear-gradient(90deg, var(--hud-cyan), transparent);
+    transform-origin: 0 50%;
+    transform: rotate(calc(var(--angle) + 180deg));
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: -1;
+}
+
+html.hud .hud-node__idx {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--hud-cyan);
+    opacity: 0.85;
+}
+
+html.hud .hud-node__label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+html.hud .hud-node:hover,
+html.hud .hud-node:focus-visible {
+    background: rgba(55, 213, 255, 0.18);
+    color: #fff;
+    box-shadow: var(--hud-glow), inset 0 0 22px rgba(55, 213, 255, 0.25);
+    outline: none;
+    filter: brightness(1.15);
+}
+
+html.hud .hud-node:focus-visible {
+    border-color: #fff;
+}
+
+html.hud .hud-node[aria-expanded="true"] {
+    color: var(--hud-amber);
+    border-color: var(--hud-amber);
+    background: rgba(255, 179, 71, 0.12);
+    box-shadow: var(--hud-glow-amber), inset 0 0 22px rgba(255, 179, 71, 0.18);
+}
+
+html.hud .hud-node[aria-expanded="true"] .hud-node__idx { color: var(--hud-amber); }
+
+html.hud .hud-node--link {
+    border-style: dashed;
+    color: var(--hud-text);
+}
+
+/* ----------------------------------------------------------------------------
+   6. HERO-AS-HUB (the identity block lives in column 1 of the stage)
+   ---------------------------------------------------------------------------- */
+
+html.hud .hero-section {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding: clamp(20px, 3vw, 40px) clamp(20px, 3vw, 44px);
+    overflow: auto;
+    min-height: 0;
+}
+
+html.hud .hero-section::before { display: none; }
+
+html.hud .hero-inner {
+    max-width: 520px;
+    margin: 0;
+}
+
+html.hud .hero-label {
+    font: 500 11px/1 var(--hud-mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hud-amber);
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 179, 71, 0.4);
+    background: rgba(255, 179, 71, 0.06);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+html.hud .status-dot {
+    background: var(--hud-amber);
+    box-shadow: 0 0 0 4px rgba(255, 179, 71, 0.2);
+    animation-name: hud-status-pulse;
+}
+
+@keyframes hud-status-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 179, 71, 0.55); }
+    50%      { box-shadow: 0 0 0 8px rgba(255, 179, 71, 0); }
+}
+
+html.hud .hero-title {
+    font-size: clamp(40px, 4.6vw, 64px);
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 18px rgba(55, 213, 255, 0.5), 0 0 48px rgba(55, 213, 255, 0.2);
+    margin-block: 22px 12px;
+    position: relative;
+}
+
+html.hud .hero-title::after {
+    content: "";
+    display: block;
+    width: 120px;
+    height: 2px;
+    margin-block-start: 14px;
+    background: linear-gradient(90deg, var(--hud-cyan-bright), var(--hud-cyan) 60%, transparent);
+    box-shadow: var(--hud-glow);
+}
+
+html.hud .hero-subtitle {
+    font: 500 12px/1.6 var(--hud-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--hud-cyan);
+    max-width: 480px;
+}
+
+html.hud .hero-cta-row {
+    gap: 10px;
+    margin-block: 24px 26px;
+}
+
+html.hud .hero-cta {
+    padding: 10px 16px;
+    border-radius: 0;
+    font: 500 11px/1 var(--hud-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+html.hud .hero-cta--primary {
+    background: linear-gradient(135deg, rgba(55, 213, 255, 0.9), rgba(47, 124, 255, 0.9));
+    color: #021018;
+    box-shadow: var(--hud-glow);
+}
+
+html.hud .hero-cta--primary::after { display: none; }
+
+html.hud .hero-cta--primary:hover,
+html.hud .hero-cta--primary:focus-visible {
+    color: #021018;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(55, 213, 255, 0.7), 0 0 44px rgba(55, 213, 255, 0.3);
+}
+
+html.hud .hero-cta--ghost {
+    background: rgba(55, 213, 255, 0.05);
+    color: var(--hud-cyan-bright);
+    border: 1px solid var(--hud-line);
+}
+
+html.hud .hero-cta--ghost:hover,
+html.hud .hero-cta--ghost:focus-visible {
+    background: rgba(55, 213, 255, 0.14);
+    color: #fff;
+    border-color: var(--hud-cyan-bright);
+    box-shadow: var(--hud-glow);
+}
+
+html.hud .stats-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+html.hud .stat-box {
+    --fill: 80%;
+    position: relative;
+    text-align: left;
+    padding: 14px 14px 16px;
+    border: 1px solid var(--hud-line-soft);
+    border-radius: 0;
+    background: rgba(4, 22, 34, 0.55);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: hidden;
+}
+
+/* Corner brackets */
+html.hud .stat-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 0 0 / 10px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 0 0 / 1px 10px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 100% 0 / 10px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 100% 0 / 1px 10px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 0 100% / 10px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 0 100% / 1px 10px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 100% 100% / 10px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 100% 100% / 1px 10px no-repeat;
+}
+
+/* Fill bar */
+html.hud .stat-box::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--hud-cyan-bright) var(--fill), rgba(55, 213, 255, 0.15) var(--fill));
+    box-shadow: 0 0 8px rgba(55, 213, 255, 0.5);
+}
+
+html.hud .stat-box:nth-child(1) { --fill: 85%; }
+html.hud .stat-box:nth-child(2) { --fill: 72%; }
+html.hud .stat-box:nth-child(3) { --fill: 100%; }
+html.hud .stat-box:nth-child(4) { --fill: 92%; }
+
+html.hud .stat-box:hover {
+    transform: none;
+    background: rgba(55, 213, 255, 0.08);
+    box-shadow: var(--hud-glow);
+}
+
+html.hud .stat-number {
+    font-size: 22px;
+    line-height: 1.1;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(55, 213, 255, 0.45);
+    margin-block-end: 4px;
+}
+
+html.hud .stat-number--text { font-size: 18px; }
+
+html.hud .stat-label {
+    font: 400 10px/1.4 var(--hud-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hud-text-muted);
+}
+
+/* ----------------------------------------------------------------------------
+   7. PANELS
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-panels {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+}
+
+html.hud .hud-panel {
+    display: none;
+    position: absolute;
+    inset: 22px clamp(20px, 6vw, 96px);
+    max-width: none;
+    margin: 0;
+    padding: 0 clamp(18px, 3.5vw, 44px) 48px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    pointer-events: auto;
+    background:
+        linear-gradient(180deg, rgba(55, 213, 255, 0.05), transparent 120px),
+        var(--hud-panel-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--hud-line);
+    box-shadow: 0 0 0 1px rgba(2, 7, 18, 0.6), 0 30px 80px rgba(0, 2, 8, 0.7), inset 0 0 60px rgba(55, 213, 255, 0.05);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(55, 213, 255, 0.4) transparent;
+}
+
+html.hud .hud-panel.is-open {
+    display: block;
+    animation: hud-materialize 0.42s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+html.hud .hud-panel::-webkit-scrollbar { width: 8px; }
+html.hud .hud-panel::-webkit-scrollbar-thumb { background: rgba(55, 213, 255, 0.35); }
+
+@keyframes hud-materialize {
+    0%   { opacity: 0; transform: scaleY(0.94) translateY(8px); clip-path: inset(0 0 100% 0); }
+    30%  { opacity: 1; clip-path: inset(0 0 48% 0); transform: scaleY(1) translateY(0) translateX(-3px); }
+    34%  { clip-path: inset(0 0 40% 0); transform: translateX(3px); }
+    38%  { transform: translateX(0); }
+    100% { opacity: 1; clip-path: inset(0); transform: none; }
+}
+
+/* Corner brackets on the panel frame (sticky wrapper so they stay put while scrolling) */
+html.hud .hud-panel__bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-inline: calc(-1 * clamp(18px, 3.5vw, 44px));
+    padding: 12px clamp(18px, 3.5vw, 44px);
+    margin-block-end: 26px;
+    background: linear-gradient(180deg, rgba(4, 18, 30, 0.98), rgba(4, 18, 30, 0.9));
+    border-bottom: 1px solid var(--hud-line);
+    font-family: var(--hud-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+html.hud .hud-panel__index {
+    color: var(--hud-amber);
+    font-variant-numeric: tabular-nums;
+}
+
+html.hud .hud-panel__tag {
+    color: var(--hud-text-muted);
+}
+
+html.hud .hud-panel__tag::before {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    margin-inline-end: 10px;
+    vertical-align: middle;
+    background: var(--hud-line-strong);
+}
+
+html.hud .hud-panel__nav {
+    margin-inline-start: auto;
+    display: inline-flex;
+    gap: 8px;
+}
+
+html.hud .hud-panel__btn {
+    font: 500 11px/1 var(--hud-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    color: var(--hud-cyan-bright);
+    background: rgba(55, 213, 255, 0.06);
+    border: 1px solid var(--hud-line);
+    cursor: pointer;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+    transition: background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+
+html.hud .hud-panel__btn:hover,
+html.hud .hud-panel__btn:focus-visible {
+    background: rgba(55, 213, 255, 0.16);
+    box-shadow: var(--hud-glow);
+    color: #fff;
+}
+
+html.hud .hud-panel__btn--close {
+    color: var(--hud-amber);
+    border-color: rgba(255, 179, 71, 0.5);
+    background: rgba(255, 179, 71, 0.06);
+}
+
+html.hud .hud-panel__btn--close:hover,
+html.hud .hud-panel__btn--close:focus-visible {
+    background: rgba(255, 179, 71, 0.18);
+    box-shadow: var(--hud-glow-amber);
+}
+
+html.hud .hud-panel .section-header { margin-block-end: 28px; }
+
+html.hud .hud-panel .section-title {
+    color: #fff;
+    text-shadow: 0 0 14px rgba(55, 213, 255, 0.45);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+html.hud .hud-panel .section-title::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--hud-cyan);
+    box-shadow: var(--hud-glow);
+    transform: rotate(45deg);
+    flex: 0 0 auto;
+}
+
+html.hud .hud-panel .section-subtitle { color: var(--hud-text-muted); }
+
+/* ----------------------------------------------------------------------------
+   8. CONTENT RE-SKINS INSIDE PANELS
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-panel .featured-story,
+html.hud .hud-panel .experience-card,
+html.hud .hud-panel .skill-card,
+html.hud .hud-panel .work-card,
+html.hud .hud-panel .contact-item,
+html.hud .hud-panel .code-samples {
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: linear-gradient(rgba(55, 213, 255, 0.045), rgba(55, 213, 255, 0.045)) padding-box,
+                var(--glass-border-bright) border-box;
+    border: 1px solid transparent;
+    position: relative;
+}
+
+html.hud .hud-panel .work-card--featured {
+    background: linear-gradient(rgba(4, 22, 34, 0.94), rgba(4, 22, 34, 0.94)) padding-box,
+                conic-gradient(from var(--ring-angle), #37d5ff, #2f7cff, #ffb347, #37d5ff) border-box;
+}
+
+html.hud .hud-panel .work-card--featured:hover,
+html.hud .hud-panel .work-card--featured:focus-visible {
+    background: linear-gradient(rgba(6, 28, 42, 0.94), rgba(6, 28, 42, 0.94)) padding-box,
+                conic-gradient(from var(--ring-angle), #37d5ff, #2f7cff, #ffb347, #37d5ff) border-box;
+}
+
+html.hud .hud-panel .card-title,
+html.hud .hud-panel .story-title,
+html.hud .hud-panel .work-card__title,
+html.hud .hud-panel .skill-header,
+html.hud .hud-panel .contact-title {
+    color: #fff;
+}
+
+html.hud .hud-panel .card-company,
+html.hud .hud-panel .card-date,
+html.hud .hud-panel .story-tag,
+html.hud .hud-panel .work-card__role,
+html.hud .hud-panel .work-row-title,
+html.hud .hud-panel .contact-label {
+    font-family: var(--hud-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+html.hud .hud-panel .card-company,
+html.hud .hud-panel .story-tag { color: var(--hud-cyan); }
+html.hud .hud-panel .card-date { color: var(--hud-amber); }
+
+html.hud .hud-panel .work-card__status,
+html.hud .hud-panel .skill-pill,
+html.hud .hud-panel .work-card__chips li {
+    border-radius: 2px;
+    font-family: var(--hud-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+}
+
+html.hud .hud-panel .work-card__status--live {
+    color: var(--hud-amber);
+    background: rgba(255, 179, 71, 0.1);
+    border-color: rgba(255, 179, 71, 0.4);
+}
+
+html.hud .hud-panel .work-card__media {
+    background: #03141f;
+    position: relative;
+}
+
+html.hud .hud-panel .work-card__media img {
+    filter: grayscale(1) sepia(1) hue-rotate(160deg) saturate(3) brightness(0.85) contrast(1.1);
+    mix-blend-mode: screen;
+    transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+html.hud .hud-panel .work-card:hover .work-card__media img,
+html.hud .hud-panel .work-card:focus-visible .work-card__media img {
+    filter: none;
+}
+
+html.hud .hud-panel .work-card__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(0deg, transparent 0 3px, rgba(0, 0, 0, 0.18) 3px 4px),
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 8px 8px / 14px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 8px 8px / 1px 14px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) calc(100% - 8px) 8px / 14px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) calc(100% - 8px) 8px / 1px 14px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 8px calc(100% - 8px) / 14px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) 8px calc(100% - 8px) / 1px 14px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) calc(100% - 8px) calc(100% - 8px) / 14px 1px no-repeat,
+        linear-gradient(var(--hud-cyan), var(--hud-cyan)) calc(100% - 8px) calc(100% - 8px) / 1px 14px no-repeat;
+    opacity: 0.8;
+}
+
+html.hud .hud-panel .work-card__cta,
+html.hud .hud-panel .card-cta {
+    font-family: var(--hud-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hud-cyan-bright);
+}
+
+html.hud .hud-panel .work-row-title {
+    color: var(--hud-amber);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+html.hud .hud-panel .work-row-title::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--hud-amber);
+    box-shadow: var(--hud-glow-amber);
+}
+
+html.hud .hud-panel .work-row-title__hint {
+    font-family: var(--font-body);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--hud-text-muted);
+}
+
+html.hud .hud-panel .contact-section {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+}
+
+html.hud .hud-panel .contact-title {
+    text-shadow: 0 0 14px rgba(55, 213, 255, 0.45);
+}
+
+html.hud .hud-panel a:not([class]) {
+    color: var(--hud-cyan-bright);
+}
+
+/* ----------------------------------------------------------------------------
+   9. COMMAND CONSOLE
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-console {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--hud-console-h);
+    z-index: 450;
+    display: flex;
+    align-items: center;
+    padding-inline: clamp(14px, 2vw, 28px);
+    background: linear-gradient(0deg, rgba(4, 16, 25, 0.96), rgba(4, 16, 25, 0.8));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--hud-line);
+    font-family: var(--hud-mono);
+}
+
+html.hud .hud-console::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--hud-cyan-bright) 20%, var(--hud-cyan-bright) 80%, transparent);
+    opacity: 0.6;
+}
+
+html.hud .hud-console__form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(860px, 100%);
+    margin-inline: auto;
+}
+
+html.hud .hud-console__prompt {
+    color: var(--hud-amber);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-shadow: var(--hud-glow-amber);
+}
+
+html.hud .hud-console__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 38px;
+    padding: 0 12px;
+    font: 500 13px/1 var(--hud-mono);
+    letter-spacing: 0.06em;
+    color: #fff;
+    caret-color: var(--hud-cyan-bright);
+    background: rgba(55, 213, 255, 0.05);
+    border: 1px solid var(--hud-line);
+    border-radius: 0;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+html.hud .hud-console__input::placeholder {
+    color: rgba(143, 184, 201, 0.7);
+}
+
+html.hud .hud-console__input:focus {
+    outline: none;
+    border-color: var(--hud-cyan-bright);
+    background: rgba(55, 213, 255, 0.09);
+    box-shadow: var(--hud-glow);
+}
+
+html.hud .hud-console__hint {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    font: 500 11px/1 var(--hud-mono);
+    color: var(--hud-text-muted);
+    border: 1px solid var(--hud-line-soft);
+}
+
+html.hud .hud-console__results {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%);
+    width: min(860px, calc(100vw - 28px));
+    max-height: min(60vh, 420px);
+    overflow: auto;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: rgba(4, 18, 30, 0.97);
+    border: 1px solid var(--hud-line);
+    box-shadow: 0 -20px 60px rgba(0, 2, 8, 0.6), var(--hud-glow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+html.hud .hud-console__results[hidden] { display: none; }
+
+html.hud .hud-console__result {
+    display: grid;
+    grid-template-columns: 74px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    cursor: pointer;
+    color: var(--hud-text);
+    border-left: 2px solid transparent;
+}
+
+html.hud .hud-console__result + .hud-console__result {
+    border-top: 1px solid var(--hud-line-soft);
+}
+
+html.hud .hud-console__result:hover,
+html.hud .hud-console__result[aria-selected="true"] {
+    background: linear-gradient(90deg, rgba(255, 179, 71, 0.12), transparent);
+    border-left-color: var(--hud-amber);
+}
+
+html.hud .hud-console__result-kind {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--hud-cyan);
+}
+
+html.hud .hud-console__result-label {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+html.hud .hud-console__result-hint {
+    font-size: 11px;
+    color: var(--hud-text-muted);
+    white-space: nowrap;
+}
+
+html.hud .hud-console__empty {
+    padding: 14px 12px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--hud-amber);
+}
+
+/* ----------------------------------------------------------------------------
+   10. TOUR RESKIN (the SiteTour engine in script.js builds these elements)
+   ---------------------------------------------------------------------------- */
+
+html.hud .tour-prompt,
+html.hud .tour-tooltip {
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(4, 22, 34, 0.98), rgba(3, 14, 24, 0.98));
+    color: var(--hud-text);
+    border: 1px solid var(--hud-line-strong);
+    box-shadow: 0 0 0 1px rgba(2, 7, 18, 0.8), 0 24px 60px rgba(0, 2, 8, 0.7), var(--hud-glow);
+    z-index: 3200;
+}
+
+html.hud .tour-prompt::before,
+html.hud .tour-tooltip::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    pointer-events: none;
+    background:
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 0 0 / 12px 1px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 0 0 / 1px 12px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 100% 0 / 12px 1px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 100% 0 / 1px 12px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 0 100% / 12px 1px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 0 100% / 1px 12px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 100% 100% / 12px 1px no-repeat,
+        linear-gradient(var(--hud-cyan-bright), var(--hud-cyan-bright)) 100% 100% / 1px 12px no-repeat;
+}
+
+html.hud .tour-prompt { z-index: 3300; }
+
+html.hud .tour-prompt__eyebrow,
+html.hud .tour-tooltip__step,
+html.hud .tour-tooltip__mode,
+html.hud .tour-tooltip__skip,
+html.hud .tour-prompt__btn-hint {
+    font-family: var(--hud-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+html.hud .tour-prompt__eyebrow,
+html.hud .tour-tooltip__step { color: var(--hud-amber); }
+
+html.hud .tour-prompt__title,
+html.hud .tour-tooltip__title {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(55, 213, 255, 0.4);
+}
+
+html.hud .tour-prompt__body,
+html.hud .tour-tooltip__body,
+html.hud .tour-tooltip__details { color: var(--hud-text); }
+
+html.hud .tour-prompt__btn,
+html.hud .tour-tooltip__btn,
+html.hud .tour-tooltip__deepdive,
+html.hud .tour-tooltip__detail {
+    border-radius: 0;
+    font-family: var(--hud-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 11px;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+
+html.hud .tour-prompt__btn--primary,
+html.hud .tour-tooltip__btn--primary {
+    background: linear-gradient(135deg, var(--hud-amber), var(--hud-orange));
+    color: #1a0d00;
+    box-shadow: var(--hud-glow-amber);
+}
+
+html.hud .tour-prompt__btn--ghost,
+html.hud .tour-tooltip__btn--ghost {
+    background: rgba(55, 213, 255, 0.06);
+    color: var(--hud-cyan-bright);
+    border: 1px solid var(--hud-line);
+}
+
+html.hud .tour-overlay {
+    background: rgba(2, 7, 18, 0.55);
+    z-index: 3000;
+}
+
+html.hud .tour-spotlight {
+    border-radius: 2px;
+    outline: 1px solid var(--hud-cyan-bright);
+    outline-offset: 6px;
+    box-shadow:
+        0 0 0 9999px rgba(2, 7, 18, 0.72),
+        0 0 0 3px rgba(55, 213, 255, 0.3),
+        var(--hud-glow);
+    z-index: 3100;
+}
+
+html.hud .tour-tooltip__dot {
+    border-radius: 0;
+    background: rgba(55, 213, 255, 0.2);
+}
+
+html.hud .tour-tooltip__dot.is-done,
+html.hud .tour-tooltip__dot.is-active {
+    background: var(--hud-amber);
+    box-shadow: 0 0 6px rgba(255, 179, 71, 0.6);
+}
+
+html.hud .tour-tooltip::before {
+    border-bottom-color: var(--hud-line-strong);
+    border-top-color: var(--hud-line-strong);
+}
+
+/* ----------------------------------------------------------------------------
+   11. UTILITIES
+   ---------------------------------------------------------------------------- */
+
+html.hud .hud-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+html.hud .hud-decoding {
+    color: var(--hud-cyan);
+}
+
+/* ----------------------------------------------------------------------------
+   12. RESPONSIVE
+   ---------------------------------------------------------------------------- */
+
+@media (max-width: 1180px) {
+    html.hud { --hud-rail-w: 132px; }
+    html.hud .hud-readout--wide { display: none; }
+}
+
+@media (max-width: 1024px) {
+    html.hud .hud-layout { grid-template-columns: minmax(0, 1fr); }
+    html.hud .hud-rail { display: none; }
+    html.hud .hud-stage { grid-template-columns: minmax(280px, 42%) minmax(0, 1fr); }
+    html.hud .hud-panel { inset: 18px clamp(14px, 3vw, 40px); }
+}
+
+@media (max-width: 768px) {
+    html.hud {
+        --hud-topbar-h: 50px;
+        --hud-console-h: 60px;
+        --hud-orbit: clamp(70px, 24vw, 110px);
+    }
+
+    html.hud .hud-readouts { display: none; }
+    html.hud .hud-topbar { gap: 12px; }
+    html.hud .hud-topbar__name { display: none; }
+    html.hud .hud-topbar__icon { display: inline-grid; place-items: center; }
+    html.hud .hud-chip { padding: 8px 10px; }
+
+    /* Hub column scrolls; the hologram becomes a header the identity block sits under */
+    html.hud .hud-layout {
+        display: block;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    html.hud .hud-layout::after { position: fixed; }
+
+    html.hud .hud-stage {
+        display: block;
+        overflow: visible;
+        min-height: 100%;
+        padding-block-end: 24px;
+    }
+
+    html.hud .hud-scene,
+    html.hud .hud-orb,
+    html.hud .hud-reticle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 42vh;
+        min-height: 240px;
+        width: 100%;
+    }
+
+    html.hud .hud-orb,
+    html.hud .hud-reticle {
+        left: 50%;
+        top: 21vh;
+        right: auto;
+        width: 0;
+        height: 0;
+        min-height: 0;
+        margin: 0;
+    }
+
+    html.hud .hud-reticle {
+        --d: calc(var(--hud-orbit) * 2.6);
+        width: var(--d);
+        height: var(--d);
+        margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+    }
+
+    html.hud .hero-section {
+        display: block;
+        position: relative;
+        padding: calc(42vh - 20px) 20px 20px;
+        overflow: visible;
+    }
+
+    html.hud .hero-inner { max-width: none; }
+    html.hud .hero-title { font-size: clamp(34px, 10vw, 44px); }
+    html.hud .hero-subtitle { font-size: 11px; }
+    html.hud .hero-cta-row { gap: 8px; }
+    html.hud .hero-cta { padding: 10px 12px; font-size: 10px; }
+    html.hud .stats-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    /* Nodes become a fixed bottom dock above the console */
+    html.hud .hud-nodes {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: var(--hud-console-h);
+        width: auto;
+        height: 66px;
+        display: flex;
+        gap: 8px;
+        padding: 8px 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        background: linear-gradient(0deg, rgba(4, 16, 25, 0.96), rgba(4, 16, 25, 0.85));
+        border-top: 1px solid var(--hud-line-soft);
+        z-index: 420;
+        place-self: auto;
+    }
+
+    html.hud .hud-node,
+    html.hud.hud-ready .hud-node,
+    html.hud:not(.hud-booting) .hud-node {
+        position: static;
+        margin: 0;
+        width: auto;
+        min-width: 92px;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        transform: none;
+        animation: none;
+        opacity: 1;
+        padding: 6px 10px 7px;
+    }
+
+    html.hud .hud-node::before { display: none; }
+    html.hud .hud-node__label { font-size: 11px; }
+
+    html.hud .hud-panels {
+        position: fixed;
+        inset: var(--hud-topbar-h) 0 var(--hud-console-h);
+    }
+
+    html.hud .hud-panel {
+        inset: 0;
+        border-left: 0;
+        border-right: 0;
+        padding: 0 16px 90px;
+    }
+
+    html.hud .hud-panel__bar {
+        margin-inline: -16px;
+        padding: 10px 16px;
+        gap: 10px;
+        font-size: 10px;
+    }
+
+    html.hud .hud-panel__tag { display: none; }
+    html.hud .hud-panel__btn { padding: 8px 9px; font-size: 10px; }
+
+    html.hud .hud-panel .section-title { font-size: 26px; }
+
+    /* Console collapses to the topbar button; opens as a sheet */
+    html.hud .hud-console {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    html.hud body.hud-console-open .hud-console {
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 480;
+    }
+
+    html.hud .hud-console__hint { display: none; }
+    html.hud .hud-console__results { width: calc(100vw - 16px); max-height: 50vh; }
+    html.hud .hud-console__result { grid-template-columns: 1fr auto; }
+    html.hud .hud-console__result-kind { grid-column: 1 / -1; }
+}
+
+@media (max-width: 420px) {
+    html.hud .hud-topbar__link { display: none; }
+    html.hud .stats-bar { grid-template-columns: 1fr 1fr; gap: 8px; }
+    html.hud .stat-box { padding: 12px 10px 14px; }
+}
+
+@media (max-height: 640px) and (min-width: 769px) {
+    html.hud { --hud-orbit: clamp(120px, 24vh, 200px); }
+    html.hud .hero-title { font-size: clamp(32px, 4vw, 44px); }
+    html.hud .hero-cta-row { margin-block: 16px 18px; }
+}
+
+/* ----------------------------------------------------------------------------
+   13. REDUCED MOTION
+   ---------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    html.hud .hud-boot { display: none; }
+    html.hud .hud-layout::after,
+    html.hud .hud-orb__sphere,
+    html.hud .hud-orb__ring,
+    html.hud .hud-reticle,
+    html.hud .hud-gauge,
+    html.hud .hud-readout__v--ok::before,
+    html.hud .status-dot,
+    html.hud .hud-boot__log::after {
+        animation: none !important;
+    }
+    html.hud .hud-node,
+    html.hud.hud-ready .hud-node,
+    html.hud:not(.hud-booting) .hud-node {
+        animation: none !important;
+        opacity: 1;
+    }
+    html.hud .hud-panel.is-open { animation: none; }
+    html.hud .hud-stage,
+    html.hud .hud-scene,
+    html.hud .hud-orb,
+    html.hud .hud-console { transition: none; }
+}
