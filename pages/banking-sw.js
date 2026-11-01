@@ -2,9 +2,15 @@
  * Cache-first for the app shell so the demo works offline once installed
  * to the home screen.  Versioned cache so a new SW evicts the old one.
  */
-const CACHE = 'meridian-app-v3';
+/* Keep VERSION in sync with the ?v= query on banking.css / banking.js in
+ * banking.html — the versioned URLs are what get precached, so a release
+ * that bumps both can never serve new HTML against stale CSS/JS. */
+const VERSION = '5.0.0';
+const CACHE = 'meridian-app-' + VERSION;
 const SHELL = [
   './banking.html',
+  './banking.css?v=' + VERSION,
+  './banking.js?v=' + VERSION,
   './banking-manifest.webmanifest',
   './banking-icon.svg'
 ];

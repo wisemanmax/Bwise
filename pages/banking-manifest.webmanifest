@@ -1,45 +1,102 @@
 {
   "name": "Meridian Banking",
   "short_name": "Meridian",
-  "description": "Banking, redrawn — checking, savings, and card all in one place.",
+  "description": "Checking, high-yield savings and credit in one secure app. Demo with sample data.",
   "start_url": "./banking.html",
   "scope": "./",
   "id": "/pages/banking.html",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait",
-  "background_color": "#0b3358",
-  "theme_color": "#0b3358",
+  "background_color": "#f2f3f7",
+  "theme_color": "#3d5afe",
   "lang": "en-US",
   "dir": "ltr",
-  "categories": ["finance", "productivity"],
+  "categories": [
+    "finance",
+    "productivity"
+  ],
   "icons": [
-    { "src": "banking-icon.svg", "sizes": "any",       "type": "image/svg+xml", "purpose": "any" },
-    { "src": "banking-icon.svg", "sizes": "192x192",   "type": "image/svg+xml", "purpose": "any" },
-    { "src": "banking-icon.svg", "sizes": "512x512",   "type": "image/svg+xml", "purpose": "any" },
-    { "src": "banking-icon.svg", "sizes": "any",       "type": "image/svg+xml", "purpose": "maskable" }
+    {
+      "src": "banking-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "banking-icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "banking-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "banking-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
     {
-      "name": "Send Zelle",
+      "name": "Transfer money",
+      "short_name": "Transfer",
+      "description": "Move money between your accounts",
+      "url": "./banking.html#transfer",
+      "icons": [
+        {
+          "src": "banking-icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Send with Zelle®",
       "short_name": "Zelle",
-      "description": "Send money via Zelle",
+      "description": "Send money to people you know",
       "url": "./banking.html#zelle",
-      "icons": [{ "src": "banking-icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [
+        {
+          "src": "banking-icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     },
     {
       "name": "Pay a bill",
       "short_name": "Pay",
       "description": "Pay bills",
       "url": "./banking.html#payBill",
-      "icons": [{ "src": "banking-icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [
+        {
+          "src": "banking-icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     },
     {
       "name": "Deposit a check",
       "short_name": "Deposit",
       "description": "Mobile check deposit",
       "url": "./banking.html#deposit",
-      "icons": [{ "src": "banking-icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [
+        {
+          "src": "banking-icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ],
   "prefer_related_applications": false

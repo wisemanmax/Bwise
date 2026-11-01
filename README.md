@@ -70,7 +70,7 @@ Where to look when you want proof of a specific claim.
 | Operations Dashboard | SLA risk, alerts, workload — links the suites above | `pages/dashboard.html` |
 | Refi Intelligence | Cohort heatmaps, funnel drop-off, savings dist. across 5,000 synthetic apps | `pages/refi-intelligence.html` |
 | SQL Playground | Real SQL against a synthetic lending portfolio in-browser | `pages/sql-playground.html` |
-| Banking PWA | iOS-style banking — biometric login, transfers, round-ups, push | `pages/banking.html` |
+| Meridian Banking PWA | Mobile banking app — passcode + passkey (WebAuthn) sign-in, transfers / Zelle® / bill pay / wires with step-up auth, card lock & limits, statements, spending insights, offline-capable service worker. Sample data is generated relative to today and reconciles to the cent | `pages/banking.html` (+ `banking.css`, `banking.js`) |
 
 ### External projects (live in production, separate repos)
 | Project | Stack | Live | Evidence in this repo |
