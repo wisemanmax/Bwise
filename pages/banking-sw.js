@@ -5,7 +5,7 @@
 /* Keep VERSION in sync with the ?v= query on banking.css / banking.js in
  * banking.html — the versioned URLs are what get precached, so a release
  * that bumps both can never serve new HTML against stale CSS/JS. */
-const VERSION = '5.0.0';
+const VERSION = '5.0.1';
 const CACHE = 'meridian-app-' + VERSION;
 const SHELL = [
   './banking.html',
