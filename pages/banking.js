@@ -216,15 +216,31 @@ function buildSeed(nowArg){
   }
 
   /* savings: interest credited on the last day of each month at 3.80% APY */
-  const APY = 3.80;
-  let sav = 15840.00;
-  const savSorted = () => tx.a2.slice().sort((a, b) => a.ts - b.ts);
+  /* Interest compounds on the running balance, so the opening balance is solved
+     for: today's savings balance always lands exactly on SAVINGS_BALANCE. */
+  const APY = 3.80, SAVINGS_BALANCE = 235282.00;
+  const rate = Math.pow(1 + APY/100, 1/12) - 1;
+  const deposits = tx.a2.slice();
+  const monthEnds = [];
   for(let back = HISTORY; back >= 0; back--){
-    const d = addDays(today, -back);
-    if(addDays(d, 1).getDate() !== 1) continue;
-    const cutoff = +at(back, 23, 0);
-    const bal = sav + savSorted().filter(t => t.ts < cutoff).reduce((s, t) => s + t.amt, 0);
-    add('a2', back, 23, 0, { name:'Interest paid', sub: APY.toFixed(2) + '% APY · ' + MONTH_LONG[d.getMonth()], amt: +(bal * (Math.pow(1 + APY/100, 1/12) - 1)).toFixed(2), cat:'Income', method:'Interest' });
+    if(addDays(addDays(today, -back), 1).getDate() === 1 && +at(back, 23, 0) <= +now) monthEnds.push(back);
+  }
+  const simulate = open => {
+    const posts = [];
+    for(const back of monthEnds){
+      const cutoff = +at(back, 23, 0);
+      const bal = open + deposits.filter(t => t.ts < cutoff).reduce((s, t) => s + t.amt, 0) + posts.reduce((s, p) => s + p.amt, 0);
+      posts.push({ back, amt: +(bal * rate).toFixed(2) });
+    }
+    return { posts, final: open + deposits.reduce((s, t) => s + t.amt, 0) + posts.reduce((s, p) => s + p.amt, 0) };
+  };
+  const growth = (simulate(1000).final - simulate(0).final) / 1000;   /* final is affine in the opening */
+  let sav = (SAVINGS_BALANCE - simulate(0).final) / growth;
+  const solved = simulate(sav);
+  sav = +(sav + SAVINGS_BALANCE - solved.final).toFixed(2);           /* absorb sub-cent rounding */
+  for(const p of solved.posts){
+    const d = addDays(today, -p.back);
+    add('a2', p.back, 23, 0, { name:'Interest paid', sub: APY.toFixed(2) + '% APY · ' + MONTH_LONG[d.getMonth()], amt: p.amt, cat:'Income', method:'Interest' });
   }
 
   /* newest first + reconcile balances */
@@ -264,7 +280,7 @@ function buildSeed(nowArg){
   ];
 
   return {
-    seedVersion: 5,
+    seedVersion: 6,
     seededAt: +today,
     user: { name: 'Bryce', avatar: 'BW' },
     theme: (typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light',
@@ -414,6 +430,8 @@ function loadState(){
     if(raw){
       const parsed = JSON.parse(raw);
       if(parsed && parsed.seedVersion === fresh.seedVersion) return rebaseDates({ ...fresh, ...parsed });
+      /* older sample data: start fresh but keep the user's own settings */
+      if(parsed) CARRY_PREFS.forEach(p => { if(parsed[p] !== undefined) fresh[p] = parsed[p]; });
     }
     for(const k of LEGACY_KEYS){
       const old = localStorage.getItem(k);
@@ -437,7 +455,7 @@ let state = loadState();
 const fmt = n => n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtMoney = n => (n<0?'-$':'$') + fmt(Math.abs(n));
 const fmtSigned = n => (n>=0?'+':'−') + '$' + fmt(Math.abs(n));
-const APP_VERSION = '5.0.0';
+const APP_VERSION = '5.0.1';
 /* "$4,862<span class="amt-c">.19</span>" — large amounts with de-emphasised cents */
 function moneyHTML(n){
   const [w, c] = fmt(Math.abs(n)).split('.');
@@ -864,8 +882,8 @@ function paintDetailHeader(a){
     const pct = Math.min(100, Math.round(a.balance / a.goal * 100));
     stats = [['Goal', m(a.goal)], ['Progress', pct + '%'], ['Target', (a.goalBy || '').replace(/, \d{4}$/, '') || '—']];
   } else if(a.kind === 'savings'){
-    const ytd = txs.filter(t => t.method === 'Interest' && new Date(t.ts).getFullYear() === TODAY.getFullYear()).reduce((s, t) => s + t.amt, 0);
-    stats = [['APY', (a.apy || 0).toFixed(2) + '%'], ['Interest YTD', m(ytd)], ['In · 30 days', m(moneyIn)]];
+    const lastInt = txs.find(t => t.method === 'Interest');
+    stats = [['APY', (a.apy || 0).toFixed(2) + '%'], ['Last interest', lastInt ? m(lastInt.amt) : '—'], ['In · 30 days', m(moneyIn)]];
   } else {
     stats = [['Present balance', m(a.balance + pendingOut)], ['Pending', pendingOut ? '−' + m(pendingOut).replace('-', '') : m(0)], ['In · 30 days', m(moneyIn)]];
   }
