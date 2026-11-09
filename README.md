@@ -27,6 +27,21 @@ This is the source for my portfolio. Every interface in it — 76 pages across c
 
 ---
 
+## Live in production
+
+<table>
+  <tr>
+    <td width="55%"><a href="https://www.wiseforge.dev"><img src="assets/work/simplicity-desktop.webp" alt="Simplicity by WiseForge — chat workspace"></a></td>
+    <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-train.webp" alt="IronLog — training"></a></td>
+    <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-log.webp" alt="IronLog — workout logging"></a></td>
+    <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-body.webp" alt="IronLog — body tracking"></a></td>
+  </tr>
+  <tr>
+    <td><b>Simplicity by WiseForge</b> · <a href="https://www.wiseforge.dev">wiseforge.dev</a><br><sub>Production Claude-powered AI product shipped solo · streaming APIs, OAuth 2.0 + PKCE, multi-provider routing, Stripe</sub></td>
+    <td colspan="3"><b>IronLog</b> · <a href="https://ironlog.space">ironlog.space</a><br><sub>Analytics PWA suite on one Supabase backend · SSO, real-time sync · sole designer + engineer</sub></td>
+  </tr>
+</table>
+
 ## Selected interfaces
 
 Real screenshots of pages in this repo — not mockups.

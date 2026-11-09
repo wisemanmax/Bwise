@@ -1364,6 +1364,105 @@ section:focus {
     line-height: 1.6;
 }
 
+/* Briefs with product screenshots: media beside a stacked Problem/Approach/Decision */
+.brief--media .brief__main {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+    gap: var(--s-5) clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+}
+
+.brief--media .brief__grid {
+    grid-template-columns: 1fr;
+}
+
+.brief--media .brief__foot {
+    grid-column: 1 / -1;
+    margin-top: var(--s-2);
+}
+
+.brief__media {
+    display: block;
+    text-decoration: none;
+}
+
+.brief__media .frame,
+.brief__media .phone {
+    transition: transform var(--slow) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.brief__media--duo {
+    position: relative;
+    padding: 0 7% 6% 0;
+}
+
+.brief__media--duo .phone {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 23%;
+    padding: 0.3rem;
+    border-radius: 1.4rem;
+}
+
+.brief__media--duo .phone img {
+    border-radius: 1.15rem;
+}
+
+.brief__media--duo:hover .frame {
+    border-color: var(--ink-3);
+    transform: translateY(-4px);
+}
+
+.brief__media--duo:hover .phone {
+    transform: translateY(-8px);
+}
+
+.brief__media--phones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.625rem, 1.6vw, 1.25rem);
+    align-items: center;
+    padding: clamp(1rem, 2.4vw, 2rem);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--bg-raise);
+    background:
+        radial-gradient(24rem 16rem at 50% 110%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+        var(--bg-raise);
+}
+
+.brief__media--phones .phone {
+    padding: 0.3rem;
+    border-radius: 1.4rem;
+}
+
+.brief__media--phones .phone img {
+    border-radius: 1.15rem;
+}
+
+.brief__media--phones .phone:nth-child(2) {
+    transform: translateY(-4%);
+}
+
+.brief__media--phones:hover .phone:nth-child(1) {
+    transform: translateY(-2%) rotate(-2deg);
+}
+
+.brief__media--phones:hover .phone:nth-child(2) {
+    transform: translateY(-7%);
+}
+
+.brief__media--phones:hover .phone:nth-child(3) {
+    transform: translateY(-2%) rotate(2deg);
+}
+
+@media (max-width: 56rem) {
+    .brief--media .brief__main {
+        grid-template-columns: 1fr;
+    }
+}
+
 .brief__foot {
     display: flex;
     flex-wrap: wrap;
