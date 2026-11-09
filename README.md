@@ -1,10 +1,100 @@
-# Byheir Wise — Portfolio
+<div align="center">
 
-Source for **[www.byheir.com](https://www.byheir.com)** — the portfolio of Byheir Wise, engineering leader in servicing & collections systems and regulated fintech.
+# Byheir Wise
 
-Static site (HTML / CSS / vanilla JS) hosted on GitHub Pages with a custom domain via `CNAME`. No build step.
+**Engineering leader · Servicing & collections systems · Regulated fintech**
 
-> **Reviewing for a role?** Start at `pages/for-hiring-managers.html` ([live](https://www.byheir.com/pages/for-hiring-managers.html)). Every resume bullet is mapped to the page or live site that proves it, plus impact numbers with methodology.
+I design, build, and lead the systems behind lending, servicing, and collections.
+
+[**www.byheir.com**](https://www.byheir.com) &nbsp;·&nbsp; [For hiring managers](https://www.byheir.com/pages/for-hiring-managers.html) &nbsp;·&nbsp; [Resume (PDF)](assets/byheir-wise-resume.pdf) &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/byheir-wise-976253265)
+
+<br>
+
+<a href="https://www.byheir.com">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="assets/readme/home-light.jpg">
+    <img src="assets/readme/home-dark.jpg" alt="byheir.com homepage — an editorial headline over layered screenshots of the LoanOps control plane, a Power BI workspace, and the Meridian banking app" width="100%">
+  </picture>
+</a>
+
+</div>
+
+<br>
+
+This is the source for my portfolio. Every interface in it — 76 pages across case studies, live demos, and five domain suites — was designed and coded by me. Static HTML, CSS, and vanilla JavaScript on GitHub Pages. No framework, no build step.
+
+> **Reviewing for a role?** Start with [`pages/for-hiring-managers.html`](https://www.byheir.com/pages/for-hiring-managers.html). Every resume bullet is mapped to the page or live site that proves it, plus impact numbers with methodology.
+
+---
+
+## Live in production
+
+<table>
+  <tr>
+    <td width="55%"><a href="https://www.wiseforge.dev"><img src="assets/work/simplicity-desktop.webp" alt="Simplicity by WiseForge — chat workspace"></a></td>
+    <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-train.webp" alt="IronLog — training"></a></td>
+    <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-log.webp" alt="IronLog — workout logging"></a></td>
+    <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-body.webp" alt="IronLog — body tracking"></a></td>
+  </tr>
+  <tr>
+    <td><b>Simplicity by WiseForge</b> · <a href="https://www.wiseforge.dev">wiseforge.dev</a><br><sub>Production Claude-powered AI product shipped solo · streaming APIs, OAuth 2.0 + PKCE, multi-provider routing, Stripe</sub></td>
+    <td colspan="3"><b>IronLog</b> · <a href="https://ironlog.space">ironlog.space</a><br><sub>Analytics PWA suite on one Supabase backend · SSO, real-time sync · sole designer + engineer</sub></td>
+  </tr>
+  <tr>
+    <td><a href="https://partnerpulse.byheir.com"><img src="assets/work/partnerpulse-desktop.webp" alt="PartnerPulse — portfolio dashboard"></a></td>
+    <td><a href="https://partnerpulse.byheir.com"><img src="assets/work/partnerpulse-phone.webp" alt="PartnerPulse on a phone"></a></td>
+    <td colspan="2"><b>PartnerPulse</b> · <a href="https://partnerpulse.byheir.com">partnerpulse.byheir.com</a><br><sub>Partner relationship analytics PWA · portfolio health scoring, KPI dashboards, AI-generated executive comms</sub></td>
+  </tr>
+</table>
+
+## Selected interfaces
+
+Real screenshots of pages in this repo — not mockups.
+
+<table>
+  <tr>
+    <td width="50%"><a href="https://www.byheir.com/pages/loanops-control-plane.html"><img src="assets/work/loanops.webp" alt="LoanOps Agent Control Plane"></a><br><b>LoanOps Agent Control Plane</b><br><sub>Regulated-servicing AI copilot · guardrails, audit trail, human approval</sub></td>
+    <td width="50%"><a href="https://www.byheir.com/pages/power-bi-dashboards.html"><img src="assets/work/power-bi.webp" alt="Power BI Dashboards"></a><br><b>Power BI Dashboards</b><br><sub>Executive reporting · KPI standardization · reconciliation</sub></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.byheir.com/pages/sql-playground.html"><img src="assets/work/sql-playground.webp" alt="SQL Playground"></a><br><b>SQL Playground</b><br><sub>Real SQL in the browser · SQLite WASM · 21 lending challenges</sub></td>
+    <td><a href="https://www.byheir.com/pages/refi-intelligence.html"><img src="assets/work/refi.webp" alt="Refi Intelligence"></a><br><b>Refi Intelligence</b><br><sub>Cohort heatmaps, funnel drop-off, savings distribution · React + Recharts</sub></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.byheir.com/pages/dashboard.html"><img src="assets/work/ops-dashboard.webp" alt="Operations Dashboard"></a><br><b>Operations Dashboard</b><br><sub>Command-center hub · SLA risk, alerts, workload</sub></td>
+    <td><a href="https://www.byheir.com/pages/credit-underwriting.html"><img src="assets/work/credit.webp" alt="Credit Underwriting"></a><br><b>Credit Underwriting</b><br><sub>Decision engine, manual review, adverse action · 11 screens</sub></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="22%"><a href="https://www.byheir.com/pages/banking.html"><img src="assets/work/banking-onboard.webp" alt="Meridian banking — onboarding"></a></td>
+    <td width="22%"><a href="https://www.byheir.com/pages/banking.html"><img src="assets/work/banking-home.webp" alt="Meridian banking — home"></a></td>
+    <td width="22%"><a href="https://www.byheir.com/pages/banking.html"><img src="assets/work/banking-cards.webp" alt="Meridian banking — card controls"></a></td>
+    <td><b>Meridian Banking PWA</b><br><br><sub>Installable mobile banking: passcode + passkey (WebAuthn) sign-in, transfers, bill pay and wires with step-up auth, card lock and limits, statements, spending insights. Offline-capable, and the sample data reconciles to the cent.</sub></td>
+  </tr>
+</table>
+
+---
+
+## How it's designed
+
+The homepage is the design sample. It runs on one small token set and nothing else.
+
+| | |
+|---|---|
+| **Type** | Instrument Serif for display, Inter for reading, JetBrains Mono for labels and data. A fluid scale (`--step-0` → `--step-5`) so headings resize without breakpoints. |
+| **Color** | Six roles — ground, surface, rule, muted, ink, signal — defined once per theme. Dark is the default; a light "paper" theme is one attribute away (`data-theme`). |
+| **Layout** | A 12-column editorial grid with hairline rules instead of boxes. Screenshots sit in a single reusable browser or phone frame. |
+| **Motion** | Short, eased reveals and a few pixels of parallax. All of it is switched off under `prefers-reduced-motion`. |
+| **Access** | Semantic landmarks, skip link, visible focus, keyboard-operable nav and filters, AA text contrast in both themes. The page reads top to bottom with JavaScript off. |
+
+The principles behind the interface work, each with the page that shows it:
+
+1. **Hierarchy before decoration** — every screen starts from the decision it supports. → [`pages/case-study.html`](pages/case-study.html)
+2. **Systems, not screens** — five domain suites and 49 screens on one set of patterns. → [`pages/dashboard.html`](pages/dashboard.html)
+3. **Designed in the medium** — prototyped in code, with real states and real data. → [`pages/sql-playground.html`](pages/sql-playground.html)
+4. **Trust is a design material** — audit trails, policy citations, and human approval are part of the UI. → [`pages/loanops-control-plane.html`](pages/loanops-control-plane.html)
 
 ---
 
@@ -20,20 +110,26 @@ python3 -m http.server 8000
 
 Or just open `index.html` directly in a browser.
 
+The only tooling is a test suite for the Snowsight SQL engine demo (`npm install && npm test`), which CI runs on every pull request.
+
 ---
 
 ## Repo structure
 
 ```
 .
-├── index.html              # Single-page portfolio (hero, about, experience, projects, work, skills, contact)
-├── pages/                  # ~70 sub-pages: case studies, demos, UI explorations, domain suites
+├── index.html              # Homepage — hero, work gallery, projects, approach, experience, skills, contact
+├── pages/                  # 76 sub-pages: case studies, live demos, domain suites
 ├── assets/
-│   ├── style.css           # Global styles
-│   ├── script.js           # Interactions (nav, guided tour, etc.)
-│   ├── byheir-wise-resume.pdf
+│   ├── home.css            # Homepage design system (tokens, both themes, components)
+│   ├── home.js             # Homepage interactions (theme, filters, reveals) — progressive enhancement
+│   ├── style.css           # Shared styles for the sub-pages
+│   ├── script.js           # Shared behaviour (mobile nav, guided tour, demos)
+│   ├── tour.css            # Guided-tour UI, shared by the homepage and sub-pages
+│   ├── work/               # Screenshots of the live pages, used by the gallery
+│   ├── readme/             # Images for this README
 │   ├── data/               # JSON fixtures for demos (dashboard, learning library)
-│   └── work-thumbs/        # Card thumbnails
+│   └── byheir-wise-resume.pdf
 ├── mock-exports/           # Sample report exports (PNG/SVG) for BI showcases
 ├── CNAME                   # GitHub Pages → www.byheir.com
 └── manifest.webmanifest    # PWA manifest
@@ -108,9 +204,11 @@ Where to look when you want proof of a specific claim.
 
 ---
 
+---
+
 ## Tech
 
-Static HTML/CSS/vanilla JS. PWA manifest. No framework, no build step, no npm runtime dependencies. Animation is progressively enhanced with GSAP + ScrollTrigger via CDN (the site fully works without it), and typography loads Inter + Space Grotesk from Google Fonts with a system-stack fallback. Hosted on GitHub Pages.
+Static HTML, CSS, and vanilla JavaScript. No framework, no build step, no runtime dependencies on the homepage beyond three web fonts (Instrument Serif, Inter, JetBrains Mono) with a system-stack fallback. Individual demos pull what they need from a CDN — React, Recharts, Chart.js, sql.js, CodeMirror. Hosted on GitHub Pages.
 
 External projects linked from the work section use React 18 + Vite + Supabase / Cloudflare Workers (separate repos).
 

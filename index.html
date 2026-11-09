@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,29 +8,19 @@
 
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#020712">
-    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0c0d10">
+    <meta name="color-scheme" content="dark light">
     <script>
-    /* HUD / classic switch. Runs before first paint so there is no layout flash.
-       No JS => neither class => plain scrolling document (SEO / no-JS safe). */
+    /* Theme + JS flag, set before first paint so there is no flash.
+       Dark is the default; the header toggle stores an explicit choice. */
     (function () {
-        var html = document.documentElement, mode = 'hud';
+        var root = document.documentElement, theme = 'dark';
         try {
-            var v = new URLSearchParams(location.search).get('view');
-            if (v === 'classic') sessionStorage.setItem('byheir-view', 'classic');
-            else if (v === 'hud') sessionStorage.removeItem('byheir-view');
-            if (v === 'classic' || (!v && sessionStorage.getItem('byheir-view') === 'classic')) mode = 'classic';
+            var saved = localStorage.getItem('byheir-theme');
+            if (saved === 'light' || saved === 'dark') theme = saved;
         } catch (e) {}
-        html.classList.add(mode);
-        if (mode === 'hud') {
-            html.classList.add('hud-booting', 'hud-scene-fallback');
-            // Stash the fragment so the browser doesn't fragment-scroll inside a
-            // panel; hud.js routes it to the right panel and restores the URL.
-            if (location.hash.length > 1) {
-                window.__hudHash = location.hash;
-                try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
-            }
-        }
+        root.setAttribute('data-theme', theme);
+        root.classList.add('js');
     })();
     </script>
 
@@ -84,57 +74,30 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/hud.css?v=1">
+    <link rel="stylesheet" href="assets/tour.css?v=1">
+    <link rel="stylesheet" href="assets/home.css?v=2">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- ================= HUD: boot sequence ================= -->
-    <div class="hud-boot hud-only" data-hud-boot role="status" aria-live="polite">
-        <div class="hud-boot__inner">
-            <div class="hud-boot__logo">BYHEIR<span>.OS</span></div>
-            <pre class="hud-boot__log" data-hud-boot-log></pre>
-            <div class="hud-boot__bar" aria-hidden="true"><span data-hud-boot-progress></span></div>
-            <p class="hud-boot__skip">press any key or click to skip</p>
-        </div>
-    </div>
-
-    <!-- ================= HUD: top bar ================= -->
-    <div class="hud-topbar hud-only" data-hud-topbar>
-        <a class="hud-topbar__brand" href="#" data-hud-home aria-label="Byheir Wise — return to hub">
-            <span class="hud-monogram" aria-hidden="true">BW</span>
-            <span class="hud-topbar__name">Byheir Wise</span>
-        </a>
-        <ul class="hud-readouts" aria-label="System status">
-            <li class="hud-readout"><span class="hud-readout__k">SYS</span><span class="hud-readout__v hud-readout__v--ok">ONLINE</span></li>
-            <li class="hud-readout hud-readout--wide"><span class="hud-readout__k">LOC</span><span class="hud-readout__v">BEAR, DE · 39.63°N 75.66°W</span></li>
-            <li class="hud-readout"><span class="hud-readout__k">STATUS</span><span class="hud-readout__v hud-readout__v--amber">AVAILABLE</span></li>
-            <li class="hud-readout"><span class="hud-readout__k">LOCAL</span><time class="hud-readout__v" data-hud-clock>--:--:--</time></li>
-        </ul>
-        <div class="hud-topbar__actions">
-            <button type="button" class="hud-topbar__icon" data-hud-palette-open aria-label="Open command console">&gt;_</button>
-            <button type="button" class="hud-chip" data-hud-tour>Guided tour</button>
-            <a class="hud-topbar__link" href="?view=classic">Classic view</a>
-        </div>
-    </div>
-
-    <header>
-        <nav class="top-nav" aria-label="Main navigation">
-            <div class="logo">Byheir Wise</div>
+    <header class="site-header" data-header>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="wordmark" href="#top" aria-label="Byheir Wise — back to top">
+                <span class="wordmark__mark" aria-hidden="true">BW</span>
+                <span class="wordmark__name">Byheir Wise</span>
+            </a>
             <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
-                ☰
+                <span aria-hidden="true"></span>
             </button>
             <ul class="nav-menu" id="primary-navigation">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
                 <li><a href="#work">Work</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#approach">Approach</a></li>
+                <li><a href="#experience">Experience</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li class="nav-classic-item"><a href="?view=hud">HUD view</a></li>
                 <li class="nav-tour-item">
                     <button type="button" class="nav-tour-chip" data-tour-trigger hidden>
                         <span class="nav-tour-chip__dot" aria-hidden="true"></span>
@@ -142,184 +105,654 @@
                     </button>
                 </li>
             </ul>
+            <div class="site-nav__actions">
+                <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+                </button>
+                <a class="btn btn--small" href="assets/byheir-wise-resume.pdf" download>Resume <span aria-hidden="true">↓</span></a>
+            </div>
         </nav>
     </header>
 
-    <div class="hud-layout" data-hud-layout>
-    <aside class="hud-rail hud-rail--left hud-only" aria-label="Quick navigation">
-        <ol class="hud-rail__nav" data-hud-mini-nav>
-            <li><a href="#about"><span class="hud-rail__idx">01</span>Profile</a></li>
-            <li><a href="#experience"><span class="hud-rail__idx">02</span>Experience</a></li>
-            <li><a href="#projects"><span class="hud-rail__idx">03</span>Projects</a></li>
-            <li><a href="#work"><span class="hud-rail__idx">04</span>Builds</a></li>
-            <li><a href="#skills"><span class="hud-rail__idx">05</span>Skills</a></li>
-            <li><a href="#contact"><span class="hud-rail__idx">06</span>Contact</a></li>
-        </ol>
-        <div class="hud-rail__deco" aria-hidden="true">
-            <div class="hud-gauge" style="--fill: 82%"><span>PWR</span></div>
-            <div class="hud-gauge hud-gauge--amber" style="--fill: 64%"><span>NET</span></div>
-            <div class="hud-rail__lines"></div>
-        </div>
-    </aside>
+    <!-- ================= Hero ================= -->
+    <section class="hero" id="top" aria-labelledby="hero-title" data-tour-id="hero">
+        <div class="wrap">
+            <p class="hero__eyebrow">
+                <span class="status"><span class="dot" aria-hidden="true"></span>Available for opportunities</span>
+                <span class="hero__eyebrow-sep" aria-hidden="true">/</span>
+                <span>Engineering Leader · Servicing &amp; Collections Systems · Regulated Fintech</span>
+            </p>
+            <h1 id="hero-title" class="hero__title">
+                <span class="hero__name">Byheir Wise</span>
+                <span class="hero__statement">designs, builds, and leads the systems behind <em>lending, servicing &amp;&nbsp;collections.</em></span>
+            </h1>
 
-    <div class="hud-stage" data-hud-stage>
-        <canvas class="hud-scene hud-only" data-hud-canvas aria-hidden="true"></canvas>
-        <div class="hud-orb hud-only" data-hud-orb aria-hidden="true">
-            <div class="hud-orb__sphere"></div>
-            <div class="hud-orb__ring hud-orb__ring--1"></div>
-            <div class="hud-orb__ring hud-orb__ring--2"></div>
-            <div class="hud-orb__ring hud-orb__ring--3"></div>
-        </div>
-        <div class="hud-reticle hud-only" aria-hidden="true"></div>
-
-        <nav class="hud-nodes hud-only" id="hud-nodes" aria-label="Sections" data-hud-nodes>
-            <button type="button" class="hud-node" style="--i:0" data-hud-node="about" aria-controls="about" aria-expanded="false"><span class="hud-node__idx">01</span><span class="hud-node__label">Profile</span></button>
-            <button type="button" class="hud-node" style="--i:1" data-hud-node="experience" aria-controls="experience" aria-expanded="false"><span class="hud-node__idx">02</span><span class="hud-node__label">Experience</span></button>
-            <button type="button" class="hud-node" style="--i:2" data-hud-node="projects" aria-controls="projects" aria-expanded="false"><span class="hud-node__idx">03</span><span class="hud-node__label">Projects</span></button>
-            <button type="button" class="hud-node" style="--i:3" data-hud-node="work" aria-controls="work" aria-expanded="false"><span class="hud-node__idx">04</span><span class="hud-node__label">Builds</span></button>
-            <button type="button" class="hud-node" style="--i:4" data-hud-node="skills" aria-controls="skills" aria-expanded="false"><span class="hud-node__idx">05</span><span class="hud-node__label">Skills</span></button>
-            <button type="button" class="hud-node" style="--i:5" data-hud-node="contact" aria-controls="contact" aria-expanded="false"><span class="hud-node__idx">06</span><span class="hud-node__label">Contact</span></button>
-            <a class="hud-node hud-node--link" style="--i:6" href="pages/for-hiring-managers.html"><span class="hud-node__idx">▸</span><span class="hud-node__label">Hiring managers</span></a>
-            <a class="hud-node hud-node--link" style="--i:7" href="assets/byheir-wise-resume.pdf" download><span class="hud-node__idx">↓</span><span class="hud-node__label">Resume</span></a>
-        </nav>
-
-    <section class="hero-section" aria-labelledby="hero-title" data-tour-id="hero">
-        <div class="hero-inner">
-            <div class="hero-label">
-                <span class="status-dot" aria-hidden="true"></span>
-                Available for opportunities
-            </div>
-            <h1 id="hero-title" class="hero-title">Byheir Wise</h1>
-            <p class="hero-subtitle">Engineering Leader · Servicing &amp; Collections Systems · Regulated Fintech</p>
-
-            <div class="hero-cta-row">
-                <a class="hero-cta hero-cta--primary" href="#work">See the work</a>
-                <a class="hero-cta hero-cta--ghost" href="pages/for-hiring-managers.html">For hiring managers</a>
-                <a class="hero-cta hero-cta--ghost" href="assets/byheir-wise-resume.pdf" download>
-                    <span aria-hidden="true">↓</span> Download resume
-                </a>
-                <a class="hero-cta hero-cta--ghost" href="mailto:byheirw@gmail.com">Email me</a>
-            </div>
-
-            <div class="stats-bar" aria-label="What sets this work apart">
-                <div class="stat-box">
-                    <div class="stat-number"><span class="stat-count" data-count-to="8">8</span>+ yrs</div>
-                    <div class="stat-label">Regulated fintech</div>
+            <div class="hero__grid">
+                <div class="hero__copy">
+                    <p class="hero__lede">
+                        Eight-plus years inside a federally regulated bank, from the front line of collections to owning production systems.
+                        Full-stack engineering, AI applied to operational efficiency, and interfaces I design and build myself.
+                    </p>
+                    <div class="hero__cta">
+                        <a class="btn btn--primary" href="#work">See the work <span aria-hidden="true">↓</span></a>
+                        <a class="btn" href="pages/for-hiring-managers.html">For hiring managers</a>
+                        <a class="btn" href="assets/byheir-wise-resume.pdf" download><span aria-hidden="true">↓</span> Download resume</a>
+                        <a class="btn" href="mailto:byheirw@gmail.com">Email me</a>
+                    </div>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-number stat-number--text">Team lead</div>
-                    <div class="stat-label">Led 4–6 engineers &amp; analysts</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number stat-number--text">Solo</div>
-                    <div class="stat-label">Concept → production</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number stat-number--text">Full-stack</div>
-                    <div class="stat-label">.NET · AWS · Snowflake · React</div>
+
+                <div class="hero__stage" data-stage aria-hidden="true">
+                    <div class="frame hero__shot hero__shot--back">
+                        <div class="frame__bar"><i></i><i></i><i></i><span class="frame__url">loanops-control-plane</span></div>
+                        <img src="assets/work/loanops.webp" alt="" width="1280" height="800" decoding="async">
+                    </div>
+                    <div class="frame hero__shot hero__shot--front">
+                        <div class="frame__bar"><i></i><i></i><i></i><span class="frame__url">power-bi-dashboards</span></div>
+                        <img src="assets/work/power-bi.webp" alt="" width="1280" height="800" decoding="async">
+                    </div>
+                    <div class="phone hero__shot hero__shot--phone">
+                        <img src="assets/work/banking-home.webp" alt="" width="585" height="1266" decoding="async">
+                    </div>
                 </div>
             </div>
+
+            <dl class="facts" aria-label="At a glance">
+                <div class="fact">
+                    <dt>Regulated fintech</dt>
+                    <dd>8+<small>yrs</small></dd>
+                </div>
+                <div class="fact">
+                    <dt>Business users on systems I owned</dt>
+                    <dd>1,000+</dd>
+                </div>
+                <div class="fact">
+                    <dt>Less manual reporting effort</dt>
+                    <dd>60%</dd>
+                </div>
+                <div class="fact">
+                    <dt>Engineers &amp; analysts led</dt>
+                    <dd>4–6</dd>
+                </div>
+            </dl>
         </div>
     </section>
-    </div><!-- /.hud-stage -->
 
-    <aside class="hud-rail hud-rail--right hud-only" aria-hidden="true">
-        <div class="hud-rail__label">TELEMETRY</div>
-        <pre class="hud-rail__stream" data-hud-stream></pre>
-        <div class="hud-rail__deco">
-            <div class="hud-gauge" style="--fill: 91%"><span>UPT</span></div>
-            <div class="hud-gauge hud-gauge--amber" style="--fill: 47%"><span>LOAD</span></div>
-            <div class="hud-rail__lines"></div>
-        </div>
-    </aside>
+    <main id="main">
+        <!-- ================= 01 Profile ================= -->
+        <section id="about" class="section" aria-labelledby="about-title" tabindex="-1">
+            <div class="wrap">
+                <header class="section__head">
+                    <p class="section__idx"><span>01</span> Profile</p>
+                    <h2 id="about-title" class="section__title">About <em>me</em></h2>
+                </header>
 
-    <main id="main" class="hud-panels" data-hud-panels>
-        <section id="about" class="container hud-panel" data-panel="about" role="region" aria-labelledby="about-title" tabindex="-1">
-            <div class="hud-panel__bar hud-only">
-                <span class="hud-panel__index" aria-hidden="true">01 / 06</span>
-                <span class="hud-panel__tag" aria-hidden="true">SECTION · PROFILE</span>
-                <div class="hud-panel__nav">
-                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
-                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
-                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
-                </div>
-            </div>
-            <div class="section-header">
-                <h2 id="about-title" class="section-title">About me</h2>
-                <p class="section-subtitle">
-                    Engineering leader building the high-stakes systems behind lending, servicing, and collections in regulated fintech.
-                </p>
-            </div>
-
-            <article class="featured-story" data-tour-id="about">
-                <div class="story-tag">Professional profile</div>
-                <h3 class="story-title">Engineering leader in servicing &amp; collections systems</h3>
-                <div class="story-meta">
-                    <span>📍 Bear, Delaware</span>
-                    <span>🏢 LendKey Technologies</span>
-                    <span>📅 June 2026 to present</span>
-                </div>
-                <div class="story-content">
-                    <p>
-                        Engineering leader with 8+ years building and owning the high-stakes systems behind lending, servicing, and collections inside a federally regulated bank — and a career that started on the front line of collections and personal-loan servicing before moving into engineering. I architect full-stack production systems, stay close to the code, guide architectural decisions, and raise the bar for the teams I lead.
+                <article class="profile" data-tour-id="about">
+                    <p class="profile__pull reveal">
+                        Engineering leader building the high-stakes systems behind lending, servicing, and collections in regulated fintech.
                     </p>
-                    <p>
-                        Deep fintech domain fluency — delinquency, recovery, cost-to-collect, compliance reporting — paired with hands-on AI applied to operational efficiency. I partner naturally across Product, Risk, Operations, and Compliance, and I bring calm judgment to systems where reliability and data integrity are non-negotiable.
-                    </p>
-                </div>
-            </article>
+                    <div class="profile__body reveal">
+                        <p>
+                            Engineering leader with 8+ years building and owning the high-stakes systems behind lending, servicing, and collections inside a federally regulated bank — and a career that started on the front line of collections and personal-loan servicing before moving into engineering. I architect full-stack production systems, stay close to the code, guide architectural decisions, and raise the bar for the teams I lead.
+                        </p>
+                        <p>
+                            Deep fintech domain fluency — delinquency, recovery, cost-to-collect, compliance reporting — paired with hands-on AI applied to operational efficiency. I partner naturally across Product, Risk, Operations, and Compliance, and I bring calm judgment to systems where reliability and data integrity are non-negotiable.
+                        </p>
+                        <dl class="profile__meta">
+                            <div><dt>Based in</dt><dd>Bear, Delaware</dd></div>
+                            <div><dt>Currently</dt><dd>LendKey Technologies</dd></div>
+                            <div><dt>Since</dt><dd>June 2026 to present</dd></div>
+                        </dl>
+                    </div>
+                </article>
 
-            <!-- TODO: paste a real LinkedIn recommendation excerpt or manager email quote here, with attribution. Leave hidden until populated. -->
-            <aside class="quote-strip" hidden aria-label="What collaborators say">
-                <blockquote class="quote-strip__quote">
-                    <p>“TODO — pull-quote text here.”</p>
-                    <cite class="quote-strip__cite">
-                        <span class="quote-strip__name">TODO Name</span>
-                        <span class="quote-strip__role">TODO Title, TODO Company</span>
-                    </cite>
-                </blockquote>
-            </aside>
+                <!-- TODO: paste a real LinkedIn recommendation excerpt or manager email quote here, with attribution. Leave hidden until populated. -->
+                <aside class="quote-strip" hidden aria-label="What collaborators say">
+                    <blockquote class="quote-strip__quote">
+                        <p>“TODO — pull-quote text here.”</p>
+                        <cite class="quote-strip__cite">
+                            <span class="quote-strip__name">TODO Name</span>
+                            <span class="quote-strip__role">TODO Title, TODO Company</span>
+                        </cite>
+                    </blockquote>
+                </aside>
+            </div>
         </section>
 
-        <section id="experience" class="container hud-panel" data-panel="experience" role="region" aria-labelledby="experience-title" tabindex="-1">
-            <div class="hud-panel__bar hud-only">
-                <span class="hud-panel__index" aria-hidden="true">02 / 06</span>
-                <span class="hud-panel__tag" aria-hidden="true">SECTION · EXPERIENCE</span>
-                <div class="hud-panel__nav">
-                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
-                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
-                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+        <!-- ================= 02 Work ================= -->
+        <section id="work" class="section" aria-labelledby="work-title" tabindex="-1">
+            <div class="wrap">
+                <header class="section__head">
+                    <p class="section__idx"><span>02</span> Selected work</p>
+                    <h2 id="work-title" class="section__title">Interfaces I designed <em>and built</em></h2>
+                    <p class="section__lede">
+                        Demos and UI explorations built to show range — every screen below is live in this repo, designed and coded by me. Screenshots are the real pages, not mockups.
+                    </p>
+                </header>
+
+                <div class="features">
+                    <a class="feature reveal" href="pages/loanops-control-plane.html" data-tour-id="work-loanops">
+                        <div class="feature__media">
+                            <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/loanops-control-plane</span></div>
+                        <img src="assets/work/loanops.webp" alt="" width="1280" height="800" decoding="async">
+                    </div>
+                        </div>
+                        <div class="feature__body">
+                            <div class="card__meta"><span class="card__status"><span class="dot" aria-hidden="true"></span>Live demo</span><span>Sole builder</span></div>
+                            <h3 class="feature__title">LoanOps Agent <em>Control Plane</em></h3>
+                            <p class="feature__tagline">A regulated-servicing AI copilot — explainable case analyst with policy citations, a guardrails engine that blocks forbidden actions, MCP-style tool connectors, a tamper-evident audit timeline, human-in-the-loop approval, and a Snowflake-style data-validation layer. Runs in-browser on synthetic data.</p>
+                            <ul class="chips"><li>React 18</li><li>AI guardrails</li><li>MCP tools</li><li>Audit trail</li><li>FDCPA / SCRA</li><li>Data validation</li></ul>
+                            <span class="card__cta">View demo <span aria-hidden="true">→</span></span>
+                        </div>
+                    </a>
+
+                    <a class="feature feature--flip reveal" href="pages/banking.html" data-tour-id="work-banking">
+                        <div class="feature__media feature__media--phones">
+                            <div class="phone"><img src="assets/work/banking-onboard.webp" alt="" width="585" height="1266" loading="lazy" decoding="async"></div>
+                            <div class="phone"><img src="assets/work/banking-home.webp" alt="" width="585" height="1266" loading="lazy" decoding="async"></div>
+                            <div class="phone"><img src="assets/work/banking-cards.webp" alt="" width="585" height="1266" loading="lazy" decoding="async"></div>
+                        </div>
+                        <div class="feature__body">
+                            <div class="card__meta"><span class="card__status"><span class="dot" aria-hidden="true"></span>Live PWA demo</span><span>Sole builder</span></div>
+                            <h3 class="feature__title">Meridian <em>Banking PWA</em></h3>
+                            <p class="feature__tagline">iOS-style mobile banking — passcode and passkey sign-in, transfers, bill pay and wires with step-up auth, card lock and limits, statements, and spending insights. Installable, offline-capable, and the sample data reconciles to the cent.</p>
+                            <ul class="chips"><li>HTML</li><li>CSS</li><li>JS</li><li>PWA</li><li>Service Worker</li><li>WebAuthn</li></ul>
+                            <span class="card__cta">View demo <span aria-hidden="true">→</span></span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="gallery-bar" id="demo">
+                    <h3 class="gallery-bar__title">Demos &amp; UI explorations</h3>
+                    <div class="filters" role="group" aria-label="Filter work by type" data-filters>
+                        <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All <sup>9</sup></button>
+                        <button type="button" class="filter" data-filter="demo" aria-pressed="false">Live demos <sup>2</sup></button>
+                        <button type="button" class="filter" data-filter="data" aria-pressed="false">Dashboards &amp; BI <sup>4</sup></button>
+                        <button type="button" class="filter" data-filter="suite" aria-pressed="false">Domain suites <sup>6</sup></button>
+                    </div>
+                </div>
+
+                <div class="gallery" data-gallery>
+                <a class="card reveal" href="pages/dashboard.html" data-kind="data suite" data-tour-id="work-demo">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/dashboard</span></div>
+                        <img src="assets/work/ops-dashboard.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">UI exploration</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Operations Dashboard</h3>
+                        <p class="card__tagline">Command center hub — surfaces SLA risk, alerts, and workload with the Credit Underwriting, Fraud Risk, and Collections Toolkit suites linked as features.</p>
+                        <ul class="chips"><li>Saved views</li><li>KPI design</li><li>HTML</li><li>CSS</li><li>JS</li></ul>
+                        <span class="card__cta">View demo <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/refi-intelligence.html" data-kind="demo data" data-tour-id="work-refi">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/refi-intelligence</span></div>
+                        <img src="assets/work/refi.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status"><span class="dot" aria-hidden="true"></span>Live demo</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Refi Intelligence</h3>
+                        <p class="card__tagline">Refi portfolio analytics — cohort heatmaps, funnel drop-off, savings distribution across 5,000 synthetic apps with AI-augmented insights.</p>
+                        <ul class="chips"><li>React 18</li><li>Recharts</li><li>Cohort analysis</li><li>Funnel</li><li>Anthropic API</li></ul>
+                        <span class="card__cta">View demo <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/sql-playground.html" data-kind="demo data" data-tour-id="work-sql">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/sql-playground</span></div>
+                        <img src="assets/work/sql-playground.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status"><span class="dot" aria-hidden="true"></span>Live demo</span><span>Sole builder</span></div>
+                        <h3 class="card__title">SQL Playground</h3>
+                        <p class="card__tagline">Run real SQL against a synthetic lending portfolio in your browser — 21 challenges across Risk, Funnel, Portfolio, Behavior, Vintage, Pricing.</p>
+                        <ul class="chips"><li>SQLite WASM</li><li>sql.js</li><li>CodeMirror</li><li>Chart.js</li><li>Zero backend</li></ul>
+                        <span class="card__cta">Open playground <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/power-bi-dashboards.html" data-kind="data">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/power-bi-dashboards</span></div>
+                        <img src="assets/work/power-bi.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">Showcase</span><span>BI lead</span></div>
+                        <h3 class="card__title">Power BI Dashboards</h3>
+                        <p class="card__tagline">Executive reporting, KPI standardization, reconciliation — Power BI &amp; Snowflake patterns.</p>
+                        <ul class="chips"><li>Power BI</li><li>Snowflake</li><li>KPI design</li><li>Executive reporting</li></ul>
+                        <span class="card__cta">View showcase <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/fraud-risk.html" data-kind="suite" data-tour-id="work-fraud">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/fraud-risk</span></div>
+                        <img src="assets/work/fraud.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">UI exploration</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Fraud Risk</h3>
+                        <p class="card__tagline">Real-time fraud monitoring — alert triage, link analysis, identity verification.</p>
+                        <ul class="chips"><li>Dashboards</li><li>Risk ops</li><li>9 screens</li></ul>
+                        <span class="card__cta">View suite <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/credit-underwriting.html" data-kind="suite" data-tour-id="work-credit">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/credit-underwriting</span></div>
+                        <img src="assets/work/credit.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">UI exploration</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Credit Underwriting</h3>
+                        <p class="card__tagline">Decision engine, document processing, manual review, adverse-action workflow.</p>
+                        <ul class="chips"><li>Workflow</li><li>Compliance</li><li>11 screens</li></ul>
+                        <span class="card__cta">View suite <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/collections-toolkit.html" data-kind="suite" data-tour-id="work-collections">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/collections-toolkit</span></div>
+                        <img src="assets/work/collections.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">UI exploration</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Collections Toolkit</h3>
+                        <p class="card__tagline">End-to-end suite — segmentation, dialer, comms hub, QA, and compliance.</p>
+                        <ul class="chips"><li>Contact center</li><li>QA</li><li>11 screens</li></ul>
+                        <span class="card__cta">View suite <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/servicing-cexp.html" data-kind="suite">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/servicing-cexp</span></div>
+                        <img src="assets/work/servicing.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">UI exploration</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Servicing CX</h3>
+                        <p class="card__tagline">Account management, loss mitigation, support portal, comms hub, and feedback surveys.</p>
+                        <ul class="chips"><li>Servicing</li><li>Loss mitigation</li><li>8 screens</li></ul>
+                        <span class="card__cta">View suite <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a class="card reveal" href="pages/education-overview.html" data-kind="suite">
+                    <div class="frame">
+                        <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">byheir.com/pages/education-overview</span></div>
+                        <img src="assets/work/education.webp" alt="" width="1280" height="800" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card__body">
+                        <div class="card__meta"><span class="card__status">UI exploration</span><span>Sole builder</span></div>
+                        <h3 class="card__title">Education</h3>
+                        <p class="card__tagline">Learning operations — cohorts, content studio, modules, quizzes, tests, and a library.</p>
+                        <ul class="chips"><li>Learning ops</li><li>Content</li><li>10 screens</li></ul>
+                        <span class="card__cta">View suite <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                </div>
+                <p class="sr-only" aria-live="polite" data-filter-status></p>
+            </div>
+        </section>
+
+        <!-- ================= 03 Projects ================= -->
+        <section id="projects" class="section" aria-labelledby="projects-title" tabindex="-1">
+            <div class="wrap">
+                <header class="section__head">
+                    <p class="section__idx"><span>03</span> Projects</p>
+                    <h2 id="projects-title" class="section__title">Shipped <em>end to end</em></h2>
+                    <p class="section__lede">
+                        Platforms and products I designed, built, and shipped end-to-end — from reporting frameworks and AI-augmented validation to full-stack analytics PWAs.
+                    </p>
+                </header>
+
+                <div class="briefs">
+                <article class="brief brief--media reveal" data-tour-id="projects-simplicity">
+                    <header class="brief__head">
+                        <span class="brief__idx" aria-hidden="true">01</span>
+                        <div>
+                            <h3 class="brief__title">Simplicity by WiseForge <em>Production AI product</em></h3>
+                            <p class="brief__role">Sole architect · wiseforge.dev</p>
+                        </div>
+                    </header>
+                    <div class="brief__main">
+                        <a class="brief__media brief__media--duo" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer" aria-label="Simplicity by WiseForge — opens wiseforge.dev in a new tab">
+                            <div class="frame">
+                                <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">wiseforge.dev</span></div>
+                                <img src="assets/work/simplicity-desktop.webp" alt="Simplicity chat workspace on desktop" width="1280" height="800" loading="lazy" decoding="async">
+                            </div>
+                            <div class="phone"><img src="assets/work/simplicity-phone.webp" alt="Simplicity new-chat screen on a phone" width="585" height="1272" loading="lazy" decoding="async"></div>
+                        </a>
+                        <dl class="brief__grid">
+                            <div class="brief__col">
+                                <dt>Problem</dt>
+                                <dd>Shipping a real, revenue-ready AI product means owning far more than prompts — auth, billing, model routing, abuse prevention, and streaming UX all have to work in production.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Approach</dt>
+                                <dd>Designed, built, and deployed a Claude-powered product end-to-end solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, and Stripe subscriptions.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Decision</dt>
+                                <dd>Owned every architectural decision from provider abstraction to entitlement checks, so the product survives provider changes and scales pricing without rewrites.</dd>
+                            </div>
+                        </dl>
+                        <div class="brief__foot">
+                            <ul class="chips"><li>Claude API</li><li>Multi-provider routing</li><li>OAuth 2.0 + PKCE</li><li>Stripe</li><li>Streaming APIs</li></ul>
+                            <p class="brief__links"><a class="link-arrow" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer">Visit wiseforge.dev <span aria-hidden="true">↗</span></a></p>
+                        </div>
+                    </div>
+                </article>
+                <article class="brief reveal" data-tour-id="projects-cowork">
+                    <header class="brief__head">
+                        <span class="brief__idx" aria-hidden="true">02</span>
+                        <div>
+                            <h3 class="brief__title">Cowork <em>Autonomous software pipeline</em></h3>
+                            <p class="brief__role">Sole architect · automation.byheir.com</p>
+                        </div>
+                    </header>
+                    <div class="brief__main">
+                        <dl class="brief__grid">
+                            <div class="brief__col">
+                                <dt>Problem</dt>
+                                <dd>&ldquo;AI-assisted coding&rdquo; workflows still require a human in the loop for spec authoring, review, merge decisions, and recovery from agent failures — the orchestration is the work.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Approach</dt>
+                                <dd>Shipped a fully autonomous pipeline of 16 role-specialized agents (spec authors, multiple reviewers, persona playtesters, vision keeper) coordinating across 5 parallel lanes, each scheduled by launchd and picking work from a domain-allocated sprint plan.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Decision</dt>
+                                <dd>Autonomy lives behind the constraints — auto-gate with 3-agent voting, daily merge caps, blocked-path allowlists, emergency-stop on consecutive reverts, and a public demo with a redaction layer over the same instance the system runs on.</dd>
+                            </div>
+                        </dl>
+                        <div class="brief__foot">
+                            <ul class="chips"><li>Node.js</li><li>Express</li><li>Vanilla JS</li><li>Tailwind</li><li>Chart.js</li><li>Bash</li><li>Python</li><li>launchd</li><li>Cloudflare Tunnel</li><li>Tailscale</li><li>Claude Code + OpenAI API</li></ul>
+                            <p class="brief__links"><a class="link-arrow" href="pages/cowork.html">Read the case study <span aria-hidden="true">→</span></a><a class="link-arrow" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">Live dashboard <span aria-hidden="true">↗</span></a></p>
+                        </div>
+                    </div>
+                </article>
+                <article class="brief brief--media reveal" data-tour-id="projects-partnerpulse">
+                    <header class="brief__head">
+                        <span class="brief__idx" aria-hidden="true">03</span>
+                        <div>
+                            <h3 class="brief__title">PartnerPulse <em>Partner relationship analytics</em></h3>
+                            <p class="brief__role">Sole builder · partnerpulse.byheir.com</p>
+                        </div>
+                    </header>
+                    <div class="brief__main">
+                        <a class="brief__media brief__media--duo" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="PartnerPulse — opens partnerpulse.byheir.com in a new tab">
+                            <div class="frame">
+                                <div class="frame__bar" aria-hidden="true"><i></i><i></i><i></i><span class="frame__url">partnerpulse.byheir.com</span></div>
+                                <img src="assets/work/partnerpulse-desktop.webp" alt="PartnerPulse portfolio dashboard on desktop" width="1280" height="800" loading="lazy" decoding="async">
+                            </div>
+                            <div class="phone"><img src="assets/work/partnerpulse-phone.webp" alt="PartnerPulse portfolio dashboard on a phone" width="585" height="1266" loading="lazy" decoding="async"></div>
+                        </a>
+                        <dl class="brief__grid">
+                            <div class="brief__col">
+                                <dt>Problem</dt>
+                                <dd>A multi-partner book of business tracked across spreadsheets, CRMs, and ad-hoc reports — no shared view of portfolio health or partner engagement.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Approach</dt>
+                                <dd>Shipped a relationship-analytics PWA with portfolio health scoring, KPI dashboards, account intelligence, and AI-generated executive comms — built solo end-to-end.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Decision</dt>
+                                <dd>Chose a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers with secure API proxying) so the team can own the platform without standing up ops or paying for unused capacity.</dd>
+                            </div>
+                        </dl>
+                        <div class="brief__foot">
+                            <ul class="chips"><li>React 18</li><li>Vite</li><li>Recharts</li><li>Cloudflare Workers</li><li>Claude Sonnet 4</li></ul>
+                            <p class="brief__links"><a class="link-arrow" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">Visit PartnerPulse <span aria-hidden="true">↗</span></a></p>
+                        </div>
+                    </div>
+                </article>
+                <article class="brief reveal" data-tour-id="projects-builder">
+                    <header class="brief__head">
+                        <span class="brief__idx" aria-hidden="true">04</span>
+                        <div>
+                            <h3 class="brief__title">The Builder <em>AI-augmented reporting &amp; validation</em></h3>
+                            <p class="brief__role">Sole architect</p>
+                        </div>
+                    </header>
+                    <div class="brief__main">
+                        <dl class="brief__grid">
+                            <div class="brief__col">
+                                <dt>Problem</dt>
+                                <dd>Reporting pipelines kept accumulating validation debt — one-off checks, ad-hoc fixes, no audit trail when downstream numbers shifted.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Approach</dt>
+                                <dd>Architected a multi-stage data-validation and report-generation platform with automated quality gates and an audit trail at every step.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Decision</dt>
+                                <dd>Wired GitHub, Supabase, and external AI APIs into a CI/CD-style release flow with branch review, change auditing, and merge controls — applying enterprise release discipline to analytics tooling.</dd>
+                            </div>
+                        </dl>
+                        <div class="brief__foot">
+                            <ul class="chips"><li>Python</li><li>Snowflake</li><li>Supabase</li><li>GitHub Actions</li><li>AI APIs</li></ul>
+                            <p class="brief__links"><a class="link-arrow" href="pages/the-builder.html">Read the case study <span aria-hidden="true">→</span></a></p>
+                        </div>
+                    </div>
+                </article>
+                <article class="brief brief--media reveal" data-tour-id="projects-ironlog">
+                    <header class="brief__head">
+                        <span class="brief__idx" aria-hidden="true">05</span>
+                        <div>
+                            <h3 class="brief__title">IronLog <em>Analytics ecosystem</em></h3>
+                            <p class="brief__role">Sole designer + engineer · ironlog.space</p>
+                        </div>
+                    </header>
+                    <div class="brief__main">
+                        <a class="brief__media brief__media--phones" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="IronLog — opens ironlog.space in a new tab">
+                            <div class="phone"><img src="assets/work/ironlog-train.webp" alt="IronLog training screen" width="585" height="1272" loading="lazy" decoding="async"></div>
+                            <div class="phone"><img src="assets/work/ironlog-log.webp" alt="IronLog workout logging screen" width="585" height="1272" loading="lazy" decoding="async"></div>
+                            <div class="phone"><img src="assets/work/ironlog-body.webp" alt="IronLog body tracking screen" width="585" height="1272" loading="lazy" decoding="async"></div>
+                        </a>
+                        <dl class="brief__grid">
+                            <div class="brief__col">
+                                <dt>Problem</dt>
+                                <dd>Tracking workouts, finances, and nutrition meant juggling disconnected apps with no shared data layer or trend visibility.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Approach</dt>
+                                <dd>Built a three-app analytics PWA suite (IronLog, FinanceLog, NutritionLog) on a unified Supabase backend with SSO and real-time data sync.</dd>
+                            </div>
+                            <div class="brief__col">
+                                <dt>Decision</dt>
+                                <dd>Layered session-level monitoring and feature-effectiveness tracking on top so each app generates product analytics that feed back into the next iteration.</dd>
+                            </div>
+                        </dl>
+                        <div class="brief__foot">
+                            <ul class="chips"><li>React 18</li><li>Vite 6</li><li>Supabase</li><li>Vercel</li><li>Cloudflare R2</li><li>PWA</li></ul>
+                            <p class="brief__links"><a class="link-arrow" href="pages/ironlog.html">Read the evidence <span aria-hidden="true">→</span></a><a class="link-arrow" href="https://ironlog.space" target="_blank" rel="noopener noreferrer">Visit IronLog <span aria-hidden="true">↗</span></a></p>
+                        </div>
+                    </div>
+                </article>
+                </div>
+
+                <div class="subhead">
+                    <h3 class="subhead__title">Live in production</h3>
+                    <p class="subhead__hint">External apps · open in a new tab</p>
+                </div>
+                <div class="lives" data-tour-id="work-external">
+                    <a class="live reveal" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer" aria-label="Simplicity by WiseForge — opens in a new tab">
+                        <span class="live__status"><span class="dot" aria-hidden="true"></span>Live · Flagship</span>
+                        <span class="live__title">Simplicity by WiseForge</span>
+                        <span class="live__line">Production Claude-powered AI product shipped solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, Stripe subscriptions.</span>
+                        <span class="live__stack">Claude API · OAuth 2.0 + PKCE · Stripe</span>
+                        <span class="live__domain">wiseforge.dev <span aria-hidden="true">↗</span></span>
+                    </a>
+                    <a class="live reveal" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="Cowork Dashboard — opens in a new tab">
+                        <span class="live__status"><span class="dot" aria-hidden="true"></span>Live · 24/7</span>
+                        <span class="live__title">Cowork Dashboard</span>
+                        <span class="live__line">Read-only public view of the autonomous pipeline running on my Mac — sprint board, autonomous-decision audit log, live phase progress.</span>
+                        <span class="live__stack">Node.js · Express · Cloudflare Tunnel</span>
+                        <span class="live__domain">automation.byheir.com <span aria-hidden="true">↗</span></span>
+                    </a>
+                    <a class="live reveal" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="Ironlog — opens in a new tab">
+                        <span class="live__status"><span class="dot" aria-hidden="true"></span>Live · v9.0</span>
+                        <span class="live__title">Ironlog</span>
+                        <span class="live__line">Full-stack analytics PWA — unified Supabase backend, SSO, real-time sync, behavioral KPIs.</span>
+                        <span class="live__stack">React 18 · Vite 6 · Supabase · Vercel</span>
+                        <span class="live__domain">ironlog.space <span aria-hidden="true">↗</span></span>
+                    </a>
+                    <a class="live reveal" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="Partner Pulse — opens in a new tab">
+                        <span class="live__status"><span class="dot" aria-hidden="true"></span>Live</span>
+                        <span class="live__title">Partner Pulse</span>
+                        <span class="live__line">Partner relationship analytics PWA — portfolio health scoring, KPI dashboards, AI-generated executive comms.</span>
+                        <span class="live__stack">React 18 · Recharts · Cloudflare Workers</span>
+                        <span class="live__domain">partnerpulse.byheir.com <span aria-hidden="true">↗</span></span>
+                    </a>
+                </div>
+
+                <div class="subhead">
+                    <h3 class="subhead__title">Case studies</h3>
+                    <p class="subhead__hint">Decisions and tradeoffs, not just screenshots</p>
+                </div>
+                <ul class="index" data-index>
+                    <li><a class="index-row" href="pages/cowork.html" data-preview-row>
+                        <span class="index-row__kind">Case study · Live</span>
+                        <span class="index-row__title">Cowork — Autonomous Software Pipeline</span>
+                        <span class="index-row__line">16 role-specialized AI agents coordinating across 5 parallel lanes, shipping code 24/7.</span>
+                        <span class="index-row__arrow" aria-hidden="true">→</span>
+                    </a></li>
+                    <li><a class="index-row" href="pages/case-study.html" data-preview-row>
+                        <span class="index-row__kind">Case study</span>
+                        <span class="index-row__title">Operations Command Center</span>
+                        <span class="index-row__line">The decisions, KPI definitions, and information hierarchy behind the Operations Dashboard.</span>
+                        <span class="index-row__arrow" aria-hidden="true">→</span>
+                    </a></li>
+                    <li><a class="index-row" href="pages/the-builder.html" data-preview-row>
+                        <span class="index-row__kind">Case study</span>
+                        <span class="index-row__title">The Builder</span>
+                        <span class="index-row__line">Multi-stage pipelines, quality gates, and audit trails for reporting &amp; validation.</span>
+                        <span class="index-row__arrow" aria-hidden="true">→</span>
+                    </a></li>
+                    <li><a class="index-row" href="pages/sql-playground-case-study.html" data-preview-row>
+                        <span class="index-row__kind">Case study</span>
+                        <span class="index-row__title">SQL Playground · Lending KPIs</span>
+                        <span class="index-row__line">In-browser SQLite via WebAssembly, a Snowflake-shaped lending schema, and seeded patterns that reveal real lending stories.</span>
+                        <span class="index-row__arrow" aria-hidden="true">→</span>
+                    </a></li>
+                    <li><a class="index-row" href="pages/ironlog.html" data-preview-row>
+                        <span class="index-row__kind">Evidence</span>
+                        <span class="index-row__title">IronLog Analytics Ecosystem</span>
+                        <span class="index-row__line">Three PWAs on one Supabase backend — SSO, real-time sync, and product analytics.</span>
+                        <span class="index-row__arrow" aria-hidden="true">→</span>
+                    </a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ================= 04 Approach ================= -->
+        <section id="approach" class="section" aria-labelledby="approach-title" tabindex="-1">
+            <div class="wrap">
+                <header class="section__head">
+                    <p class="section__idx"><span>04</span> Approach</p>
+                    <h2 id="approach-title" class="section__title">Designed like it has to <em>pass an audit</em></h2>
+                    <p class="section__lede">
+                        I design the way I engineer: for people making high-stakes decisions under time pressure, in systems where reliability and data integrity are non-negotiable.
+                    </p>
+                </header>
+
+                <ol class="principles">
+                    <li class="principle reveal">
+                        <span class="principle__idx" aria-hidden="true">i.</span>
+                        <h3 class="principle__title">Hierarchy before decoration</h3>
+                        <p>Every screen starts from the decision it supports — the KPI, the exception, the next action — and the layout follows from that.</p>
+                        <a class="link-arrow" href="pages/case-study.html">Operations Command Center case study <span aria-hidden="true">→</span></a>
+                    </li>
+                    <li class="principle reveal">
+                        <span class="principle__idx" aria-hidden="true">ii.</span>
+                        <h3 class="principle__title">Systems, not screens</h3>
+                        <p>Five domain suites and 49 screens — collections, fraud, credit, servicing, education — built on one set of patterns: hub, queue, case, export.</p>
+                        <a class="link-arrow" href="pages/dashboard.html">Operations Dashboard <span aria-hidden="true">→</span></a>
+                    </li>
+                    <li class="principle reveal">
+                        <span class="principle__idx" aria-hidden="true">iii.</span>
+                        <h3 class="principle__title">Designed in the medium</h3>
+                        <p>I prototype in code, so what you review is what ships — real states, real data, real breakpoints. Functional demos, not mockups.</p>
+                        <a class="link-arrow" href="pages/sql-playground.html">SQL Playground <span aria-hidden="true">→</span></a>
+                    </li>
+                    <li class="principle reveal">
+                        <span class="principle__idx" aria-hidden="true">iv.</span>
+                        <h3 class="principle__title">Trust is a design material</h3>
+                        <p>Audit trails, policy citations, guardrails, and human approval are part of the interface — not something bolted on after the build.</p>
+                        <a class="link-arrow" href="pages/loanops-control-plane.html">LoanOps Agent Control Plane <span aria-hidden="true">→</span></a>
+                    </li>
+                </ol>
+
+                <div class="specimen reveal" aria-labelledby="specimen-title">
+                    <div class="specimen__intro">
+                        <h3 id="specimen-title" class="specimen__title">This page is the sample</h3>
+                        <p>One token set drives everything here — type, color, spacing, both themes. No framework, no build step. Flip the theme and watch the swatches follow.</p>
+                        <button type="button" class="btn btn--small" data-theme-toggle>Switch theme</button>
+                    </div>
+                    <div class="specimen__type">
+                        <p class="specimen__label">Type</p>
+                        <p class="specimen__serif">Instrument Serif <em>&amp; italic</em></p>
+                        <p class="specimen__sans">Inter — body copy, set for long reading at 16–18px.</p>
+                        <p class="specimen__mono">JetBrains Mono · labels &amp; data · 0123456789</p>
+                    </div>
+                    <div class="specimen__color">
+                        <p class="specimen__label">Color</p>
+                        <ul class="swatches">
+                            <li><span class="swatch swatch--bg"></span>Ground</li>
+                            <li><span class="swatch swatch--raise"></span>Surface</li>
+                            <li><span class="swatch swatch--line"></span>Rule</li>
+                            <li><span class="swatch swatch--ink3"></span>Muted</li>
+                            <li><span class="swatch swatch--ink"></span>Ink</li>
+                            <li><span class="swatch swatch--accent"></span>Signal</li>
+                        </ul>
+                    </div>
+                    <div class="specimen__parts">
+                        <p class="specimen__label">Parts</p>
+                        <div class="specimen__row">
+                            <span class="btn btn--primary btn--small">Primary</span>
+                            <span class="btn btn--small">Secondary</span>
+                            <span class="status"><span class="dot" aria-hidden="true"></span>Status</span>
+                        </div>
+                        <ul class="chips"><li>Chip</li><li>Token</li><li>Label</li></ul>
+                    </div>
                 </div>
             </div>
-            <div class="section-header">
-                <h2 id="experience-title" class="section-title">Professional experience</h2>
-                <p class="section-subtitle">
-                    Connecting strategy, engineering, and operations to deliver measurable change.
-                </p>
-            </div>
+        </section>
 
-            <div class="experience-grid">
-                <article class="experience-card" data-tour-id="experience">
-                    <div class="card-header">
-                        <div class="card-title">Lead Data Analyst</div>
-                        <div class="card-company">LendKey Technologies</div>
-                        <div class="card-date">June 2026 to present</div>
+        <!-- ================= 05 Experience ================= -->
+        <section id="experience" class="section" aria-labelledby="experience-title" tabindex="-1">
+            <div class="wrap">
+                <header class="section__head">
+                    <p class="section__idx"><span>05</span> Experience</p>
+                    <h2 id="experience-title" class="section__title">Professional <em>experience</em></h2>
+                    <p class="section__lede">
+                        Connecting strategy, engineering, and operations to deliver measurable change.
+                    </p>
+                </header>
+
+                <div class="roles">
+                <article class="role reveal" data-tour-id="experience">
+                    <div class="role__when">
+                        <p class="role__dates">June 2026 — Present</p>
+                        <p class="role__company">LendKey Technologies</p>
                     </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
+                    <div class="role__what">
+                        <h3 class="role__title">Lead Data Analyst</h3>
+                        <ul class="role__list">
                             <li>Lead analytics and data systems across a fintech lending platform, partnering with business and operations stakeholders on the reporting and tooling that drive servicing decisions.</li>
                         </ul>
                     </div>
                 </article>
-
-                <article class="experience-card">
-                    <div class="card-header">
-                        <div class="card-title">Lead Business Execution Consultant — Software Engineering &amp; Data</div>
-                        <div class="card-company">SLM Corporation (Sallie Mae Bank)</div>
-                        <div class="card-date">April 2018 to June 2026</div>
+                <article class="role reveal">
+                    <div class="role__when">
+                        <p class="role__dates">April 2018 — June 2026</p>
+                        <p class="role__company">SLM Corporation (Sallie Mae Bank)</p>
                     </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
+                    <div class="role__what">
+                        <h3 class="role__title">Lead Business Execution Consultant — Software Engineering &amp; Data</h3>
+                        <ul class="role__list role__list--cols">
                             <li>Architected and owned production systems end-to-end — an ASP.NET application on a SQL Server/Snowflake backend deployed on AWS — feeding the company-wide compliance and quality-control matrix, with hard requirements on uptime, data integrity, and audit traceability.</li>
                             <li>Led 4–6 engineers and analysts through product and platform transitions — onboarding, mentorship, work review, and raising the technical bar while staying hands-on in the code.</li>
                             <li>Partnered across Operations, Compliance, and senior leadership to translate ambiguous, high-stakes requirements into reliable systems serving 1,000+ business users across collections, fraud, compliance, and servicing.</li>
@@ -331,701 +764,141 @@
                         </ul>
                     </div>
                 </article>
-
-                <article class="experience-card">
-                    <div class="card-header">
-                        <div class="card-title">Personal Loan Specialist &amp; Collections</div>
-                        <div class="card-company">SLM Corporation (Sallie Mae Bank)</div>
-                        <div class="card-date">June 2017 to April 2018</div>
+                <article class="role reveal">
+                    <div class="role__when">
+                        <p class="role__dates">June 2017 — April 2018</p>
+                        <p class="role__company">SLM Corporation (Sallie Mae Bank)</p>
                     </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
+                    <div class="role__what">
+                        <h3 class="role__title">Personal Loan Specialist &amp; Collections</h3>
+                        <ul class="role__list">
                             <li>Started on the front line of collections and personal-loan servicing — direct exposure to the borrower-repayment, delinquency, and recovery workflows these systems exist to serve.</li>
                         </ul>
                     </div>
                 </article>
+                </div>
             </div>
         </section>
 
-        <section id="projects" class="container hud-panel" data-panel="projects" role="region" aria-labelledby="projects-title" tabindex="-1">
-            <div class="hud-panel__bar hud-only">
-                <span class="hud-panel__index" aria-hidden="true">03 / 06</span>
-                <span class="hud-panel__tag" aria-hidden="true">SECTION · PROJECTS</span>
-                <div class="hud-panel__nav">
-                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
-                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
-                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
+        <!-- ================= 06 Skills ================= -->
+        <section id="skills" class="section" aria-labelledby="skills-title" tabindex="-1">
+            <div class="wrap">
+                <header class="section__head">
+                    <p class="section__idx"><span>06</span> Skills</p>
+                    <h2 id="skills-title" class="section__title">Skills <em>and expertise</em></h2>
+                    <p class="section__lede">
+                        Blend of leadership, domain, design, and engineering skills used daily in delivery.
+                    </p>
+                </header>
+
+                <div class="spec" data-tour-id="skills">
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Product &amp; interface design</h3>
+                    <ul class="spec__items"><li>Interface design for operational tools</li><li>Dashboard &amp; data-visualization design</li><li>Design systems &amp; tokens</li><li>Responsive, mobile-first PWAs</li><li>Accessibility (keyboard, contrast, reduced motion)</li><li>Prototyping in code</li></ul>
                 </div>
-            </div>
-            <div class="section-header">
-                <h2 id="projects-title" class="section-title">Selected project experience</h2>
-                <p class="section-subtitle">
-                    Platforms and products I designed, built, and shipped end-to-end — from reporting frameworks and AI-augmented validation to full-stack analytics PWAs.
-                </p>
-            </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">BI &amp; Reporting</h3>
+                    <ul class="spec__items"><li>Power BI (advanced)</li><li>Sigma (transferable from Power BI / Looker)</li><li>Dashboard architecture</li><li>KPI standardization</li><li>Executive reporting</li><li>External / client-facing reporting</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">SQL &amp; Data</h3>
+                    <ul class="spec__items"><li>Snowflake (advanced)</li><li>T-SQL</li><li>Query optimization</li><li>Data modeling</li><li>ETL pipeline design</li><li>Data validation &amp; reconciliation</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Languages</h3>
+                    <ul class="spec__items"><li>.NET / C# (8+ yrs architecting production systems)</li><li>Python (Pandas, automation, AI tooling)</li><li>SQL</li><li>JavaScript / TypeScript (ES6+)</li><li>SAS (incl. SAS-to-Python migration)</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Engineering stack</h3>
+                    <ul class="spec__items"><li>Microservices</li><li>REST APIs</li><li>OAuth / OIDC</li><li>React / TypeScript</li><li>Node.js</li><li>PWAs / Service Workers</li><li>Full-stack architecture</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Platforms &amp; Infrastructure</h3>
+                    <ul class="spec__items"><li>AWS</li><li>Kubernetes</li><li>Terraform</li><li>GitOps</li><li>SQL Server</li><li>CI/CD (GitHub Actions, Azure DevOps)</li><li>Vercel / Cloudflare serverless</li><li>Supabase</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Domain</h3>
+                    <ul class="spec__items"><li>Servicing &amp; collections</li><li>Delinquency &amp; recovery</li><li>Cost-to-collect</li><li>Repayment performance</li><li>Lending &amp; personal loans</li><li>Fraud</li><li>Compliance reporting</li><li>Federally regulated financial services</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Leadership &amp; Delivery</h3>
+                    <ul class="spec__items"><li>Team leadership &amp; mentorship</li><li>Work review &amp; raising the technical bar</li><li>Cross-functional partnership</li><li>Roadmap planning</li><li>Requirements analysis</li><li>Agile / Scrum</li></ul>
+                </div>
+                <div class="spec__row reveal">
+                    <h3 class="spec__label">Education &amp; certifications</h3>
+                    <ul class="spec__items"><li>Bachelor degree</li><li>Business Management</li><li>Wilmington University</li></ul>
+                    <!-- TODO: add a cert item when available, e.g. "Microsoft PL-300 (Power BI)" or "Snowflake SnowPro Core" — closes the gap with cert-holding peers. -->
+                </div>
+                </div>
 
-            <div class="experience-grid">
-                <article class="experience-card" data-tour-id="projects-simplicity">
-                    <div class="card-header">
-                        <div class="card-title">Simplicity by WiseForge — Production AI Product</div>
-                        <div class="card-company">Sole architect · wiseforge.dev</div>
+                <div class="code-samples reveal" data-tour-id="code-samples">
+                    <div>
+                        <h3 class="code-samples__title">Code samples</h3>
+                        <p class="code-samples__subtitle">Bite-sized walkthroughs of the underlying stack — syntax, patterns, and a working preview on each page.</p>
                     </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
-                            <li><strong>Problem:</strong> shipping a real, revenue-ready AI product means owning far more than prompts — auth, billing, model routing, abuse prevention, and streaming UX all have to work in production.</li>
-                            <li><strong>Approach:</strong> designed, built, and deployed a Claude-powered product end-to-end solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, and Stripe subscriptions.</li>
-                            <li><strong>Decision:</strong> owned every architectural decision from provider abstraction to entitlement checks, so the product survives provider changes and scales pricing without rewrites.</li>
-                            <li><strong>Stack:</strong> Claude API, multi-provider routing, OAuth 2.0 + PKCE, Stripe, streaming APIs.</li>
-                        </ul>
-                        <p class="card-cta-row">
-                            <a class="card-cta" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer">Visit wiseforge.dev <span aria-hidden="true">↗</span></a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="experience-card" data-tour-id="projects-cowork">
-                    <div class="card-header">
-                        <div class="card-title">Cowork — Autonomous Software Pipeline</div>
-                        <div class="card-company">Sole architect · automation.byheir.com</div>
-                    </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
-                            <li><strong>Problem:</strong> &ldquo;AI-assisted coding&rdquo; workflows still require a human in the loop for spec authoring, review, merge decisions, and recovery from agent failures — the orchestration is the work.</li>
-                            <li><strong>Approach:</strong> shipped a fully autonomous pipeline of 16 role-specialized agents (spec authors, multiple reviewers, persona playtesters, vision keeper) coordinating across 5 parallel lanes, each scheduled by launchd and picking work from a domain-allocated sprint plan.</li>
-                            <li><strong>Decision:</strong> autonomy lives behind the constraints — auto-gate with 3-agent voting, daily merge caps, blocked-path allowlists, emergency-stop on consecutive reverts, and a public demo with a redaction layer over the same instance the system runs on.</li>
-                            <li><strong>Stack:</strong> Node.js, Express, vanilla JS, Tailwind, Chart.js, Bash, Python, launchd, Cloudflare Tunnel, Tailscale, Claude Code + OpenAI API.</li>
-                        </ul>
-                        <p class="card-cta-row">
-                            <a class="card-cta" href="pages/cowork.html">Read the case study <span aria-hidden="true">→</span></a>
-                            <a class="card-cta" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">Live dashboard <span aria-hidden="true">↗</span></a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="experience-card" data-tour-id="projects-partnerpulse">
-                    <div class="card-header">
-                        <div class="card-title">PartnerPulse — Partner Relationship Analytics Platform</div>
-                        <div class="card-company">Sole builder · partnerpulse.byheir.com</div>
-                    </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
-                            <li><strong>Problem:</strong> a multi-partner book of business tracked across spreadsheets, CRMs, and ad-hoc reports — no shared view of portfolio health or partner engagement.</li>
-                            <li><strong>Approach:</strong> shipped a relationship-analytics PWA with portfolio health scoring, KPI dashboards, account intelligence, and AI-generated executive comms — built solo end-to-end.</li>
-                            <li><strong>Decision:</strong> chose a zero-infrastructure serverless stack (GitHub Pages + Cloudflare Workers with secure API proxying) so the team can own the platform without standing up ops or paying for unused capacity.</li>
-                            <li><strong>Stack:</strong> React 18, Vite, Recharts, Cloudflare Workers, Claude Sonnet 4.</li>
-                        </ul>
-                        <p class="card-cta-row">
-                            <a class="card-cta" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">Visit PartnerPulse <span aria-hidden="true">↗</span></a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="experience-card" data-tour-id="projects-builder">
-                    <div class="card-header">
-                        <div class="card-title">AI-Augmented Reporting &amp; Validation Platform (The Builder)</div>
-                        <div class="card-company">Sole architect</div>
-                    </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
-                            <li><strong>Problem:</strong> reporting pipelines kept accumulating validation debt — one-off checks, ad-hoc fixes, no audit trail when downstream numbers shifted.</li>
-                            <li><strong>Approach:</strong> architected a multi-stage data-validation and report-generation platform with automated quality gates and an audit trail at every step.</li>
-                            <li><strong>Decision:</strong> wired GitHub, Supabase, and external AI APIs into a CI/CD-style release flow with branch review, change auditing, and merge controls — applying enterprise release discipline to analytics tooling.</li>
-                            <li><strong>Stack:</strong> Python, Snowflake, Supabase, GitHub Actions, AI APIs.</li>
-                        </ul>
-                        <p class="card-cta-row">
-                            <a class="card-cta" href="pages/the-builder.html">Read the case study <span aria-hidden="true">→</span></a>
-                        </p>
-                    </div>
-                </article>
-
-                <article class="experience-card" data-tour-id="projects-ironlog">
-                    <div class="card-header">
-                        <div class="card-title">IronLog Analytics Ecosystem</div>
-                        <div class="card-company">Sole designer + engineer · ironlog.space</div>
-                    </div>
-                    <div class="card-content">
-                        <ul class="achievement-list">
-                            <li><strong>Problem:</strong> tracking workouts, finances, and nutrition meant juggling disconnected apps with no shared data layer or trend visibility.</li>
-                            <li><strong>Approach:</strong> built a three-app analytics PWA suite (IronLog, FinanceLog, NutritionLog) on a unified Supabase backend with SSO and real-time data sync.</li>
-                            <li><strong>Decision:</strong> layered session-level monitoring and feature-effectiveness tracking on top so each app generates product analytics that feed back into the next iteration.</li>
-                            <li><strong>Stack:</strong> React 18, Vite 6, Supabase, Vercel, Cloudflare R2, PWA.</li>
-                        </ul>
-                        <p class="card-cta-row">
-                            <a class="card-cta" href="pages/ironlog.html">Read the evidence <span aria-hidden="true">→</span></a>
-                            <a class="card-cta" href="https://ironlog.space" target="_blank" rel="noopener noreferrer">Visit IronLog <span aria-hidden="true">↗</span></a>
-                        </p>
-                    </div>
-                </article>
+                    <ul class="code-samples__list">
+                        <li><a href="pages/html.html">HTML</a></li>
+                        <li><a href="pages/css.html">CSS</a></li>
+                        <li><a href="pages/javascript.html">JavaScript</a></li>
+                        <li><a href="pages/backend.html">Backend</a></li>
+                        <li><a href="pages/cicd.html">CI/CD</a></li>
+                    </ul>
+                </div>
             </div>
         </section>
 
-        <section id="work" class="container hud-panel" data-panel="work" role="region" aria-labelledby="work-title" tabindex="-1">
-            <div class="hud-panel__bar hud-only">
-                <span class="hud-panel__index" aria-hidden="true">04 / 06</span>
-                <span class="hud-panel__tag" aria-hidden="true">SECTION · BUILDS</span>
-                <div class="hud-panel__nav">
-                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
-                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
-                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
-                </div>
-            </div>
-            <div class="section-header">
-                <h2 id="work-title" class="section-title">Selected work</h2>
-                <p class="section-subtitle">
-                    Three groups: case studies that walk through real decisions, demos and UI explorations built to show range, and external apps live in production.
-                </p>
-            </div>
+        <!-- ================= 07 Contact ================= -->
+        <section id="contact" class="section section--contact" aria-labelledby="contact-title" tabindex="-1">
+            <div class="wrap">
+                <div class="contact" data-tour-id="contact">
+                    <p class="section__idx"><span>07</span> Contact</p>
+                    <h2 id="contact-title" class="contact__title">Let's connect and build something <em>impactful</em></h2>
+                    <p class="contact__lede">
+                        I'm looking for engineering-leadership and senior engineering roles in servicing &amp; collections systems, lending platforms, and regulated fintech.
+                        <a href="mailto:byheirw@gmail.com">Email me</a> or
+                        <a href="assets/byheir-wise-resume.pdf" download>download my resume</a>.
+                    </p>
 
-            <h3 class="work-row-title">Case studies</h3>
-            <div class="work-grid">
-                <a class="work-card work-card--wide work-card--featured" href="pages/cowork.html" aria-label="Cowork — autonomous software pipeline case study">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/cowork.svg" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole architect</span>
-                            <span class="work-card__status work-card__status--live">Case study · Live</span>
+                    <dl class="contact__grid">
+                        <div class="contact__item">
+                            <dt>Email</dt>
+                            <dd><a href="mailto:byheirw@gmail.com">byheirw@gmail.com</a></dd>
                         </div>
-                        <h4 class="work-card__title">Cowork — Autonomous Software Pipeline</h4>
-                        <p class="work-card__tagline">16 role-specialized AI agents coordinating across 5 parallel lanes, shipping code 24/7. Real-time control dashboard at <strong>automation.byheir.com</strong>.</p>
-                        <ul class="work-card__chips">
-                            <li>Node.js</li><li>Vanilla JS</li><li>Bash</li><li>launchd</li><li>Cloudflare Tunnel</li><li>Claude Code</li><li>Multi-agent</li>
-                        </ul>
-                        <span class="work-card__cta">Read case study →</span>
-                    </div>
-                </a>
-
-                <a class="work-card work-card--wide" href="pages/case-study.html" aria-label="Operations Command Center case study">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/operations-command-center.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Program lead</span>
-                            <span class="work-card__status work-card__status--case">Case study</span>
+                        <div class="contact__item">
+                            <dt>Location</dt>
+                            <dd>Bear, Delaware (open to hybrid or remote) <span class="contact__time" data-local-time hidden></span></dd>
                         </div>
-                        <h4 class="work-card__title">Operations Command Center</h4>
-                        <p class="work-card__tagline">Cross-functional operations platform — dashboards, alerts, workflow orchestration.</p>
-                        <ul class="work-card__chips">
-                            <li>Power BI</li><li>Snowflake</li><li>Azure DevOps</li><li>Process design</li>
-                        </ul>
-                        <span class="work-card__cta">Read case study →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/the-builder.html" aria-label="The Builder — AI-augmented reporting and validation platform case study">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/the-builder.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole architect</span>
-                            <span class="work-card__status work-card__status--case">Case study</span>
+                        <div class="contact__item">
+                            <dt>LinkedIn</dt>
+                            <dd><a href="https://www.linkedin.com/in/byheir-wise-976253265" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in a new tab)">LinkedIn profile <span aria-hidden="true">↗</span></a></dd>
                         </div>
-                        <h4 class="work-card__title">The Builder</h4>
-                        <p class="work-card__tagline">AI-augmented reporting &amp; validation platform — multi-stage pipelines, quality gates, audit trails.</p>
-                        <ul class="work-card__chips">
-                            <li>Python</li><li>Snowflake</li><li>Supabase</li><li>GitHub Actions</li><li>AI APIs</li>
-                        </ul>
-                        <span class="work-card__cta">Read case study →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/sql-playground-case-study.html" aria-label="SQL Playground — Lending KPIs case study">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/sql-playground.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--case">Case study</span>
+                        <div class="contact__item">
+                            <dt>Resume</dt>
+                            <dd><a href="assets/byheir-wise-resume.pdf" download aria-label="Download resume as PDF">Download PDF <span aria-hidden="true">↓</span></a></dd>
                         </div>
-                        <h4 class="work-card__title">SQL Playground · Lending KPIs</h4>
-                        <p class="work-card__tagline">In-browser SQLite via WebAssembly — Snowflake-shaped lending schema, 21 challenges, seeded patterns that reveal real lending stories.</p>
-                        <ul class="work-card__chips">
-                            <li>SQLite WASM</li><li>sql.js</li><li>CodeMirror</li><li>Chart.js</li><li>Window functions</li>
-                        </ul>
-                        <span class="work-card__cta">Read case study →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/power-bi-dashboards.html" aria-label="Power BI dashboards showcase">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/power-bi-dashboards.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">BI lead</span>
-                            <span class="work-card__status work-card__status--case">Showcase</span>
-                        </div>
-                        <h4 class="work-card__title">Power BI Dashboards</h4>
-                        <p class="work-card__tagline">Executive reporting, KPI standardization, reconciliation — Power BI &amp; Snowflake patterns.</p>
-                        <ul class="work-card__chips">
-                            <li>Power BI</li><li>Snowflake</li><li>KPI design</li><li>Executive reporting</li>
-                        </ul>
-                        <span class="work-card__cta">View showcase →</span>
-                    </div>
-                </a>
-            </div>
-
-            <h3 class="work-row-title" id="demo">Demos &amp; UI explorations <span class="work-row-title__hint">(built for this portfolio to show range)</span></h3>
-            <div class="work-grid">
-                <a class="work-card work-card--wide" href="pages/loanops-control-plane.html" aria-label="LoanOps Agent Control Plane demo" data-tour-id="work-loanops">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/loanops-control-plane.svg" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">LoanOps Agent Control Plane</h4>
-                        <p class="work-card__tagline">A regulated-servicing AI copilot — explainable case analyst with policy citations, a guardrails engine that blocks forbidden actions, MCP-style tool connectors, a tamper-evident audit timeline, human-in-the-loop approval, and a Snowflake-style data-validation layer. Runs in-browser on synthetic data.</p>
-                        <ul class="work-card__chips">
-                            <li>React 18</li><li>AI guardrails</li><li>MCP tools</li><li>Audit trail</li><li>FDCPA / SCRA</li><li>Data validation</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card work-card--wide" href="pages/dashboard.html" aria-label="Operations Dashboard demo" data-tour-id="work-demo">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/operations-dashboard.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">UI exploration</span>
-                        </div>
-                        <h4 class="work-card__title">Operations Dashboard</h4>
-                        <p class="work-card__tagline">Command center hub — surfaces SLA risk, alerts, and workload with the Credit Underwriting, Fraud Risk, and Collections Toolkit suites linked as features.</p>
-                        <ul class="work-card__chips">
-                            <li>Credit Underwriting</li><li>Fraud Risk</li><li>Collections Toolkit</li><li>HTML</li><li>CSS</li><li>JS</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/case-study.html" aria-label="Operations Command Center case study">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/case-study-brief.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Program lead</span>
-                            <span class="work-card__status work-card__status--case">Case study</span>
-                        </div>
-                        <h4 class="work-card__title">Operations Command Center — Case Study</h4>
-                        <p class="work-card__tagline">The decisions, KPI definitions, and information hierarchy behind the Operations Dashboard demo.</p>
-                        <ul class="work-card__chips">
-                            <li>Power BI</li><li>Snowflake</li><li>KPI design</li><li>Process</li>
-                        </ul>
-                        <span class="work-card__cta">Read case study →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/refi-intelligence.html" aria-label="Refi Intelligence portfolio demo" data-tour-id="work-refi">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/refi-intelligence.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">Refi Intelligence</h4>
-                        <p class="work-card__tagline">Refi portfolio analytics — cohort heatmaps, funnel drop-off, savings distribution across 5,000 synthetic apps with AI-augmented insights.</p>
-                        <ul class="work-card__chips">
-                            <li>React 18</li><li>Recharts</li><li>Cohort analysis</li><li>Funnel</li><li>Anthropic API</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/sql-playground.html" aria-label="SQL Playground — in-browser SQLite demo" data-tour-id="work-sql">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/sql-playground.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">Live demo</span>
-                        </div>
-                        <h4 class="work-card__title">SQL Playground</h4>
-                        <p class="work-card__tagline">Run real SQL against a synthetic lending portfolio in your browser — 21 challenges across Risk, Funnel, Portfolio, Behavior, Vintage, Pricing.</p>
-                        <ul class="work-card__chips">
-                            <li>SQLite WASM</li><li>sql.js</li><li>CodeMirror</li><li>Chart.js</li><li>Zero backend</li>
-                        </ul>
-                        <span class="work-card__cta">Open playground →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/banking.html" aria-label="Banking PWA demo" data-tour-id="work-banking">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/banking.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">Live PWA demo</span>
-                        </div>
-                        <h4 class="work-card__title">Banking PWA</h4>
-                        <p class="work-card__tagline">iOS-style banking — biometric login, transfers, round-ups, push notifications.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>PWA</li><li>Service Worker</li><li>Web Manifest</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/fraud-risk.html" aria-label="Fraud Risk UI exploration" data-tour-id="work-fraud">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/fraud-risk.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">UI exploration</span>
-                        </div>
-                        <h4 class="work-card__title">Fraud Risk</h4>
-                        <p class="work-card__tagline">Real-time fraud monitoring — alert triage, link analysis, identity verification.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>Dashboards</li><li>Risk ops</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/credit-underwriting.html" aria-label="Credit Underwriting UI exploration" data-tour-id="work-credit">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/credit-underwriting.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">UI exploration</span>
-                        </div>
-                        <h4 class="work-card__title">Credit Underwriting</h4>
-                        <p class="work-card__tagline">Decision engine, document processing, manual review, adverse-action workflow.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>Workflow</li><li>Compliance</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-
-                <a class="work-card" href="pages/collections-toolkit.html" aria-label="Collections Toolkit UI exploration" data-tour-id="work-collections">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/collections-toolkit.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">UI exploration</span>
-                        </div>
-                        <h4 class="work-card__title">Collections Toolkit</h4>
-                        <p class="work-card__tagline">End-to-end suite — segmentation, dialer, comms hub, QA, and compliance.</p>
-                        <ul class="work-card__chips">
-                            <li>HTML</li><li>CSS</li><li>JS</li><li>Contact center</li><li>QA</li>
-                        </ul>
-                        <span class="work-card__cta">View demo →</span>
-                    </div>
-                </a>
-            </div>
-
-            <h3 class="work-row-title">External apps <span class="work-row-title__hint">(live in production · open in a new tab)</span></h3>
-            <div class="work-grid work-grid--external" data-tour-id="work-external">
-                <a class="work-card work-card--external" href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="Cowork dashboard — opens in a new tab">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/cowork.svg" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole architect</span>
-                            <span class="work-card__status work-card__status--live">Live · 24/7</span>
-                        </div>
-                        <h4 class="work-card__title">Cowork Dashboard <span class="work-card__ext" aria-hidden="true">↗</span></h4>
-                        <p class="work-card__tagline">Read-only public view of the autonomous pipeline running on my Mac — sprint board, autonomous-decision audit log, live phase progress.</p>
-                        <ul class="work-card__chips">
-                            <li>Node.js</li><li>Express</li><li>Vanilla JS</li><li>Tailwind</li><li>Cloudflare Tunnel</li><li>launchd</li>
-                        </ul>
-                        <span class="work-card__cta">automation.byheir.com →</span>
-                    </div>
-                </a>
-
-                <a class="work-card work-card--external" href="https://ironlog.space" target="_blank" rel="noopener noreferrer" aria-label="Ironlog — opens in a new tab">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/ironlog.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole designer + engineer</span>
-                            <span class="work-card__status work-card__status--live">Live · v9.0</span>
-                        </div>
-                        <h4 class="work-card__title">Ironlog <span class="work-card__ext" aria-hidden="true">↗</span></h4>
-                        <p class="work-card__tagline">Full-stack analytics PWA — unified Supabase backend, SSO, real-time sync, behavioral KPIs.</p>
-                        <ul class="work-card__chips">
-                            <li>React 18</li><li>Vite 6</li><li>PWA</li><li>Vercel</li><li>Supabase</li><li>Cloudflare R2</li>
-                        </ul>
-                        <span class="work-card__cta">ironlog.space →</span>
-                    </div>
-                </a>
-
-                <a class="work-card work-card--external" href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer" aria-label="Partner Pulse — opens in a new tab">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/partner-pulse.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole builder</span>
-                            <span class="work-card__status work-card__status--live">Live</span>
-                        </div>
-                        <h4 class="work-card__title">Partner Pulse <span class="work-card__ext" aria-hidden="true">↗</span></h4>
-                        <p class="work-card__tagline">Partner relationship analytics PWA — portfolio health scoring, KPI dashboards, AI-generated executive comms.</p>
-                        <ul class="work-card__chips">
-                            <li>React 18</li><li>Vite 5</li><li>Tailwind</li><li>Recharts</li><li>Claude Sonnet 4</li><li>Cloudflare Workers</li>
-                        </ul>
-                        <span class="work-card__cta">partnerpulse.byheir.com →</span>
-                    </div>
-                </a>
-
-                <a class="work-card work-card--external" href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer" aria-label="Wiseforge — opens in a new tab">
-                    <div class="work-card__media">
-                        <img src="assets/work-thumbs/wiseforge.png" alt="" loading="lazy" width="1200" height="675">
-                    </div>
-                    <div class="work-card__body">
-                        <div class="work-card__meta">
-                            <span class="work-card__role">Sole architect</span>
-                            <span class="work-card__status work-card__status--live">Live · Flagship</span>
-                        </div>
-                        <h4 class="work-card__title">Simplicity by WiseForge <span class="work-card__ext" aria-hidden="true">↗</span></h4>
-                        <p class="work-card__tagline">Production Claude-powered AI product shipped solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, Stripe subscriptions.</p>
-                        <ul class="work-card__chips">
-                            <li>Claude API</li><li>OAuth 2.0 + PKCE</li><li>Stripe</li><li>Streaming APIs</li><li>Multi-provider routing</li>
-                        </ul>
-                        <span class="work-card__cta">wiseforge.dev →</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <section id="skills" class="container hud-panel" data-panel="skills" role="region" aria-labelledby="skills-title" tabindex="-1">
-            <div class="hud-panel__bar hud-only">
-                <span class="hud-panel__index" aria-hidden="true">05 / 06</span>
-                <span class="hud-panel__tag" aria-hidden="true">SECTION · SKILLS</span>
-                <div class="hud-panel__nav">
-                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
-                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
-                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
-                </div>
-            </div>
-            <div class="section-header">
-                <h2 id="skills-title" class="section-title">Skills and expertise</h2>
-                <p class="section-subtitle">
-                    Blend of leadership, domain, and engineering skills used daily in delivery.
-                </p>
-            </div>
-
-            <div class="skills-container" data-tour-id="skills">
-                <article class="skill-card">
-                    <h3 class="skill-header">BI &amp; Reporting</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">Power BI (advanced)</span>
-                        <span class="skill-pill">Sigma (transferable from Power BI / Looker)</span>
-                        <span class="skill-pill">Dashboard architecture</span>
-                        <span class="skill-pill">KPI standardization</span>
-                        <span class="skill-pill">Executive reporting</span>
-                        <span class="skill-pill">External / client-facing reporting</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">SQL &amp; Data</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">Snowflake (advanced)</span>
-                        <span class="skill-pill">T-SQL</span>
-                        <span class="skill-pill">Query optimization</span>
-                        <span class="skill-pill">Data modeling</span>
-                        <span class="skill-pill">ETL pipeline design</span>
-                        <span class="skill-pill">Data validation &amp; reconciliation</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">Languages</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">.NET / C# (8+ yrs architecting production systems)</span>
-                        <span class="skill-pill">Python (Pandas, automation, AI tooling)</span>
-                        <span class="skill-pill">SQL</span>
-                        <span class="skill-pill">JavaScript / TypeScript (ES6+)</span>
-                        <span class="skill-pill">SAS (incl. SAS-to-Python migration)</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">Engineering stack</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">Microservices</span>
-                        <span class="skill-pill">REST APIs</span>
-                        <span class="skill-pill">OAuth / OIDC</span>
-                        <span class="skill-pill">React / TypeScript</span>
-                        <span class="skill-pill">Node.js</span>
-                        <span class="skill-pill">PWAs / Service Workers</span>
-                        <span class="skill-pill">Full-stack architecture</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">Platforms &amp; Infrastructure</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">AWS</span>
-                        <span class="skill-pill">Kubernetes</span>
-                        <span class="skill-pill">Terraform</span>
-                        <span class="skill-pill">GitOps</span>
-                        <span class="skill-pill">SQL Server</span>
-                        <span class="skill-pill">CI/CD (GitHub Actions, Azure DevOps)</span>
-                        <span class="skill-pill">Vercel / Cloudflare serverless</span>
-                        <span class="skill-pill">Supabase</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">Domain</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">Servicing &amp; collections</span>
-                        <span class="skill-pill">Delinquency &amp; recovery</span>
-                        <span class="skill-pill">Cost-to-collect</span>
-                        <span class="skill-pill">Repayment performance</span>
-                        <span class="skill-pill">Lending &amp; personal loans</span>
-                        <span class="skill-pill">Fraud</span>
-                        <span class="skill-pill">Compliance reporting</span>
-                        <span class="skill-pill">Federally regulated financial services</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">Leadership &amp; Delivery</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">Team leadership &amp; mentorship</span>
-                        <span class="skill-pill">Work review &amp; raising the technical bar</span>
-                        <span class="skill-pill">Cross-functional partnership</span>
-                        <span class="skill-pill">Roadmap planning</span>
-                        <span class="skill-pill">Requirements analysis</span>
-                        <span class="skill-pill">Agile / Scrum</span>
-                    </div>
-                </article>
-
-                <article class="skill-card">
-                    <h3 class="skill-header">Education &amp; certifications</h3>
-                    <div class="skill-pills">
-                        <span class="skill-pill">Bachelor degree</span>
-                        <span class="skill-pill">Business Management</span>
-                        <span class="skill-pill">Wilmington University</span>
-                        <!-- TODO: add a cert pill when available, e.g. "Microsoft PL-300 (Power BI)" or "Snowflake SnowPro Core" — closes the gap with cert-holding peers. -->
-                    </div>
-                </article>
-            </div>
-
-            <div class="code-samples" data-tour-id="code-samples">
-                <h3 class="code-samples__title">Code samples</h3>
-                <p class="code-samples__subtitle">Bite-sized walkthroughs of the underlying stack — syntax, patterns, and a working preview on each page.</p>
-                <ul class="code-samples__list">
-                    <li><a href="pages/html.html">HTML</a></li>
-                    <li><a href="pages/css.html">CSS</a></li>
-                    <li><a href="pages/javascript.html">JavaScript</a></li>
-                    <li><a href="pages/backend.html">Backend</a></li>
-                    <li><a href="pages/cicd.html">CI/CD</a></li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="contact" class="container hud-panel" data-panel="contact" role="region" aria-labelledby="contact-title" tabindex="-1">
-            <div class="hud-panel__bar hud-only">
-                <span class="hud-panel__index" aria-hidden="true">06 / 06</span>
-                <span class="hud-panel__tag" aria-hidden="true">SECTION · CONTACT</span>
-                <div class="hud-panel__nav">
-                    <button type="button" class="hud-panel__btn" data-hud-prev>◂ Prev</button>
-                    <button type="button" class="hud-panel__btn" data-hud-next>Next ▸</button>
-                    <button type="button" class="hud-panel__btn hud-panel__btn--close" data-hud-close aria-label="Close panel, return to hub">Close ✕</button>
-                </div>
-            </div>
-            <div class="contact-section" data-tour-id="contact">
-                <h2 id="contact-title" class="contact-title">Let's connect and build something impactful</h2>
-                <p class="contact-subtitle">
-                    I'm looking for engineering-leadership and senior engineering roles in servicing &amp; collections systems, lending platforms, and regulated fintech.
-                    <a href="mailto:byheirw@gmail.com">Email me</a> or
-                    <a href="assets/byheir-wise-resume.pdf" download>download my resume</a>.
-                </p>
-
-                <div class="contact-info-grid">
-                    <div class="contact-item">
-                        <div class="contact-label">Email</div>
-                        <div class="contact-value">
-                            <a href="mailto:byheirw@gmail.com">byheirw@gmail.com</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-label">Location</div>
-                        <div class="contact-value">
-                            Bear, Delaware (open to hybrid or remote)
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-label">LinkedIn</div>
-                        <div class="contact-value">
-                            <a href="https://www.linkedin.com/in/byheir-wise-976253265" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in a new tab)">LinkedIn profile</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-label">Resume</div>
-                        <div class="contact-value">
-                            <a href="assets/byheir-wise-resume.pdf" download aria-label="Download resume as PDF">Download PDF</a>
-                        </div>
-                    </div>
+                    </dl>
                 </div>
             </div>
         </section>
     </main>
-    </div><!-- /.hud-layout -->
 
-    <!-- ================= HUD: command console ================= -->
-    <div class="hud-console hud-only" data-hud-console>
-        <ul id="hud-command-results" class="hud-console__results" role="listbox" aria-label="Command results" hidden></ul>
-        <form class="hud-console__form" role="search" data-hud-command-form autocomplete="off">
-            <span class="hud-console__prompt" aria-hidden="true">&gt;_</span>
-            <label class="hud-sr-only" for="hud-command">Command</label>
-            <input id="hud-command" class="hud-console__input" type="text" role="combobox" autocomplete="off" spellcheck="false"
-                   placeholder="type a command — skills, sql, cowork, resume…"
-                   aria-autocomplete="list" aria-controls="hud-command-results" aria-expanded="false">
-            <kbd class="hud-console__hint" aria-hidden="true">/</kbd>
-        </form>
-    </div>
-
-    <footer>
-        <p>Byheir Wise · Engineering Leader · Servicing &amp; Collections Systems · Regulated Fintech</p>
-        <p>Portfolio built using semantic HTML, responsive CSS, and light JavaScript.</p>
+    <footer class="site-footer">
+        <div class="wrap site-footer__inner">
+            <p>Byheir Wise · Engineering Leader · Servicing &amp; Collections Systems · Regulated Fintech</p>
+            <p>Designed and built by hand — semantic HTML, responsive CSS, and light JavaScript.</p>
+        </div>
     </footer>
 
-    <script>
-    /* Conditional vendor loader: the HUD gets three.js + the scene; classic view
-       gets GSAP + ScrollTrigger + motion.js. Neither view pays for the other. */
-    (function () {
-        var hud = document.documentElement.classList.contains('hud');
-        var srcs = hud
-            ? ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 'assets/hud-scene.js?v=1']
-            : ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
-               'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
-               'assets/motion.js'];
-        srcs.forEach(function (src) {
-            var s = document.createElement('script');
-            s.src = src;
-            s.async = false;
-            document.body.appendChild(s);
-        });
-    })();
-    </script>
-    <script src="assets/hud.js?v=1"></script>
-    <script src="assets/script.js?v=hud1"></script>
+    <!-- Hover previews for the case-study index: one per row, in the same order -->
+    <div class="preview" data-preview-el aria-hidden="true">
+        <img src="assets/work/cowork.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/case-study.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/the-builder.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/sql-case.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/ironlog.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+    </div>
+
+    <script src="assets/home.js?v=2" defer></script>
+    <script src="assets/script.js?v=home1" defer></script>
 </body>
 </html>
