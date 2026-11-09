@@ -425,12 +425,8 @@ class ScrollAnimations {
     }
 
     // Skip entirely when the user prefers reduced motion (the CSS reset also
-    // neutralizes transitions, but skipping avoids a needless opacity flash),
-    // or when GSAP's ScrollTrigger choreography owns the reveals.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-        document.documentElement.classList.contains('gsap-motion') ||
-        document.documentElement.classList.contains('hud')) {
-      // html.hud: the homepage HUD animates panels itself (assets/hud.css)
+    // neutralizes transitions, but skipping avoids a needless opacity flash).
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
@@ -488,13 +484,10 @@ class ScrollAnimations {
 
 // ============================================================================
 // STAT COUNTER — counts the hero "7+ yrs" numeral up when it scrolls into view
-// (vanilla fallback; motion.js runs a GSAP version when available)
 // ============================================================================
 
 class StatCounter {
   constructor() {
-    if (document.documentElement.classList.contains('gsap-motion')) return;
-
     const counters = safeQueryAll('.stat-count');
     if (!counters.length) return;
 
@@ -642,15 +635,17 @@ function initSmoothScroll() {
       if (!target) return;
 
       e.preventDefault();
-      
+
+      // Move focus for accessibility first, without letting focus() scroll —
+      // an un-prevented focus scroll cancels the smooth scroll below and
+      // leaves tall sections parked at the wrong offset.
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+
       target.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
-
-      // Update focus for accessibility
-      target.setAttribute('tabindex', '-1');
-      target.focus();
       
       // Update URL without jumping
       history.pushState(null, null, href);
@@ -1317,14 +1312,78 @@ class SiteTour {
             "Production-grade data models and dashboards",
             "Ship the supporting apps when no team exists"
           ] },
-        { page: '/', id: 'experience',
-          title: "Eight-plus years in regulated fintech — with the receipts",
-          body: "Measurable impact, shipped systems. The bullets behind the headline are highlighted here.",
+        { page: '/', id: 'work-loanops',
+          title: "LoanOps Agent Control Plane — regulated-servicing AI copilot",
+          body: "Explainable case analyst with policy citations, a guardrails engine that blocks forbidden actions, MCP-style tool connectors, a tamper-evident audit timeline, and human-in-the-loop approval. Runs in-browser on synthetic data.",
           details: [
-            "1,000+ users on my reporting pipeline",
-            "60% manual reporting eliminated via Python automation",
-            "AI-augmented Snowflake testing platform — solo build"
-          ] },
+            "Guardrails engine blocks forbidden actions",
+            "Tamper-evident (hash-chained) audit timeline",
+            "Snowflake-style data-validation layer"
+          ],
+          detailHref: '/pages/loanops-control-plane.html', detailLabel: "Open LoanOps demo" },
+        { page: '/', id: 'work-banking',
+          title: "Banking PWA — installable, biometric, offline-ready",
+          body: "iOS-style banking surface with biometric login, transfers, round-ups, and push notifications — built as a full PWA.",
+          details: [
+            "Service Worker + Web Manifest for installability",
+            "Biometric auth flow and push notification hooks",
+            "End-to-end UX, not just static screens"
+          ],
+          detailHref: '/pages/banking.html', detailLabel: "Open Banking PWA" },
+        { page: '/', id: 'work-demo',
+          title: "Operations Dashboard — click in and explore",
+          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites.",
+          details: [
+            "Saved-view chips filter every panel without reload",
+            "Exec brief, live workload, KPI quickview",
+            "Working demo of how I think about ops tooling"
+          ],
+          deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
+        { page: '/', id: 'work-refi',
+          title: "Refi Intelligence — portfolio analytics demo",
+          body: "A React + Recharts analytics build over 5,000 synthetic refi applications — cohort heatmaps, funnel drop-off, savings distribution, and AI-augmented narrative.",
+          details: [
+            "Cohort table, funnel, and savings charts in one view",
+            "Compare mode toggles 7-day vs 30-day side-by-side",
+            "Bring-your-own-key Anthropic integration for narrative"
+          ],
+          detailHref: '/pages/refi-intelligence.html', detailLabel: "Open Refi Intelligence" },
+        { page: '/', id: 'work-sql',
+          title: "SQL Playground — real SQL, in the browser",
+          body: "SQLite compiled to WebAssembly with a Snowflake-shaped lending schema. ~1,700 loans, ~28k payments, seeded patterns that reveal vintage drift, channel skew, and FICO-driven loss curves.",
+          details: [
+            "21 challenges across Risk, Funnel, Portfolio, Behavior, Vintage, Pricing",
+            "Hard prompts use window functions and multi-CTE constructs",
+            "Single file, zero backend — works offline once cached"
+          ],
+          detailHref: '/pages/sql-playground.html', detailLabel: "Open SQL Playground" },
+        { page: '/', id: 'work-fraud',
+          title: "Fraud Risk — real-time alert triage",
+          body: "Risk-ops UI for monitoring fraud alerts, link analysis between actors, and identity verification.",
+          details: [
+            "Alert triage queue with severity weighting",
+            "Link analysis surfaces relationships between cases",
+            "Built to mirror real fraud-ops workflows"
+          ],
+          detailHref: '/pages/fraud-risk.html', detailLabel: "Open Fraud Risk" },
+        { page: '/', id: 'work-credit',
+          title: "Credit Underwriting — decision engine UI",
+          body: "Application decisioning with document processing, manual review, and adverse-action workflow.",
+          details: [
+            "Decision engine output with overrides",
+            "Document upload + manual review queue",
+            "Adverse-action notice flow under compliance constraints"
+          ],
+          detailHref: '/pages/credit-underwriting.html', detailLabel: "Open Credit Underwriting" },
+        { page: '/', id: 'work-collections',
+          title: "Collections Toolkit — end-to-end ops suite",
+          body: "Segmentation, dialer, comms hub, QA, and compliance — the full collections workflow in one UI.",
+          details: [
+            "Account segmentation and prioritization",
+            "Outbound dialer + omnichannel comms hub",
+            "QA scoring and compliance guardrails"
+          ],
+          detailHref: '/pages/collections-toolkit.html', detailLabel: "Open Collections Toolkit" },
         { page: '/', id: 'projects-simplicity',
           title: "Simplicity by WiseForge — production AI product",
           body: "Designed, built, and deployed a Claude-powered product end-to-end solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, and Stripe subscriptions.",
@@ -1361,78 +1420,6 @@ class SiteTour {
             "Live in production at ironlog.space"
           ],
           detailHref: 'https://ironlog.space', detailLabel: "Visit IronLog", detailExternal: true },
-        { page: '/', id: 'work-demo',
-          title: "Operations Dashboard — click in and explore",
-          body: "A clickable command-center hub linking the Credit Underwriting, Fraud Risk, and Collections Toolkit suites.",
-          details: [
-            "Saved-view chips filter every panel without reload",
-            "Exec brief, live workload, KPI quickview",
-            "Working demo of how I think about ops tooling"
-          ],
-          deepDive: { mode: 'dashboardDeepDive', label: "Walk me through the dashboard →" } },
-        { page: '/', id: 'work-loanops',
-          title: "LoanOps Agent Control Plane — regulated-servicing AI copilot",
-          body: "Explainable case analyst with policy citations, a guardrails engine that blocks forbidden actions, MCP-style tool connectors, a tamper-evident audit timeline, and human-in-the-loop approval. Runs in-browser on synthetic data.",
-          details: [
-            "Guardrails engine blocks forbidden actions",
-            "Tamper-evident (hash-chained) audit timeline",
-            "Snowflake-style data-validation layer"
-          ],
-          detailHref: '/pages/loanops-control-plane.html', detailLabel: "Open LoanOps demo" },
-        { page: '/', id: 'work-refi',
-          title: "Refi Intelligence — portfolio analytics demo",
-          body: "A React + Recharts analytics build over 5,000 synthetic refi applications — cohort heatmaps, funnel drop-off, savings distribution, and AI-augmented narrative.",
-          details: [
-            "Cohort table, funnel, and savings charts in one view",
-            "Compare mode toggles 7-day vs 30-day side-by-side",
-            "Bring-your-own-key Anthropic integration for narrative"
-          ],
-          detailHref: '/pages/refi-intelligence.html', detailLabel: "Open Refi Intelligence" },
-        { page: '/', id: 'work-sql',
-          title: "SQL Playground — real SQL, in the browser",
-          body: "SQLite compiled to WebAssembly with a Snowflake-shaped lending schema. ~1,700 loans, ~28k payments, seeded patterns that reveal vintage drift, channel skew, and FICO-driven loss curves.",
-          details: [
-            "21 challenges across Risk, Funnel, Portfolio, Behavior, Vintage, Pricing",
-            "Hard prompts use window functions and multi-CTE constructs",
-            "Single file, zero backend — works offline once cached"
-          ],
-          detailHref: '/pages/sql-playground.html', detailLabel: "Open SQL Playground" },
-        { page: '/', id: 'work-banking',
-          title: "Banking PWA — installable, biometric, offline-ready",
-          body: "iOS-style banking surface with biometric login, transfers, round-ups, and push notifications — built as a full PWA.",
-          details: [
-            "Service Worker + Web Manifest for installability",
-            "Biometric auth flow and push notification hooks",
-            "End-to-end UX, not just static screens"
-          ],
-          detailHref: '/pages/banking.html', detailLabel: "Open Banking PWA" },
-        { page: '/', id: 'work-fraud',
-          title: "Fraud Risk — real-time alert triage",
-          body: "Risk-ops UI for monitoring fraud alerts, link analysis between actors, and identity verification.",
-          details: [
-            "Alert triage queue with severity weighting",
-            "Link analysis surfaces relationships between cases",
-            "Built to mirror real fraud-ops workflows"
-          ],
-          detailHref: '/pages/fraud-risk.html', detailLabel: "Open Fraud Risk" },
-        { page: '/', id: 'work-credit',
-          title: "Credit Underwriting — decision engine UI",
-          body: "Application decisioning with document processing, manual review, and adverse-action workflow.",
-          details: [
-            "Decision engine output with overrides",
-            "Document upload + manual review queue",
-            "Adverse-action notice flow under compliance constraints"
-          ],
-          detailHref: '/pages/credit-underwriting.html', detailLabel: "Open Credit Underwriting" },
-        { page: '/', id: 'work-collections',
-          title: "Collections Toolkit — end-to-end ops suite",
-          body: "Segmentation, dialer, comms hub, QA, and compliance — the full collections workflow in one UI.",
-          details: [
-            "Account segmentation and prioritization",
-            "Outbound dialer + omnichannel comms hub",
-            "QA scoring and compliance guardrails"
-          ],
-          detailHref: '/pages/collections-toolkit.html', detailLabel: "Open Collections Toolkit" },
         { page: '/', id: 'work-external',
           title: "Four live apps in production",
           body: "Each opens in a new tab so you don't lose your place in the tour.",
@@ -1441,6 +1428,14 @@ class SiteTour {
             "IronLog — analytics PWA suite",
             "PartnerPulse — partner relationship analytics",
             "Simplicity by WiseForge — production Claude-powered AI product"
+          ] },
+        { page: '/', id: 'experience',
+          title: "Eight-plus years in regulated fintech — with the receipts",
+          body: "Measurable impact, shipped systems. The bullets behind the headline are highlighted here.",
+          details: [
+            "1,000+ users on my reporting pipeline",
+            "60% manual reporting eliminated via Python automation",
+            "AI-augmented Snowflake testing platform — solo build"
           ] },
         { page: '/', id: 'skills',
           title: "BI · SQL · Full-stack",
@@ -1478,14 +1473,6 @@ class SiteTour {
             "7 stops · ~60 seconds",
             "Skip or finish anytime"
           ] },
-        { page: '/', id: 'experience',
-          title: "The receipts",
-          body: "Eight-plus years of compliance-grade delivery, with measurable outcomes.",
-          details: [
-            "1,000+ users on my reporting",
-            "60% manual reporting eliminated via Python",
-            "AI-augmented Snowflake testing platform — solo build"
-          ] },
         { page: '/', id: 'projects-partnerpulse',
           title: "Solo-shipped, in production",
           body: "Three platforms architected and shipped end-to-end. Discovery to deploy. No team.",
@@ -1501,6 +1488,14 @@ class SiteTour {
             "IronLog (PWA suite)",
             "PartnerPulse (analytics)",
             "Wiseforge (chat-to-deploy)"
+          ] },
+        { page: '/', id: 'experience',
+          title: "The receipts",
+          body: "Eight-plus years of compliance-grade delivery, with measurable outcomes.",
+          details: [
+            "1,000+ users on my reporting",
+            "60% manual reporting eliminated via Python",
+            "AI-augmented Snowflake testing platform — solo build"
           ] },
         { page: '/', id: 'skills',
           title: "Senior IC across BI · SQL · Full-stack",
@@ -2307,9 +2302,6 @@ class SiteTour {
       return;
     }
 
-    // HUD homepage: open the holographic panel that contains the target first
-    // (assets/hud.js). No-op everywhere else.
-    if (typeof window.hudRevealTarget === 'function') window.hudRevealTarget(target);
     this.scrollTargetIntoView(target);
     this.waitForScrollIdle(target, () => this.placeAroundTarget(target));
   }
@@ -2318,8 +2310,6 @@ class SiteTour {
   // On phones the tooltip is pinned to the bottom 12px, so centering the
   // target hides it behind the tooltip — push it to the upper third instead.
   scrollTargetIntoView(target) {
-    // html.hud: hudRevealTarget already scrolled the panel's own container
-    if (document.documentElement.classList.contains('hud')) return;
     const behavior = this.reduceMotion ? 'auto' : 'smooth';
     const isMobile = window.innerWidth <= 640;
     const rect = target.getBoundingClientRect();
@@ -2463,7 +2453,7 @@ function init() {
     // Initialize scroll animations
     new ScrollAnimations();
 
-    // Initialize hero stat counter (vanilla fallback when GSAP is absent)
+    // Initialize stat counters
     new StatCounter();
 
     // Initialize 3D tilt on work cards (desktop pointers only)
