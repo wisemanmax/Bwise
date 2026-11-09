@@ -40,6 +40,11 @@ This is the source for my portfolio. Every interface in it — 76 pages across c
     <td><b>Simplicity by WiseForge</b> · <a href="https://www.wiseforge.dev">wiseforge.dev</a><br><sub>Production Claude-powered AI product shipped solo · streaming APIs, OAuth 2.0 + PKCE, multi-provider routing, Stripe</sub></td>
     <td colspan="3"><b>IronLog</b> · <a href="https://ironlog.space">ironlog.space</a><br><sub>Analytics PWA suite on one Supabase backend · SSO, real-time sync · sole designer + engineer</sub></td>
   </tr>
+  <tr>
+    <td><a href="https://partnerpulse.byheir.com"><img src="assets/work/partnerpulse-desktop.webp" alt="PartnerPulse — portfolio dashboard"></a></td>
+    <td><a href="https://partnerpulse.byheir.com"><img src="assets/work/partnerpulse-phone.webp" alt="PartnerPulse on a phone"></a></td>
+    <td colspan="2"><b>PartnerPulse</b> · <a href="https://partnerpulse.byheir.com">partnerpulse.byheir.com</a><br><sub>Partner relationship analytics PWA · portfolio health scoring, KPI dashboards, AI-generated executive comms</sub></td>
+  </tr>
 </table>
 
 ## Selected interfaces
