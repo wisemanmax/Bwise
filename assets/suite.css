@@ -1,0 +1,782 @@
+/* ============================================================================
+   Domain suites — one shared skin for Collections, Credit Underwriting and
+   Fraud Risk.
+
+   Each suite page keeps its own layout CSS (inline or assets/*-detail.css).
+   This file loads after it and restates the visual layer once: neutral
+   ground, white surfaces, hairline rules, the site's type (Instrument Serif /
+   Inter / JetBrains Mono) and a single accent per suite, chosen by the
+   data-suite attribute on <html>.
+
+   Selectors are prefixed with html[data-suite] so they outrank the page
+   rules they replace without needing !important.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   Tokens
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] {
+    color-scheme: light;
+
+    --s-ground: #f4f1ea;
+    --s-surface: #ffffff;
+    --s-surface-2: #faf9f5;
+    --s-ink: #15151a;
+    --s-ink-2: #45454b;
+    --s-ink-3: #6e6d70;
+    --s-line: rgba(21, 21, 26, 0.12);
+    --s-line-strong: rgba(21, 21, 26, 0.26);
+    --s-shadow: 0 1px 2px rgba(21, 21, 26, 0.05);
+    --s-shadow-lift: 0 10px 28px -14px rgba(21, 21, 26, 0.28);
+
+    --s-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --s-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --s-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    /* Collections is the default accent */
+    --s-accent: #3f4bd8;
+    --s-accent-dark: #2d37ab;
+    --s-accent-light: #7982ea;
+}
+
+html[data-suite="credit"] {
+    --s-accent: #177a48;
+    --s-accent-dark: #0f5a34;
+    --s-accent-light: #3fa46d;
+}
+
+html[data-suite="fraud"] {
+    --s-accent: #b42318;
+    --s-accent-dark: #8a1a11;
+    --s-accent-light: #d95d52;
+}
+
+/* Feed the pages' own variables from the shared tokens, so every rule that
+   already reads them follows the new palette. */
+html[data-suite] {
+    --primary: var(--s-accent);
+    --primary-dark: var(--s-accent-dark);
+    --primary-light: var(--s-accent-light);
+    --info: var(--s-accent);
+    --dark: var(--s-ink);
+    --text: var(--s-ink-2);
+    --text-light: var(--s-ink-3);
+    --border: var(--s-line);
+    --bg-light: var(--s-ground);
+    --shadow: var(--s-shadow);
+    --success: #177a48;
+    --warning: #b45309;
+    --danger: #b42318;
+    --s-tint: color-mix(in srgb, var(--s-accent) 9%, #fff);
+    --s-tint-strong: color-mix(in srgb, var(--s-accent) 16%, #fff);
+}
+
+/* ----------------------------------------------------------------------------
+   Ground + type
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] body {
+    background: var(--s-ground);
+    color: var(--s-ink-2);
+    font-family: var(--s-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+html[data-suite] ::selection {
+    background: var(--s-accent);
+    color: #fff;
+}
+
+html[data-suite] :focus-visible {
+    outline: 2px solid var(--s-accent);
+    outline-offset: 2px;
+}
+
+html[data-suite] .skip-link {
+    position: absolute;
+    left: -999px;
+    top: 12px;
+    z-index: 1000000;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: var(--s-ink);
+    color: #fff;
+    font: 600 14px/1.3 var(--s-body);
+    text-decoration: none;
+    box-shadow: none;
+}
+
+html[data-suite] .skip-link:focus {
+    left: 12px;
+}
+
+/* ----------------------------------------------------------------------------
+   Header bar
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .header {
+    padding: 12px clamp(16px, 3vw, 40px);
+    border-bottom: 1px solid var(--s-line);
+    background: var(--s-ground);
+    background: color-mix(in srgb, var(--s-ground) 88%, transparent);
+    -webkit-backdrop-filter: saturate(1.3) blur(14px);
+    backdrop-filter: saturate(1.3) blur(14px);
+    box-shadow: none;
+}
+
+html[data-suite] .header__back {
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: var(--s-ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+html[data-suite] .header__back:hover {
+    background: rgba(21, 21, 26, 0.06);
+    color: var(--s-ink);
+    transform: none;
+}
+
+html[data-suite] .header__title {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: currentColor;
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+}
+
+/* ----------------------------------------------------------------------------
+   Buttons
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .btn {
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-family: var(--s-body);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    box-shadow: none;
+    transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+
+html[data-suite] .btn-primary {
+    border-color: var(--s-accent);
+    background: var(--s-accent);
+    color: #fff;
+}
+
+html[data-suite] .btn-primary:hover {
+    border-color: var(--s-accent-dark);
+    background: var(--s-accent-dark);
+    transform: none;
+}
+
+html[data-suite] .btn-secondary,
+html[data-suite] .btn-ghost {
+    border: 1px solid var(--s-line-strong);
+    background: transparent;
+    color: var(--s-ink);
+}
+
+html[data-suite] .btn-secondary:hover,
+html[data-suite] .btn-ghost:hover {
+    border-color: var(--s-ink);
+    background: var(--s-ink);
+    color: #fff;
+}
+
+/* ----------------------------------------------------------------------------
+   Page header / hero
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .page-header,
+html[data-suite] .hero {
+    padding: clamp(24px, 3.2vw, 40px);
+    border: 1px solid var(--s-line);
+    border-radius: 14px;
+    background: var(--s-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--s-shadow);
+}
+
+html[data-suite] .page-header::before,
+html[data-suite] .hero::before {
+    height: 3px;
+    background: var(--s-accent);
+}
+
+html[data-suite] .page-header__title,
+html[data-suite] .hero__title {
+    margin-bottom: 12px;
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -0.018em;
+    line-height: 1.02;
+}
+
+html[data-suite] .page-header__title strong,
+html[data-suite] .hero__title strong {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: currentColor;
+    color: var(--s-accent);
+    font-style: italic;
+    font-weight: 400;
+}
+
+html[data-suite] .page-header__subtitle,
+html[data-suite] .hero__subtitle {
+    max-width: 78ch;
+    color: var(--s-ink-2);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+}
+
+html[data-suite] .page-header__meta,
+html[data-suite] .hero__meta {
+    gap: 10px 28px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--s-line);
+}
+
+html[data-suite] .meta-item,
+html[data-suite] .hero__meta-item {
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+}
+
+/* ----------------------------------------------------------------------------
+   Section + card titles
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .section-title {
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: clamp(1.625rem, 1.3rem + 1vw, 2.125rem);
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    line-height: 1.1;
+    text-shadow: none;
+}
+
+html[data-suite] .section-title strong {
+    color: var(--s-ink-3);
+    font-style: italic;
+    font-weight: 400;
+}
+
+html[data-suite] .card-title {
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--s-line);
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+}
+
+html[data-suite] .card-title strong {
+    color: var(--s-ink-3);
+    font-style: italic;
+    font-weight: 400;
+}
+
+html[data-suite] .card-subtitle,
+html[data-suite] .chart-title {
+    color: var(--s-ink);
+    font-family: var(--s-body);
+    font-weight: 600;
+}
+
+/* ----------------------------------------------------------------------------
+   Surfaces — every card is the same flat sheet
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .card,
+html[data-suite] .ops-strip__card,
+html[data-suite] .stat-card,
+html[data-suite] .kpi-card,
+html[data-suite] .summary-card,
+html[data-suite] .meta-card,
+html[data-suite] .chart-container,
+html[data-suite] .chart-card,
+html[data-suite] .performance-card,
+html[data-suite] .info-panel,
+html[data-suite] .split-card,
+html[data-suite] .table-container {
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    background: var(--s-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--s-shadow);
+}
+
+html[data-suite] .stat-card,
+html[data-suite] .kpi-card,
+html[data-suite] .performance-card,
+html[data-suite] .summary-card {
+    transition: border-color 0.16s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+html[data-suite] .stat-card:hover,
+html[data-suite] .kpi-card:hover,
+html[data-suite] .performance-card:hover,
+html[data-suite] .summary-card:hover,
+html[data-suite] .card:hover {
+    border-color: var(--s-line-strong);
+    box-shadow: var(--s-shadow-lift);
+    transform: translateY(-2px);
+}
+
+html[data-suite] .card:hover {
+    transform: none;
+    box-shadow: var(--s-shadow);
+}
+
+/* Labels: small, mono, uppercase */
+html[data-suite] .ops-strip__label,
+html[data-suite] .kpi-label,
+html[data-suite] .detail-item__label,
+html[data-suite] .performance-card__title,
+html[data-suite] .meta-card__label,
+html[data-suite] .summary-card__title {
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+html[data-suite] .ops-strip__value {
+    color: var(--s-ink);
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* Numbers: mono, ink, no gradient fill */
+html[data-suite] .stat-card__value,
+html[data-suite] .kpi-value,
+html[data-suite] .performance-card__value,
+html[data-suite] .detail-item__value,
+html[data-suite] .meta-card__value {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: currentColor;
+    color: var(--s-ink);
+    font-family: var(--s-mono);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+html[data-suite] .stat-card__value {
+    font-size: 2.25rem;
+    line-height: 1.15;
+}
+
+html[data-suite] .stat-card {
+    padding: 24px;
+}
+
+html[data-suite] .stat-card::before {
+    height: 2px;
+    background: var(--s-accent);
+}
+
+html[data-suite] .stat-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+html[data-suite] .stat-card:hover .stat-card__icon {
+    transform: none;
+}
+
+html[data-suite] .stat-card__label,
+html[data-suite] .kpi-meta,
+html[data-suite] .ops-strip__meta {
+    color: var(--s-ink-3);
+}
+
+html[data-suite] .stat-card__trend,
+html[data-suite] .badge,
+html[data-suite] .pill,
+html[data-suite] .tool-card__badge,
+html[data-suite] .status-pill,
+html[data-suite] .chip {
+    border-radius: 999px;
+    font-family: var(--s-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+html[data-suite] .stat-card__trend.up,
+html[data-suite] .badge.success {
+    background: rgba(23, 122, 72, 0.1);
+    color: #177a48;
+}
+
+html[data-suite] .stat-card__trend.down,
+html[data-suite] .badge.danger {
+    background: rgba(180, 35, 24, 0.09);
+    color: #b42318;
+}
+
+html[data-suite] .badge.warning {
+    background: rgba(180, 83, 9, 0.1);
+    color: #b45309;
+}
+
+html[data-suite] .badge.info,
+html[data-suite] .tool-card__badge {
+    background: var(--s-tint);
+    color: var(--s-accent);
+}
+
+/* ----------------------------------------------------------------------------
+   Tabs + tool cards
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .tabs {
+    border-bottom: 1px solid var(--s-line);
+}
+
+html[data-suite] .tab {
+    margin-bottom: -1px;
+    padding: 10px 16px;
+    border-bottom: 2px solid transparent;
+    color: var(--s-ink-3);
+    font-family: var(--s-body);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+html[data-suite] .tab:hover {
+    background: transparent;
+    color: var(--s-ink);
+}
+
+html[data-suite] .tab.active {
+    border-bottom-color: var(--s-accent);
+    color: var(--s-ink);
+}
+
+html[data-suite] .tool-card {
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    background: var(--s-surface);
+    transition: border-color 0.16s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+html[data-suite] .tool-card::before {
+    display: none;
+}
+
+html[data-suite] .tool-card:hover {
+    border-color: var(--s-accent);
+    box-shadow: var(--s-shadow-lift);
+    transform: translateY(-2px);
+}
+
+html[data-suite] .tool-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--s-tint);
+    color: var(--s-accent);
+    font-size: 18px;
+}
+
+html[data-suite] .tool-card:hover .tool-card__icon {
+    background: var(--s-accent);
+    color: #fff;
+    transform: none;
+}
+
+html[data-suite] .tool-card__title {
+    color: var(--s-ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+}
+
+html[data-suite] .tool-card__stats {
+    border-top: 1px solid var(--s-line);
+    font-family: var(--s-mono);
+    font-size: 11px;
+}
+
+html[data-suite] .tool-action {
+    border: 1px solid var(--s-line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--s-ink);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+html[data-suite] .tool-action:hover {
+    border-color: var(--s-accent);
+    background: var(--s-accent);
+    color: #fff;
+}
+
+/* ----------------------------------------------------------------------------
+   Tables, lists, progress, timeline
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] table,
+html[data-suite] .table,
+html[data-suite] .data-table {
+    border-radius: 12px;
+    background: var(--s-surface);
+    box-shadow: none;
+}
+
+html[data-suite] th,
+html[data-suite] .table thead,
+html[data-suite] .table th {
+    background: var(--s-surface-2);
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+html[data-suite] td {
+    border-top: 1px solid var(--s-line);
+    color: var(--s-ink-2);
+    font-size: 14px;
+}
+
+html[data-suite] tr:hover,
+html[data-suite] .table tbody tr:hover {
+    background: var(--s-tint);
+}
+
+html[data-suite] thead tr:hover {
+    background: transparent;
+}
+
+html[data-suite] .list-item {
+    border-color: var(--s-line);
+}
+
+html[data-suite] .progress-bar {
+    height: 6px;
+    background: rgba(21, 21, 26, 0.08);
+}
+
+html[data-suite] .progress-bar__fill {
+    background: var(--s-accent);
+}
+
+html[data-suite] .activity-timeline::before {
+    width: 1px;
+    background: var(--s-line-strong);
+}
+
+html[data-suite] .activity-item {
+    border: 1px solid var(--s-line);
+    border-left: 2px solid var(--s-accent);
+    border-radius: 10px;
+    background: var(--s-surface);
+}
+
+html[data-suite] .activity-item::before {
+    left: -30px;
+    width: 9px;
+    height: 9px;
+    border: 2px solid var(--s-ground);
+    box-shadow: none;
+}
+
+html[data-suite] .activity-item:hover {
+    background: var(--s-surface-2);
+    transform: none;
+}
+
+html[data-suite] .activity-item:hover::before {
+    transform: none;
+}
+
+/* ----------------------------------------------------------------------------
+   Forms + toolbars (sub-pages and new-case flows)
+   ---------------------------------------------------------------------------- */
+
+html[data-suite] .toolbar,
+html[data-suite] .filter-grid,
+html[data-suite] .filter-summary {
+    border-color: var(--s-line);
+}
+
+html[data-suite] .search-box,
+html[data-suite] .filter-group select,
+html[data-suite] .form-group input,
+html[data-suite] .form-group select,
+html[data-suite] .form-group textarea {
+    border: 1px solid var(--s-line-strong);
+    border-radius: 8px;
+    background: var(--s-surface);
+    color: var(--s-ink);
+    font-family: var(--s-body);
+}
+
+html[data-suite] .form-group input:focus,
+html[data-suite] .form-group select:focus,
+html[data-suite] .form-group textarea:focus,
+html[data-suite] .filter-group select:focus,
+html[data-suite] .search-box:focus-within {
+    border-color: var(--s-accent);
+    box-shadow: 0 0 0 3px var(--s-tint-strong);
+    outline: none;
+}
+
+html[data-suite] .form-group label,
+html[data-suite] .filter-group label {
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+html[data-suite] .filter-pill {
+    border: 1px solid var(--s-line);
+    border-radius: 999px;
+    background: var(--s-surface);
+    color: var(--s-ink-2);
+    font-family: var(--s-mono);
+    font-size: 11px;
+}
+
+html[data-suite] .info-banner,
+html[data-suite] .alert-box {
+    border: 1px solid color-mix(in srgb, var(--s-accent) 28%, transparent);
+    border-radius: 10px;
+    background: var(--s-tint);
+    color: var(--s-ink);
+    box-shadow: none;
+}
+
+html[data-suite] .toast {
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    box-shadow: var(--s-shadow-lift);
+}
+
+@media (max-width: 768px) {
+    html[data-suite] .header__title {
+        font-size: 1.25rem;
+    }
+
+    html[data-suite] .stat-card__value {
+        font-size: 1.875rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html[data-suite] *,
+    html[data-suite] *::before,
+    html[data-suite] *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    html[data-suite] body {
+        background: #fff;
+    }
+
+    html[data-suite] .header {
+        position: static;
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   Refinements
+   ---------------------------------------------------------------------------- */
+
+/* Pills sit at their natural height instead of stretching to the row */
+html[data-suite] .stat-card__trend,
+html[data-suite] .tool-card__badge {
+    align-self: flex-start;
+    padding: 4px 10px;
+    line-height: 1.5;
+}
+
+/* Tool actions were revealed on hover only, which hid them on touch screens
+   and left a blank band in every card. Show them. */
+html[data-suite] .tool-card__actions {
+    opacity: 1;
+    transform: none;
+}
+
+/* Wide data tables scroll inside themselves on small screens instead of
+   pushing the whole page sideways. */
+@media (max-width: 768px) {
+    html[data-suite] .data-table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Phones: header actions and toolbars wrap, and anything wide inside a card
+   scrolls within the card rather than widening the page. */
+@media (max-width: 768px) {
+    html[data-suite] .header {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    html[data-suite] .header__actions,
+    html[data-suite] .toolbar,
+    html[data-suite] .toolbar__left,
+    html[data-suite] .toolbar__right {
+        flex-wrap: wrap;
+        min-width: 0;
+    }
+
+    html[data-suite] .toolbar > *,
+    html[data-suite] .toolbar__left > *,
+    html[data-suite] .toolbar__right > * {
+        max-width: 100%;
+    }
+
+    html[data-suite] .card,
+    html[data-suite] .table-container {
+        overflow-x: auto;
+    }
+}
