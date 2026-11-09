@@ -594,31 +594,31 @@
                     <p class="subhead__hint">Decisions and tradeoffs, not just screenshots</p>
                 </div>
                 <ul class="index" data-index>
-                    <li><a class="index-row" href="pages/cowork.html" data-preview="assets/work/cowork.webp">
+                    <li><a class="index-row" href="pages/cowork.html" data-preview-row>
                         <span class="index-row__kind">Case study · Live</span>
                         <span class="index-row__title">Cowork — Autonomous Software Pipeline</span>
                         <span class="index-row__line">16 role-specialized AI agents coordinating across 5 parallel lanes, shipping code 24/7.</span>
                         <span class="index-row__arrow" aria-hidden="true">→</span>
                     </a></li>
-                    <li><a class="index-row" href="pages/case-study.html" data-preview="assets/work/case-study.webp">
+                    <li><a class="index-row" href="pages/case-study.html" data-preview-row>
                         <span class="index-row__kind">Case study</span>
                         <span class="index-row__title">Operations Command Center</span>
                         <span class="index-row__line">The decisions, KPI definitions, and information hierarchy behind the Operations Dashboard.</span>
                         <span class="index-row__arrow" aria-hidden="true">→</span>
                     </a></li>
-                    <li><a class="index-row" href="pages/the-builder.html" data-preview="assets/work/the-builder.webp">
+                    <li><a class="index-row" href="pages/the-builder.html" data-preview-row>
                         <span class="index-row__kind">Case study</span>
                         <span class="index-row__title">The Builder</span>
                         <span class="index-row__line">Multi-stage pipelines, quality gates, and audit trails for reporting &amp; validation.</span>
                         <span class="index-row__arrow" aria-hidden="true">→</span>
                     </a></li>
-                    <li><a class="index-row" href="pages/sql-playground-case-study.html" data-preview="assets/work/sql-case.webp">
+                    <li><a class="index-row" href="pages/sql-playground-case-study.html" data-preview-row>
                         <span class="index-row__kind">Case study</span>
                         <span class="index-row__title">SQL Playground · Lending KPIs</span>
                         <span class="index-row__line">In-browser SQLite via WebAssembly, a Snowflake-shaped lending schema, and seeded patterns that reveal real lending stories.</span>
                         <span class="index-row__arrow" aria-hidden="true">→</span>
                     </a></li>
-                    <li><a class="index-row" href="pages/ironlog.html" data-preview="assets/work/ironlog.webp">
+                    <li><a class="index-row" href="pages/ironlog.html" data-preview-row>
                         <span class="index-row__kind">Evidence</span>
                         <span class="index-row__title">IronLog Analytics Ecosystem</span>
                         <span class="index-row__line">Three PWAs on one Supabase backend — SSO, real-time sync, and product analytics.</span>
@@ -870,9 +870,16 @@
         </div>
     </footer>
 
-    <div class="preview" data-preview-el aria-hidden="true"><img alt="" width="1280" height="800"></div>
+    <!-- Hover previews for the case-study index: one per row, in the same order -->
+    <div class="preview" data-preview-el aria-hidden="true">
+        <img src="assets/work/cowork.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/case-study.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/the-builder.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/sql-case.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+        <img src="assets/work/ironlog.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" hidden>
+    </div>
 
-    <script src="assets/home.js?v=1" defer></script>
+    <script src="assets/home.js?v=2" defer></script>
     <script src="assets/script.js?v=home1" defer></script>
 </body>
 </html>

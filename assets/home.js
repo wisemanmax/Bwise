@@ -157,7 +157,8 @@
   var index = $('[data-index]');
   var preview = $('[data-preview-el]');
   if (index && preview && finePointer) {
-    var previewImg = $('img', preview);
+    // Each row's screenshot is already in the markup; hovering just unhides it
+    var previewImgs = $$('img', preview);
     var move = function (e) {
       var w = preview.offsetWidth, h = preview.offsetHeight;
       var x = Math.min(e.clientX + 28, window.innerWidth - w - 16);
@@ -165,9 +166,9 @@
       preview.style.setProperty('--x', x + 'px');
       preview.style.setProperty('--y', y + 'px');
     };
-    $$('[data-preview]', index).forEach(function (row) {
+    $$('[data-preview-row]', index).forEach(function (row, i) {
       row.addEventListener('pointerenter', function (e) {
-        previewImg.src = row.getAttribute('data-preview');
+        previewImgs.forEach(function (img, n) { img.hidden = n !== i; });
         move(e);
         preview.classList.add('is-on');
       });
