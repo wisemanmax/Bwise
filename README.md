@@ -2,9 +2,9 @@
 
 # Byheir Wise
 
-**Engineering leader · Servicing & collections systems · Regulated fintech**
+**AI Engineering & Automation · Financial Operations · Regulated Data Environments**
 
-I design, build, and lead the systems behind lending, servicing, and collections.
+Hands-on AI engineer who builds the workflows himself, from requirements to production.
 
 [**www.byheir.com**](https://www.byheir.com) &nbsp;·&nbsp; [For hiring managers](https://www.byheir.com/pages/for-hiring-managers.html) &nbsp;·&nbsp; [Resume (PDF)](assets/byheir-wise-resume.pdf) &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/byheir-wise-976253265)
 
@@ -37,8 +37,8 @@ This is the source for my portfolio. Every interface in it — 76 pages across c
     <td width="15%"><a href="https://ironlog.space"><img src="assets/work/ironlog-body.webp" alt="IronLog — body tracking"></a></td>
   </tr>
   <tr>
-    <td><b>Simplicity by WiseForge</b> · <a href="https://www.wiseforge.dev">wiseforge.dev</a><br><sub>Production Claude-powered AI product shipped solo · streaming APIs, OAuth 2.0 + PKCE, multi-provider routing, Stripe</sub></td>
-    <td colspan="3"><b>IronLog</b> · <a href="https://ironlog.space">ironlog.space</a><br><sub>Analytics PWA suite on one Supabase backend · SSO, real-time sync · sole designer + engineer</sub></td>
+    <td><b>Simplicity by WiseForge</b> · <a href="https://www.wiseforge.dev">wiseforge.dev</a><br><sub>Production AI product shipped solo · streaming APIs, OAuth 2.0 + PKCE, multi-model routing, Stripe billing</sub></td>
+    <td colspan="3"><b>IronLog</b> · <a href="https://ironlog.space">ironlog.space</a><br><sub>Offline-first fitness PWA for a gym community of about 1,000 users · five-app ecosystem on one Supabase backend</sub></td>
   </tr>
   <tr>
     <td><a href="https://partnerpulse.byheir.com"><img src="assets/work/partnerpulse-desktop.webp" alt="PartnerPulse — portfolio dashboard"></a></td>
@@ -176,7 +176,7 @@ Where to look when you want proof of a specific claim.
 | Project | Stack | Live | Evidence in this repo |
 |---|---|---|---|
 | Cowork Dashboard | Node.js, Express, vanilla JS, Tailwind, Cloudflare Tunnel, launchd | [automation.byheir.com](https://automation.byheir.com) | `pages/cowork.html` |
-| IronLog Analytics Ecosystem | React 18, Vite, Supabase, Vercel, Cloudflare R2, PWA | [ironlog.space](https://ironlog.space) | `pages/ironlog.html` |
+| IronLog | React 18, Vite, Supabase, Vercel, Cloudflare R2, PWA | [ironlog.space](https://ironlog.space) | `pages/ironlog.html` |
 | PartnerPulse | React 18, Vite, Recharts, Cloudflare Workers, Claude Sonnet | [partnerpulse.byheir.com](https://partnerpulse.byheir.com) | — |
 
 ### Engineering practice pages
@@ -199,12 +199,15 @@ Where to look when you want proof of a specific claim.
 
 | Resume claim | Where to verify |
 |---|---|
-| Power BI / Snowflake reporting across collections, fraud, compliance, servicing | Domain suites (above) + `pages/power-bi-dashboards.html` |
-| Reduced manual reporting effort by 60% via Python automation | `pages/the-builder.html` (validation/release flow) |
-| AI-augmented testing platform across six categories | `pages/the-builder.html`, `pages/ai-search.html` |
-| Full-stack work in Python / TypeScript / React | `pages/ironlog.html` (IronLog evidence), PartnerPulse, `pages/refi-intelligence.html` |
-| IaC & CI/CD discipline for analytics tooling | `pages/cicd.html` |
-| Adoption / training / KPI standardization | `pages/case-study.html` (Operations Command Center) |
+| 24/7 pipeline of 16 LLM agents across 5 lanes; 3-reviewer unanimous gate, daily cap, emergency stop | `pages/cowork.html` · [automation.byheir.com](https://automation.byheir.com) |
+| 0% of auto-approved changes reverted; productive capacity 9.2% → 30%+ after 8 fixes | `pages/cowork.html` (methodology and what is not claimed) |
+| LoanOps Agent Control Plane — guardrails, policy citations, human approval, tamper-evident audit | `pages/loanops-control-plane.html` |
+| Simplicity — production AI product shipped solo | [wiseforge.dev](https://www.wiseforge.dev) |
+| IronLog — offline-first fitness PWA, about 1,000 users, five-app ecosystem on one Supabase backend | `pages/ironlog.html` · [ironlog.space](https://ironlog.space) |
+| The Builder — multi-stage generation, multi-pass review, automated fixes and deployment | `pages/the-builder.html` |
+| Production .NET/C# systems on SQL Server and Snowflake, deployed with AWS, Kubernetes, Terraform | `pages/backend.html`, `pages/cicd.html`, `pages/compliance-matrix.html` (patterns; the systems themselves are internal) |
+| SAS-to-Python pipeline and AI tooling that cut manual reporting effort 60% | `pages/sas-jobs.html` · methodology on `pages/for-hiring-managers.html` |
+| Power BI and Snowflake reporting for 1,000+ business users | `pages/power-bi-dashboards.html`, `pages/sql-playground-case-study.html`, `pages/case-study.html` |
 
 ---
 
@@ -223,3 +226,4 @@ External projects linked from the work section use React 18 + Vite + Supabase / 
 - Site: [www.byheir.com](https://www.byheir.com)
 - Email: [byheirw@gmail.com](mailto:byheirw@gmail.com)
 - LinkedIn: [byheir-wise](https://www.linkedin.com/in/byheir-wise-976253265)
+- GitHub: [wisemanmax](https://github.com/wisemanmax)

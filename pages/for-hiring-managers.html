@@ -83,29 +83,39 @@
       </div>
       <div class="kpi-grid">
         <div class="kpi-card">
+          <div class="kpi-card__number">7 yrs</div>
+          <div class="kpi-card__label">Engineering inside a federally regulated bank</div>
+          <div class="kpi-card__note">Sallie Mae Bank, Mar 2019 – Jun 2026: servicing, collections and fraud systems. On the collections floor before that, from Jun 2017.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">16</div>
+          <div class="kpi-card__label">LLM agents in one autonomous pipeline</div>
+          <div class="kpi-card__note">Cowork: role-specialized agents across 5 parallel lanes, running 24/7. <a href="cowork.html">Case study →</a></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">0%</div>
+          <div class="kpi-card__label">Auto-approved changes reverted</div>
+          <div class="kpi-card__note">Across Cowork&rsquo;s controlled ramp, with every decision&rsquo;s rationale logged. Methodology below.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-card__number">9.2% → 30%+</div>
+          <div class="kpi-card__label">Productive capacity recovered</div>
+          <div class="kpi-card__note">After 8 ranked fixes from a failure audit of the pipeline&rsquo;s own logs. Methodology below.</div>
+        </div>
+        <div class="kpi-card">
           <div class="kpi-card__number">60%</div>
           <div class="kpi-card__label">Reduction in manual reporting effort</div>
-          <div class="kpi-card__note">Recurring data pulls, transformations, and report generation moved to Python automation. Methodology below.</div>
+          <div class="kpi-card__note">AI-powered documentation and test-automation tooling plus a SAS-to-Python conversion pipeline. Methodology below.</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-card__number">1,000+</div>
-          <div class="kpi-card__label">Business users supported</div>
-          <div class="kpi-card__note">Power BI &amp; SQL reporting across collections, fraud, compliance, servicing.</div>
+          <div class="kpi-card__label">Business users served</div>
+          <div class="kpi-card__note">Power BI and Snowflake reporting backed by shared metric definitions, data-quality gates and change controls.</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-card__number">8+ yrs</div>
-          <div class="kpi-card__label">Regulated fintech</div>
-          <div class="kpi-card__note">Sallie Mae Bank (2017–2026) · LendKey Technologies (2026–present) · lending, servicing &amp; collections.</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-card__number">6</div>
-          <div class="kpi-card__label">AI-generated validation categories</div>
-          <div class="kpi-card__note">The Builder generates Snowflake test cases across completeness, uniqueness, referential integrity, range/value, freshness, reconciliation.</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-card__number">3</div>
-          <div class="kpi-card__label">Production PWAs on a unified backend</div>
-          <div class="kpi-card__note">IronLog, FinanceLog, NutritionLog · solo build, Supabase + Vercel + Cloudflare R2.</div>
+          <div class="kpi-card__number">~1,000</div>
+          <div class="kpi-card__label">Users on IronLog</div>
+          <div class="kpi-card__note">An offline-first fitness PWA for a gym community, built and run solo. <a href="ironlog.html">Evidence →</a></div>
         </div>
         <div class="kpi-card">
           <div class="kpi-card__number">21</div>
@@ -133,75 +143,60 @@
           </thead>
           <tbody>
             <tr>
-              <td data-label="Claim">Own end-to-end Power BI &amp; SQL reporting across collections, fraud, compliance, servicing — supporting 1,000+ users.</td>
-              <td data-label="Verify">
-                <a href="power-bi-dashboards.html">Power BI Dashboards</a> ·
-                <a href="collections-toolkit.html">Collections</a> ·
-                <a href="fraud-risk.html">Fraud</a> ·
-                <a href="compliance-matrix.html">Compliance</a> ·
-                <a href="servicing-cexp.html">Servicing</a>
-              </td>
+              <td data-label="Claim">Built and operate a 24/7 pipeline of 16 role-specialized LLM agents across 5 parallel lanes on Claude Code and the OpenAI API.</td>
+              <td data-label="Verify"><a href="cowork.html">Cowork case study</a> · <a href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">live dashboard ↗</a></td>
             </tr>
             <tr>
-              <td data-label="Claim">Write &amp; optimize advanced Snowflake SQL powering executive dashboards, reconciliation, and operational analytics.</td>
-              <td data-label="Verify">
-                <a href="sql-playground-case-study.html">SQL Playground case study</a> ·
-                <a href="sql-playground.html">Live playground</a> (21 challenges, window functions)
-              </td>
+              <td data-label="Claim">Designed the control layer: 3 reviewer agents vote independently; a change ships only with unanimous approval, passing checks and room under a daily cap; an emergency stop freezes it after 2 human reversals in 24 hours.</td>
+              <td data-label="Verify"><a href="cowork.html">Cowork case study</a> — auto-gate, daily cap and emergency-stop sections.</td>
             </tr>
             <tr>
-              <td data-label="Claim">Translate ambiguous reporting needs into scalable BI solutions, standardized KPI definitions, documented frameworks.</td>
-              <td data-label="Verify">
-                <a href="case-study.html">Operations Command Center case study</a> — KPI definitions, information hierarchy, decision log.
-              </td>
+              <td data-label="Claim">0% of auto-approved changes were reverted during the controlled ramp, with every decision&rsquo;s rationale logged for audit.</td>
+              <td data-label="Verify"><a href="cowork.html">Cowork case study</a> — &ldquo;Auto-gate revert rate&rdquo;, with what is not claimed. Methodology below.</td>
             </tr>
             <tr>
-              <td data-label="Claim">Reduced manual reporting effort by 60% via Python automation.</td>
-              <td data-label="Verify">
-                <a href="the-builder.html">The Builder case study</a> — pipeline architecture &amp; release flow. Methodology in the section below.
-              </td>
+              <td data-label="Claim">Classified recurring failures from structured logs, then ranked and shipped 8 fixes, lifting productive capacity from 9.2% to 30%+.</td>
+              <td data-label="Verify"><a href="cowork.html">Cowork case study</a> — &ldquo;Capacity utilization recovered&rdquo;. Methodology below.</td>
             </tr>
             <tr>
-              <td data-label="Claim">Built &amp; maintain data pipelines integrating Python, Snowflake, SQL — automated documentation &amp; QA workflows.</td>
-              <td data-label="Verify">
-                <a href="the-builder.html">The Builder</a> · <a href="cicd.html">CI/CD discipline</a> · <a href="sas-jobs.html">SAS jobs</a>
-              </td>
+              <td data-label="Claim">LoanOps Agent Control Plane: a guardrails engine blocks forbidden actions, every recommendation cites the policy behind it, and high-impact steps require human approval, with a tamper-evident audit timeline.</td>
+              <td data-label="Verify"><a href="loanops-control-plane.html">Live demo</a> — run the AI triage and watch the guardrails and audit timeline.</td>
             </tr>
             <tr>
-              <td data-label="Claim">Designed an AI-augmented testing platform generating Snowflake test cases across six categories.</td>
-              <td data-label="Verify">
-                <a href="the-builder.html">The Builder</a> — six categories explicit: completeness, uniqueness, referential integrity, range/value, freshness, reconciliation.
-              </td>
+              <td data-label="Claim">Simplicity: designed, built and shipped solo — streaming APIs, OAuth 2.0 + PKCE, multi-model routing, usage enforcement and Stripe billing.</td>
+              <td data-label="Verify"><a href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer">wiseforge.dev ↗</a></td>
             </tr>
             <tr>
-              <td data-label="Claim">Ship full-stack engineering work — Python, TypeScript, React — bridging product gaps for internal stakeholders.</td>
-              <td data-label="Verify">
-                <a href="ironlog.html">IronLog evidence</a> · <a href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">PartnerPulse ↗</a> · <a href="refi-intelligence.html">Refi Intelligence</a>
-              </td>
+              <td data-label="Claim">IronLog: an offline-first fitness PWA serving a gym community of about 1,000 users, part of a five-app ecosystem with single sign-on on one Supabase backend; row-level security on every user table.</td>
+              <td data-label="Verify"><a href="ironlog.html">IronLog evidence page</a> · <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a></td>
             </tr>
             <tr>
-              <td data-label="Claim">Own Infrastructure-as-Code &amp; CI/CD discipline for analytics tooling.</td>
-              <td data-label="Verify">
-                <a href="cicd.html">CI/CD page</a> · branch-review &amp; merge-control patterns shown in <a href="the-builder.html">The Builder</a>
-              </td>
+              <td data-label="Claim">The Builder: multi-stage generation, multi-pass model review, automated fixes and deployment, with structured outputs and audit logging across model providers.</td>
+              <td data-label="Verify"><a href="the-builder.html">The Builder case study</a></td>
             </tr>
             <tr>
-              <td data-label="Claim">Drive internal adoption — communicate platform capabilities, train users, position BI as self-service.</td>
-              <td data-label="Verify">
-                <a href="education-overview.html">Education suite</a> (cohorts, modules, library) · <a href="case-study.html">Operations Command Center</a> rollout narrative
-              </td>
+              <td data-label="Claim">LendKey: own the roadmap for migrating 35+ lender reports from SQL Server/SSRS to Databricks and Sigma for 200+ lenders; retired 15 legacy reports so far; self-service access saves about 20 hours a week.</td>
+              <td data-label="Verify">Internal system at a regulated lender, so there is no public artifact. My plan for the role: <a href="lendkey-90-day-plan.html">LendKey 90-day plan</a>.</td>
             </tr>
             <tr>
-              <td data-label="Claim">Plan &amp; prioritize the reporting roadmap — communicate progress, risks, tradeoffs to business &amp; technical leadership.</td>
-              <td data-label="Verify">
-                Evident in case-study narratives: <a href="case-study.html">Operations Command Center</a>, <a href="the-builder.html">The Builder</a>, <a href="sql-playground-case-study.html">SQL Playground</a>.
-              </td>
+              <td data-label="Claim">Sallie Mae: built internal tools across five operating departments that replaced manual call QA, infraction grading and fraud case tracking, saving each department about 4 hours a day.</td>
+              <td data-label="Verify">Internal system at a regulated lender, so there is no public artifact. Comparable interfaces I built for this portfolio: <a href="collections-toolkit.html">Collections</a> · <a href="fraud-risk.html">Fraud</a> · <a href="servicing-cexp.html">Servicing</a> · <a href="education-overview.html">Education</a>.</td>
             </tr>
             <tr>
-              <td data-label="Claim">Maintain compliance with regulatory, data security, audit standards in federally regulated financial services.</td>
-              <td data-label="Verify">
-                <a href="compliance-matrix.html">Compliance matrix</a> · audit-trail design in <a href="the-builder.html">The Builder</a>
-              </td>
+              <td data-label="Claim">Architected and owned production .NET/C# systems end to end on SQL Server and Snowflake, deployed with AWS, Kubernetes and Terraform, under strict uptime, data-integrity and audit requirements.</td>
+              <td data-label="Verify">Internal system at a regulated lender, so there is no public artifact. Patterns shown in <a href="backend.html">Backend</a> · <a href="cicd.html">CI/CD</a> · <a href="compliance-matrix.html">Compliance matrix</a>.</td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Built AI-powered documentation and test-automation tooling and a SAS-to-Python conversion pipeline on AWS Lambda and S3, cutting manual reporting effort 60%.</td>
+              <td data-label="Verify"><a href="sas-jobs.html">SAS jobs</a>. Methodology for the 60% is in the section below.</td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Served 1,000+ business users with Power BI and Snowflake reporting backed by shared metric definitions, automated data-quality gates and change controls.</td>
+              <td data-label="Verify"><a href="power-bi-dashboards.html">Power BI Dashboards</a> · <a href="sql-playground-case-study.html">SQL Playground case study</a> · <a href="case-study.html">Operations Command Center</a> (KPI definitions).</td>
+            </tr>
+            <tr>
+              <td data-label="Claim">Led and mentored 4–6 engineers and analysts while staying hands-on in the code.</td>
+              <td data-label="Verify">Not something a repo can show; ask me about it.</td>
             </tr>
           </tbody>
         </table>
@@ -238,7 +233,7 @@
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>What:</strong> distinct internal business users with access to Power BI / SQL reporting outputs I own end-to-end.</li>
+              <li><strong>What:</strong> distinct internal business users with access to the Power BI and Snowflake reporting I owned end to end.</li>
               <li><strong>Scope:</strong> across collections, fraud, compliance, and servicing domains.</li>
               <li><strong>Not claimed:</strong> daily-active users — total addressable user base, not engagement.</li>
             </ul>
@@ -246,28 +241,31 @@
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Six AI-generated validation categories</div>
+            <div class="card-title">0% of auto-approved changes reverted</div>
             <div class="card-date">Methodology</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>Categories:</strong> completeness, uniqueness, referential integrity, range/value, freshness, reconciliation.</li>
-              <li><strong>How they work:</strong> structured inputs describe the dataset; AI generates Snowflake test cases per category; tests run as part of the pipeline.</li>
-              <li><strong>Where to see it:</strong> <a href="the-builder.html">The Builder case study</a>.</li>
+              <li><strong>What:</strong> share of auto-merged changes in the Cowork pipeline that a human reverted within 24 hours.</li>
+              <li><strong>How measured:</strong> a persistent log of every automatic decision, cross-referenced against reverts in the git history.</li>
+              <li><strong>Result:</strong> 0% across the controlled ramp, which ran under a deliberately small daily cap.</li>
+              <li><strong>Not claimed:</strong> bug-free output — only that no automatic merge had to be reverted inside the cap.</li>
+              <li><strong>Where to see it:</strong> <a href="cowork.html">Cowork case study</a>.</li>
             </ul>
           </div>
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Three-app PWA suite, solo</div>
+            <div class="card-title">Productive capacity: 9.2% → 30%+</div>
             <div class="card-date">Methodology</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>What:</strong> IronLog, FinanceLog, NutritionLog — three separate React/Vite PWAs sharing one Supabase backend.</li>
-              <li><strong>Solo:</strong> sole designer + engineer · concept → production · ongoing operator.</li>
-              <li><strong>Verifiable:</strong> visit <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space</a>, install the PWA, sign in across the apps with the same account.</li>
-              <li><strong>Architecture proof:</strong> <a href="ironlog.html">IronLog evidence page</a>.</li>
+              <li><strong>What:</strong> share of the 24-hour window in which the pipeline was advancing work rather than idling on stuck state.</li>
+              <li><strong>How measured:</strong> an audit of the pipeline&rsquo;s own structured event logs over a fixed window.</li>
+              <li><strong>Mechanism:</strong> recurring failures were classified (agents looping on one task, lanes idle with work available, lost state that broke escalation), then 8 fixes were ranked and shipped.</li>
+              <li><strong>Not claimed:</strong> better code quality, throughput per dollar, or parity with a human team — those are separate effects.</li>
+              <li><strong>Caveats:</strong> single-machine pipeline; internal numbers. Details in the <a href="cowork.html">Cowork case study</a>.</li>
             </ul>
           </div>
         </article>
@@ -316,7 +314,7 @@
             <ul class="achievement-list">
               <li>Open any case study above — they include problem framing, decisions, tradeoffs, and stack rationale, not just screenshots.</li>
               <li>Try the live demos: <a href="sql-playground.html">SQL Playground</a> runs real SQL in your browser; <a href="refi-intelligence.html">Refi Intelligence</a> renders 5,000 synthetic apps with cohort + funnel analytics.</li>
-              <li>Visit external apps in production: <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a>, <a href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">partnerpulse.byheir.com ↗</a>.</li>
+              <li>Visit external apps in production: <a href="https://www.wiseforge.dev" target="_blank" rel="noopener noreferrer">wiseforge.dev ↗</a>, <a href="https://automation.byheir.com" target="_blank" rel="noopener noreferrer">automation.byheir.com ↗</a>, <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a>, <a href="https://partnerpulse.byheir.com" target="_blank" rel="noopener noreferrer">partnerpulse.byheir.com ↗</a>.</li>
             </ul>
           </div>
         </article>
@@ -328,6 +326,7 @@
             <ul class="achievement-list">
               <li>Email — <a href="mailto:byheirw@gmail.com">byheirw@gmail.com</a> — fastest path; happy to walk any of this through screen-share.</li>
               <li>LinkedIn — <a href="https://www.linkedin.com/in/byheir-wise-976253265" target="_blank" rel="noopener noreferrer">byheir-wise ↗</a>.</li>
+              <li>GitHub — <a href="https://github.com/wisemanmax" target="_blank" rel="noopener noreferrer">wisemanmax ↗</a>.</li>
               <li>Resume — <a href="../assets/byheir-wise-resume.pdf" download>download PDF</a>.</li>
             </ul>
           </div>
