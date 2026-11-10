@@ -124,6 +124,9 @@ The only tooling is a test suite for the Snowsight SQL engine demo (`npm install
 │   ├── home.css            # Homepage design system (tokens, both themes, components)
 │   ├── home.js             # Homepage interactions (theme, filters, reveals) — progressive enhancement
 │   ├── style.css           # Shared styles for the sub-pages
+│   ├── suite.css           # One skin for the five domain suites (accent per suite via data-suite)
+│   ├── suite.js            # Suite behaviour (paged tables)
+│   ├── education.js        # Education pages: summary, filters, paged ledger
 │   ├── script.js           # Shared behaviour (mobile nav, guided tour, demos)
 │   ├── tour.css            # Guided-tour UI, shared by the homepage and sub-pages
 │   ├── work/               # Screenshots of the live pages, used by the gallery

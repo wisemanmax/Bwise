@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-suite="education">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-  <link rel="stylesheet" href="../assets/style.css">
   <style>
 :root {
       --fiord: #394263;
@@ -179,6 +178,8 @@
 .demo-back{background:rgba(12,13,16,.94);border-bottom-color:rgba(160,158,150,.18);color:#eceae3}.demo-back a{color:#eceae3}.demo-back a:hover,.demo-back a:focus-visible{background:rgba(160,158,150,.18)}.demo-back__sub{color:#a09e96;border-inline-start-color:rgba(160,158,150,.3)}
 @media print{.demo-back{display:none}}
 </style>
+<!-- Shared suite skin: loads last so it restyles the page-level CSS above -->
+<link rel="stylesheet" href="../assets/suite.css">
 </head>
 <body>
 <div class="demo-back" role="navigation" aria-label="Site navigation">
@@ -192,7 +193,8 @@
   <header>
     <div class="header-title">Learning Settings</div>
     
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Education suite">
+      <a href="education-dashboard.html">Dashboard</a>
       <a href="education-overview.html">Overview</a>
       <a href="education-content-studio.html">Content Studio</a>
       <a href="education-library.html">Learning Library</a>
@@ -201,14 +203,14 @@
       <a href="education-tests.html">Tests</a>
       <a href="education-cohorts.html">Cohorts</a>
       <a href="education-analytics.html">Analytics</a>
-      <a href="education-settings.html">Settings</a>
+      <a href="education-settings.html" aria-current="page">Settings</a>
     </nav>
 
   </header>
 
   <main class="page-container">
     <section class="hero">
-      <div class="hero-title">Learning Settings</div>
+      <h1 class="hero-title">Learning Settings</h1>
       <div>Governance, workflows, and automation controls.</div>
       <div class="hero-meta">
         <span class="tag">Mock C# Pipeline</span>
@@ -218,24 +220,40 @@
       </div>
     </section>
 
+    <dl class="edu-kpis" id="edu-kpis" aria-label="Summary"></dl>
+
     <section class="panel-grid">
       <article class="panel">
-        <div class="panel-title">Operational Snapshot</div>
+        <h2 class="panel-title">Operational Snapshot</h2>
         <ul class="data-list" id="snapshot-list"></ul>
       </article>
       <article class="panel">
-        <div class="panel-title">Live Work Queue</div>
+        <h2 class="panel-title">Live Work Queue</h2>
         <ul class="data-list" id="queue-list"></ul>
       </article>
       <article class="panel">
-        <div class="panel-title">Risk & Compliance</div>
+        <h2 class="panel-title">Risk & Compliance</h2>
         <ul class="data-list" id="risk-list"></ul>
       </article>
     </section>
 
     <section class="panel">
-      <div class="panel-title">Assignment Ledger</div>
-      <table class="table" id="ledger-table"></table>
+      <h2 class="panel-title">Assignment Ledger</h2>
+      <div class="table-tools">
+        <div class="edu-filters" id="edu-filters" role="group" aria-label="Filter by status"></div>
+        <span class="table-count" id="table-count" aria-live="polite"></span>
+      </div>
+      <div class="edu-table-wrap">
+        <table class="table" id="ledger-table"></table>
+      </div>
+      <div class="table-tools">
+        <span class="table-count" data-page-note>25 per page</span>
+        <div class="table-pager" id="table-pager">
+          <button type="button" data-page="prev">← Previous</button>
+          <span class="table-count" data-page-label></span>
+          <button type="button" data-page="next">Next →</button>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -2142,50 +2160,7 @@
         { id: 1899, name: 'Learning Settings Metric 1899', owner: 'Team 4', status: 'live', score: 79, progress: 74, due: '2025-10-24' },
         { id: 1900, name: 'Learning Settings Metric 1900', owner: 'Team 5', status: 'draft', score: 80, progress: 75, due: '2025-10-25' }
     ];
-
-    const snapshotList = document.getElementById('snapshot-list');
-    const queueList = document.getElementById('queue-list');
-    const riskList = document.getElementById('risk-list');
-    const ledgerTable = document.getElementById('ledger-table');
-
-    const renderList = (target, items) => {
-      target.innerHTML = items.map(item => `
-        <li class="data-row">
-          <span>${item.name}</span>
-          <span>${item.status.toUpperCase()}</span>
-        </li>
-      `).join('');
-    };
-
-    const renderLedger = () => {
-      ledgerTable.innerHTML = `
-        <tr>
-          <th>Assignment</th>
-          <th>Owner</th>
-          <th>Status</th>
-          <th>Score</th>
-          <th>Progress</th>
-          <th>Due</th>
-        </tr>
-        ${data.map(item => `
-          <tr>
-            <td>${item.name}</td>
-            <td>${item.owner}</td>
-            <td>${item.status}</td>
-            <td>${item.score}%</td>
-            <td>
-              <div class="progress"><span style="width: ${item.progress}%"></span></div>
-            </td>
-            <td>${item.due}</td>
-          </tr>
-        `).join('')}
-      `;
-    };
-
-    renderList(snapshotList, data.slice(0, 12));
-    renderList(queueList, data.slice(12, 24));
-    renderList(riskList, data.slice(24, 36));
-    renderLedger();
   </script>
+  <script src="../assets/education.js"></script>
 </body>
 </html>
