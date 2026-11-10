@@ -780,3 +780,457 @@ html[data-suite] .tool-card__actions {
         overflow-x: auto;
     }
 }
+
+/* ============================================================================
+   Servicing CX + Education
+   These two suites were built on a different palette (--java, --amethyst,
+   --fiord …) and a few different class names. They join the same skin here.
+   ============================================================================ */
+
+html[data-suite="servicing"] {
+    --s-accent: #7a3fd0;
+    --s-accent-dark: #5b2aa6;
+    --s-accent-light: #a57be6;
+}
+
+html[data-suite="education"] {
+    --s-accent: #0e7490;
+    --s-accent-dark: #0a566b;
+    --s-accent-light: #3aa3bd;
+}
+
+html[data-suite="servicing"],
+html[data-suite="education"] {
+    --java: var(--s-accent);
+    --amethyst: var(--s-accent);
+    --fiord: var(--s-ink-2);
+    --mine-shaft: var(--s-ink);
+    --abbey: var(--s-ink-3);
+    --white: #ffffff;
+    --catskill-white: var(--s-surface-2);
+    --athens-gray: #ebe8df;
+    --mischka: #d9d6cc;
+    --alto: #d9d6cc;
+    --jungle-green: #177a48;
+    --zest: #b45309;
+    --cinnabar: #b42318;
+}
+
+html[data-suite="servicing"] *,
+html[data-suite="education"] *,
+html[data-suite="education"] *::before,
+html[data-suite="education"] *::after {
+    box-sizing: border-box;
+}
+
+html[data-suite] a:hover {
+    color: var(--s-accent);
+}
+
+/* --- Servicing hub: its own names for cards, metrics, queue ---------------- */
+
+html[data-suite] .card__title {
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+}
+
+html[data-suite] .card__title strong {
+    color: var(--s-ink-3);
+    font-style: italic;
+    font-weight: 400;
+}
+
+html[data-suite] .metric-card,
+html[data-suite] .insight-card,
+html[data-suite] .tool-item {
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    background: var(--s-surface);
+    box-shadow: var(--s-shadow);
+    text-align: left;
+    transition: border-color 0.16s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+html[data-suite] .metric-card::after {
+    display: none;
+}
+
+html[data-suite] .metric-card:hover,
+html[data-suite] .insight-card:hover {
+    border-color: var(--s-line-strong);
+    box-shadow: var(--s-shadow-lift);
+    transform: translateY(-2px);
+}
+
+html[data-suite] .metric-card__value {
+    color: var(--s-ink);
+    font-family: var(--s-mono);
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+html[data-suite] .metric-card__label {
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* The detail line was hover-only; keep it readable on touch screens */
+html[data-suite] .metric-card__detail {
+    opacity: 1;
+    color: var(--s-ink-3);
+}
+
+html[data-suite] .tool-item__icon {
+    color: var(--s-accent);
+}
+
+html[data-suite="servicing"] .chip,
+html[data-suite="education"] .chip {
+    border: 1px solid var(--s-line-strong);
+    background: transparent;
+    color: var(--s-ink-2);
+    cursor: pointer;
+    font-family: var(--s-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    padding: 6px 12px;
+    transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+}
+
+html[data-suite="servicing"] .chip:hover,
+html[data-suite="education"] .chip:hover {
+    border-color: var(--s-ink);
+    color: var(--s-ink);
+}
+
+html[data-suite="servicing"] .chip.active,
+html[data-suite="education"] .chip.active {
+    border-color: var(--s-ink);
+    background: var(--s-ink);
+    color: #fff;
+}
+
+html[data-suite] .queue-item {
+    border: 1px solid var(--s-line);
+    border-left: 3px solid var(--s-accent);
+    border-radius: 10px;
+    background: var(--s-surface);
+}
+
+html[data-suite] .queue-item.high { border-left-color: #b42318; }
+html[data-suite] .queue-item.medium { border-left-color: #b45309; }
+html[data-suite] .queue-item.low { border-left-color: #177a48; }
+
+html[data-suite] .queue-item:hover {
+    box-shadow: var(--s-shadow-lift);
+    transform: none;
+}
+
+html[data-suite] .queue-item__toggle {
+    color: var(--s-accent);
+    font-family: var(--s-body);
+    font-weight: 500;
+}
+
+html[data-suite] .progress {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(21, 21, 26, 0.08);
+}
+
+html[data-suite] .progress span {
+    background: var(--s-accent);
+}
+
+html[data-suite] .footer {
+    border-top: 1px solid var(--s-line);
+    background: transparent;
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 11px;
+}
+
+/* --- Education: template pages -------------------------------------------- */
+
+html[data-suite="education"] body > header {
+    padding: 12px clamp(16px, 3vw, 40px);
+    border-bottom: 1px solid var(--s-line);
+    background: var(--s-ground);
+    background: color-mix(in srgb, var(--s-ground) 88%, transparent);
+    -webkit-backdrop-filter: saturate(1.3) blur(14px);
+    backdrop-filter: saturate(1.3) blur(14px);
+    box-shadow: none;
+    /* the back-to-portfolio bar above is the sticky one */
+    position: static;
+}
+
+html[data-suite] .header-title {
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+}
+
+html[data-suite] .nav-links {
+    gap: 4px;
+    font-size: 13.5px;
+}
+
+html[data-suite] .nav-links a {
+    padding: 6px 11px;
+    border-radius: 999px;
+    color: var(--s-ink-2);
+    font-weight: 500;
+    transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+html[data-suite] .nav-links a:hover {
+    background: rgba(21, 21, 26, 0.06);
+    color: var(--s-ink);
+}
+
+html[data-suite] .nav-links a[aria-current="page"] {
+    background: var(--s-ink);
+    color: #fff;
+}
+
+html[data-suite] .page-container {
+    max-width: 1400px;
+    margin-inline: auto;
+    padding: clamp(18px, 3vw, 40px);
+    gap: clamp(18px, 2.4vw, 28px);
+}
+
+html[data-suite="education"] .hero {
+    border-top: 3px solid var(--s-accent);
+    gap: 10px;
+    color: var(--s-ink-2);
+    font-size: 1.0625rem;
+}
+
+html[data-suite] .hero-title {
+    margin: 0;
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -0.018em;
+    line-height: 1.02;
+}
+
+html[data-suite] .hero-meta {
+    gap: 6px;
+    margin-top: 8px;
+}
+
+html[data-suite] .tag {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--s-tint);
+    color: var(--s-accent);
+    font-family: var(--s-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+html[data-suite] .panel {
+    padding: clamp(16px, 2vw, 24px);
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    background: var(--s-surface);
+    box-shadow: var(--s-shadow);
+}
+
+html[data-suite] .panel-title {
+    margin: 0;
+    color: var(--s-ink);
+    font-family: var(--s-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+}
+
+html[data-suite] .data-list {
+    gap: 0;
+    color: var(--s-ink-2);
+    font-size: 13.5px;
+}
+
+html[data-suite] .data-row {
+    align-items: center;
+    padding-block: 8px;
+    border-top: 1px solid var(--s-line);
+}
+
+html[data-suite] .data-row:first-child {
+    border-top: 0;
+}
+
+/* Summary strip + ledger tools (rendered by assets/education.js) */
+html[data-suite] .edu-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+}
+
+html[data-suite] .edu-kpi {
+    display: grid;
+    gap: 6px;
+    padding: 18px;
+    border: 1px solid var(--s-line);
+    border-radius: 12px;
+    background: var(--s-surface);
+    box-shadow: var(--s-shadow);
+}
+
+html[data-suite] .edu-kpi dt {
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+html[data-suite] .edu-kpi dd {
+    margin: 0;
+    color: var(--s-ink);
+    font-family: var(--s-mono);
+    font-size: 1.875rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+html[data-suite] .edu-kpi dd small {
+    margin-left: 4px;
+    color: var(--s-ink-3);
+    font-size: 0.75rem;
+    letter-spacing: 0;
+}
+
+html[data-suite] .table-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+}
+
+html[data-suite] .edu-filters,
+html[data-suite] .table-pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+html[data-suite] .table-count {
+    color: var(--s-ink-3);
+    font-family: var(--s-mono);
+    font-size: 11.5px;
+}
+
+html[data-suite] .table-pager button {
+    padding: 6px 12px;
+    border: 1px solid var(--s-line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--s-ink);
+    cursor: pointer;
+    font: 500 13px/1.3 var(--s-body);
+}
+
+html[data-suite] .table-pager button:hover:not(:disabled) {
+    border-color: var(--s-ink);
+    background: var(--s-ink);
+    color: #fff;
+}
+
+html[data-suite] .table-pager button:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+html[data-suite] .edu-table-wrap {
+    overflow-x: auto;
+}
+
+html[data-suite] .edu-table-wrap .table {
+    min-width: 640px;
+    font-size: 13.5px;
+}
+
+html[data-suite] .edu-table-wrap td:nth-child(4),
+html[data-suite] .edu-table-wrap td:nth-child(6) {
+    font-family: var(--s-mono);
+    font-size: 12.5px;
+}
+
+html[data-suite] .edu-table-wrap .progress {
+    min-width: 120px;
+}
+
+@media (max-width: 768px) {
+    html[data-suite] .nav-links {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+    }
+
+    html[data-suite] .nav-links a {
+        white-space: nowrap;
+    }
+}
+
+html[data-suite="education"] .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    white-space: nowrap;
+}
+
+/* The Servicing hub's header card has no accent bar of its own */
+html[data-suite="servicing"] .page-header {
+    border-top: 3px solid var(--s-accent);
+}
+
+/* Servicing hub + intake: the page is a grid with a fixed 50px header row,
+   so wrapped header buttons used to spill over the content on phones. */
+html[data-suite="servicing"] .grid {
+    grid-template-rows: auto 1fr auto;
+}
+
+html[data-suite="servicing"] .header {
+    min-height: 50px;
+    padding-block: 10px;
+}
+
+@media (max-width: 768px) {
+    html[data-suite="servicing"] .container,
+    html[data-suite="servicing"] main {
+        min-width: 0;
+    }
+}
+
+/* Paged tables (assets/suite.js) */
+html[data-suite] .table-tools--foot {
+    margin-top: 14px;
+}

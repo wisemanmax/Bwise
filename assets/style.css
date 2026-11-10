@@ -287,6 +287,12 @@ img {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
 }
 
+/* Grid children may shrink below their content width, so a long code line
+   scrolls inside its card instead of stretching the page on phones. */
+.grid > * {
+    min-width: 0;
+}
+
 /* ----------------------------------------------------------------------------
    HEADER & NAVIGATION
    ---------------------------------------------------------------------------- */
@@ -985,6 +991,12 @@ html:not(.gsap-motion) .stats-bar .stat-box:nth-child(4) { animation: rise-in 0.
 .code-example {
     display: grid;
     gap: var(--space-md);
+}
+
+/* Previews and code blocks scroll inside themselves on narrow screens */
+.code-example > * {
+    min-width: 0;
+    overflow-x: auto;
 }
 
 .code-preview {
