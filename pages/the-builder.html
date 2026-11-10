@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Builder · AI-Augmented Reporting &amp; Validation Platform · Byheir Wise</title>
-  <meta name="description" content="Case study: The Builder — an AI-augmented reporting and validation platform with multi-stage pipelines, automated quality gates, audit trails, and CI/CD discipline applied to analytics tooling.">
+  <title>The Builder · Chat-to-Deploy App Builder with Multi-Model Review · Byheir Wise</title>
+  <meta name="description" content="Case study: The Builder — a chat-driven app builder with multi-stage generation, multi-pass model review, scoped automated fixes, a human approval gate and a structured record of every build.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -48,9 +48,13 @@
   <main id="main">
     <section class="hero-section" aria-labelledby="builder-hero">
       <div class="hero-inner">
-        <div class="hero-label">Case study</div>
+        <div class="hero-label">Case study · WiseForge</div>
         <h1 id="builder-hero" class="hero-title">The Builder</h1>
-        <p class="hero-subtitle">AI-augmented reporting &amp; validation platform — multi-stage pipelines, automated quality gates, and enterprise-grade release discipline applied to analytics tooling.</p>
+        <p class="hero-subtitle">Describe an app in chat. A multi-stage pipeline plans it, builds it, checks it, has a second model review it, fixes what was found, and deploys it once you approve.</p>
+        <div class="hero-cta-row">
+          <a class="hero-cta hero-cta--primary" href="https://github.com/wisemanmax/Builder" target="_blank" rel="noopener noreferrer">View the source <span aria-hidden="true">↗</span></a>
+          <a class="hero-cta hero-cta--ghost" href="../index.html#projects">Back to projects</a>
+        </div>
       </div>
     </section>
 
@@ -58,157 +62,245 @@
       <div class="section-header">
         <h2 id="problem-title" class="section-title">The problem</h2>
         <p class="section-subtitle">
-          Reporting pipelines in regulated financial services are easy to build and hard to trust. Validation, audit trails, and release discipline usually arrive late — after a stakeholder catches a number that doesn't match.
+          Getting a model to write an app is the easy part. One generation call returns something that looks finished, and nothing has checked it, reviewed it, or recorded how it was made.
         </p>
       </div>
       <div class="grid two-cols">
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">What I kept seeing</div>
-            <div class="card-date">Across reporting domains</div>
+            <div class="card-title">What one-shot generation leaves out</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li>Manual QA cycles eating analyst capacity ahead of every executive report.</li>
-              <li>Test cases living in spreadsheets and tribal knowledge, not in the pipeline.</li>
-              <li>No clear audit trail when a metric changed week-over-week — who edited what, when, why.</li>
-              <li>Analytics tooling deployed without the change-control rigor the rest of the org expects.</li>
+              <li>No review by anything other than the model that wrote the code.</li>
+              <li>Fixes that rewrite parts of the app nobody asked to change.</li>
+              <li>No point where a person decides whether it ships.</li>
+              <li>No record afterwards of what was asked, found, fixed and approved.</li>
             </ul>
           </div>
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Goals for the platform</div>
-            <div class="card-date">Outcome-driven design</div>
+            <div class="card-title">What the pipeline has to guarantee</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li>Generate validation logic from structured inputs instead of hand-writing test cases.</li>
-              <li>Make every reporting output auditable end-to-end — inputs, transformations, approvals.</li>
-              <li>Apply enterprise release discipline (branch review, change auditing, merge controls) to BI deliverables.</li>
-              <li>Reduce manual QA cycles enough to redirect analyst time to higher-value work.</li>
+              <li>Every build passes the same automated checks before review.</li>
+              <li>A second model audits the output, from a different provider when one is configured.</li>
+              <li>Fixes are scoped by a written plan, and the resulting diff is checked against that plan.</li>
+              <li>Nothing merges without an explicit approval, and every run leaves a record.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="container" aria-labelledby="architecture-title">
+    <section class="container" aria-labelledby="pipeline-title">
       <div class="section-header">
-        <h2 id="architecture-title" class="section-title">Architecture</h2>
+        <h2 id="pipeline-title" class="section-title">The pipeline</h2>
         <p class="section-subtitle">
-          A multi-stage pipeline that takes structured inputs, generates validation logic via AI, runs the validations against Snowflake, gates the output, and ships an auditable artifact.
+          Fourteen steps from prompt to deployed app. Each one reports its status in the chat as it runs.
+        </p>
+      </div>
+      <article class="experience-card">
+        <div class="card-header">
+          <div class="card-title">Stages, in order</div>
+          <div class="card-date">Steps 0–13</div>
+        </div>
+        <div class="card-content">
+          <ul class="achievement-list">
+            <li><strong>Branch</strong> — a new Git branch per build, so nothing touches <code>main</code> until approval.</li>
+            <li><strong>Plan</strong> — the model writes a plan before any code.</li>
+            <li><strong>Build</strong> — Claude writes the app, streaming a live preview.</li>
+            <li><strong>Checks</strong> — 30 automated checks across syntax, accessibility, responsive layout, security, performance, PWA and structure.</li>
+            <li><strong>Audit</strong> — a second model reviews the code and returns a list of issues with severity and location.</li>
+            <li><strong>Fix</strong> — up to 3 passes: plan the patch, apply it, validate the diff, then re-run checks and audit.</li>
+            <li><strong>Enhancement review</strong> — a reviewer proposes improvements and flags remaining bugs.</li>
+            <li><strong>Implement</strong> — Claude applies the accepted enhancements.</li>
+            <li><strong>Final review</strong> — a last bug gate before anything is pushed.</li>
+            <li><strong>Backend</strong> — optional backend setup for apps that need one.</li>
+            <li><strong>Push</strong> — the build is committed to its branch through the GitHub API.</li>
+            <li><strong>Preview</strong> — the app renders live in the chat.</li>
+            <li><strong>Approval gate</strong> — a person approves or asks for changes.</li>
+            <li><strong>Merge</strong> — the branch merges to <code>main</code> and GitHub Pages deploys it.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="container" aria-labelledby="review-title">
+      <div class="section-header">
+        <h2 id="review-title" class="section-title">Multi-pass review and scoped fixes</h2>
+        <p class="section-subtitle">
+          The part I spent the most time on. Letting a model &ldquo;fix the issues&rdquo; freely is how working features get broken, so the audit and the fix are joined by a contract.
         </p>
       </div>
       <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">The patch plan</div>
+            <div class="card-date">Before the fix</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>After the audit, the model writes a patch plan as structured JSON: scope, sections it will touch, sections it must not touch, each change, constraints, a risk level and a line budget.</li>
+              <li>The plan carries a hash of the audit it answers, so a plan cannot be reused against different findings.</li>
+              <li><strong>Seven deterministic checks</strong> run on the plan before any code changes: schema, audit-hash match, section consistency, no overlap between touched and protected sections, a risk gate (high-risk plans are limited to 5 changes), coverage of every high-severity finding, and a sane line budget.</li>
+              <li>A plan that fails is regenerated once with the failure reason.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Validating the diff</div>
+            <div class="card-date">After the fix</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>After the fix, the new code is compared with the old and checked against the plan. <strong>Six checks</strong>:</li>
+              <li>Protected sections are unchanged.</li>
+              <li>The change stays inside the line budget.</li>
+              <li>No new external dependencies.</li>
+              <li>CSS variables, localStorage keys and existing functions are all still there.</li>
+              <li>Each pass and its result are stored on the build record. The loop stops after 3 passes.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">A checkpoint for the person</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>After the first audit the pipeline pauses and shows the issues found.</li>
+              <li>The user decides whether to fix them or continue; the decision is recorded.</li>
+              <li>The patch plan is generated in parallel, so the pause costs no time.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">More than one model provider</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Claude plans, builds and fixes.</li>
+              <li>The reviewer is chosen by what is configured: Gemini first, then GPT, with Claude as the fallback.</li>
+              <li>Calls go through one module with retries, timeouts, prompt caching and per-call usage tracking.</li>
+              <li>Cost is totalled per build and shown with the result.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+    <section class="container" aria-labelledby="audit-title">
+      <div class="section-header">
+        <h2 id="audit-title" class="section-title">Structured outputs and audit logging</h2>
+        <p class="section-subtitle">
+          Every build produces a record that can be read later without the chat transcript.
+        </p>
+      </div>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">The build record</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Inputs: prompt, pipeline mode, template, whether images were attached.</li>
+              <li>Intermediate artifacts: the plan and the model&rsquo;s reasoning.</li>
+              <li>Quality data: check results, audit findings, enhancement review.</li>
+              <li>Each fix pass, the checkpoint decision, the approval decision and how long approval took.</li>
+              <li>Outcome: final code size, final check score and cost.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Events</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Each step emits a typed event with a build ID, timestamp, pipeline and schema version.</li>
+              <li>Events and the last 50 build records are kept on the device.</li>
+              <li>With Supabase configured, events sync to a table for analysis across builds.</li>
+              <li>A quality score and a satisfaction score are computed per build and feed template recommendations.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Key handling</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>A guard wraps <code>fetch</code> and blocks any request that carries an API key to a domain outside an approved list.</li>
+              <li>Keys are scrubbed from error messages before they are logged or shown.</li>
+              <li>An optional server-side proxy keeps provider keys off the device; its usage table is protected by row-level security so users read only their own rows.</li>
+            </ul>
+          </div>
+        </article>
         <article class="experience-card">
           <div class="card-header">
             <div class="card-title">Stack</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>Python</strong> — pipeline orchestration, Pandas transformations, report generation.</li>
-              <li><strong>Snowflake</strong> — system of record for every validation run and reporting dataset.</li>
-              <li><strong>Supabase</strong> — metadata store, run history, user identity, audit log.</li>
-              <li><strong>External AI APIs</strong> — generate Snowflake test cases from structured inputs across six categories.</li>
-              <li><strong>GitHub + GitHub Actions</strong> — source of truth, branch review, CI/CD pipelines.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">Pipeline stages</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li><strong>Intake:</strong> structured inputs describe what's being validated and why.</li>
-              <li><strong>Generation:</strong> AI produces Snowflake test cases across six categories (completeness, uniqueness, referential integrity, range/value, freshness, reconciliation).</li>
-              <li><strong>Execution:</strong> tests run against Snowflake; results captured with timestamps, row counts, sample failures.</li>
-              <li><strong>Gating:</strong> automated quality gates decide whether the downstream report can publish.</li>
-              <li><strong>Release:</strong> approved artifacts ship through CI/CD with a full audit trail attached.</li>
+              <li><strong>App</strong> — vanilla JavaScript (ES modules), Vite, installable PWA.</li>
+              <li><strong>Models</strong> — Claude, GPT, Gemini.</li>
+              <li><strong>Delivery</strong> — GitHub API for branches, commits and merges; GitHub Pages for hosting.</li>
+              <li><strong>Backend</strong> — Supabase for sign-in, usage and event sync.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="container" aria-labelledby="discipline-title">
+
+    <section class="container" aria-labelledby="limits-title">
       <div class="section-header">
-        <h2 id="discipline-title" class="section-title">Release discipline applied to analytics</h2>
+        <h2 id="limits-title" class="section-title">What this does not claim</h2>
         <p class="section-subtitle">
-          The same controls product engineering teams take for granted — branch review, change auditing, merge approvals — wrapped around BI deliverables.
+          The same rule as the rest of the portfolio: say what the thing is, and what it is not.
         </p>
       </div>
       <div class="grid two-cols">
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">CI/CD controls</div>
+            <div class="card-title">Limits</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li>Every reporting change goes through a pull request with review and approval.</li>
-              <li>Validation runs are gated checks — a failing test blocks merge.</li>
-              <li>Change auditing captures who modified what query, when, and which approver signed off.</li>
-              <li>Reproducible deploys: any prior version of a report can be rebuilt from source.</li>
+              <li>The automated checks are static checks on the generated code. They are not a test suite and do not prove the app behaves correctly.</li>
+              <li>A second model&rsquo;s review reduces defects; it does not remove the need for the approval gate.</li>
+              <li>Generated apps are single-file web apps. This is not a general-purpose software factory.</li>
+              <li>Build records live on the device unless sync is turned on.</li>
             </ul>
           </div>
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Audit &amp; compliance</div>
+            <div class="card-title">Where to look</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li>Full audit trail: input → generated tests → execution results → approvals → published artifact.</li>
-              <li>Sample failures are captured at run time so analysts can debug from history, not from re-runs.</li>
-              <li>Approval workflow integrates with existing identity so reviewer attribution is unambiguous.</li>
-              <li>Designed for regulated financial-services environments — security, data privacy, and audit posture baked in.</li>
+              <li>Pipeline: <code>src/pipelines/build-pipeline.js</code> in the <a href="https://github.com/wisemanmax/Builder" target="_blank" rel="noopener noreferrer">public repository ↗</a>.</li>
+              <li>Patch contract: <code>src/lib/patch-contract.js</code>.</li>
+              <li>Checks: <code>src/lib/checks.js</code>. Build record: <code>src/lib/build-record.js</code>.</li>
+              <li>For the same ideas applied to a regulated workflow, see the <a href="loanops-control-plane.html">LoanOps Agent Control Plane</a>.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="container" aria-labelledby="outcomes-title">
-      <div class="section-header">
-        <h2 id="outcomes-title" class="section-title">Outcomes</h2>
-        <p class="section-subtitle">
-          The Builder turned ad-hoc QA into structured, auditable validation — and freed analyst capacity for the work only humans can do.
-        </p>
-      </div>
-      <div class="grid two-cols">
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">What changed</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li>Manual QA cycles compressed; validation runs in minutes, not days.</li>
-              <li>Test coverage grew because writing a test no longer means hand-crafting SQL.</li>
-              <li>Reporting outputs ship with a quality gate attached — failures are visible before stakeholders see them.</li>
-              <li>Release confidence high enough that analytics deliverables follow the same change-control rhythm as the rest of the org.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">What's next</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li>Expand validation categories beyond the initial six (anomaly detection, drift, business-rule constraints).</li>
-              <li>Push more validation upstream into the pipelines that create the data, not just the reports that consume it.</li>
-              <li>Open the platform to additional reporting domains beyond the initial pilot.</li>
-            </ul>
-          </div>
-        </article>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>The Builder · AI-augmented reporting &amp; validation platform · part of the Byheir Wise portfolio.</p>
+      <p>The Builder · chat-to-deploy app builder · part of the Byheir Wise portfolio. <a href="https://github.com/wisemanmax/Builder" target="_blank" rel="noopener noreferrer">Source ↗</a></p>
     </div>
   </footer>
 
