@@ -1298,7 +1298,7 @@ class SiteTour {
       full: [
         { page: '/', id: 'hero',
           title: "Welcome — here's the full tour",
-          body: "Eight-plus years in regulated fintech — engineering leader over servicing and collections systems, with full-stack production builds. The status badge is live: I'm available for opportunities.",
+          body: "Hands-on AI engineer who builds the workflows himself, from requirements to production — after 7 years engineering servicing, collections and fraud systems inside a federally regulated bank. The status badge is live: I'm available for opportunities.",
           details: [
             "Use Next / Back, or arrow keys, to navigate",
             "Skip anytime — resume from the tour chip",
@@ -1306,11 +1306,11 @@ class SiteTour {
           ] },
         { page: '/', id: 'about',
           title: "What I actually do",
-          body: "Engineering leader building the systems behind lending, servicing, and collections — .NET, AWS, Snowflake, React — plus the tools that fill product gaps.",
+          body: "Through WiseForge, my independent practice, I build autonomous LLM agent systems with audit trails, human approval gates and measured failure analysis.",
           details: [
-            "Bridge between BI, ops, compliance, and engineering",
-            "Production-grade data models and dashboards",
-            "Ship the supporting apps when no team exists"
+            "Started on the collections floor",
+            "Work directly with executives and operators",
+            "Ship without a business analyst in the middle"
           ] },
         { page: '/', id: 'work-loanops',
           title: "LoanOps Agent Control Plane — regulated-servicing AI copilot",
@@ -1384,15 +1384,42 @@ class SiteTour {
             "QA scoring and compliance guardrails"
           ],
           detailHref: '/pages/collections-toolkit.html', detailLabel: "Open Collections Toolkit" },
+        { page: '/', id: 'projects-cowork',
+          title: "Cowork — autonomous multi-agent pipeline",
+          body: "A 24/7 pipeline of 16 role-specialized LLM agents across 5 parallel lanes, on Claude Code and the OpenAI API.",
+          details: [
+            "3 reviewer agents vote; a change ships only with unanimous approval",
+            "0% of auto-approved changes reverted during the controlled ramp",
+            "8 fixes lifted productive capacity from 9.2% to 30%+"
+          ],
+          detailHref: '/pages/cowork.html', detailLabel: "Read the case study" },
         { page: '/', id: 'projects-simplicity',
           title: "Simplicity by WiseForge — production AI product",
-          body: "Designed, built, and deployed a Claude-powered product end-to-end solo — streaming APIs, OAuth 2.0 + PKCE, multi-provider model routing, usage enforcement, and Stripe subscriptions.",
+          body: "Designed, built and shipped solo — streaming APIs, OAuth 2.0 + PKCE, multi-model routing, usage enforcement and Stripe billing.",
           details: [
             "Owned every architectural decision from provider abstraction to entitlement checks",
             "Survives provider changes and scales pricing without rewrites",
             "Live at wiseforge.dev"
           ],
           detailHref: 'https://www.wiseforge.dev', detailLabel: "Visit wiseforge.dev", detailExternal: true },
+        { page: '/', id: 'projects-ironlog',
+          title: "IronLog — fitness and health tracking platform",
+          body: "An offline-first fitness PWA — workouts, nutrition, body metrics, progress photos, AI coach — designed, built and run solo.",
+          details: [
+            "About 1,000 users in a gym community",
+            "Five-app ecosystem with single sign-on on one Supabase backend",
+            "Row-level security on every user table"
+          ],
+          detailHref: 'https://ironlog.space', detailLabel: "Visit IronLog", detailExternal: true },
+        { page: '/', id: 'projects-builder',
+          title: "The Builder — generation, review and deployment",
+          body: "Multi-stage generation, multi-pass model review, automated fixes and deployment.",
+          details: [
+            "Structured outputs at every stage",
+            "Audit logging across model providers",
+            "Runs across more than one model provider"
+          ],
+          detailHref: '/pages/the-builder.html', detailLabel: "Read the case study" },
         { page: '/', id: 'projects-partnerpulse',
           title: "PartnerPulse — solo, in production",
           body: "A relationship-analytics PWA on a zero-infrastructure serverless stack: GitHub Pages + Cloudflare Workers.",
@@ -1402,48 +1429,30 @@ class SiteTour {
             "Live for paying users today"
           ],
           detailHref: 'https://partnerpulse.byheir.com', detailLabel: "Visit PartnerPulse", detailExternal: true },
-        { page: '/', id: 'projects-builder',
-          title: "The Builder — CI/CD discipline for analytics",
-          body: "Enterprise release practices applied to BI deliverables.",
-          details: [
-            "Multi-stage data validation with branch review",
-            "Change auditing and merge controls",
-            "The same engineering rigor analysts deserve"
-          ],
-          detailHref: '/pages/the-builder.html', detailLabel: "Read the case study" },
-        { page: '/', id: 'projects-ironlog',
-          title: "IronLog — three-app analytics PWA suite",
-          body: "IronLog, FinanceLog, and NutritionLog on a unified Supabase backend with SSO and real-time sync — designed and built solo.",
-          details: [
-            "One backend, three product surfaces",
-            "Session-level monitoring + feature-effectiveness tracking",
-            "Live in production at ironlog.space"
-          ],
-          detailHref: 'https://ironlog.space', detailLabel: "Visit IronLog", detailExternal: true },
         { page: '/', id: 'work-external',
           title: "Four live apps in production",
           body: "Each opens in a new tab so you don't lose your place in the tour.",
           details: [
+            "Simplicity by WiseForge — production AI product",
             "Cowork Dashboard — autonomous pipeline, live 24/7",
-            "IronLog — analytics PWA suite",
-            "PartnerPulse — partner relationship analytics",
-            "Simplicity by WiseForge — production Claude-powered AI product"
+            "IronLog — fitness and health tracking platform",
+            "PartnerPulse — partner relationship analytics"
           ] },
         { page: '/', id: 'experience',
-          title: "Eight-plus years in regulated fintech — with the receipts",
+          title: "From the collections floor to engineering the systems",
           body: "Measurable impact, shipped systems. The bullets behind the headline are highlighted here.",
           details: [
-            "1,000+ users on my reporting pipeline",
-            "60% manual reporting eliminated via Python automation",
-            "AI-augmented Snowflake testing platform — solo build"
+            "35+ lender reports moving to Databricks and Sigma for 200+ lenders",
+            "Internal tools across five departments, saving each about 4 hours a day",
+            "1,000+ business users served; manual reporting effort cut 60%"
           ] },
         { page: '/', id: 'skills',
-          title: "BI · SQL · Full-stack",
-          body: "The combination is the point — deep enough to ship enterprise reporting and deep enough to build the apps around it.",
+          title: "AI and automation, on an engineering base",
+          body: "Agent orchestration, review gates and guardrails — backed by the languages, data and infrastructure to ship them.",
           details: [
-            "BI: Power BI, Snowflake, semantic models",
-            "Full-stack: TypeScript, PWAs, Cloudflare Workers",
-            "Data: SQL at scale, Python automation, AI-assisted testing"
+            "AI: Claude API, OpenAI API, Claude Code, multi-agent orchestration",
+            "Languages: Python, TypeScript, C#/.NET, SQL",
+            "Data and infrastructure: Snowflake, Databricks, AWS, Kubernetes, Terraform"
           ] },
         { page: '/', id: 'code-samples',
           title: "See how I write code",
@@ -1454,8 +1463,8 @@ class SiteTour {
             "Code and live result, side by side"
           ] },
         { page: '/', id: 'contact',
-          title: "Open to roles in regulated fintech",
-          body: "Senior engineering, BI / data-platform, or reporting-platform roles.",
+          title: "Open to AI engineering and automation roles",
+          body: "Hands-on roles in financial operations and regulated data environments.",
           details: [
             "Email is the fastest path",
             "Resume below for the paper trail",
@@ -1468,46 +1477,46 @@ class SiteTour {
       recruiter: [
         { page: '/', id: 'hero',
           title: "The 60-second pitch",
-          body: "Eight-plus years in regulated fintech. Engineering leader. Full-stack builder. Currently available.",
+          body: "Hands-on AI engineer. Seven years engineering inside a federally regulated bank. Builds the workflows himself. Currently available.",
           details: [
             "7 stops · ~60 seconds",
             "Skip or finish anytime"
           ] },
-        { page: '/', id: 'projects-partnerpulse',
-          title: "Solo-shipped, in production",
-          body: "Three platforms architected and shipped end-to-end. Discovery to deploy. No team.",
+        { page: '/', id: 'projects-cowork',
+          title: "Autonomous agents, with controls",
+          body: "A 24/7 pipeline of 16 LLM agents that ships code on its own — behind review votes, a daily cap and an emergency stop.",
           details: [
-            "PartnerPulse — relationship analytics PWA",
-            "The Builder — CI/CD for analytics",
-            "IronLog — analytics PWA suite"
+            "0% of auto-approved changes reverted in the controlled ramp",
+            "Productive capacity lifted from 9.2% to 30%+",
+            "Every decision's rationale logged for audit"
           ] },
         { page: '/', id: 'work-external',
           title: "Live in production today",
-          body: "Real users right now — click any to verify.",
+          body: "Real products, running now — click any to verify.",
           details: [
-            "IronLog (PWA suite)",
-            "PartnerPulse (analytics)",
-            "Wiseforge (chat-to-deploy)"
+            "Simplicity by WiseForge (production AI product)",
+            "IronLog (fitness platform, about 1,000 users)",
+            "PartnerPulse (partner analytics)"
           ] },
         { page: '/', id: 'experience',
           title: "The receipts",
-          body: "Eight-plus years of compliance-grade delivery, with measurable outcomes.",
+          body: "Seven years of engineering under uptime, data-integrity and audit requirements, with measurable outcomes.",
           details: [
-            "1,000+ users on my reporting",
-            "60% manual reporting eliminated via Python",
-            "AI-augmented Snowflake testing platform — solo build"
+            "1,000+ business users served",
+            "Manual reporting effort cut 60%",
+            "Internal tools saving five departments about 4 hours a day each"
           ] },
         { page: '/', id: 'skills',
-          title: "Senior IC across BI · SQL · Full-stack",
-          body: "Deep enough to ship enterprise reporting AND deep enough to build the apps around it.",
+          title: "AI engineering on a data and systems base",
+          body: "Deep enough to build the agents, and deep enough to build what they run on.",
           details: [
-            "Power BI, Snowflake, semantic models",
-            "TypeScript, PWAs, Cloudflare Workers",
-            "SQL at scale, Python automation"
+            "Claude API, OpenAI API, multi-agent orchestration",
+            "Python, TypeScript, C#/.NET, SQL",
+            "Snowflake, Databricks, AWS, Kubernetes"
           ] },
         { page: '/', id: 'contact',
-          title: "Open to senior roles in regulated fintech",
-          body: "Senior engineering, BI / data-platform, or reporting-platform leadership.",
+          title: "Open to AI engineering and automation roles",
+          body: "Hands-on roles in financial operations and regulated data environments.",
           details: [
             "Email gets the fastest reply",
             "Resume is one click",
