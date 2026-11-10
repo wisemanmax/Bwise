@@ -1,15 +1,108 @@
 /* ============================================================================
    Education suite — shared page behaviour.
-   Each Education page defines `data` (its seeded records) inline; this file
-   renders the summary strip, the three side lists and a filterable, paged
-   ledger from it. One copy for all nine pages.
+   Each Education page names its area with data-edu-area on <main>. This file
+   builds that area's sample records, then renders the summary strip, the
+   three side lists and a filterable, paged ledger. One copy for all nine
+   pages.
    ============================================================================ */
 
 (function () {
   'use strict';
 
-  /* global data */
-  if (typeof data === 'undefined' || !Array.isArray(data)) return;
+  // --------------------------------------------------------------------------
+  // Seeded sample data. Every Education page shows records for its own area,
+  // generated here from one vocabulary so the nine pages stay consistent with
+  // each other. The generator is deterministic: the same page always shows
+  // the same records.
+  // --------------------------------------------------------------------------
+  var TOPICS = [
+    'FDCPA Foundations', 'Mini-Miranda & Call Openings', 'Reg Z Disclosures', 'SCRA Protections',
+    'UDAAP Awareness', 'GLBA & Customer Privacy', 'FCRA Disputes', 'TCPA Contact Rules',
+    'Hardship & Forbearance Options', 'Payment Plan Setup', 'Loss Mitigation Waterfall', 'Skip-Trace Standards',
+    'Bankruptcy Handling', 'Deceased Account Handling', 'Complaint Escalation', 'Fraud Red Flags',
+    'Identity Verification', 'Call Quality Standards', 'De-escalation Skills', 'Promise-to-Pay Coaching',
+    'Cosigner Release', 'Autopay & ACH Rules', 'Credit Reporting Basics', 'Reg E Error Resolution',
+    'Fair Lending Overview', 'Third-Party Authorization', 'Military Borrower Benefits', 'Dialer Compliance',
+    'Email & SMS Consent', 'Account Notes Standards'
+  ];
+  var PROGRAMS = ['Collections New Hire', 'Servicing New Hire', 'Fraud Academy', 'Team Lead Development', 'Annual Compliance', 'Quality Coaching'];
+  var SITES = ['Wilmington', 'Newark', 'Indianapolis', 'Salt Lake City', 'Remote'];
+  var TEAMS = ['L&D Operations', 'Compliance Training', 'Collections Enablement', 'Servicing Enablement', 'Quality & Coaching', 'Fraud Academy'];
+
+  // name(i, pick) returns one record name; `label` heads the first column.
+  var AREAS = {
+    overview: { seed: 11, count: 1248, label: 'Assignment', weights: [58, 27, 15], name: function (i, pick) {
+      var kind = pick(['Module', 'Quiz', 'Certification test', 'Coaching session', 'Job aid review']);
+      return pick(PROGRAMS) + ' · ' + pick(TOPICS) + ' · ' + kind + ' · 2026-Q' + (1 + i % 4);
+    } },
+    'content-studio': { seed: 23, count: 386, label: 'Content item', weights: [44, 31, 25], name: function (i, pick) {
+      return pick(TOPICS) + ': ' + pick(['Video lesson', 'Interactive scenario', 'Job aid', 'Facilitator guide', 'Slide deck', 'Call recording review']) + ' v' + (1 + i % 4);
+    } },
+    library: { seed: 37, count: 540, label: 'Resource', weights: [72, 18, 10], name: function (i, pick) {
+      return pick(TOPICS) + ' — ' + pick(['Quick reference', 'Policy summary', 'Procedure', 'Call script', 'FAQ', 'Checklist']) + ' for ' + pick(['agents', 'team leads', 'QA reviewers', 'new hires', 'compliance']);
+    } },
+    modules: { seed: 41, count: 164, label: 'Module', weights: [61, 24, 15], name: function (i, pick) {
+      return 'Module ' + String(100 + i) + ' · ' + pick(TOPICS);
+    } },
+    quizzes: { seed: 53, count: 428, label: 'Quiz', weights: [55, 28, 17], name: function (i, pick) {
+      return pick(TOPICS) + ' — ' + pick(['Knowledge check', 'Scenario quiz', 'Call-listening quiz', 'Refresher quiz']) + ' ' + (1 + i % 6);
+    } },
+    tests: { seed: 67, count: 96, label: 'Test', weights: [50, 30, 20], name: function (i, pick) {
+      return pick(PROGRAMS) + ' Certification — ' + pick(['Final exam', 'Mid-program exam', 'Recertification exam', 'Practical assessment', 'Skills validation', 'Compliance attestation']) + ', Form ' + 'ABCD'.charAt(i % 4);
+    } },
+    cohorts: { seed: 71, count: 72, label: 'Cohort', weights: [46, 34, 20], name: function (i, pick) {
+      return pick(PROGRAMS) + ' · 2026-Q' + (1 + i % 4) + ' · ' + pick(SITES) + ' ' + 'ABC'.charAt(i % 3);
+    } },
+    analytics: { seed: 83, count: 240, label: 'Report', weights: [66, 22, 12], name: function (i, pick) {
+      return pick(['Completion rate', 'Assessment pass rate', 'Time to proficiency', 'Quiz item analysis', 'Engagement minutes', 'Certification status']) + ' — ' + pick(PROGRAMS) + ', week ' + (1 + i % 52);
+    } },
+    settings: { seed: 97, count: 36, label: 'Setting', weights: [70, 18, 12], name: function (i, pick) {
+      return pick(['Passing score', 'Retake limit', 'Due-date reminder', 'Enrollment rule', 'SSO group mapping', 'Completion certificate', 'Content review cycle', 'Manager notification', 'Attempt time limit', 'Archive policy']) + ' — ' + pick(PROGRAMS);
+    } }
+  };
+
+  // Small seeded generator (mulberry32) so the sample is stable between visits
+  function prng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function buildData(area) {
+    var rand = prng(area.seed);
+    var pick = function (list) { return list[Math.floor(rand() * list.length)]; };
+    var between = function (lo, hi) { return lo + Math.floor(rand() * (hi - lo + 1)); };
+    var base = Date.UTC(2026, 10, 10); // fixed, so the dates never drift
+    var seen = {};
+    var out = [];
+    for (var i = 1; i <= area.count; i++) {
+      // Re-roll a few times so two records rarely share a name
+      var name = area.name(i, pick);
+      for (var tries = 1; seen[name] && tries < 16; tries++) name = area.name(i + tries * 7, pick);
+      seen[name] = true;
+      var roll = rand() * 100;
+      var status = roll < area.weights[0] ? 'live' : roll < area.weights[0] + area.weights[1] ? 'review' : 'draft';
+      var due = new Date(base + between(status === 'live' ? 20 : 2, status === 'draft' ? 75 : 150) * 86400000);
+      out.push({
+        id: i,
+        name: name,
+        owner: pick(TEAMS),
+        status: status,
+        score: status === 'live' ? between(74, 98) : status === 'review' ? between(62, 92) : between(48, 84),
+        progress: status === 'live' ? 100 : status === 'review' ? between(70, 95) : between(10, 65),
+        due: due.toISOString().slice(0, 10)
+      });
+    }
+    return out.sort(function (a, b) { return a.due < b.due ? -1 : a.due > b.due ? 1 : a.id - b.id; });
+  }
+
+  var main = document.querySelector('[data-edu-area]');
+  var area = main && AREAS[main.getAttribute('data-edu-area')];
+  if (!area) return;
+  var data = buildData(area);
 
   var PAGE_SIZE = 25;
   var STATUSES = [
@@ -61,9 +154,9 @@
       return '<li class="data-row"><span>' + esc(item.name) + '</span>' + badge(item.status) + '</li>';
     }).join('');
   }
-  renderList(el('snapshot-list'), data.slice(0, 8));
-  renderList(el('queue-list'), data.slice(8, 16));
-  renderList(el('risk-list'), data.slice(16, 24));
+  renderList(el('snapshot-list'), data.slice(0, 8)); // soonest due
+  renderList(el('queue-list'), data.filter(function (d) { return d.status === 'review'; }).slice(0, 8));
+  renderList(el('risk-list'), data.slice().sort(function (x, y) { return x.score - y.score; }).slice(0, 8)); // lowest scores
 
   // --- Ledger: status filter + pages -------------------------------------------
   var table = el('ledger-table');
@@ -86,7 +179,7 @@
     var slice = all.slice(start, start + PAGE_SIZE);
 
     table.innerHTML =
-      '<thead><tr><th scope="col">Assignment</th><th scope="col">Owner</th><th scope="col">Status</th>' +
+      '<thead><tr><th scope="col">' + area.label + '</th><th scope="col">Owner</th><th scope="col">Status</th>' +
       '<th scope="col">Score</th><th scope="col">Progress</th><th scope="col">Due</th></tr></thead><tbody>' +
       slice.map(function (item) {
         return '<tr><td>' + esc(item.name) + '</td><td>' + esc(item.owner) + '</td><td>' + badge(item.status) + '</td>' +
