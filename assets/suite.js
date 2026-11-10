@@ -1,7 +1,8 @@
 /* ============================================================================
    Domain suites — shared behaviour.
-   Long reference tables are paged instead of running for hundreds of rows.
-   Progressive enhancement: with JavaScript off, every row is still there.
+   Long reference tables are paged and long card grids are collapsed, instead
+   of running for thousands of pixels. Progressive enhancement: with
+   JavaScript off, every row and card is still there.
    ============================================================================ */
 
 (function () {
@@ -52,6 +53,43 @@
     // Put the controls after the table's scroll container when it has one
     var host = table.closest('.table-container') || table;
     host.parentNode.insertBefore(tools, host.nextSibling);
+    render();
+  });
+
+  // --------------------------------------------------------------------------
+  // Long card grids: show the first two rows' worth, with a toggle for the rest
+  // --------------------------------------------------------------------------
+  var GRID_PREVIEW = 8;
+  var GRID_MIN = 16; // smaller grids are left alone
+
+  Array.prototype.forEach.call(document.querySelectorAll('.grid'), function (grid) {
+    var cards = Array.prototype.filter.call(grid.children, function (c) { return c.classList.contains('card'); });
+    if (cards.length < GRID_MIN || cards.length !== grid.children.length) return;
+
+    var extra = cards.slice(GRID_PREVIEW);
+    var open = false;
+
+    var tools = document.createElement('div');
+    tools.className = 'table-tools table-tools--foot';
+    tools.innerHTML = '<span class="table-count" aria-live="polite"></span>' +
+      '<div class="table-pager"><button type="button" aria-expanded="false"></button></div>';
+    var count = tools.querySelector('.table-count');
+    var btn = tools.querySelector('button');
+
+    function render() {
+      extra.forEach(function (card) { card.hidden = !open; });
+      count.textContent = 'Showing ' + (open ? cards.length : GRID_PREVIEW) + ' of ' + cards.length;
+      btn.textContent = open ? 'Show fewer' : 'Show all ' + cards.length;
+      btn.setAttribute('aria-expanded', String(open));
+    }
+
+    btn.addEventListener('click', function () {
+      open = !open;
+      render();
+      if (!open) grid.scrollIntoView({ block: 'nearest' });
+    });
+
+    grid.parentNode.insertBefore(tools, grid.nextSibling);
     render();
   });
 })();
