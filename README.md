@@ -6,7 +6,7 @@
 
 Hands-on AI engineer who builds the workflows himself, from requirements to production.
 
-[**www.byheir.com**](https://www.byheir.com) &nbsp;·&nbsp; [For hiring managers](https://www.byheir.com/pages/for-hiring-managers.html) &nbsp;·&nbsp; [Resume (PDF)](assets/byheir-wise-resume.pdf) &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/byheir-wise)
+[**www.byheir.com**](https://www.byheir.com) &nbsp;·&nbsp; [For hiring managers](https://www.byheir.com/pages/for-hiring-managers.html) &nbsp;·&nbsp; [Resume (PDF)](assets/byheir-wise-resume.pdf) &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/byheir-wise-976253265)
 
 <br>
 
@@ -225,5 +225,5 @@ External projects linked from the work section use React 18 + Vite + Supabase / 
 
 - Site: [www.byheir.com](https://www.byheir.com)
 - Email: [byheirw@gmail.com](mailto:byheirw@gmail.com)
-- LinkedIn: [byheir-wise](https://www.linkedin.com/in/byheir-wise)
+- LinkedIn: [byheir-wise](https://www.linkedin.com/in/byheir-wise-976253265)
 - GitHub: [wisemanmax](https://github.com/wisemanmax)
