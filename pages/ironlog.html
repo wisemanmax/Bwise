@@ -48,10 +48,9 @@
   <main id="main">
     <section class="hero-section" aria-labelledby="ironlog-hero">
       <div class="hero-inner">
-        <div class="hero-label">Evidence · Full-stack project</div>
+        <div class="hero-label">Evidence · WiseForge</div>
         <h1 id="ironlog-hero" class="hero-title">IronLog</h1>
         <p class="hero-subtitle">An offline-first fitness and health tracking PWA — workouts, nutrition, body metrics, progress photos, AI coach — serving a gym community of about 1,000 users. Designed, built and run solo.</p>
-        <p class="hero-subtitle" style="font-size:1rem;opacity:.8;">IronLog is part of a five-app ecosystem with single sign-on on one Supabase backend. This page walks through the architecture using the first three apps: IronLog, FinanceLog and NutritionLog.</p>
         <div class="hero-cta-row">
           <a class="hero-cta hero-cta--primary" href="https://ironlog.space" target="_blank" rel="noopener noreferrer">Visit IronLog <span aria-hidden="true">↗</span></a>
           <a class="hero-cta hero-cta--ghost" href="../index.html#projects">Back to projects</a>
@@ -66,288 +65,277 @@
       </div>
     </section>
 
-    <section class="container" aria-labelledby="problem-title">
+    <section class="container" aria-labelledby="what-title">
       <div class="section-header">
-        <h2 id="problem-title" class="section-title">The problem</h2>
+        <h2 id="what-title" class="section-title">What it is</h2>
         <p class="section-subtitle">
-          Tracking workouts, finances, and nutrition meant juggling three disconnected apps with no shared data layer, no shared identity, and no way to see how the three correlate over time.
+          A gym-floor app has to work with no signal, on a phone, mid-set. Everything else follows from that.
         </p>
       </div>
       <div class="grid two-cols">
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">What was missing</div>
+            <div class="card-title">The app</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li>Three separate logins, three separate data silos, three separate UX paradigms.</li>
-              <li>No way to ask cross-domain questions ("does sleep affect lifting volume?", "do high-spend weeks correlate with skipped training?").</li>
-              <li>Existing apps optimized for daily entry, not for trend analysis or behavioral feedback.</li>
-              <li>No product analytics on my own usage — no signal for which features actually got used.</li>
+              <li><strong>Workouts</strong> — logging, programs, exercise history.</li>
+              <li><strong>Nutrition</strong> and <strong>body metrics</strong> — intake, targets, measurements.</li>
+              <li><strong>Progress photos</strong> — stored in object storage and served through signed URLs.</li>
+              <li><strong>AI coach</strong> — runs on the user&rsquo;s own model API key, which stays on their device.</li>
+              <li><strong>Community</strong> — friends, feed, groups, direct messages and weekly leagues.</li>
             </ul>
           </div>
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Goals for the suite</div>
+            <div class="card-title">Built for the gym floor</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li>One identity, one data layer, three focused front-ends — each PWA-installable.</li>
-              <li>Real-time sync so the same data shows up across devices and apps without refresh.</li>
-              <li>Trend &amp; cohort analytics built in, not bolted on.</li>
-              <li>Self-instrumented from day one — every app emits product analytics that feed the next iteration.</li>
+              <li>Installable PWA with a service worker and an offline page.</li>
+              <li>Every change is saved on the device first; the network is never in the way of logging a set.</li>
+              <li>Sync happens in the background and catches up after a dead zone.</li>
+              <li>Push notifications through Web Push.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="container" aria-labelledby="architecture-title">
+    <section class="container" aria-labelledby="ecosystem-title">
       <div class="section-header">
-        <h2 id="architecture-title" class="section-title">System design</h2>
+        <h2 id="ecosystem-title" class="section-title">Five apps, one sign-in</h2>
         <p class="section-subtitle">
-          Three independent React + Vite PWAs, each deployed as its own Vercel project, all backed by one Supabase instance that owns identity, data, realtime, and storage.
+          IronLog is the first of five apps that share an account. Each is its own installable PWA on its own subdomain.
         </p>
       </div>
+      <article class="experience-card" style="padding:0;overflow:hidden;">
+        <div style="overflow-x:auto;">
+        <table class="evidence-table" style="width:100%;border-collapse:collapse;font-size:.95rem;">
+          <thead>
+            <tr><th scope="col" style="text-align:left;padding:.75rem 1rem;">App</th><th scope="col" style="text-align:left;padding:.75rem 1rem;">What it tracks</th><th scope="col" style="text-align:left;padding:.75rem 1rem;">Address</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><strong>IronLog</strong></td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);">Workouts, body metrics, progress photos</td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a></td></tr>
+            <tr><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><strong>NutritionLog</strong></td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);">Nutrition and macros, with barcode scanning</td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><a href="https://nutrition.ironlog.space" target="_blank" rel="noopener noreferrer">nutrition.ironlog.space ↗</a></td></tr>
+            <tr><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><strong>FinanceLog</strong></td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);">Personal finance and budgets</td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><a href="https://financelog.ironlog.space" target="_blank" rel="noopener noreferrer">financelog.ironlog.space ↗</a></td></tr>
+            <tr><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><strong>TherapyLog</strong></td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);">Mood and mental health</td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><a href="https://therapylog.ironlog.space" target="_blank" rel="noopener noreferrer">therapylog.ironlog.space ↗</a></td></tr>
+            <tr><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><strong>ReminderLog</strong></td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);">Reminders and tasks</td><td style="padding:.75rem 1rem;border-top:1px solid rgba(160,158,150,.18);"><a href="https://reminderlog.ironlog.space" target="_blank" rel="noopener noreferrer">reminderlog.ironlog.space ↗</a></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </article>
+      <div class="grid two-cols" style="margin-top:var(--space-xl);">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">How single sign-on works</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Signing in to any app creates a session on the shared API.</li>
+              <li>The session token is kept in a cookie scoped to <code>ironlog.space</code>, so every subdomain can read it.</li>
+              <li>On first open, each app checks for that cookie, validates it with the API, and pulls the account&rsquo;s data. No second sign-up.</li>
+              <li>Signing out clears the cookie for all five.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Why separate apps</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Each app does one job and installs with its own icon, offline scope and service worker.</li>
+              <li>A change to one cannot break the others; they deploy independently.</li>
+              <li>People install only the ones they use.</li>
+              <li>One account and one backend keep identity from drifting between them.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
 
-      <article class="experience-card" style="margin-bottom:1.25rem;">
+    <section class="container" aria-labelledby="design-title">
+      <div class="section-header">
+        <h2 id="design-title" class="section-title">System design</h2>
+        <p class="section-subtitle">
+          Static front-ends, one small API, one database. The API is the only thing that talks to the database.
+        </p>
+      </div>
+      <article class="experience-card">
         <div class="card-header">
           <div class="card-title">Topology</div>
         </div>
         <div class="card-content">
-          <pre style="white-space:pre;overflow-x:auto;font:0.85rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(15,23,42,0.04);padding:1rem;border-radius:8px;margin:0;">
-        ┌──────────────┐   ┌──────────────────┐   ┌────────────────┐
-        │  IronLog     │   │   FinanceLog     │   │  NutritionLog  │
-        │  React/Vite  │   │   React/Vite     │   │  React/Vite    │
-        │  PWA         │   │   PWA            │   │  PWA           │
-        └──────┬───────┘   └────────┬─────────┘   └────────┬───────┘
-               │                    │                      │
-               │   Vercel edge (per-app deployments)       │
-               └────────────┬───────┴──────────┬───────────┘
-                            │                  │
-                ┌───────────▼─────────┐  ┌─────▼──────────┐
-                │    Supabase         │  │  Cloudflare R2 │
-                │  · Auth (SSO)       │  │  · Media blobs │
-                │  · Postgres         │  │  · Exports     │
-                │  · Realtime         │  └────────────────┘
-                │  · Row-level policy │
-                └─────────────────────┘
+          <pre style="white-space:pre;overflow-x:auto;font:0.85rem/1.4 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(255,255,255,0.04);padding:1rem;border-radius:8px;margin:0;">
+  IronLog   NutritionLog   FinanceLog   TherapyLog   ReminderLog
+  React + Vite PWAs · static hosting · one subdomain each
+      │           │             │            │            │
+      └───────────┴──────┬──────┴────────────┴────────────┘
+                         │  session token
+                ┌────────▼─────────┐
+                │   Shared API     │   serverless functions
+                │   auth · sync    │   push · photos · social
+                └───┬──────────┬───┘
+                    │          │
+        ┌───────────▼───┐   ┌──▼─────────────┐
+        │   Supabase    │   │  Cloudflare R2 │
+        │   Postgres    │   │  photos, video │
+        │   + RLS       │   │  signed URLs   │
+        └───────────────┘   └────────────────┘
           </pre>
         </div>
       </article>
+    </section>
 
+    <section class="container" aria-labelledby="reliability-title">
+      <div class="section-header">
+        <h2 id="reliability-title" class="section-title">Built for reliability and privacy</h2>
+        <p class="section-subtitle">
+          Four claims from my resume, each with what the code does.
+        </p>
+      </div>
       <div class="grid two-cols">
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Why a unified backend</div>
+            <div class="card-title">Row-level security on every user table</div>
+            <div class="card-date">Database</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>Single identity:</strong> one Supabase auth user is the same user across all three apps — no separate signups, no account drift.</li>
-              <li><strong>Shared schema, scoped by domain:</strong> each app owns its own tables, but all live in one Postgres so cross-domain queries (training × nutrition × spend) are a single SQL away.</li>
-              <li><strong>Realtime out of the box:</strong> Postgres logical replication powers Supabase Realtime — UI subscribes to row changes, no custom WebSocket layer.</li>
-              <li><strong>RLS at the data layer:</strong> Row-level security enforces ownership in the database, not in app code, so each PWA gets the same guarantees for free.</li>
+              <li>The database key that ships in a web bundle is public by design, so row-level security is the real boundary in front of the data.</li>
+              <li>The API is the only path to the data: it reaches Postgres with a service role, and policies are written so the public key on its own gets nothing.</li>
+              <li>Coach features use a separate, narrower database role: a coach sees a client&rsquo;s rows only while that client&rsquo;s consent record says so, and revoking consent takes effect on the next query.</li>
+              <li>Policies are kept as numbered migrations in the API repository.</li>
             </ul>
           </div>
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Why three independent front-ends</div>
+            <div class="card-title">Hashed PINs with lockout</div>
+            <div class="card-date">Sign-in</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>Focused UX:</strong> a workout-tracking flow is nothing like a budget flow — separate apps keep each surface honest.</li>
-              <li><strong>Independent release cadence:</strong> shipping a finance feature doesn't risk regressing nutrition.</li>
-              <li><strong>Per-app PWA install:</strong> each app gets its own home-screen icon, its own offline scope, its own service worker.</li>
-              <li><strong>Smaller bundles:</strong> users only download the surface they're using.</li>
+              <li>Account PINs are hashed with bcrypt on the server. The plain PIN is never stored.</li>
+              <li>Five wrong attempts lock the PIN for 15 minutes.</li>
+              <li>The API never returns the hash. Clients and the admin dashboard see only whether a PIN is set and whether it is locked.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">An offline sync queue that replays on reconnect</div>
+            <div class="card-date">Offline</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>When a sync fails, the pending change set goes into an IndexedDB queue on the device.</li>
+              <li>Each queued item records which account it belongs to, so a replay after switching accounts cannot write one person&rsquo;s history into another&rsquo;s.</li>
+              <li>Only the newest snapshot is kept, so an older one can never overwrite newer data.</li>
+              <li>The queue replays when the connection returns, using Background Sync where the browser supports it.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">An admin dashboard that strips personal data</div>
+            <div class="card-date">Admin</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Admin responses are assembled field by field on the server before they leave the API.</li>
+              <li>Phone numbers come back masked.</li>
+              <li>The PIN hash and lockout timestamp are reduced to two yes/no flags.</li>
+              <li>Admin endpoints require a valid session and an admin account.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
+
 
     <section class="container" aria-labelledby="stack-title">
       <div class="section-header">
-        <h2 id="stack-title" class="section-title">Stack &amp; infrastructure</h2>
+        <h2 id="stack-title" class="section-title">Stack</h2>
+        <p class="section-subtitle">
+          Chosen to run a real product on free and near-free tiers, operated by one person.
+        </p>
       </div>
       <div class="grid two-cols">
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Front-end (per app)</div>
+            <div class="card-title">Front-end</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>React 18</strong> — concurrent rendering, Suspense for async data.</li>
-              <li><strong>Vite 6</strong> — fast dev server, ESM-native build.</li>
-              <li><strong>PWA</strong> — service worker, web manifest, installable, offline-aware.</li>
-              <li><strong>Charts</strong> — trend, cohort, and distribution visualizations.</li>
+              <li><strong>React 18</strong> and <strong>Vite 6</strong>, one PWA per app.</li>
+              <li><strong>Recharts</strong> for trends and analytics.</li>
+              <li><strong>Service worker</strong>, web manifest, offline page, Web Push.</li>
+              <li>Static hosting, deployed from the main branch by GitHub Actions.</li>
             </ul>
           </div>
         </article>
         <article class="experience-card">
           <div class="card-header">
-            <div class="card-title">Back-end (shared)</div>
+            <div class="card-title">Back-end</div>
           </div>
           <div class="card-content">
             <ul class="achievement-list">
-              <li><strong>Supabase Auth</strong> — SSO across all three apps via shared project.</li>
-              <li><strong>Supabase Postgres</strong> — one database, app-scoped schemas, RLS policies for ownership.</li>
-              <li><strong>Supabase Realtime</strong> — logical replication powers cross-device sync.</li>
-              <li><strong>Cloudflare R2</strong> — S3-compatible blob storage for media and exports.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">Hosting &amp; delivery</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li><strong>Vercel</strong> — three projects, one per PWA, each with its own preview deploys per branch.</li>
-              <li><strong>Custom domain</strong> — <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space</a> on Vercel edge.</li>
-              <li><strong>Per-PR previews</strong> — every branch ships a live preview URL automatically.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">Observability</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li><strong>Session-level monitoring</strong> — each app emits session events for engagement analysis.</li>
-              <li><strong>Feature-effectiveness tracking</strong> — features are instrumented at definition time so adoption is measurable.</li>
-              <li><strong>Error capture</strong> — front-end exceptions roll up to a single dashboard.</li>
-              <li><strong>Self-feedback loop</strong> — analytics from one iteration shape the next.</li>
+              <li><strong>Serverless functions</strong> for auth, sync, photos, push, social and admin.</li>
+              <li><strong>Supabase Postgres</strong> with row-level security; Realtime for live updates.</li>
+              <li><strong>Cloudflare R2</strong> for photos and video.</li>
+              <li>Transactional email for verification and PIN reset.</li>
             </ul>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="container" aria-labelledby="data-model-title">
-      <div class="section-header">
-        <h2 id="data-model-title" class="section-title">Data model — shape, not detail</h2>
-        <p class="section-subtitle">
-          One auth tenant; per-app domain tables scoped by user_id; an analytics layer that observes all three.
-        </p>
-      </div>
-      <article class="experience-card">
-        <div class="card-content">
-          <ul class="achievement-list">
-            <li><strong>auth.users</strong> — Supabase-managed; one row per person across all three apps.</li>
-            <li><strong>ironlog.*</strong> — workouts, sets, exercises, programs. Owner = <code>user_id</code>.</li>
-            <li><strong>financelog.*</strong> — accounts, transactions, categories, budgets. Owner = <code>user_id</code>.</li>
-            <li><strong>nutritionlog.*</strong> — meals, foods, intake entries, targets. Owner = <code>user_id</code>.</li>
-            <li><strong>analytics.*</strong> — session events, feature usage, errors. Joined back to <code>user_id</code> for cohort analysis.</li>
-            <li><strong>RLS policies</strong> — every read/write checks <code>auth.uid() = user_id</code> at the database layer.</li>
-          </ul>
-        </div>
-      </article>
-    </section>
-
-    <section class="container" aria-labelledby="deployment-title">
-      <div class="section-header">
-        <h2 id="deployment-title" class="section-title">Deployment flow</h2>
-        <p class="section-subtitle">
-          Pull-request-driven, preview-first, zero-touch production.
-        </p>
-      </div>
-      <div class="grid two-cols">
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">Per-PR cycle</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li>Push branch → Vercel builds a preview URL for the affected app.</li>
-              <li>Schema changes ship as Supabase migrations checked into the repo.</li>
-              <li>Preview URL hits a non-prod Supabase environment so destructive tests are safe.</li>
-              <li>Merge to <code>main</code> → production deploy on Vercel edge; migrations applied to prod Supabase.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="experience-card">
-          <div class="card-header">
-            <div class="card-title">Operational posture</div>
-          </div>
-          <div class="card-content">
-            <ul class="achievement-list">
-              <li><strong>Rollback:</strong> Vercel atomic deploys — instant revert to the prior good build.</li>
-              <li><strong>Migrations:</strong> forward-only with explicit reversals for anything destructive.</li>
-              <li><strong>Secrets:</strong> Vercel env vars per environment; nothing in the repo.</li>
-              <li><strong>Cost:</strong> serverless edges + a single Supabase project — fixed, predictable, low.</li>
-            </ul>
-          </div>
-        </article>
-      </div>
-    </section>
 
     <section class="container" aria-labelledby="verify-title">
       <div class="section-header">
-        <h2 id="verify-title" class="section-title">Verify it yourself</h2>
+        <h2 id="verify-title" class="section-title">How to verify, and what is not claimed</h2>
         <p class="section-subtitle">
-          The fastest proof is the live site — install it, sign in, watch the realtime sync work across devices.
+          Try it; then read the caveats.
         </p>
       </div>
-      <article class="experience-card">
-        <div class="card-content">
-          <ul class="achievement-list">
-            <li><strong>Live:</strong> <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space</a> — open on two devices, sign in with the same account, watch a write on one appear on the other without refresh.</li>
-            <li><strong>Install as a PWA:</strong> use the browser's install prompt — confirms the manifest, service worker, and offline scope are real.</li>
-            <li><strong>SSO:</strong> sign in once, navigate between IronLog / FinanceLog / NutritionLog — same identity across all three.</li>
-            <li><strong>Inspect network:</strong> requests to <code>*.supabase.co</code> for data, <code>*.r2.cloudflarestorage.com</code> for media, served from Vercel edge.</li>
-          </ul>
-        </div>
-      </article>
+      <div class="grid two-cols">
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Try it</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>Open <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a> and install it from the browser&rsquo;s install prompt.</li>
+              <li>Turn on airplane mode and log a workout. It saves.</li>
+              <li>Reconnect and watch it sync.</li>
+              <li>Open <a href="https://nutrition.ironlog.space" target="_blank" rel="noopener noreferrer">nutrition.ironlog.space ↗</a> in the same browser: you are already signed in.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="experience-card">
+          <div class="card-header">
+            <div class="card-title">Not claimed</div>
+          </div>
+          <div class="card-content">
+            <ul class="achievement-list">
+              <li>&ldquo;About 1,000 users&rdquo; is my own figure, not an audited one, and it says nothing about daily use.</li>
+              <li>IronLog and the API are private repositories, so the code behind this page is not public. The four sibling apps are public on <a href="https://github.com/wisemanmax" target="_blank" rel="noopener noreferrer">GitHub ↗</a>.</li>
+              <li>Not every app syncs everything: some keep data on the device by default.</li>
+              <li>This is a consumer product, not a regulated system. The patterns carry over; the compliance burden does not.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
     </section>
 
-    <!--
-      TODO (owner): replace placeholder claims below with real artifacts when ready:
-        - Screenshots of each PWA installed on a device (home screen + main view)
-        - Anonymized product-analytics chart (DAU/feature-adoption) from the analytics layer
-        - Architecture diagram (export from Excalidraw / Figma / Mermaid) replacing the ASCII topology above
-        - Lighthouse PWA score for each app
-        - Link to a public design doc or ADR if you want to publish one
-      Keep this section hidden until populated so the page never shows placeholder content.
-    -->
-    <section class="container" aria-labelledby="artifacts-title" hidden>
-      <div class="section-header">
-        <h2 id="artifacts-title" class="section-title">Artifacts</h2>
-      </div>
-      <article class="experience-card">
-        <div class="card-content">
-          <ul class="achievement-list">
-            <li>TODO — install screenshots for each app.</li>
-            <li>TODO — Lighthouse PWA score for each app.</li>
-            <li>TODO — anonymized product-analytics snapshot.</li>
-            <li>TODO — exported architecture diagram replacing the ASCII topology above.</li>
-          </ul>
-        </div>
-      </article>
-    </section>
-
-    <section class="container" aria-labelledby="next-title">
-      <div class="section-header">
-        <h2 id="next-title" class="section-title">What's next</h2>
-      </div>
-      <article class="experience-card">
-        <div class="card-content">
-          <ul class="achievement-list">
-            <li>Cross-domain insight surfaces — the whole point of one backend is to make these queryable.</li>
-            <li>Native push notifications via the PWA push API for habit nudges.</li>
-            <li>Export pipeline to land long-term history in a warehouse-shaped store for offline analysis.</li>
-            <li>Open the analytics layer as its own embedded surface so feature-effectiveness data is visible inside each app.</li>
-          </ul>
-        </div>
-      </article>
-    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>IronLog Analytics Ecosystem · full-stack PWA suite · part of the Byheir Wise portfolio. <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a></p>
+      <p>IronLog · fitness and health tracking platform · part of the Byheir Wise portfolio. <a href="https://ironlog.space" target="_blank" rel="noopener noreferrer">ironlog.space ↗</a></p>
     </div>
   </footer>
 

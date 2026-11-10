@@ -150,7 +150,7 @@ Where to look when you want proof of a specific claim.
 |---|---|---|
 | Cowork (autonomous software pipeline) | 16 specialized agents · 5 parallel lanes · auto-gate · self-healing · live dashboard | `pages/cowork.html` |
 | Operations Command Center | Cross-functional ops platform — KPI design, alert/workflow architecture | `pages/case-study.html` |
-| The Builder | AI-augmented reporting & validation — multi-stage pipelines, audit trails | `pages/the-builder.html` |
+| The Builder | Chat-to-deploy app builder — 14-step pipeline, second-model audit, scoped fix passes, approval gate, build records | `pages/the-builder.html` · [source](https://github.com/wisemanmax/Builder) |
 | SQL Playground · Lending KPIs | In-browser SQLite (WASM), Snowflake-shaped lending schema, 21 challenges | `pages/sql-playground-case-study.html` |
 | Power BI Dashboards | Executive reporting, KPI standardization, reconciliation patterns | `pages/power-bi-dashboards.html` |
 
